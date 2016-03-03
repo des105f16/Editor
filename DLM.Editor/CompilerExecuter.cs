@@ -15,11 +15,9 @@ namespace DLM.Editor
 {
     public partial class CompilerExecuter
     {
-        public override void Validate(Start<PExpression> root, CompilationOptions compilationOptions)
+        public override void Validate(Start<PStatement> root, CompilationOptions compilationOptions)
         {
-            CompileWithGCC(root, compilationOptions.ErrorManager);
-            
-            base.Validate(root, compilationOptions);
+            CompileWithGCC(root.Root, compilationOptions.ErrorManager);
         }
         
         private static void CompileWithGCC(Node root, ErrorManager errors)

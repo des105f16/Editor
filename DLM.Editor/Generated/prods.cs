@@ -5,6 +5,258 @@ using DLM.Editor.Analysis;
 
 namespace DLM.Editor.Nodes
 {
+    public abstract partial class PStatement : Production<PStatement>
+    {
+        private PType _type_;
+        private TIdentifier _identifier_;
+        private PExpression _expression_;
+        
+        public PStatement(PType _type_, TIdentifier _identifier_, PExpression _expression_)
+        {
+            this.Type = _type_;
+            this.Identifier = _identifier_;
+            this.Expression = _expression_;
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in PStatement cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in PStatement cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        public bool HasExpression
+        {
+            get { return _expression_ != null; }
+        }
+        
+    }
+    public partial class ADeclarationStatement : PStatement
+    {
+        public ADeclarationStatement(PType _type_, TIdentifier _identifier_, PExpression _expression_)
+            : base(_type_, _identifier_, _expression_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in ADeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in ADeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (Expression == oldChild)
+            {
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+            if (HasExpression)
+                yield return Expression;
+        }
+        
+        public override PStatement Clone()
+        {
+            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Type, Identifier, Expression);
+        }
+    }
+    public abstract partial class PType : Production<PType>
+    {
+        public PType()
+        {
+        }
+        
+    }
+    public partial class AType : PType
+    {
+        private TIdentifier _name_;
+        
+        public AType(TIdentifier _name_)
+            : base()
+        {
+            this.Name = _name_;
+        }
+        
+        public TIdentifier Name
+        {
+            get { return _name_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Name in AType cannot be null.", "value");
+                
+                if (_name_ != null)
+                    SetParent(_name_, null);
+                SetParent(value, this);
+                
+                _name_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Name == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Name in AType cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Name = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Name;
+        }
+        
+        public override PType Clone()
+        {
+            return new AType(Name.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Name);
+        }
+    }
+    public partial class APointerType : PType
+    {
+        private PType _type_;
+        private TAsterisk _asterisk_;
+        
+        public APointerType(PType _type_, TAsterisk _asterisk_)
+            : base()
+        {
+            this.Type = _type_;
+            this.Asterisk = _asterisk_;
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in APointerType cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TAsterisk Asterisk
+        {
+            get { return _asterisk_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Asterisk in APointerType cannot be null.", "value");
+                
+                if (_asterisk_ != null)
+                    SetParent(_asterisk_, null);
+                SetParent(value, this);
+                
+                _asterisk_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in APointerType cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Asterisk == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Asterisk in APointerType cannot be null.", "newChild");
+                if (!(newChild is TAsterisk) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Asterisk = newChild as TAsterisk;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Asterisk;
+        }
+        
+        public override PType Clone()
+        {
+            return new APointerType(Type.Clone(), Asterisk.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Type, Asterisk);
+        }
+    }
     public abstract partial class PExpression : Production<PExpression>
     {
         public PExpression()
@@ -172,55 +424,55 @@ namespace DLM.Editor.Nodes
     }
     public partial class ANotExpression : PExpression
     {
-        private PExpression _left_;
+        private PExpression _expression_;
         
-        public ANotExpression(PExpression _left_)
+        public ANotExpression(PExpression _expression_)
             : base()
         {
-            this.Left = _left_;
+            this.Expression = _expression_;
         }
         
-        public PExpression Left
+        public PExpression Expression
         {
-            get { return _left_; }
+            get { return _expression_; }
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Left in ANotExpression cannot be null.", "value");
+                    throw new ArgumentException("Expression in ANotExpression cannot be null.", "value");
                 
-                if (_left_ != null)
-                    SetParent(_left_, null);
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
                 SetParent(value, this);
                 
-                _left_ = value;
+                _expression_ = value;
             }
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Left == oldChild)
+            if (Expression == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("Left in ANotExpression cannot be null.", "newChild");
+                    throw new ArgumentException("Expression in ANotExpression cannot be null.", "newChild");
                 if (!(newChild is PExpression) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Left = newChild as PExpression;
+                Expression = newChild as PExpression;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
-            yield return Left;
+            yield return Expression;
         }
         
         public override PExpression Clone()
         {
-            return new ANotExpression(Left.Clone());
+            return new ANotExpression(Expression.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Left);
+            return string.Format("{0}", Expression);
         }
     }
     public partial class AComparisonExpression : PExpression
@@ -881,6 +1133,59 @@ namespace DLM.Editor.Nodes
             return string.Format("{0} {1}", Left, Right);
         }
     }
+    public partial class ANegateExpression : PExpression
+    {
+        private PExpression _expression_;
+        
+        public ANegateExpression(PExpression _expression_)
+            : base()
+        {
+            this.Expression = _expression_;
+        }
+        
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in ANegateExpression cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in ANegateExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Expression;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ANegateExpression(Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Expression);
+        }
+    }
     public partial class AFunctionCallExpression : PExpression
     {
         private TIdentifier _function_;
@@ -955,59 +1260,6 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1}", Function, Arguments);
-        }
-    }
-    public partial class ANegateExpression : PExpression
-    {
-        private PExpression _right_;
-        
-        public ANegateExpression(PExpression _right_)
-            : base()
-        {
-            this.Right = _right_;
-        }
-        
-        public PExpression Right
-        {
-            get { return _right_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Right in ANegateExpression cannot be null.", "value");
-                
-                if (_right_ != null)
-                    SetParent(_right_, null);
-                SetParent(value, this);
-                
-                _right_ = value;
-            }
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (Right == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("Right in ANegateExpression cannot be null.", "newChild");
-                if (!(newChild is PExpression) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Right = newChild as PExpression;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return Right;
-        }
-        
-        public override PExpression Clone()
-        {
-            return new ANegateExpression(Right.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", Right);
         }
     }
     public partial class AParenthesisExpression : PExpression

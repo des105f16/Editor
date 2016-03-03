@@ -11,8 +11,50 @@ namespace DLM.Editor.Analysis
     public partial class AnalysisAdapter : AnalysisAdapter<object>
     {
     }
-    public partial class AnalysisAdapter<Value> : Adapter<Value, PExpression>
+    public partial class AnalysisAdapter<Value> : Adapter<Value, PStatement>
     {
+        public void Visit(PStatement node)
+        {
+            HandlePStatement(node);
+        }
+        protected virtual void HandlePStatement(PStatement node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(ADeclarationStatement node)
+        {
+            HandleADeclarationStatement(node);
+        }
+        protected virtual void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PType node)
+        {
+            HandlePType(node);
+        }
+        protected virtual void HandlePType(PType node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AType node)
+        {
+            HandleAType(node);
+        }
+        protected virtual void HandleAType(AType node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(APointerType node)
+        {
+            HandleAPointerType(node);
+        }
+        protected virtual void HandleAPointerType(APointerType node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PExpression node)
         {
             HandlePExpression(node);
@@ -109,19 +151,19 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
-        private void dispatch(AFunctionCallExpression node)
-        {
-            HandleAFunctionCallExpression(node);
-        }
-        protected virtual void HandleAFunctionCallExpression(AFunctionCallExpression node)
-        {
-            HandleDefault(node);
-        }
         private void dispatch(ANegateExpression node)
         {
             HandleANegateExpression(node);
         }
         protected virtual void HandleANegateExpression(ANegateExpression node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AFunctionCallExpression node)
+        {
+            HandleAFunctionCallExpression(node);
+        }
+        protected virtual void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
             HandleDefault(node);
         }
@@ -271,6 +313,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TAssign node)
+        {
+            HandleTAssign(node);
+        }
+        protected virtual void HandleTAssign(TAssign node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TPlus node)
         {
             HandleTPlus(node);
@@ -351,6 +401,22 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TColon node)
+        {
+            HandleTColon(node);
+        }
+        protected virtual void HandleTColon(TColon node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TSemicolon node)
+        {
+            HandleTSemicolon(node);
+        }
+        protected virtual void HandleTSemicolon(TSemicolon node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TLabelStart node)
         {
             HandleTLabelStart(node);
@@ -399,6 +465,22 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TLCur node)
+        {
+            HandleTLCur(node);
+        }
+        protected virtual void HandleTLCur(TLCur node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TRCur node)
+        {
+            HandleTRCur(node);
+        }
+        protected virtual void HandleTRCur(TRCur node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TComment node)
         {
             HandleTComment(node);
@@ -429,12 +511,28 @@ namespace DLM.Editor.Analysis
                 Visit((dynamic)temp[i]);
         }
         
-        protected override void HandleStart(Start<PExpression> node)
+        protected override void HandleStart(Start<PStatement> node)
         {
             Visit(node.Root);
             Visit(node.EOF);
         }
         
+        protected override void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
+            if (node.HasExpression)
+                Visit(node.Expression);
+        }
+        protected override void HandleAType(AType node)
+        {
+            Visit(node.Name);
+        }
+        protected override void HandleAPointerType(APointerType node)
+        {
+            Visit(node.Type);
+            Visit(node.Asterisk);
+        }
         protected override void HandleAAndExpression(AAndExpression node)
         {
             Visit(node.Left);
@@ -447,7 +545,7 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleANotExpression(ANotExpression node)
         {
-            Visit(node.Left);
+            Visit(node.Expression);
         }
         protected override void HandleAComparisonExpression(AComparisonExpression node)
         {
@@ -490,14 +588,14 @@ namespace DLM.Editor.Analysis
             Visit(node.Left);
             Visit(node.Right);
         }
+        protected override void HandleANegateExpression(ANegateExpression node)
+        {
+            Visit(node.Expression);
+        }
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
             Visit(node.Function);
             Visit(node.Arguments);
-        }
-        protected override void HandleANegateExpression(ANegateExpression node)
-        {
-            Visit(node.Right);
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
@@ -537,12 +635,28 @@ namespace DLM.Editor.Analysis
                 Visit((dynamic)temp[i]);
         }
         
-        protected override void HandleStart(Start<PExpression> node)
+        protected override void HandleStart(Start<PStatement> node)
         {
             Visit(node.EOF);
             Visit(node.Root);
         }
         
+        protected override void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            if (node.HasExpression)
+                Visit(node.Expression);
+            Visit(node.Identifier);
+            Visit(node.Type);
+        }
+        protected override void HandleAType(AType node)
+        {
+            Visit(node.Name);
+        }
+        protected override void HandleAPointerType(APointerType node)
+        {
+            Visit(node.Asterisk);
+            Visit(node.Type);
+        }
         protected override void HandleAAndExpression(AAndExpression node)
         {
             Visit(node.Right);
@@ -555,7 +669,7 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleANotExpression(ANotExpression node)
         {
-            Visit(node.Left);
+            Visit(node.Expression);
         }
         protected override void HandleAComparisonExpression(AComparisonExpression node)
         {
@@ -598,14 +712,14 @@ namespace DLM.Editor.Analysis
             Visit(node.Right);
             Visit(node.Left);
         }
+        protected override void HandleANegateExpression(ANegateExpression node)
+        {
+            Visit(node.Expression);
+        }
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
             Visit(node.Arguments);
             Visit(node.Function);
-        }
-        protected override void HandleANegateExpression(ANegateExpression node)
-        {
-            Visit(node.Right);
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
@@ -637,8 +751,41 @@ namespace DLM.Editor.Analysis
     
     #region Return analysis adapters
     
-    public abstract partial class ReturnAnalysisAdapter<Result> : ReturnAdapter<Result, PExpression>
+    public abstract partial class ReturnAnalysisAdapter<Result> : ReturnAdapter<Result, PStatement>
     {
+        public Result Visit(PStatement node)
+        {
+            return HandlePStatement(node);
+        }
+        protected virtual Result HandlePStatement(PStatement node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(ADeclarationStatement node)
+        {
+            return HandleADeclarationStatement(node);
+        }
+        protected abstract Result HandleADeclarationStatement(ADeclarationStatement node);
+        
+        public Result Visit(PType node)
+        {
+            return HandlePType(node);
+        }
+        protected virtual Result HandlePType(PType node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AType node)
+        {
+            return HandleAType(node);
+        }
+        protected abstract Result HandleAType(AType node);
+        private Result dispatch(APointerType node)
+        {
+            return HandleAPointerType(node);
+        }
+        protected abstract Result HandleAPointerType(APointerType node);
+        
         public Result Visit(PExpression node)
         {
             return HandlePExpression(node);
@@ -702,16 +849,16 @@ namespace DLM.Editor.Analysis
             return HandleAModuloExpression(node);
         }
         protected abstract Result HandleAModuloExpression(AModuloExpression node);
-        private Result dispatch(AFunctionCallExpression node)
-        {
-            return HandleAFunctionCallExpression(node);
-        }
-        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node);
         private Result dispatch(ANegateExpression node)
         {
             return HandleANegateExpression(node);
         }
         protected abstract Result HandleANegateExpression(ANegateExpression node);
+        private Result dispatch(AFunctionCallExpression node)
+        {
+            return HandleAFunctionCallExpression(node);
+        }
+        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node);
         private Result dispatch(AParenthesisExpression node)
         {
             return HandleAParenthesisExpression(node);
@@ -840,6 +987,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TAssign node)
+        {
+            return HandleTAssign(node);
+        }
+        protected virtual Result HandleTAssign(TAssign node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TPlus node)
         {
             return HandleTPlus(node);
@@ -920,6 +1075,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TColon node)
+        {
+            return HandleTColon(node);
+        }
+        protected virtual Result HandleTColon(TColon node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TSemicolon node)
+        {
+            return HandleTSemicolon(node);
+        }
+        protected virtual Result HandleTSemicolon(TSemicolon node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TLabelStart node)
         {
             return HandleTLabelStart(node);
@@ -968,6 +1139,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TLCur node)
+        {
+            return HandleTLCur(node);
+        }
+        protected virtual Result HandleTLCur(TLCur node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TRCur node)
+        {
+            return HandleTRCur(node);
+        }
+        protected virtual Result HandleTRCur(TRCur node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TComment node)
         {
             return HandleTComment(node);
@@ -985,8 +1172,41 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, Result> : ReturnAdapter<T1, Result, PExpression>
+    public abstract partial class ReturnAnalysisAdapter<T1, Result> : ReturnAdapter<T1, Result, PStatement>
     {
+        public Result Visit(PStatement node, T1 arg1)
+        {
+            return HandlePStatement(node, arg1);
+        }
+        protected virtual Result HandlePStatement(PStatement node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(ADeclarationStatement node, T1 arg1)
+        {
+            return HandleADeclarationStatement(node, arg1);
+        }
+        protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1);
+        
+        public Result Visit(PType node, T1 arg1)
+        {
+            return HandlePType(node, arg1);
+        }
+        protected virtual Result HandlePType(PType node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AType node, T1 arg1)
+        {
+            return HandleAType(node, arg1);
+        }
+        protected abstract Result HandleAType(AType node, T1 arg1);
+        private Result dispatch(APointerType node, T1 arg1)
+        {
+            return HandleAPointerType(node, arg1);
+        }
+        protected abstract Result HandleAPointerType(APointerType node, T1 arg1);
+        
         public Result Visit(PExpression node, T1 arg1)
         {
             return HandlePExpression(node, arg1);
@@ -1050,16 +1270,16 @@ namespace DLM.Editor.Analysis
             return HandleAModuloExpression(node, arg1);
         }
         protected abstract Result HandleAModuloExpression(AModuloExpression node, T1 arg1);
-        private Result dispatch(AFunctionCallExpression node, T1 arg1)
-        {
-            return HandleAFunctionCallExpression(node, arg1);
-        }
-        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1);
         private Result dispatch(ANegateExpression node, T1 arg1)
         {
             return HandleANegateExpression(node, arg1);
         }
         protected abstract Result HandleANegateExpression(ANegateExpression node, T1 arg1);
+        private Result dispatch(AFunctionCallExpression node, T1 arg1)
+        {
+            return HandleAFunctionCallExpression(node, arg1);
+        }
+        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1);
         private Result dispatch(AParenthesisExpression node, T1 arg1)
         {
             return HandleAParenthesisExpression(node, arg1);
@@ -1188,6 +1408,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TAssign node, T1 arg1)
+        {
+            return HandleTAssign(node, arg1);
+        }
+        protected virtual Result HandleTAssign(TAssign node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TPlus node, T1 arg1)
         {
             return HandleTPlus(node, arg1);
@@ -1268,6 +1496,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TColon node, T1 arg1)
+        {
+            return HandleTColon(node, arg1);
+        }
+        protected virtual Result HandleTColon(TColon node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TSemicolon node, T1 arg1)
+        {
+            return HandleTSemicolon(node, arg1);
+        }
+        protected virtual Result HandleTSemicolon(TSemicolon node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TLabelStart node, T1 arg1)
         {
             return HandleTLabelStart(node, arg1);
@@ -1316,6 +1560,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TLCur node, T1 arg1)
+        {
+            return HandleTLCur(node, arg1);
+        }
+        protected virtual Result HandleTLCur(TLCur node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TRCur node, T1 arg1)
+        {
+            return HandleTRCur(node, arg1);
+        }
+        protected virtual Result HandleTRCur(TRCur node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TComment node, T1 arg1)
         {
             return HandleTComment(node, arg1);
@@ -1333,8 +1593,41 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, T2, Result> : ReturnAdapter<T1, T2, Result, PExpression>
+    public abstract partial class ReturnAnalysisAdapter<T1, T2, Result> : ReturnAdapter<T1, T2, Result, PStatement>
     {
+        public Result Visit(PStatement node, T1 arg1, T2 arg2)
+        {
+            return HandlePStatement(node, arg1, arg2);
+        }
+        protected virtual Result HandlePStatement(PStatement node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(ADeclarationStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleADeclarationStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2);
+        
+        public Result Visit(PType node, T1 arg1, T2 arg2)
+        {
+            return HandlePType(node, arg1, arg2);
+        }
+        protected virtual Result HandlePType(PType node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AType node, T1 arg1, T2 arg2)
+        {
+            return HandleAType(node, arg1, arg2);
+        }
+        protected abstract Result HandleAType(AType node, T1 arg1, T2 arg2);
+        private Result dispatch(APointerType node, T1 arg1, T2 arg2)
+        {
+            return HandleAPointerType(node, arg1, arg2);
+        }
+        protected abstract Result HandleAPointerType(APointerType node, T1 arg1, T2 arg2);
+        
         public Result Visit(PExpression node, T1 arg1, T2 arg2)
         {
             return HandlePExpression(node, arg1, arg2);
@@ -1398,16 +1691,16 @@ namespace DLM.Editor.Analysis
             return HandleAModuloExpression(node, arg1, arg2);
         }
         protected abstract Result HandleAModuloExpression(AModuloExpression node, T1 arg1, T2 arg2);
-        private Result dispatch(AFunctionCallExpression node, T1 arg1, T2 arg2)
-        {
-            return HandleAFunctionCallExpression(node, arg1, arg2);
-        }
-        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1, T2 arg2);
         private Result dispatch(ANegateExpression node, T1 arg1, T2 arg2)
         {
             return HandleANegateExpression(node, arg1, arg2);
         }
         protected abstract Result HandleANegateExpression(ANegateExpression node, T1 arg1, T2 arg2);
+        private Result dispatch(AFunctionCallExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleAFunctionCallExpression(node, arg1, arg2);
+        }
+        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1, T2 arg2);
         private Result dispatch(AParenthesisExpression node, T1 arg1, T2 arg2)
         {
             return HandleAParenthesisExpression(node, arg1, arg2);
@@ -1536,6 +1829,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TAssign node, T1 arg1, T2 arg2)
+        {
+            return HandleTAssign(node, arg1, arg2);
+        }
+        protected virtual Result HandleTAssign(TAssign node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TPlus node, T1 arg1, T2 arg2)
         {
             return HandleTPlus(node, arg1, arg2);
@@ -1616,6 +1917,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TColon node, T1 arg1, T2 arg2)
+        {
+            return HandleTColon(node, arg1, arg2);
+        }
+        protected virtual Result HandleTColon(TColon node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TSemicolon node, T1 arg1, T2 arg2)
+        {
+            return HandleTSemicolon(node, arg1, arg2);
+        }
+        protected virtual Result HandleTSemicolon(TSemicolon node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TLabelStart node, T1 arg1, T2 arg2)
         {
             return HandleTLabelStart(node, arg1, arg2);
@@ -1664,6 +1981,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TLCur node, T1 arg1, T2 arg2)
+        {
+            return HandleTLCur(node, arg1, arg2);
+        }
+        protected virtual Result HandleTLCur(TLCur node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TRCur node, T1 arg1, T2 arg2)
+        {
+            return HandleTRCur(node, arg1, arg2);
+        }
+        protected virtual Result HandleTRCur(TRCur node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TComment node, T1 arg1, T2 arg2)
         {
             return HandleTComment(node, arg1, arg2);
@@ -1681,8 +2014,41 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, T2, T3, Result> : ReturnAdapter<T1, T2, T3, Result, PExpression>
+    public abstract partial class ReturnAnalysisAdapter<T1, T2, T3, Result> : ReturnAdapter<T1, T2, T3, Result, PStatement>
     {
+        public Result Visit(PStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePStatement(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePStatement(PStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ADeclarationStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleADeclarationStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2, T3 arg3);
+        
+        public Result Visit(PType node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePType(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePType(PType node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AType node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAType(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAType(AType node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(APointerType node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAPointerType(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAPointerType(APointerType node, T1 arg1, T2 arg2, T3 arg3);
+        
         public Result Visit(PExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePExpression(node, arg1, arg2, arg3);
@@ -1746,16 +2112,16 @@ namespace DLM.Editor.Analysis
             return HandleAModuloExpression(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleAModuloExpression(AModuloExpression node, T1 arg1, T2 arg2, T3 arg3);
-        private Result dispatch(AFunctionCallExpression node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleAFunctionCallExpression(node, arg1, arg2, arg3);
-        }
-        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1, T2 arg2, T3 arg3);
         private Result dispatch(ANegateExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleANegateExpression(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleANegateExpression(ANegateExpression node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AFunctionCallExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAFunctionCallExpression(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAFunctionCallExpression(AFunctionCallExpression node, T1 arg1, T2 arg2, T3 arg3);
         private Result dispatch(AParenthesisExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleAParenthesisExpression(node, arg1, arg2, arg3);
@@ -1884,6 +2250,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        public Result Visit(TAssign node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTAssign(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTAssign(TAssign node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         public Result Visit(TPlus node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTPlus(node, arg1, arg2, arg3);
@@ -1964,6 +2338,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        public Result Visit(TColon node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTColon(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTColon(TColon node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TSemicolon node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTSemicolon(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTSemicolon(TSemicolon node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         public Result Visit(TLabelStart node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTLabelStart(node, arg1, arg2, arg3);
@@ -2009,6 +2399,22 @@ namespace DLM.Editor.Analysis
             return HandleTRSqu(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTRSqu(TRSqu node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TLCur node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTLCur(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTLCur(TLCur node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TRCur node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTRCur(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTRCur(TRCur node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

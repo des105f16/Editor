@@ -237,6 +237,30 @@ namespace DLM.Editor.Nodes
             return new TCompare(Text, Line, Position);
         }
     }
+    public partial class TAssign : Token<TAssign>
+    {
+        public TAssign()
+            : base(@"=")
+        {
+        }
+        public TAssign(int line, int pos)
+            : base(@"=", line, pos)
+        {
+        }
+        public TAssign(string text)
+            : base(text)
+        {
+        }
+        public TAssign(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TAssign Clone()
+        {
+            return new TAssign(Text, Line, Position);
+        }
+    }
     public partial class TPlus : Token<TPlus>
     {
         public TPlus()
@@ -477,6 +501,54 @@ namespace DLM.Editor.Nodes
             return new TComma(Text, Line, Position);
         }
     }
+    public partial class TColon : Token<TColon>
+    {
+        public TColon()
+            : base(@":")
+        {
+        }
+        public TColon(int line, int pos)
+            : base(@":", line, pos)
+        {
+        }
+        public TColon(string text)
+            : base(text)
+        {
+        }
+        public TColon(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TColon Clone()
+        {
+            return new TColon(Text, Line, Position);
+        }
+    }
+    public partial class TSemicolon : Token<TSemicolon>
+    {
+        public TSemicolon()
+            : base(@";")
+        {
+        }
+        public TSemicolon(int line, int pos)
+            : base(@";", line, pos)
+        {
+        }
+        public TSemicolon(string text)
+            : base(text)
+        {
+        }
+        public TSemicolon(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TSemicolon Clone()
+        {
+            return new TSemicolon(Text, Line, Position);
+        }
+    }
     public partial class TLabelStart : Token<TLabelStart>
     {
         public TLabelStart()
@@ -619,6 +691,54 @@ namespace DLM.Editor.Nodes
         public override TRSqu Clone()
         {
             return new TRSqu(Text, Line, Position);
+        }
+    }
+    public partial class TLCur : Token<TLCur>
+    {
+        public TLCur()
+            : base(@"{")
+        {
+        }
+        public TLCur(int line, int pos)
+            : base(@"{", line, pos)
+        {
+        }
+        public TLCur(string text)
+            : base(text)
+        {
+        }
+        public TLCur(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLCur Clone()
+        {
+            return new TLCur(Text, Line, Position);
+        }
+    }
+    public partial class TRCur : Token<TRCur>
+    {
+        public TRCur()
+            : base(@"}")
+        {
+        }
+        public TRCur(int line, int pos)
+            : base(@"}", line, pos)
+        {
+        }
+        public TRCur(string text)
+            : base(text)
+        {
+        }
+        public TRCur(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TRCur Clone()
+        {
+            return new TRCur(Text, Line, Position);
         }
     }
     public partial class TComment : Token<TComment>

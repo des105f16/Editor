@@ -5,7 +5,7 @@ using SablePP.Tools.Nodes;
 
 namespace DLM.Editor.Parsing
 {
-    public class Parser : SablePP.Tools.Parsing.Parser<PExpression>
+    public class Parser : SablePP.Tools.Parsing.Parser<PStatement>
     {
         #region Token Index
         
@@ -63,74 +63,94 @@ namespace DLM.Editor.Parsing
         {
             return 10;
         }
-        private int getIndex(TPlus node)
+        private int getIndex(TAssign node)
         {
             return 11;
         }
-        private int getIndex(TMinus node)
+        private int getIndex(TPlus node)
         {
             return 12;
         }
-        private int getIndex(TAsterisk node)
+        private int getIndex(TMinus node)
         {
             return 13;
         }
-        private int getIndex(TSlash node)
+        private int getIndex(TAsterisk node)
         {
             return 14;
         }
-        private int getIndex(TPercent node)
+        private int getIndex(TSlash node)
         {
             return 15;
         }
-        private int getIndex(TBang node)
+        private int getIndex(TPercent node)
         {
             return 16;
         }
-        private int getIndex(TAnd node)
+        private int getIndex(TBang node)
         {
             return 17;
         }
-        private int getIndex(TOr node)
+        private int getIndex(TAnd node)
         {
             return 18;
         }
-        private int getIndex(TPeriod node)
+        private int getIndex(TOr node)
         {
             return 19;
         }
-        private int getIndex(TComma node)
+        private int getIndex(TPeriod node)
         {
             return 20;
         }
-        private int getIndex(TLabelStart node)
+        private int getIndex(TComma node)
         {
             return 21;
         }
-        private int getIndex(TLabelEnd node)
+        private int getIndex(TColon node)
         {
             return 22;
         }
-        private int getIndex(TLPar node)
+        private int getIndex(TSemicolon node)
         {
             return 23;
         }
-        private int getIndex(TRPar node)
+        private int getIndex(TLabelStart node)
         {
             return 24;
         }
-        private int getIndex(TLSqu node)
+        private int getIndex(TLabelEnd node)
         {
             return 25;
         }
-        private int getIndex(TRSqu node)
+        private int getIndex(TLPar node)
         {
             return 26;
+        }
+        private int getIndex(TRPar node)
+        {
+            return 27;
+        }
+        private int getIndex(TLSqu node)
+        {
+            return 28;
+        }
+        private int getIndex(TRSqu node)
+        {
+            return 29;
+        }
+        private int getIndex(TLCur node)
+        {
+            return 30;
+        }
+        private int getIndex(TRCur node)
+        {
+            return 31;
         }
         
         private int getIndex(EOF node)
         {
-            return 27;
+            return 32;
         }
         
         #endregion
@@ -145,11 +165,78 @@ namespace DLM.Editor.Parsing
             {
                 case 0:
                     {
-                        PExpression pexpression = Pop<PExpression>();
-                        Push(0, pexpression);
+                        TSemicolon tsemicolon = Pop<TSemicolon>();
+                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        PType ptype = Pop<PType>();
+                        ADeclarationStatement adeclarationstatement = new ADeclarationStatement(
+                            ptype,
+                            tidentifier,
+                            null
+                        );
+                        Push(0, adeclarationstatement);
                     }
                     break;
                 case 1:
+                    {
+                        TSemicolon tsemicolon = Pop<TSemicolon>();
+                        PExpression pexpression = Pop<PExpression>();
+                        TAssign tassign = Pop<TAssign>();
+                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        PType ptype = Pop<PType>();
+                        ADeclarationStatement adeclarationstatement = new ADeclarationStatement(
+                            ptype,
+                            tidentifier,
+                            pexpression
+                        );
+                        Push(0, adeclarationstatement);
+                    }
+                    break;
+                case 2:
+                    {
+                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        AType atype = new AType(
+                            tidentifier
+                        );
+                        Push(1, atype);
+                    }
+                    break;
+                case 3:
+                    {
+                        TAsterisk tasterisk = Pop<TAsterisk>();
+                        PType ptype = Pop<PType>();
+                        APointerType apointertype = new APointerType(
+                            ptype,
+                            tasterisk
+                        );
+                        Push(1, apointertype);
+                    }
+                    break;
+                case 4:
+                    {
+                        PStatement pstatement = Pop<PStatement>();
+                        List<PStatement> pstatementlist = new List<PStatement>();
+                        pstatementlist.Add(pstatement);
+                        Push(2, pstatementlist);
+                    }
+                    break;
+                case 5:
+                case 6:
+                    {
+                        TRCur trcur = Pop<TRCur>();
+                        List<PStatement> pstatementlist = isOn(1, index - 5) ? Pop<List<PStatement>>() : new List<PStatement>();
+                        TLCur tlcur = Pop<TLCur>();
+                        List<PStatement> pstatementlist2 = new List<PStatement>();
+                        pstatementlist2.AddRange(pstatementlist);
+                        Push(2, pstatementlist2);
+                    }
+                    break;
+                case 7:
+                    {
+                        PExpression pexpression = Pop<PExpression>();
+                        Push(3, pexpression);
+                    }
+                    break;
+                case 8:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAnd tand = Pop<TAnd>();
@@ -158,10 +245,10 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(1, aandexpression);
+                        Push(4, aandexpression);
                     }
                     break;
-                case 2:
+                case 9:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TOr tor = Pop<TOr>();
@@ -170,16 +257,16 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(1, aorexpression);
+                        Push(4, aorexpression);
                     }
                     break;
-                case 3:
+                case 10:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(1, pexpression);
+                        Push(4, pexpression);
                     }
                     break;
-                case 4:
+                case 11:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TCompare tcompare = Pop<TCompare>();
@@ -189,26 +276,26 @@ namespace DLM.Editor.Parsing
                             tcompare,
                             pexpression
                         );
-                        Push(2, acomparisonexpression);
+                        Push(5, acomparisonexpression);
                     }
                     break;
-                case 5:
+                case 12:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TBang tbang = Pop<TBang>();
                         ANotExpression anotexpression = new ANotExpression(
                             pexpression
                         );
-                        Push(2, anotexpression);
+                        Push(5, anotexpression);
                     }
                     break;
-                case 6:
+                case 13:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(2, pexpression);
+                        Push(5, pexpression);
                     }
                     break;
-                case 7:
+                case 14:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TPlus tplus = Pop<TPlus>();
@@ -217,10 +304,10 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(3, aplusexpression);
+                        Push(6, aplusexpression);
                     }
                     break;
-                case 8:
+                case 15:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TMinus tminus = Pop<TMinus>();
@@ -229,26 +316,26 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(3, aminusexpression);
+                        Push(6, aminusexpression);
                     }
                     break;
-                case 9:
+                case 16:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TMinus tminus = Pop<TMinus>();
                         ANegateExpression anegateexpression = new ANegateExpression(
                             pexpression
                         );
-                        Push(3, anegateexpression);
+                        Push(6, anegateexpression);
                     }
                     break;
-                case 10:
+                case 17:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(3, pexpression);
+                        Push(6, pexpression);
                     }
                     break;
-                case 11:
+                case 18:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAsterisk tasterisk = Pop<TAsterisk>();
@@ -257,10 +344,10 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(4, amultiplyexpression);
+                        Push(7, amultiplyexpression);
                     }
                     break;
-                case 12:
+                case 19:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TSlash tslash = Pop<TSlash>();
@@ -269,10 +356,10 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(4, adivideexpression);
+                        Push(7, adivideexpression);
                     }
                     break;
-                case 13:
+                case 20:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TPercent tpercent = Pop<TPercent>();
@@ -281,16 +368,16 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(4, amoduloexpression);
+                        Push(7, amoduloexpression);
                     }
                     break;
-                case 14:
+                case 21:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(4, pexpression);
+                        Push(7, pexpression);
                     }
                     break;
-                case 15:
+                case 22:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         TPeriod tperiod = Pop<TPeriod>();
@@ -302,10 +389,10 @@ namespace DLM.Editor.Parsing
                             pexpression,
                             aelement
                         );
-                        Push(5, aelementexpression);
+                        Push(8, aelementexpression);
                     }
                     break;
-                case 16:
+                case 23:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         TRArrow trarrow = Pop<TRArrow>();
@@ -317,10 +404,10 @@ namespace DLM.Editor.Parsing
                             pexpression,
                             apointerelement
                         );
-                        Push(5, aelementexpression);
+                        Push(8, aelementexpression);
                     }
                     break;
-                case 17:
+                case 24:
                     {
                         TRSqu trsqu = Pop<TRSqu>();
                         PExpression pexpression = Pop<PExpression>();
@@ -330,16 +417,16 @@ namespace DLM.Editor.Parsing
                             pexpression2,
                             pexpression
                         );
-                        Push(5, aindexexpression);
+                        Push(8, aindexexpression);
                     }
                     break;
-                case 18:
+                case 25:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(5, pexpression);
+                        Push(8, pexpression);
                     }
                     break;
-                case 19:
+                case 26:
                     {
                         TRPar trpar = Pop<TRPar>();
                         PExpression pexpression = Pop<PExpression>();
@@ -347,47 +434,47 @@ namespace DLM.Editor.Parsing
                         AParenthesisExpression aparenthesisexpression = new AParenthesisExpression(
                             pexpression
                         );
-                        Push(6, aparenthesisexpression);
+                        Push(9, aparenthesisexpression);
                     }
                     break;
-                case 20:
+                case 27:
                     {
                         PExpression pexpression = Pop<PExpression>();
-                        Push(6, pexpression);
+                        Push(9, pexpression);
                     }
                     break;
-                case 21:
+                case 28:
                     {
                         TNumber tnumber = Pop<TNumber>();
                         ANumberExpression anumberexpression = new ANumberExpression(
                             tnumber
                         );
-                        Push(6, anumberexpression);
+                        Push(9, anumberexpression);
                     }
                     break;
-                case 22:
+                case 29:
                     {
                         TBool tbool = Pop<TBool>();
                         ABooleanExpression abooleanexpression = new ABooleanExpression(
                             tbool
                         );
-                        Push(6, abooleanexpression);
+                        Push(9, abooleanexpression);
                     }
                     break;
-                case 23:
+                case 30:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         AIdentifierExpression aidentifierexpression = new AIdentifierExpression(
                             tidentifier
                         );
-                        Push(6, aidentifierexpression);
+                        Push(9, aidentifierexpression);
                     }
                     break;
-                case 24:
-                case 25:
+                case 31:
+                case 32:
                     {
                         TRPar trpar = Pop<TRPar>();
-                        List<PExpression> pexpressionlist = isOn(1, index - 24) ? Pop<List<PExpression>>() : new List<PExpression>();
+                        List<PExpression> pexpressionlist = isOn(1, index - 31) ? Pop<List<PExpression>>() : new List<PExpression>();
                         TLPar tlpar = Pop<TLPar>();
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         List<PExpression> pexpressionlist2 = new List<PExpression>();
@@ -396,18 +483,18 @@ namespace DLM.Editor.Parsing
                             tidentifier,
                             pexpressionlist2
                         );
-                        Push(7, afunctioncallexpression);
+                        Push(10, afunctioncallexpression);
                     }
                     break;
-                case 26:
+                case 33:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         List<PExpression> pexpressionlist = new List<PExpression>();
                         pexpressionlist.Add(pexpression);
-                        Push(8, pexpressionlist);
+                        Push(11, pexpressionlist);
                     }
                     break;
-                case 27:
+                case 34:
                     {
                         List<PExpression> pexpressionlist = Pop<List<PExpression>>();
                         TComma tcomma = Pop<TComma>();
@@ -415,7 +502,18 @@ namespace DLM.Editor.Parsing
                         List<PExpression> pexpressionlist2 = new List<PExpression>();
                         pexpressionlist2.Add(pexpression);
                         pexpressionlist2.AddRange(pexpressionlist);
-                        Push(8, pexpressionlist2);
+                        Push(11, pexpressionlist2);
+                    }
+                    break;
+                case 35:
+                    Push(12, new List<PStatement>() { Pop<PStatement>() });
+                    break;
+                case 36:
+                    {
+                        PStatement item = Pop<PStatement>();
+                        List<PStatement> list = Pop<List<PStatement>>();
+                        list.Add(item);
+                        Push(12, list);
                     }
                     break;
             }
@@ -425,322 +523,367 @@ namespace DLM.Editor.Parsing
         private static int[][][] actionTable = {
             new int[][] {
                 new int[] {-1, 3, 0},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 1, 22},
-            },
-            new int[][] {
-                new int[] {-1, 1, 21},
-            },
-            new int[][] {
-                new int[] {-1, 1, 23},
-                new int[] {23, 0, 15},
-            },
-            new int[][] {
-                new int[] {-1, 3, 4},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 5},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 6},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 7},
-                new int[] {27, 2, -1},
-            },
-            new int[][] {
-                new int[] {-1, 1, 0},
-            },
-            new int[][] {
-                new int[] {-1, 1, 3},
-                new int[] {17, 0, 19},
-                new int[] {18, 0, 20},
-            },
-            new int[][] {
-                new int[] {-1, 1, 6},
-                new int[] {10, 0, 21},
-            },
-            new int[][] {
-                new int[] {-1, 1, 10},
-                new int[] {11, 0, 22},
-                new int[] {12, 0, 23},
-            },
-            new int[][] {
-                new int[] {-1, 1, 14},
-                new int[] {8, 0, 24},
-                new int[] {13, 0, 25},
-                new int[] {14, 0, 26},
-                new int[] {15, 0, 27},
-                new int[] {19, 0, 28},
-                new int[] {25, 0, 29},
-            },
-            new int[][] {
-                new int[] {-1, 1, 18},
-            },
-            new int[][] {
-                new int[] {-1, 1, 20},
-            },
-            new int[][] {
-                new int[] {-1, 3, 15},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-                new int[] {24, 0, 30},
-            },
-            new int[][] {
-                new int[] {-1, 1, 9},
-            },
-            new int[][] {
-                new int[] {-1, 1, 5},
-            },
-            new int[][] {
-                new int[] {-1, 3, 18},
-                new int[] {24, 0, 33},
-            },
-            new int[][] {
-                new int[] {-1, 3, 19},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 20},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 21},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 22},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 23},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 24},
-                new int[] {7, 0, 39},
-            },
-            new int[][] {
-                new int[] {-1, 3, 25},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 26},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 27},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 3, 28},
-                new int[] {7, 0, 43},
-            },
-            new int[][] {
-                new int[] {-1, 3, 29},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
-            },
-            new int[][] {
-                new int[] {-1, 1, 24},
-            },
-            new int[][] {
-                new int[] {-1, 1, 26},
-                new int[] {20, 0, 45},
-            },
-            new int[][] {
-                new int[] {-1, 3, 32},
-                new int[] {24, 0, 46},
-            },
-            new int[][] {
-                new int[] {-1, 1, 19},
-            },
-            new int[][] {
-                new int[] {-1, 1, 1},
+                new int[] {7, 0, 1},
             },
             new int[][] {
                 new int[] {-1, 1, 2},
             },
             new int[][] {
-                new int[] {-1, 1, 4},
+                new int[] {-1, 3, 2},
+                new int[] {32, 2, -1},
+            },
+            new int[][] {
+                new int[] {-1, 3, 3},
+                new int[] {7, 0, 4},
+                new int[] {14, 0, 5},
+            },
+            new int[][] {
+                new int[] {-1, 3, 4},
+                new int[] {11, 0, 6},
+                new int[] {23, 0, 7},
+            },
+            new int[][] {
+                new int[] {-1, 1, 3},
+            },
+            new int[][] {
+                new int[] {-1, 3, 6},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 1, 0},
+            },
+            new int[][] {
+                new int[] {-1, 1, 29},
+            },
+            new int[][] {
+                new int[] {-1, 1, 28},
+            },
+            new int[][] {
+                new int[] {-1, 1, 30},
+                new int[] {26, 0, 22},
+            },
+            new int[][] {
+                new int[] {-1, 3, 11},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 12},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 13},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 14},
+                new int[] {23, 0, 26},
             },
             new int[][] {
                 new int[] {-1, 1, 7},
             },
             new int[][] {
-                new int[] {-1, 1, 8},
-            },
-            new int[][] {
-                new int[] {-1, 1, 16},
-            },
-            new int[][] {
-                new int[] {-1, 1, 11},
-            },
-            new int[][] {
-                new int[] {-1, 1, 12},
+                new int[] {-1, 1, 10},
+                new int[] {18, 0, 27},
+                new int[] {19, 0, 28},
             },
             new int[][] {
                 new int[] {-1, 1, 13},
+                new int[] {10, 0, 29},
             },
             new int[][] {
-                new int[] {-1, 1, 15},
+                new int[] {-1, 1, 17},
+                new int[] {12, 0, 30},
+                new int[] {13, 0, 31},
             },
             new int[][] {
-                new int[] {-1, 3, 44},
-                new int[] {26, 0, 47},
-            },
-            new int[][] {
-                new int[] {-1, 3, 45},
-                new int[] {0, 0, 1},
-                new int[] {1, 0, 2},
-                new int[] {7, 0, 3},
-                new int[] {12, 0, 4},
-                new int[] {16, 0, 5},
-                new int[] {23, 0, 6},
+                new int[] {-1, 1, 21},
+                new int[] {8, 0, 32},
+                new int[] {14, 0, 33},
+                new int[] {15, 0, 34},
+                new int[] {16, 0, 35},
+                new int[] {20, 0, 36},
+                new int[] {28, 0, 37},
             },
             new int[][] {
                 new int[] {-1, 1, 25},
             },
             new int[][] {
-                new int[] {-1, 1, 17},
+                new int[] {-1, 1, 27},
             },
             new int[][] {
-                new int[] {-1, 1, 27},
+                new int[] {-1, 3, 22},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+                new int[] {27, 0, 38},
+            },
+            new int[][] {
+                new int[] {-1, 1, 16},
+            },
+            new int[][] {
+                new int[] {-1, 1, 12},
+            },
+            new int[][] {
+                new int[] {-1, 3, 25},
+                new int[] {27, 0, 41},
+            },
+            new int[][] {
+                new int[] {-1, 1, 1},
+            },
+            new int[][] {
+                new int[] {-1, 3, 27},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 28},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 29},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 30},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 31},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 32},
+                new int[] {7, 0, 47},
+            },
+            new int[][] {
+                new int[] {-1, 3, 33},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 34},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 35},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 3, 36},
+                new int[] {7, 0, 51},
+            },
+            new int[][] {
+                new int[] {-1, 3, 37},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 1, 31},
+            },
+            new int[][] {
+                new int[] {-1, 1, 33},
+                new int[] {21, 0, 53},
+            },
+            new int[][] {
+                new int[] {-1, 3, 40},
+                new int[] {27, 0, 54},
+            },
+            new int[][] {
+                new int[] {-1, 1, 26},
+            },
+            new int[][] {
+                new int[] {-1, 1, 8},
+            },
+            new int[][] {
+                new int[] {-1, 1, 9},
+            },
+            new int[][] {
+                new int[] {-1, 1, 11},
+            },
+            new int[][] {
+                new int[] {-1, 1, 14},
+            },
+            new int[][] {
+                new int[] {-1, 1, 15},
+            },
+            new int[][] {
+                new int[] {-1, 1, 23},
+            },
+            new int[][] {
+                new int[] {-1, 1, 18},
+            },
+            new int[][] {
+                new int[] {-1, 1, 19},
+            },
+            new int[][] {
+                new int[] {-1, 1, 20},
+            },
+            new int[][] {
+                new int[] {-1, 1, 22},
+            },
+            new int[][] {
+                new int[] {-1, 3, 52},
+                new int[] {29, 0, 55},
+            },
+            new int[][] {
+                new int[] {-1, 3, 53},
+                new int[] {0, 0, 8},
+                new int[] {1, 0, 9},
+                new int[] {7, 0, 10},
+                new int[] {13, 0, 11},
+                new int[] {17, 0, 12},
+                new int[] {26, 0, 13},
+            },
+            new int[][] {
+                new int[] {-1, 1, 32},
+            },
+            new int[][] {
+                new int[] {-1, 1, 24},
+            },
+            new int[][] {
+                new int[] {-1, 1, 34},
             },
         };
         #endregion
         #region gotoTable
         private static int[][][] gotoTable = {
             new int[][] {
-                new int[] {-1, 31},
-                new int[] {0, 7},
-                new int[] {6, 18},
+                new int[] {-1, 2},
+            },
+            new int[][] {
+                new int[] {-1, 3},
+            },
+            new int[][] {
+                new int[] {-1, -1},
+            },
+            new int[][] {
+                new int[] {-1, 39},
+                new int[] {6, 14},
+                new int[] {13, 25},
+                new int[] {37, 52},
+            },
+            new int[][] {
+                new int[] {-1, 15},
+                new int[] {27, 42},
+                new int[] {28, 43},
+            },
+            new int[][] {
+                new int[] {-1, 16},
                 new int[] {29, 44},
             },
             new int[][] {
-                new int[] {-1, 8},
-                new int[] {19, 34},
-                new int[] {20, 35},
+                new int[] {-1, 17},
+                new int[] {12, 24},
+                new int[] {30, 45},
+                new int[] {31, 46},
             },
             new int[][] {
-                new int[] {-1, 9},
-                new int[] {21, 36},
+                new int[] {-1, 18},
+                new int[] {11, 23},
+                new int[] {33, 48},
+                new int[] {34, 49},
+                new int[] {35, 50},
             },
             new int[][] {
-                new int[] {-1, 10},
-                new int[] {5, 17},
-                new int[] {22, 37},
-                new int[] {23, 38},
+                new int[] {-1, 19},
             },
             new int[][] {
-                new int[] {-1, 11},
-                new int[] {4, 16},
-                new int[] {25, 40},
-                new int[] {26, 41},
-                new int[] {27, 42},
+                new int[] {-1, 20},
             },
             new int[][] {
-                new int[] {-1, 12},
+                new int[] {-1, 21},
             },
             new int[][] {
-                new int[] {-1, 13},
+                new int[] {-1, 40},
+                new int[] {53, 56},
             },
             new int[][] {
-                new int[] {-1, 14},
-            },
-            new int[][] {
-                new int[] {-1, 32},
-                new int[] {45, 48},
+                new int[] {-1, -1},
             },
         };
         #endregion
         #region errorMessages
         private static string[] errorMessages = {
+            "Expecting: TIdentifier",
+            "Expecting: TIdentifier or '*'",
+            "Expecting: end of file",
+            "Expecting: '=' or ';'",
             "Expecting: TBool, TNumber, TIdentifier, '-', '!' or '('",
-            "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ')', '[', ']' or end of file",
-            "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', '(', ')', '[', ']' or end of file",
+            "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', ')', '[' or ']'",
+            "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', '(', ')', '[' or ']'",
             "Expecting: TBool, TNumber, TIdentifier or '('",
             "Expecting: TBool, TNumber, TIdentifier, '-' or '('",
-            "Expecting: end of file",
-            "Expecting: ',', ')', ']' or end of file",
-            "Expecting: '&&', '||', ',', ')', ']' or end of file",
-            "Expecting: TCompare, '&&', '||', ',', ')', ']' or end of file",
-            "Expecting: TCompare, '+', '-', '&&', '||', ',', ')', ']' or end of file",
+            "Expecting: ';'",
+            "Expecting: ',', ';', ')' or ']'",
+            "Expecting: '&&', '||', ',', ';', ')' or ']'",
+            "Expecting: TCompare, '&&', '||', ',', ';', ')' or ']'",
+            "Expecting: TCompare, '+', '-', '&&', '||', ',', ';', ')' or ']'",
             "Expecting: TBool, TNumber, TIdentifier, '-', '!', '(' or ')'",
             "Expecting: ')'",
-            "Expecting: TIdentifier",
             "Expecting: ',' or ')'",
             "Expecting: ']'",
         };
         #endregion
         #region errors
         private static int[] errors = {
-            0, 1, 1, 2, 3, 4, 0, 5, 6, 7, 8, 9, 1, 1, 1, 10,
-            8, 7, 11, 0, 0, 0, 4, 4, 12, 3, 3, 3, 12, 0, 1, 13,
-            11, 1, 6, 6, 7, 8, 8, 1, 9, 9, 9, 1, 14, 0, 1, 1,
-            11,
+            0, 1, 2, 1, 3, 1, 4, 2, 5, 5, 6, 7, 8, 4, 9, 10,
+            11, 12, 13, 5, 5, 5, 14, 12, 11, 15, 2, 4, 4, 4, 8, 8,
+            0, 7, 7, 7, 0, 4, 5, 16, 15, 5, 10, 10, 11, 12, 12, 5,
+            13, 13, 13, 5, 17, 4, 5, 5, 15,
         };
         #endregion
     }

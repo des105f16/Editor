@@ -11,7 +11,7 @@ using FastColoredTextBoxNS;
 
 namespace DLM.Editor
 {
-    public partial class CompilerExecuter : SablePP.Tools.CompilerExecuter<PExpression, Lexer, Parser>
+    public partial class CompilerExecuter : SablePP.Tools.CompilerExecuter<PStatement, Lexer, Parser>
     {
         public override Lexer GetLexer(TextReader reader)
         {

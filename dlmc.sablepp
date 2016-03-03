@@ -72,7 +72,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         ;
     type
-        = [type]:identifier identifier
+        = [name]:identifier
         | {pointer} type asterisk
         ;
 Productions
@@ -81,7 +81,7 @@ Productions
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
         ;
     type
-        = [type]:identifier identifier
+        = identifier -> New type(identifier)
         | {pointer} type asterisk
         ;
     block -> statement*
@@ -93,7 +93,7 @@ Abstract Syntax Tree
     expression
         = {and} [left]:expression [right]:expression
         | {or} [left]:expression [right]:expression
-        | {not} [left]:expression
+        | {not} expression
         | {comparison} [left]:expression compare [right]:expression
         
         | {element} expression element
@@ -104,10 +104,10 @@ Abstract Syntax Tree
         | {multiply} [left]:expression [right]:expression
         | {divide} [left]:expression [right]:expression
         | {modulo} [left]:expression [right]:expression
+        | {negate} expression
         
         | {function_call} [function]:identifier [arguments]:expression*
         
-        | {negate} [right]:expression
         | {parenthesis} expression
         | {identifier} identifier
         | {number} number
