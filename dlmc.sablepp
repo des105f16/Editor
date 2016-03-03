@@ -28,6 +28,8 @@ Tokens
     
     compare = '==' | '>=' | '<=' | '>' | '<';
     
+    assign = '=';
+    
     plus = '+';
     minus = '-';
     asterisk = '*';
@@ -40,6 +42,8 @@ Tokens
     
     period = '.';
     comma = ',';
+    colon = ':';
+    semicolon = ';';
     
     label_start = '{{';
     label_end = '}}';
@@ -60,6 +64,24 @@ Token Syntax Highlight
     {comment} text: #060, italic;
     {if, else, while, return, actfor} text: #00c, bold;
     {label_start, label_end} text: #c90, bold;
+
+Abstract Syntax Tree
+    statement
+        = {declaration} type identifier expression?
+        ;
+    type
+        = [type]:identifier identifier
+        | {pointer} type asterisk
+        ;
+Productions
+    stmt -> statement
+        = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
+        | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
+        ;
+    type
+        = [type]:identifier identifier
+        | {pointer} type asterisk
+        ;
 
 Abstract Syntax Tree
     expression
