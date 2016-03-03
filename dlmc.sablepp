@@ -1,0 +1,141 @@
+﻿Namespace DLM.Editor;
+
+Helpers
+    lower = ['a'..'z'];
+    upper = ['A'..'Z'];
+    digit = ['0'..'9'];
+    all = [0 .. 0xFFFF];
+    not_cr_lf = [all - [13 + 10]];
+    short_comment = '//' not_cr_lf*;
+    not_star = [all - '*'];
+    not_star_slash = [not_star - '/'];
+    long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
+
+Tokens
+    bool = 'true'|'false';
+    number = digit+;
+    
+    while = 'while';
+    if = 'if';
+    else = 'else';
+    return = 'return';
+    actfor = 'if_acts_for';
+    
+    identifier = (lower | upper) (lower | upper | digit | '_')*;
+    
+    r_arrow = '->';
+    l_arrow = '<-';
+    
+    compare = '==' | '>=' | '<=' | '>' | '<';
+    
+    plus = '+';
+    minus = '-';
+    asterisk = '*';
+    slash = '/';
+    percent = '%';
+    
+    bang = '!';
+    and = '&&';
+    or = '||';
+    
+    period = '.';
+    comma = ',';
+    
+    label_start = '{{';
+    label_end = '}}';
+    
+    l_par = '(';
+    r_par = ')';
+    l_squ = '[';
+    r_squ = ']';
+    
+    comment = short_comment | long_comment;
+    whitespace = (' ' | 9 | 13 | 10)+;
+
+Ignored Tokens
+    whitespace, comment;
+
+Token Syntax Highlight
+    {identifier} text: #069;
+    {comment} text: #060, italic;
+    {if, else, while, return, actfor} text: #00c, bold;
+    {label_start, label_end} text: #c90, bold;
+
+Abstract Syntax Tree
+    expression
+        = {and} [left]:expression [right]:expression
+        | {or} [left]:expression [right]:expression
+        | {not} [left]:expression
+        | {comparison} [left]:expression compare [right]:expression
+        
+        | {element} expression element
+        | {index} expression [index]:expression
+        
+        | {plus} [left]:expression [right]:expression
+        | {minus} [left]:expression [right]:expression
+        | {multiply} [left]:expression [right]:expression
+        | {divide} [left]:expression [right]:expression
+        | {modulo} [left]:expression [right]:expression
+        
+        | {function_call} [function]:identifier [arguments]:expression*
+        
+        | {negate} [right]:expression
+        | {parenthesis} expression
+        | {identifier} identifier
+        | {number} number
+        | {boolean} bool
+        ;
+    element
+        = identifier
+        | {pointer} identifier
+        ;
+
+Productions
+    expr -> expression
+        = logicexpr -> logicexpr
+        ;
+    
+    logicexpr -> expression
+        = {and} logicterm and logicexpr -> New expression.and(logicterm, logicexpr)
+        | {or} logicterm or logicexpr -> New expression.or(logicterm, logicexpr)
+        | logicterm -> logicterm
+        ;
+    logicterm -> expression
+        = {cmp} aritexpr compare logicterm -> New expression.comparison(aritexpr, compare, logicterm)
+        | {not} bang aritexpr -> New expression.not(aritexpr)
+        | aritexpr -> aritexpr
+        ;
+    
+    aritexpr -> expression
+        = {p} aritterm plus aritexpr -> New expression.plus(aritterm, aritexpr)
+        | {m} aritterm minus aritexpr -> New expression.minus(aritterm, aritexpr)
+        | {n} minus aritterm -> New expression.negate(aritterm)
+        | aritterm -> aritterm
+        ;
+    aritterm -> expression
+        = {m} aritfactor asterisk aritterm -> New expression.multiply(aritfactor, aritterm)
+        | {d} aritfactor slash aritterm -> New expression.divide(aritfactor, aritterm)
+        | {mod} aritfactor percent aritterm -> New expression.modulo(aritfactor, aritterm)
+        | aritfactor -> aritfactor
+        ;
+    aritfactor -> expression
+        = {e} aritfactor period identifier -> New expression.element(aritfactor, New element(identifier))
+        | {p} aritfactor r_arrow identifier -> New expression.element(aritfactor, New element.pointer(identifier))
+        | {i} aritfactor l_squ expr r_squ -> New expression.index(aritfactor, expr)
+        | aritelem -> aritelem
+        ;
+    aritelem -> expression
+        = {par} l_par expr r_par -> New expression.parenthesis(expr)
+        | {func} funccall -> funccall
+        | {n} number -> New expression.number(number)
+        | {b} bool -> New expression.boolean(bool)
+        | {id} identifier -> New expression.identifier(identifier)
+        ;
+
+    funccall -> expression
+        = identifier l_par funccallargs? r_par -> New expression.function_call(identifier, [funccallargs])
+        ;
+    funccallargs -> expression+
+        = expr -> [expr]
+        | {tail} expr comma funccallargs -> [expr, funccallargs]
+        ;
