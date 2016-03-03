@@ -1,3 +1,6 @@
 [submodule "SablePP"]
 	path = SablePP
 	url = https://github.com/deaddog/SablePP.git
+[submodule "DLM.Inference"]
+	path = DLM.Inference
+	url = https://github.com/des105f16/Inference.git
