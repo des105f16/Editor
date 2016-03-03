@@ -1,0 +1,656 @@
+using System;
+using System.Collections.Generic;
+using SablePP.Tools.Nodes;
+using DLM.Editor.Analysis;
+
+namespace DLM.Editor.Nodes
+{
+    public partial class TBool : Token<TBool>
+    {
+        public TBool(string text)
+            : base(text)
+        {
+        }
+        public TBool(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TBool Clone()
+        {
+            return new TBool(Text, Line, Position);
+        }
+    }
+    public partial class TNumber : Token<TNumber>
+    {
+        public TNumber(string text)
+            : base(text)
+        {
+        }
+        public TNumber(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TNumber Clone()
+        {
+            return new TNumber(Text, Line, Position);
+        }
+    }
+    public partial class TWhile : Token<TWhile>
+    {
+        public TWhile()
+            : base(@"while")
+        {
+        }
+        public TWhile(int line, int pos)
+            : base(@"while", line, pos)
+        {
+        }
+        public TWhile(string text)
+            : base(text)
+        {
+        }
+        public TWhile(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TWhile Clone()
+        {
+            return new TWhile(Text, Line, Position);
+        }
+    }
+    public partial class TIf : Token<TIf>
+    {
+        public TIf()
+            : base(@"if")
+        {
+        }
+        public TIf(int line, int pos)
+            : base(@"if", line, pos)
+        {
+        }
+        public TIf(string text)
+            : base(text)
+        {
+        }
+        public TIf(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TIf Clone()
+        {
+            return new TIf(Text, Line, Position);
+        }
+    }
+    public partial class TElse : Token<TElse>
+    {
+        public TElse()
+            : base(@"else")
+        {
+        }
+        public TElse(int line, int pos)
+            : base(@"else", line, pos)
+        {
+        }
+        public TElse(string text)
+            : base(text)
+        {
+        }
+        public TElse(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TElse Clone()
+        {
+            return new TElse(Text, Line, Position);
+        }
+    }
+    public partial class TReturn : Token<TReturn>
+    {
+        public TReturn()
+            : base(@"return")
+        {
+        }
+        public TReturn(int line, int pos)
+            : base(@"return", line, pos)
+        {
+        }
+        public TReturn(string text)
+            : base(text)
+        {
+        }
+        public TReturn(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TReturn Clone()
+        {
+            return new TReturn(Text, Line, Position);
+        }
+    }
+    public partial class TActfor : Token<TActfor>
+    {
+        public TActfor()
+            : base(@"if_acts_for")
+        {
+        }
+        public TActfor(int line, int pos)
+            : base(@"if_acts_for", line, pos)
+        {
+        }
+        public TActfor(string text)
+            : base(text)
+        {
+        }
+        public TActfor(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TActfor Clone()
+        {
+            return new TActfor(Text, Line, Position);
+        }
+    }
+    public partial class TIdentifier : Token<TIdentifier>
+    {
+        public TIdentifier(string text)
+            : base(text)
+        {
+        }
+        public TIdentifier(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TIdentifier Clone()
+        {
+            return new TIdentifier(Text, Line, Position);
+        }
+    }
+    public partial class TRArrow : Token<TRArrow>
+    {
+        public TRArrow()
+            : base(@"->")
+        {
+        }
+        public TRArrow(int line, int pos)
+            : base(@"->", line, pos)
+        {
+        }
+        public TRArrow(string text)
+            : base(text)
+        {
+        }
+        public TRArrow(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TRArrow Clone()
+        {
+            return new TRArrow(Text, Line, Position);
+        }
+    }
+    public partial class TLArrow : Token<TLArrow>
+    {
+        public TLArrow()
+            : base(@"<-")
+        {
+        }
+        public TLArrow(int line, int pos)
+            : base(@"<-", line, pos)
+        {
+        }
+        public TLArrow(string text)
+            : base(text)
+        {
+        }
+        public TLArrow(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLArrow Clone()
+        {
+            return new TLArrow(Text, Line, Position);
+        }
+    }
+    public partial class TCompare : Token<TCompare>
+    {
+        public TCompare(string text)
+            : base(text)
+        {
+        }
+        public TCompare(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TCompare Clone()
+        {
+            return new TCompare(Text, Line, Position);
+        }
+    }
+    public partial class TPlus : Token<TPlus>
+    {
+        public TPlus()
+            : base(@"+")
+        {
+        }
+        public TPlus(int line, int pos)
+            : base(@"+", line, pos)
+        {
+        }
+        public TPlus(string text)
+            : base(text)
+        {
+        }
+        public TPlus(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TPlus Clone()
+        {
+            return new TPlus(Text, Line, Position);
+        }
+    }
+    public partial class TMinus : Token<TMinus>
+    {
+        public TMinus()
+            : base(@"-")
+        {
+        }
+        public TMinus(int line, int pos)
+            : base(@"-", line, pos)
+        {
+        }
+        public TMinus(string text)
+            : base(text)
+        {
+        }
+        public TMinus(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TMinus Clone()
+        {
+            return new TMinus(Text, Line, Position);
+        }
+    }
+    public partial class TAsterisk : Token<TAsterisk>
+    {
+        public TAsterisk()
+            : base(@"*")
+        {
+        }
+        public TAsterisk(int line, int pos)
+            : base(@"*", line, pos)
+        {
+        }
+        public TAsterisk(string text)
+            : base(text)
+        {
+        }
+        public TAsterisk(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TAsterisk Clone()
+        {
+            return new TAsterisk(Text, Line, Position);
+        }
+    }
+    public partial class TSlash : Token<TSlash>
+    {
+        public TSlash()
+            : base(@"/")
+        {
+        }
+        public TSlash(int line, int pos)
+            : base(@"/", line, pos)
+        {
+        }
+        public TSlash(string text)
+            : base(text)
+        {
+        }
+        public TSlash(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TSlash Clone()
+        {
+            return new TSlash(Text, Line, Position);
+        }
+    }
+    public partial class TPercent : Token<TPercent>
+    {
+        public TPercent()
+            : base(@"%")
+        {
+        }
+        public TPercent(int line, int pos)
+            : base(@"%", line, pos)
+        {
+        }
+        public TPercent(string text)
+            : base(text)
+        {
+        }
+        public TPercent(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TPercent Clone()
+        {
+            return new TPercent(Text, Line, Position);
+        }
+    }
+    public partial class TBang : Token<TBang>
+    {
+        public TBang()
+            : base(@"!")
+        {
+        }
+        public TBang(int line, int pos)
+            : base(@"!", line, pos)
+        {
+        }
+        public TBang(string text)
+            : base(text)
+        {
+        }
+        public TBang(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TBang Clone()
+        {
+            return new TBang(Text, Line, Position);
+        }
+    }
+    public partial class TAnd : Token<TAnd>
+    {
+        public TAnd()
+            : base(@"&&")
+        {
+        }
+        public TAnd(int line, int pos)
+            : base(@"&&", line, pos)
+        {
+        }
+        public TAnd(string text)
+            : base(text)
+        {
+        }
+        public TAnd(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TAnd Clone()
+        {
+            return new TAnd(Text, Line, Position);
+        }
+    }
+    public partial class TOr : Token<TOr>
+    {
+        public TOr()
+            : base(@"||")
+        {
+        }
+        public TOr(int line, int pos)
+            : base(@"||", line, pos)
+        {
+        }
+        public TOr(string text)
+            : base(text)
+        {
+        }
+        public TOr(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TOr Clone()
+        {
+            return new TOr(Text, Line, Position);
+        }
+    }
+    public partial class TPeriod : Token<TPeriod>
+    {
+        public TPeriod()
+            : base(@".")
+        {
+        }
+        public TPeriod(int line, int pos)
+            : base(@".", line, pos)
+        {
+        }
+        public TPeriod(string text)
+            : base(text)
+        {
+        }
+        public TPeriod(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TPeriod Clone()
+        {
+            return new TPeriod(Text, Line, Position);
+        }
+    }
+    public partial class TComma : Token<TComma>
+    {
+        public TComma()
+            : base(@",")
+        {
+        }
+        public TComma(int line, int pos)
+            : base(@",", line, pos)
+        {
+        }
+        public TComma(string text)
+            : base(text)
+        {
+        }
+        public TComma(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TComma Clone()
+        {
+            return new TComma(Text, Line, Position);
+        }
+    }
+    public partial class TLabelStart : Token<TLabelStart>
+    {
+        public TLabelStart()
+            : base(@"{{")
+        {
+        }
+        public TLabelStart(int line, int pos)
+            : base(@"{{", line, pos)
+        {
+        }
+        public TLabelStart(string text)
+            : base(text)
+        {
+        }
+        public TLabelStart(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLabelStart Clone()
+        {
+            return new TLabelStart(Text, Line, Position);
+        }
+    }
+    public partial class TLabelEnd : Token<TLabelEnd>
+    {
+        public TLabelEnd()
+            : base(@"}}")
+        {
+        }
+        public TLabelEnd(int line, int pos)
+            : base(@"}}", line, pos)
+        {
+        }
+        public TLabelEnd(string text)
+            : base(text)
+        {
+        }
+        public TLabelEnd(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLabelEnd Clone()
+        {
+            return new TLabelEnd(Text, Line, Position);
+        }
+    }
+    public partial class TLPar : Token<TLPar>
+    {
+        public TLPar()
+            : base(@"(")
+        {
+        }
+        public TLPar(int line, int pos)
+            : base(@"(", line, pos)
+        {
+        }
+        public TLPar(string text)
+            : base(text)
+        {
+        }
+        public TLPar(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLPar Clone()
+        {
+            return new TLPar(Text, Line, Position);
+        }
+    }
+    public partial class TRPar : Token<TRPar>
+    {
+        public TRPar()
+            : base(@")")
+        {
+        }
+        public TRPar(int line, int pos)
+            : base(@")", line, pos)
+        {
+        }
+        public TRPar(string text)
+            : base(text)
+        {
+        }
+        public TRPar(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TRPar Clone()
+        {
+            return new TRPar(Text, Line, Position);
+        }
+    }
+    public partial class TLSqu : Token<TLSqu>
+    {
+        public TLSqu()
+            : base(@"[")
+        {
+        }
+        public TLSqu(int line, int pos)
+            : base(@"[", line, pos)
+        {
+        }
+        public TLSqu(string text)
+            : base(text)
+        {
+        }
+        public TLSqu(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TLSqu Clone()
+        {
+            return new TLSqu(Text, Line, Position);
+        }
+    }
+    public partial class TRSqu : Token<TRSqu>
+    {
+        public TRSqu()
+            : base(@"]")
+        {
+        }
+        public TRSqu(int line, int pos)
+            : base(@"]", line, pos)
+        {
+        }
+        public TRSqu(string text)
+            : base(text)
+        {
+        }
+        public TRSqu(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TRSqu Clone()
+        {
+            return new TRSqu(Text, Line, Position);
+        }
+    }
+    public partial class TComment : Token<TComment>
+    {
+        public TComment(string text)
+            : base(text)
+        {
+        }
+        public TComment(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TComment Clone()
+        {
+            return new TComment(Text, Line, Position);
+        }
+    }
+    public partial class TWhitespace : Token<TWhitespace>
+    {
+        public TWhitespace(string text)
+            : base(text)
+        {
+        }
+        public TWhitespace(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TWhitespace Clone()
+        {
+            return new TWhitespace(Text, Line, Position);
+        }
+    }
+}

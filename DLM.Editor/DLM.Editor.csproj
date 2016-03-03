@@ -55,6 +55,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Generated\analysis.cs" />
+    <Compile Include="Generated\CompilerExecuter.cs" />
+    <Compile Include="Generated\lexer.cs" />
+    <Compile Include="Generated\parser.cs" />
+    <Compile Include="Generated\prods.cs" />
+    <Compile Include="Generated\tokens.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
