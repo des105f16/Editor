@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SablePP.Tools.Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,11 @@ namespace DLM.Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            var editor = new SimpleEditor();
+            editor.CodeTextBox.Executer = new CompilerExecuter();
+
+            Application.Run(editor);
         }
     }
 }
