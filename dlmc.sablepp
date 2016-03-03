@@ -52,6 +52,8 @@ Tokens
     r_par = ')';
     l_squ = '[';
     r_squ = ']';
+    l_cur = '{';
+    r_cur = '}';
     
     comment = short_comment | long_comment;
     whitespace = (' ' | 9 | 13 | 10)+;
@@ -81,6 +83,10 @@ Productions
     type
         = [type]:identifier identifier
         | {pointer} type asterisk
+        ;
+    block -> statement*
+        = {one} stmt -> [stmt]
+        | {many} l_cur stmt* r_cur -> [stmt]
         ;
 
 Abstract Syntax Tree
