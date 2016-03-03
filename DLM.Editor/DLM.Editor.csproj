@@ -80,6 +80,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DLM.Inference\DLM.Inference.csproj">
+      <Project>{05e6995f-1d7a-4f0e-b368-5ad463aa11e1}</Project>
+      <Name>DLM.Inference</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SablePP\SablePP\SablePP.Tools\SablePP.Tools.csproj">
       <Project>{3a7bf5f0-3346-4653-a3c3-443c5311971b}</Project>
       <Name>SablePP.Tools</Name>
