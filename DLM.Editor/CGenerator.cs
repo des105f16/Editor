@@ -35,6 +35,8 @@ namespace DLM.Editor
 
             foreach (var i in node.Includes)
                 res += Visit(i) + "\r\n";
+            foreach (var i in node.Structs)
+                res += Visit(i) + "\r\n";
             foreach (var s in node.Statements)
                 res += Visit(s) + "\r\n";
 
@@ -42,6 +44,9 @@ namespace DLM.Editor
         }
 
         protected override string HandleAInclude(AInclude node) => "#include " + node.File.Text;
+
+        protected override string HandleAStruct(AStruct node) => $"typedef struct {Visit(node.Identifier)} {{" + Visit(node.Fields, "\r\n") + $"}} {Visit(node.Name)};";
+        protected override string HandleAField(AField node) => Visit(node.Type) + " " + Visit(node.Identifier) + ";";
 
         protected override string HandleADeclarationStatement(ADeclarationStatement node)
         {
@@ -52,7 +57,7 @@ namespace DLM.Editor
         }
         protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
         protected override string HandleAActsForStatement(AActsForStatement node) => Visit(node.Statements);
-        protected override string HandleAIfStatement(AIfStatement node)=> $"if ({Visit(node.Expression)}) {Visit(node.Statements)}";
+        protected override string HandleAIfStatement(AIfStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.Statements)}";
         protected override string HandleAIfElseStatement(AIfElseStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.IfStatements)} else {Visit(node.ElseStatements)}";
         protected override string HandleAWhileStatement(AWhileStatement node) => $"while ({Visit(node.Expression)}) {Visit(node.Statements)}";
         protected override string HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node) => $"{Visit(node.Type)} {Visit(node.Identifier)}({Visit(node.Parameters)}) {Visit(node.Statements)}";
@@ -116,5 +121,6 @@ namespace DLM.Editor
             return ret;
         }
         private string Visit(IEnumerable<PFunctionParameter> parameters) => string.Join(", ", parameters.Select(x => Visit(x)));
+        private string Visit<T>(IEnumerable<T> parameters, string sep) where T : Node => string.Join(sep, parameters.Select(x => Visit((dynamic)x)));
     }
 }

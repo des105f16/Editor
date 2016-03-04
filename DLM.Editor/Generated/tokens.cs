@@ -77,6 +77,54 @@ namespace DLM.Editor.Nodes
             return new TNumber(Text, Line, Position);
         }
     }
+    public partial class TTypedef : Token<TTypedef>
+    {
+        public TTypedef()
+            : base(@"typedef")
+        {
+        }
+        public TTypedef(int line, int pos)
+            : base(@"typedef", line, pos)
+        {
+        }
+        public TTypedef(string text)
+            : base(text)
+        {
+        }
+        public TTypedef(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TTypedef Clone()
+        {
+            return new TTypedef(Text, Line, Position);
+        }
+    }
+    public partial class TStruct : Token<TStruct>
+    {
+        public TStruct()
+            : base(@"struct")
+        {
+        }
+        public TStruct(int line, int pos)
+            : base(@"struct", line, pos)
+        {
+        }
+        public TStruct(string text)
+            : base(text)
+        {
+        }
+        public TStruct(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TStruct Clone()
+        {
+            return new TStruct(Text, Line, Position);
+        }
+    }
     public partial class TWhile : Token<TWhile>
     {
         public TWhile()

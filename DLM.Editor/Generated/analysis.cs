@@ -30,6 +30,40 @@ namespace DLM.Editor.Analysis
             HandleDefault(node);
         }
         
+        public void Visit(PStruct node)
+        {
+            HandlePStruct(node);
+        }
+        protected virtual void HandlePStruct(PStruct node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AStruct node)
+        {
+            HandleAStruct(node);
+        }
+        protected virtual void HandleAStruct(AStruct node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PField node)
+        {
+            HandlePField(node);
+        }
+        protected virtual void HandlePField(PField node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AField node)
+        {
+            HandleAField(node);
+        }
+        protected virtual void HandleAField(AField node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PInclude node)
         {
             HandlePInclude(node);
@@ -447,6 +481,22 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TTypedef node)
+        {
+            HandleTTypedef(node);
+        }
+        protected virtual void HandleTTypedef(TTypedef node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TStruct node)
+        {
+            HandleTStruct(node);
+        }
+        protected virtual void HandleTStruct(TStruct node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TWhile node)
         {
             HandleTWhile(node);
@@ -758,7 +808,19 @@ namespace DLM.Editor.Analysis
         protected override void HandleARoot(ARoot node)
         {
             Visit(node.Includes);
+            Visit(node.Structs);
             Visit(node.Statements);
+        }
+        protected override void HandleAStruct(AStruct node)
+        {
+            Visit(node.Identifier);
+            Visit(node.Fields);
+            Visit(node.Name);
+        }
+        protected override void HandleAField(AField node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
         }
         protected override void HandleAInclude(AInclude node)
         {
@@ -968,7 +1030,19 @@ namespace DLM.Editor.Analysis
         protected override void HandleARoot(ARoot node)
         {
             Visit(node.Statements);
+            Visit(node.Structs);
             Visit(node.Includes);
+        }
+        protected override void HandleAStruct(AStruct node)
+        {
+            Visit(node.Name);
+            Visit(node.Fields);
+            Visit(node.Identifier);
+        }
+        protected override void HandleAField(AField node)
+        {
+            Visit(node.Identifier);
+            Visit(node.Type);
         }
         protected override void HandleAInclude(AInclude node)
         {
@@ -1176,6 +1250,34 @@ namespace DLM.Editor.Analysis
             return HandleARoot(node);
         }
         protected abstract Result HandleARoot(ARoot node);
+        
+        public Result Visit(PStruct node)
+        {
+            return HandlePStruct(node);
+        }
+        protected virtual Result HandlePStruct(PStruct node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AStruct node)
+        {
+            return HandleAStruct(node);
+        }
+        protected abstract Result HandleAStruct(AStruct node);
+        
+        public Result Visit(PField node)
+        {
+            return HandlePField(node);
+        }
+        protected virtual Result HandlePField(PField node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AField node)
+        {
+            return HandleAField(node);
+        }
+        protected abstract Result HandleAField(AField node);
         
         public Result Visit(PInclude node)
         {
@@ -1477,6 +1579,22 @@ namespace DLM.Editor.Analysis
             return HandleTNumber(node);
         }
         protected virtual Result HandleTNumber(TNumber node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TTypedef node)
+        {
+            return HandleTTypedef(node);
+        }
+        protected virtual Result HandleTTypedef(TTypedef node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TStruct node)
+        {
+            return HandleTStruct(node);
+        }
+        protected virtual Result HandleTStruct(TStruct node)
         {
             return HandleDefault(node);
         }
@@ -1785,6 +1903,34 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleARoot(ARoot node, T1 arg1);
         
+        public Result Visit(PStruct node, T1 arg1)
+        {
+            return HandlePStruct(node, arg1);
+        }
+        protected virtual Result HandlePStruct(PStruct node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AStruct node, T1 arg1)
+        {
+            return HandleAStruct(node, arg1);
+        }
+        protected abstract Result HandleAStruct(AStruct node, T1 arg1);
+        
+        public Result Visit(PField node, T1 arg1)
+        {
+            return HandlePField(node, arg1);
+        }
+        protected virtual Result HandlePField(PField node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AField node, T1 arg1)
+        {
+            return HandleAField(node, arg1);
+        }
+        protected abstract Result HandleAField(AField node, T1 arg1);
+        
         public Result Visit(PInclude node, T1 arg1)
         {
             return HandlePInclude(node, arg1);
@@ -2085,6 +2231,22 @@ namespace DLM.Editor.Analysis
             return HandleTNumber(node, arg1);
         }
         protected virtual Result HandleTNumber(TNumber node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TTypedef node, T1 arg1)
+        {
+            return HandleTTypedef(node, arg1);
+        }
+        protected virtual Result HandleTTypedef(TTypedef node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TStruct node, T1 arg1)
+        {
+            return HandleTStruct(node, arg1);
+        }
+        protected virtual Result HandleTStruct(TStruct node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -2393,6 +2555,34 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleARoot(ARoot node, T1 arg1, T2 arg2);
         
+        public Result Visit(PStruct node, T1 arg1, T2 arg2)
+        {
+            return HandlePStruct(node, arg1, arg2);
+        }
+        protected virtual Result HandlePStruct(PStruct node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AStruct node, T1 arg1, T2 arg2)
+        {
+            return HandleAStruct(node, arg1, arg2);
+        }
+        protected abstract Result HandleAStruct(AStruct node, T1 arg1, T2 arg2);
+        
+        public Result Visit(PField node, T1 arg1, T2 arg2)
+        {
+            return HandlePField(node, arg1, arg2);
+        }
+        protected virtual Result HandlePField(PField node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AField node, T1 arg1, T2 arg2)
+        {
+            return HandleAField(node, arg1, arg2);
+        }
+        protected abstract Result HandleAField(AField node, T1 arg1, T2 arg2);
+        
         public Result Visit(PInclude node, T1 arg1, T2 arg2)
         {
             return HandlePInclude(node, arg1, arg2);
@@ -2693,6 +2883,22 @@ namespace DLM.Editor.Analysis
             return HandleTNumber(node, arg1, arg2);
         }
         protected virtual Result HandleTNumber(TNumber node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TTypedef node, T1 arg1, T2 arg2)
+        {
+            return HandleTTypedef(node, arg1, arg2);
+        }
+        protected virtual Result HandleTTypedef(TTypedef node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TStruct node, T1 arg1, T2 arg2)
+        {
+            return HandleTStruct(node, arg1, arg2);
+        }
+        protected virtual Result HandleTStruct(TStruct node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -3001,6 +3207,34 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleARoot(ARoot node, T1 arg1, T2 arg2, T3 arg3);
         
+        public Result Visit(PStruct node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePStruct(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePStruct(PStruct node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AStruct node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAStruct(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAStruct(AStruct node, T1 arg1, T2 arg2, T3 arg3);
+        
+        public Result Visit(PField node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePField(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePField(PField node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AField node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAField(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAField(AField node, T1 arg1, T2 arg2, T3 arg3);
+        
         public Result Visit(PInclude node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePInclude(node, arg1, arg2, arg3);
@@ -3301,6 +3535,22 @@ namespace DLM.Editor.Analysis
             return HandleTNumber(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTNumber(TNumber node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TTypedef node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTTypedef(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTTypedef(TTypedef node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TStruct node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTStruct(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTStruct(TStruct node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

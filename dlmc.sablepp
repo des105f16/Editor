@@ -21,6 +21,9 @@ Tokens
     bool = 'true'|'false';
     number = digit+;
     
+    typedef = 'typedef';
+    struct = 'struct';
+    
     while = 'while';
     if = 'if';
     else = 'else';
@@ -80,7 +83,10 @@ Token Syntax Highlight
     {label_start, label_end} text: #c90, bold;
 
 Abstract Syntax Tree
-    root = P.include* statement*;
+    root = P.include* P.struct* statement*;
+    
+    struct = identifier field* [name]:identifier;
+    field = type identifier;
     
     include = file;
     
@@ -102,7 +108,10 @@ Abstract Syntax Tree
         | {pointer} type asterisk
         ;
 Productions
-    root = P.include* glstmt*;
+    root = P.include* P.struct* glstmt*;
+    
+    struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
+    field = type identifier semicolon -> New field(type, identifier);
     
     include = T.include file -> New include(file);
     

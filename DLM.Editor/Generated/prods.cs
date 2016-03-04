@@ -8,17 +8,23 @@ namespace DLM.Editor.Nodes
     public abstract partial class PRoot : Production<PRoot>
     {
         private NodeList<PInclude> _includes_;
+        private NodeList<PStruct> _structs_;
         private NodeList<PStatement> _statements_;
         
-        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PStatement> _statements_)
+        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
         {
             this._includes_ = new NodeList<PInclude>(this, _includes_, true);
+            this._structs_ = new NodeList<PStruct>(this, _structs_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
         public NodeList<PInclude> Includes
         {
             get { return _includes_; }
+        }
+        public NodeList<PStruct> Structs
+        {
+            get { return _structs_; }
         }
         public NodeList<PStatement> Statements
         {
@@ -28,8 +34,8 @@ namespace DLM.Editor.Nodes
     }
     public partial class ARoot : PRoot
     {
-        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PStatement> _statements_)
-            : base(_includes_, _statements_)
+        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+            : base(_includes_, _structs_, _statements_)
         {
         }
         
@@ -45,6 +51,17 @@ namespace DLM.Editor.Nodes
                     Includes.RemoveAt(index);
                 else
                     Includes[index] = newChild as PInclude;
+            }
+            else if (oldChild is PStruct && Structs.Contains(oldChild as PStruct))
+            {
+                if (!(newChild is PStruct) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Structs.IndexOf(oldChild as PStruct);
+                if (newChild == null)
+                    Structs.RemoveAt(index);
+                else
+                    Structs[index] = newChild as PStruct;
             }
             else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
             {
@@ -68,6 +85,12 @@ namespace DLM.Editor.Nodes
                     yield return temp[i];
             }
             {
+                PStruct[] temp = new PStruct[Structs.Count];
+                Structs.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
                 PStatement[] temp = new PStatement[Statements.Count];
                 Statements.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
@@ -77,12 +100,207 @@ namespace DLM.Editor.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes, Statements);
+            return new ARoot(Includes, Structs, Statements);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Includes, Statements);
+            return string.Format("{0} {1} {2}", Includes, Structs, Statements);
+        }
+    }
+    public abstract partial class PStruct : Production<PStruct>
+    {
+        private TIdentifier _identifier_;
+        private NodeList<PField> _fields_;
+        private TIdentifier _name_;
+        
+        public PStruct(TIdentifier _identifier_, IEnumerable<PField> _fields_, TIdentifier _name_)
+        {
+            this.Identifier = _identifier_;
+            this._fields_ = new NodeList<PField>(this, _fields_, true);
+            this.Name = _name_;
+        }
+        
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in PStruct cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public NodeList<PField> Fields
+        {
+            get { return _fields_; }
+        }
+        public TIdentifier Name
+        {
+            get { return _name_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Name in PStruct cannot be null.", "value");
+                
+                if (_name_ != null)
+                    SetParent(_name_, null);
+                SetParent(value, this);
+                
+                _name_ = value;
+            }
+        }
+        
+    }
+    public partial class AStruct : PStruct
+    {
+        public AStruct(TIdentifier _identifier_, IEnumerable<PField> _fields_, TIdentifier _name_)
+            : base(_identifier_, _fields_, _name_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AStruct cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (oldChild is PField && Fields.Contains(oldChild as PField))
+            {
+                if (!(newChild is PField) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Fields.IndexOf(oldChild as PField);
+                if (newChild == null)
+                    Fields.RemoveAt(index);
+                else
+                    Fields[index] = newChild as PField;
+            }
+            else if (Name == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Name in AStruct cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Name = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Identifier;
+            {
+                PField[] temp = new PField[Fields.Count];
+                Fields.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            yield return Name;
+        }
+        
+        public override PStruct Clone()
+        {
+            return new AStruct(Identifier.Clone(), Fields, Name.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Identifier, Fields, Name);
+        }
+    }
+    public abstract partial class PField : Production<PField>
+    {
+        private PType _type_;
+        private TIdentifier _identifier_;
+        
+        public PField(PType _type_, TIdentifier _identifier_)
+        {
+            this.Type = _type_;
+            this.Identifier = _identifier_;
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in PField cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in PField cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        
+    }
+    public partial class AField : PField
+    {
+        public AField(PType _type_, TIdentifier _identifier_)
+            : base(_type_, _identifier_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in AField cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AField cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+        }
+        
+        public override PField Clone()
+        {
+            return new AField(Type.Clone(), Identifier.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Type, Identifier);
         }
     }
     public abstract partial class PInclude : Production<PInclude>
