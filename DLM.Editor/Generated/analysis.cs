@@ -357,6 +357,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ADeclassifyExpression node)
+        {
+            HandleADeclassifyExpression(node);
+        }
+        protected virtual void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(AIdentifierExpression node)
         {
             HandleAIdentifierExpression(node);
@@ -911,6 +919,12 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Expression);
         }
+        protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            Visit(node.Identifier);
+            if (node.HasLabel)
+                Visit(node.Label);
+        }
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
             Visit(node.Identifier);
@@ -1114,6 +1128,12 @@ namespace DLM.Editor.Analysis
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
             Visit(node.Expression);
+        }
+        protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            if (node.HasLabel)
+                Visit(node.Label);
+            Visit(node.Identifier);
         }
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
@@ -1388,6 +1408,11 @@ namespace DLM.Editor.Analysis
             return HandleAParenthesisExpression(node);
         }
         protected abstract Result HandleAParenthesisExpression(AParenthesisExpression node);
+        private Result dispatch(ADeclassifyExpression node)
+        {
+            return HandleADeclassifyExpression(node);
+        }
+        protected abstract Result HandleADeclassifyExpression(ADeclassifyExpression node);
         private Result dispatch(AIdentifierExpression node)
         {
             return HandleAIdentifierExpression(node);
@@ -1991,6 +2016,11 @@ namespace DLM.Editor.Analysis
             return HandleAParenthesisExpression(node, arg1);
         }
         protected abstract Result HandleAParenthesisExpression(AParenthesisExpression node, T1 arg1);
+        private Result dispatch(ADeclassifyExpression node, T1 arg1)
+        {
+            return HandleADeclassifyExpression(node, arg1);
+        }
+        protected abstract Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1);
         private Result dispatch(AIdentifierExpression node, T1 arg1)
         {
             return HandleAIdentifierExpression(node, arg1);
@@ -2594,6 +2624,11 @@ namespace DLM.Editor.Analysis
             return HandleAParenthesisExpression(node, arg1, arg2);
         }
         protected abstract Result HandleAParenthesisExpression(AParenthesisExpression node, T1 arg1, T2 arg2);
+        private Result dispatch(ADeclassifyExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleADeclassifyExpression(node, arg1, arg2);
+        }
+        protected abstract Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1, T2 arg2);
         private Result dispatch(AIdentifierExpression node, T1 arg1, T2 arg2)
         {
             return HandleAIdentifierExpression(node, arg1, arg2);
@@ -3197,6 +3232,11 @@ namespace DLM.Editor.Analysis
             return HandleAParenthesisExpression(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleAParenthesisExpression(AParenthesisExpression node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(ADeclassifyExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleADeclassifyExpression(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1, T2 arg2, T3 arg3);
         private Result dispatch(AIdentifierExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleAIdentifierExpression(node, arg1, arg2, arg3);

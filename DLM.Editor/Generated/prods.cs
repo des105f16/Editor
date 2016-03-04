@@ -2538,6 +2538,86 @@ namespace DLM.Editor.Nodes
             return string.Format("{0}", Expression);
         }
     }
+    public partial class ADeclassifyExpression : PExpression
+    {
+        private TIdentifier _identifier_;
+        private PLabel _label_;
+        
+        public ADeclassifyExpression(TIdentifier _identifier_, PLabel _label_)
+            : base()
+        {
+            this.Identifier = _identifier_;
+            this.Label = _label_;
+        }
+        
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in ADeclassifyExpression cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public PLabel Label
+        {
+            get { return _label_; }
+            set
+            {
+                if (_label_ != null)
+                    SetParent(_label_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _label_ = value;
+            }
+        }
+        public bool HasLabel
+        {
+            get { return _label_ != null; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in ADeclassifyExpression cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (Label == oldChild)
+            {
+                if (!(newChild is PLabel) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Label = newChild as PLabel;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Identifier;
+            if (HasLabel)
+                yield return Label;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ADeclassifyExpression(Identifier.Clone(), Label.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Identifier, Label);
+        }
+    }
     public partial class AIdentifierExpression : PExpression
     {
         private TIdentifier _identifier_;

@@ -99,6 +99,7 @@ namespace DLM.Editor
         }
 
         protected override string HandleAParenthesisExpression(AParenthesisExpression node) => $"({Visit(node.Expression)})";
+        protected override string HandleADeclassifyExpression(ADeclassifyExpression node) => node.Identifier.Text;
         protected override string HandleAIdentifierExpression(AIdentifierExpression node) => node.Identifier.Text;
         protected override string HandleANumberExpression(ANumberExpression node) => node.Number.Text;
         protected override string HandleABooleanExpression(ABooleanExpression node) => node.Bool.Text;

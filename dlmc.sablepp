@@ -203,6 +203,7 @@ Abstract Syntax Tree
         | {function_call} [function]:identifier [arguments]:expression*
         
         | {parenthesis} expression
+        | {declassify} identifier label?
         | {identifier} identifier
         | {number} number
         | {boolean} bool
@@ -252,6 +253,8 @@ Productions
         | {n} number -> New expression.number(number)
         | {b} bool -> New expression.boolean(bool)
         | {id} identifier -> New expression.identifier(identifier)
+        | {dec} declassify_start identifier declassify_end -> New expression.declassify(identifier, Null)
+        | {dec2} declassify_start identifier comma label declassify_end -> New expression.declassify(identifier, label)
         ;
 
     funccall -> expression
