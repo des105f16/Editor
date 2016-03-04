@@ -29,6 +29,10 @@ namespace DLM.Editor
                 throw new NotImplementedException();
         }
 
+        protected override string HandleStart(Start<PRoot> node)
+        {
+            return Visit(node.Root);
+        }
         protected override string HandleARoot(ARoot node)
         {
             string res = "";

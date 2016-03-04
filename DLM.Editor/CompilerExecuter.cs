@@ -17,10 +17,10 @@ namespace DLM.Editor
     {
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
-            CompileWithGCC(root.Root, compilationOptions.ErrorManager);
+            CompileWithGCC(root, compilationOptions.ErrorManager);
         }
-        
-        private static void CompileWithGCC(Node root, ErrorManager errors)
+
+        private static void CompileWithGCC(Start<PRoot> root, ErrorManager errors)
         {
             var file = Path.GetTempFileName();
             File.WriteAllText(file, CGenerator.GenerateC(root));
