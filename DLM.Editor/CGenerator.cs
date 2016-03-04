@@ -42,7 +42,7 @@ namespace DLM.Editor
         }
 
         protected override string HandleAInclude(AInclude node) => "#include " + node.File.Text;
-        
+
         protected override string HandleADeclarationStatement(ADeclarationStatement node)
         {
             if (node.HasExpression)
@@ -51,54 +51,11 @@ namespace DLM.Editor
                 return $"{Visit(node.Type)} {node.Identifier};";
         }
         protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
-        protected override string HandleAActsForStatement(AActsForStatement node)
-        {
-            string ret = "{";
-            foreach (var s in node.Statements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n}";
-            return ret;
-        }
-        protected override string HandleAIfStatement(AIfStatement node)
-        {
-            string ret = $"if ({Visit(node.Expression)}) {{";
-            foreach (var s in node.Statements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n}";
-            return ret;
-        }
-        protected override string HandleAIfElseStatement(AIfElseStatement node)
-        {
-            string ret = $"if ({Visit(node.Expression)}) {{";
-            foreach (var s in node.IfStatements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n} else {";
-            foreach (var s in node.ElseStatements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n}";
-            return ret;
-        }
-        protected override string HandleAWhileStatement(AWhileStatement node)
-        {
-            string ret = $"while ({Visit(node.Expression)}) {{";
-            foreach (var s in node.Statements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n}";
-            return ret;
-        }
-        protected override string HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
-        {
-            string res = $"{Visit(node.Type)} {Visit(node.Identifier)}(";
-
-            res += string.Join(", ", node.Parameters.Select(x => Visit(x)));
-            res += ") {";
-
-            foreach (var s in node.Statements)
-                res += "\r\n" + Visit(s);
-            res += "\r\n}";
-
-            return res;
-        }
+        protected override string HandleAActsForStatement(AActsForStatement node) => Visit(node.Statements);
+        protected override string HandleAIfStatement(AIfStatement node)=> $"if ({Visit(node.Expression)}) {Visit(node.Statements)}";
+        protected override string HandleAIfElseStatement(AIfElseStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.IfStatements)} else {Visit(node.ElseStatements)}";
+        protected override string HandleAWhileStatement(AWhileStatement node) => $"while ({Visit(node.Expression)}) {Visit(node.Statements)}";
+        protected override string HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node) => $"{Visit(node.Type)} {Visit(node.Identifier)}({Visit(node.Parameters)}) {Visit(node.Statements)}";
         protected override string HandleAFunctionParameter(AFunctionParameter node) => $"{Visit(node.Type)} {Visit(node.Identifier)}";
         protected override string HandleAReturnStatement(AReturnStatement node)
         {
@@ -148,5 +105,15 @@ namespace DLM.Editor
 
         protected override string HandleAElement(AElement node) => "." + node.Identifier.Text;
         protected override string HandleAPointerElement(APointerElement node) => "->" + node.Identifier.Text;
+
+        private string Visit(IEnumerable<PStatement> statements)
+        {
+            string ret = "{";
+            foreach (var s in statements)
+                ret += "\r\n" + Visit(s);
+            ret += "\r\n}";
+            return ret;
+        }
+        private string Visit(IEnumerable<PFunctionParameter> parameters) => string.Join(", ", parameters.Select(x => Visit(x)));
     }
 }
