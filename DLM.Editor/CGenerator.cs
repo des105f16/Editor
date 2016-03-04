@@ -2,6 +2,7 @@
 using System.Linq;
 using SablePP.Tools.Nodes;
 using DLM.Editor.Nodes;
+using System.Collections.Generic;
 
 namespace DLM.Editor
 {
@@ -41,15 +42,22 @@ namespace DLM.Editor
         }
 
         protected override string HandleAInclude(AInclude node) => "#include " + node.File.Text;
-
-        protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
-
+        
         protected override string HandleADeclarationStatement(ADeclarationStatement node)
         {
             if (node.HasExpression)
                 return $"{Visit(node.Type)} {node.Identifier} = {Visit(node.Expression)};";
             else
                 return $"{Visit(node.Type)} {node.Identifier};";
+        }
+        protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
+        protected override string HandleAActsForStatement(AActsForStatement node)
+        {
+            string ret = "{";
+            foreach (var s in node.Statements)
+                ret += "\r\n" + Visit(s);
+            ret += "\r\n}";
+            return ret;
         }
         protected override string HandleAIfStatement(AIfStatement node)
         {

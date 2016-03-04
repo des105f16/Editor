@@ -173,30 +173,6 @@ namespace DLM.Editor.Nodes
             return new TReturn(Text, Line, Position);
         }
     }
-    public partial class TActfor : Token<TActfor>
-    {
-        public TActfor()
-            : base(@"if_acts_for")
-        {
-        }
-        public TActfor(int line, int pos)
-            : base(@"if_acts_for", line, pos)
-        {
-        }
-        public TActfor(string text)
-            : base(text)
-        {
-        }
-        public TActfor(string text, int line, int pos)
-            : base(text, line, pos)
-        {
-        }
-        
-        public override TActfor Clone()
-        {
-            return new TActfor(Text, Line, Position);
-        }
-    }
     public partial class TIdentifier : Token<TIdentifier>
     {
         public TIdentifier(string text)
@@ -211,6 +187,70 @@ namespace DLM.Editor.Nodes
         public override TIdentifier Clone()
         {
             return new TIdentifier(Text, Line, Position);
+        }
+    }
+    public partial class TActsFor : Token<TActsFor>
+    {
+        public TActsFor(string text)
+            : base(text)
+        {
+        }
+        public TActsFor(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TActsFor Clone()
+        {
+            return new TActsFor(Text, Line, Position);
+        }
+    }
+    public partial class TDeclassifyStart : Token<TDeclassifyStart>
+    {
+        public TDeclassifyStart()
+            : base(@"<|")
+        {
+        }
+        public TDeclassifyStart(int line, int pos)
+            : base(@"<|", line, pos)
+        {
+        }
+        public TDeclassifyStart(string text)
+            : base(text)
+        {
+        }
+        public TDeclassifyStart(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TDeclassifyStart Clone()
+        {
+            return new TDeclassifyStart(Text, Line, Position);
+        }
+    }
+    public partial class TDeclassifyEnd : Token<TDeclassifyEnd>
+    {
+        public TDeclassifyEnd()
+            : base(@"|>")
+        {
+        }
+        public TDeclassifyEnd(int line, int pos)
+            : base(@"|>", line, pos)
+        {
+        }
+        public TDeclassifyEnd(string text)
+            : base(text)
+        {
+        }
+        public TDeclassifyEnd(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TDeclassifyEnd Clone()
+        {
+            return new TDeclassifyEnd(Text, Line, Position);
         }
     }
     public partial class TRArrow : Token<TRArrow>
@@ -803,6 +843,30 @@ namespace DLM.Editor.Nodes
         public override TRCur Clone()
         {
             return new TRCur(Text, Line, Position);
+        }
+    }
+    public partial class TJoin : Token<TJoin>
+    {
+        public TJoin()
+            : base(@"⊔")
+        {
+        }
+        public TJoin(int line, int pos)
+            : base(@"⊔", line, pos)
+        {
+        }
+        public TJoin(string text)
+            : base(text)
+        {
+        }
+        public TJoin(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TJoin Clone()
+        {
+            return new TJoin(Text, Line, Position);
         }
     }
     public partial class TComment : Token<TComment>

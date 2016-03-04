@@ -25,9 +25,12 @@ Tokens
     if = 'if';
     else = 'else';
     return = 'return';
-    actfor = 'if_acts_for';
     
     identifier = (lower | upper) (lower | upper | digit | '_')*;
+    
+    acts_for = '-->?' | '?>';
+    declassify_start = '<|';
+    declassify_end = '|>';
     
     r_arrow = '->';
     l_arrow = '<-';
@@ -62,6 +65,8 @@ Tokens
     l_cur = '{';
     r_cur = '}';
     
+    join = 0x2294;
+    
     comment = short_comment | long_comment;
     whitespace = (' ' | 9 | 13 | 10)+;
 
@@ -71,7 +76,7 @@ Ignored Tokens
 Token Syntax Highlight
     {identifier} text: #069;
     {comment} text: #060, italic;
-    {if, else, while, return, actfor} text: #00c, bold;
+    {if, else, while, return, acts_for} text: #00c, bold;
     {label_start, label_end} text: #c90, bold;
 
 Abstract Syntax Tree
@@ -82,6 +87,7 @@ Abstract Syntax Tree
     statement
         = {declaration} type identifier expression?
         | {assignment} identifier expression
+        | {acts_for} [method]:identifier [principal]:identifier statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -125,6 +131,7 @@ Productions
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
+        | {act} [m]:identifier acts_for [p]:identifier l_cur stmt* r_cur -> New statement.acts_for(m, p, [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
@@ -164,6 +171,7 @@ Productions
     lpolicy -> policy+
         = policy -> [policy]
         | {tail} policy semicolon lpolicy -> [policy, lpolicy]
+        | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
     principal
         = identifier

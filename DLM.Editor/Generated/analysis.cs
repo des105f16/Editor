@@ -71,6 +71,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(AActsForStatement node)
+        {
+            HandleAActsForStatement(node);
+        }
+        protected virtual void HandleAActsForStatement(AActsForStatement node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(AIfStatement node)
         {
             HandleAIfStatement(node);
@@ -463,19 +471,35 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
-        public void Visit(TActfor node)
-        {
-            HandleTActfor(node);
-        }
-        protected virtual void HandleTActfor(TActfor node)
-        {
-            HandleDefault(node);
-        }
         public void Visit(TIdentifier node)
         {
             HandleTIdentifier(node);
         }
         protected virtual void HandleTIdentifier(TIdentifier node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TActsFor node)
+        {
+            HandleTActsFor(node);
+        }
+        protected virtual void HandleTActsFor(TActsFor node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TDeclassifyStart node)
+        {
+            HandleTDeclassifyStart(node);
+        }
+        protected virtual void HandleTDeclassifyStart(TDeclassifyStart node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TDeclassifyEnd node)
+        {
+            HandleTDeclassifyEnd(node);
+        }
+        protected virtual void HandleTDeclassifyEnd(TDeclassifyEnd node)
         {
             HandleDefault(node);
         }
@@ -679,6 +703,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TJoin node)
+        {
+            HandleTJoin(node);
+        }
+        protected virtual void HandleTJoin(TJoin node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TComment node)
         {
             HandleTComment(node);
@@ -735,6 +767,12 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Identifier);
             Visit(node.Expression);
+        }
+        protected override void HandleAActsForStatement(AActsForStatement node)
+        {
+            Visit(node.Method);
+            Visit(node.Principal);
+            Visit(node.Statements);
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
@@ -933,6 +971,12 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Expression);
             Visit(node.Identifier);
+        }
+        protected override void HandleAActsForStatement(AActsForStatement node)
+        {
+            Visit(node.Statements);
+            Visit(node.Principal);
+            Visit(node.Method);
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
@@ -1145,6 +1189,11 @@ namespace DLM.Editor.Analysis
             return HandleAAssignmentStatement(node);
         }
         protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node);
+        private Result dispatch(AActsForStatement node)
+        {
+            return HandleAActsForStatement(node);
+        }
+        protected abstract Result HandleAActsForStatement(AActsForStatement node);
         private Result dispatch(AIfStatement node)
         {
             return HandleAIfStatement(node);
@@ -1438,19 +1487,35 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
-        public Result Visit(TActfor node)
-        {
-            return HandleTActfor(node);
-        }
-        protected virtual Result HandleTActfor(TActfor node)
-        {
-            return HandleDefault(node);
-        }
         public Result Visit(TIdentifier node)
         {
             return HandleTIdentifier(node);
         }
         protected virtual Result HandleTIdentifier(TIdentifier node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TActsFor node)
+        {
+            return HandleTActsFor(node);
+        }
+        protected virtual Result HandleTActsFor(TActsFor node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TDeclassifyStart node)
+        {
+            return HandleTDeclassifyStart(node);
+        }
+        protected virtual Result HandleTDeclassifyStart(TDeclassifyStart node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TDeclassifyEnd node)
+        {
+            return HandleTDeclassifyEnd(node);
+        }
+        protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node)
         {
             return HandleDefault(node);
         }
@@ -1654,6 +1719,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TJoin node)
+        {
+            return HandleTJoin(node);
+        }
+        protected virtual Result HandleTJoin(TJoin node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TComment node)
         {
             return HandleTComment(node);
@@ -1719,6 +1792,11 @@ namespace DLM.Editor.Analysis
             return HandleAAssignmentStatement(node, arg1);
         }
         protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1);
+        private Result dispatch(AActsForStatement node, T1 arg1)
+        {
+            return HandleAActsForStatement(node, arg1);
+        }
+        protected abstract Result HandleAActsForStatement(AActsForStatement node, T1 arg1);
         private Result dispatch(AIfStatement node, T1 arg1)
         {
             return HandleAIfStatement(node, arg1);
@@ -2012,19 +2090,35 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
-        public Result Visit(TActfor node, T1 arg1)
-        {
-            return HandleTActfor(node, arg1);
-        }
-        protected virtual Result HandleTActfor(TActfor node, T1 arg1)
-        {
-            return HandleDefault(node, arg1);
-        }
         public Result Visit(TIdentifier node, T1 arg1)
         {
             return HandleTIdentifier(node, arg1);
         }
         protected virtual Result HandleTIdentifier(TIdentifier node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TActsFor node, T1 arg1)
+        {
+            return HandleTActsFor(node, arg1);
+        }
+        protected virtual Result HandleTActsFor(TActsFor node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TDeclassifyStart node, T1 arg1)
+        {
+            return HandleTDeclassifyStart(node, arg1);
+        }
+        protected virtual Result HandleTDeclassifyStart(TDeclassifyStart node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TDeclassifyEnd node, T1 arg1)
+        {
+            return HandleTDeclassifyEnd(node, arg1);
+        }
+        protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -2228,6 +2322,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TJoin node, T1 arg1)
+        {
+            return HandleTJoin(node, arg1);
+        }
+        protected virtual Result HandleTJoin(TJoin node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TComment node, T1 arg1)
         {
             return HandleTComment(node, arg1);
@@ -2293,6 +2395,11 @@ namespace DLM.Editor.Analysis
             return HandleAAssignmentStatement(node, arg1, arg2);
         }
         protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AActsForStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAActsForStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAActsForStatement(AActsForStatement node, T1 arg1, T2 arg2);
         private Result dispatch(AIfStatement node, T1 arg1, T2 arg2)
         {
             return HandleAIfStatement(node, arg1, arg2);
@@ -2586,19 +2693,35 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
-        public Result Visit(TActfor node, T1 arg1, T2 arg2)
-        {
-            return HandleTActfor(node, arg1, arg2);
-        }
-        protected virtual Result HandleTActfor(TActfor node, T1 arg1, T2 arg2)
-        {
-            return HandleDefault(node, arg1, arg2);
-        }
         public Result Visit(TIdentifier node, T1 arg1, T2 arg2)
         {
             return HandleTIdentifier(node, arg1, arg2);
         }
         protected virtual Result HandleTIdentifier(TIdentifier node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TActsFor node, T1 arg1, T2 arg2)
+        {
+            return HandleTActsFor(node, arg1, arg2);
+        }
+        protected virtual Result HandleTActsFor(TActsFor node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TDeclassifyStart node, T1 arg1, T2 arg2)
+        {
+            return HandleTDeclassifyStart(node, arg1, arg2);
+        }
+        protected virtual Result HandleTDeclassifyStart(TDeclassifyStart node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TDeclassifyEnd node, T1 arg1, T2 arg2)
+        {
+            return HandleTDeclassifyEnd(node, arg1, arg2);
+        }
+        protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -2802,6 +2925,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TJoin node, T1 arg1, T2 arg2)
+        {
+            return HandleTJoin(node, arg1, arg2);
+        }
+        protected virtual Result HandleTJoin(TJoin node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TComment node, T1 arg1, T2 arg2)
         {
             return HandleTComment(node, arg1, arg2);
@@ -2867,6 +2998,11 @@ namespace DLM.Editor.Analysis
             return HandleAAssignmentStatement(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAActsForStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAActsForStatement(AActsForStatement node, T1 arg1, T2 arg2, T3 arg3);
         private Result dispatch(AIfStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleAIfStatement(node, arg1, arg2, arg3);
@@ -3160,19 +3296,35 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
-        public Result Visit(TActfor node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleTActfor(node, arg1, arg2, arg3);
-        }
-        protected virtual Result HandleTActfor(TActfor node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleDefault(node, arg1, arg2, arg3);
-        }
         public Result Visit(TIdentifier node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTIdentifier(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTIdentifier(TIdentifier node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TActsFor node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTActsFor(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTActsFor(TActsFor node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TDeclassifyStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTDeclassifyStart(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTDeclassifyStart(TDeclassifyStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TDeclassifyEnd node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTDeclassifyEnd(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
@@ -3373,6 +3525,14 @@ namespace DLM.Editor.Analysis
             return HandleTRCur(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTRCur(TRCur node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TJoin node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTJoin(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTJoin(TJoin node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

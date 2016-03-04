@@ -20,7 +20,8 @@ namespace DLM.Editor
 
             var editor = new SimpleEditor();
             editor.CodeTextBox.Executer = new CompilerExecuter();
-            editor.FileExtension = ".cif";
+            editor.FileExtension = ".ncif";
+            editor.Text = "Not CIF";
 
             Application.Run(editor);
         }

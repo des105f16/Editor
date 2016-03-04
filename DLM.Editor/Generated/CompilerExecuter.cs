@@ -29,7 +29,7 @@ namespace DLM.Editor
                 return style1;
             if (token is TComment)
                 return style2;
-            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TActfor)
+            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TActsFor)
                 return style3;
             if (token is TLabelStart || token is TLabelEnd)
                 return style4;

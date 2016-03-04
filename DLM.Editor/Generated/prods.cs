@@ -337,6 +337,108 @@ namespace DLM.Editor.Nodes
             return string.Format("{0} {1}", Identifier, Expression);
         }
     }
+    public partial class AActsForStatement : PStatement
+    {
+        private TIdentifier _method_;
+        private TIdentifier _principal_;
+        private NodeList<PStatement> _statements_;
+        
+        public AActsForStatement(TIdentifier _method_, TIdentifier _principal_, IEnumerable<PStatement> _statements_)
+            : base()
+        {
+            this.Method = _method_;
+            this.Principal = _principal_;
+            this._statements_ = new NodeList<PStatement>(this, _statements_, true);
+        }
+        
+        public TIdentifier Method
+        {
+            get { return _method_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Method in AActsForStatement cannot be null.", "value");
+                
+                if (_method_ != null)
+                    SetParent(_method_, null);
+                SetParent(value, this);
+                
+                _method_ = value;
+            }
+        }
+        public TIdentifier Principal
+        {
+            get { return _principal_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Principal in AActsForStatement cannot be null.", "value");
+                
+                if (_principal_ != null)
+                    SetParent(_principal_, null);
+                SetParent(value, this);
+                
+                _principal_ = value;
+            }
+        }
+        public NodeList<PStatement> Statements
+        {
+            get { return _statements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Method == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Method in AActsForStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Method = newChild as TIdentifier;
+            }
+            else if (Principal == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Principal in AActsForStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Principal = newChild as TIdentifier;
+            }
+            else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Statements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    Statements.RemoveAt(index);
+                else
+                    Statements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Method;
+            yield return Principal;
+            {
+                PStatement[] temp = new PStatement[Statements.Count];
+                Statements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AActsForStatement(Method.Clone(), Principal.Clone(), Statements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Method, Principal, Statements);
+        }
+    }
     public partial class AIfStatement : PStatement
     {
         private PExpression _expression_;
