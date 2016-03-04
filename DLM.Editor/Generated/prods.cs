@@ -863,11 +863,13 @@ namespace DLM.Editor.Nodes
     public partial class AType : PType
     {
         private TIdentifier _name_;
+        private PLabel _label_;
         
-        public AType(TIdentifier _name_)
+        public AType(TIdentifier _name_, PLabel _label_)
             : base()
         {
             this.Name = _name_;
+            this.Label = _label_;
         }
         
         public TIdentifier Name
@@ -885,6 +887,23 @@ namespace DLM.Editor.Nodes
                 _name_ = value;
             }
         }
+        public PLabel Label
+        {
+            get { return _label_; }
+            set
+            {
+                if (_label_ != null)
+                    SetParent(_label_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _label_ = value;
+            }
+        }
+        public bool HasLabel
+        {
+            get { return _label_ != null; }
+        }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
@@ -896,21 +915,29 @@ namespace DLM.Editor.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Name = newChild as TIdentifier;
             }
+            else if (Label == oldChild)
+            {
+                if (!(newChild is PLabel) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Label = newChild as PLabel;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Name;
+            if (HasLabel)
+                yield return Label;
         }
         
         public override PType Clone()
         {
-            return new AType(Name.Clone());
+            return new AType(Name.Clone(), Label.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Name);
+            return string.Format("{0} {1}", Name, Label);
         }
     }
     public partial class APointerType : PType
@@ -990,6 +1017,365 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1}", Type, Asterisk);
+        }
+    }
+    public abstract partial class PLabel : Production<PLabel>
+    {
+        private NodeList<PPolicy> _policys_;
+        
+        public PLabel(IEnumerable<PPolicy> _policys_)
+        {
+            this._policys_ = new NodeList<PPolicy>(this, _policys_, false);
+        }
+        
+        public NodeList<PPolicy> Policys
+        {
+            get { return _policys_; }
+        }
+        
+    }
+    public partial class ALabel : PLabel
+    {
+        public ALabel(IEnumerable<PPolicy> _policys_)
+            : base(_policys_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (oldChild is PPolicy && Policys.Contains(oldChild as PPolicy))
+            {
+                if (!(newChild is PPolicy) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Policys.IndexOf(oldChild as PPolicy);
+                if (newChild == null)
+                    Policys.RemoveAt(index);
+                else
+                    Policys[index] = newChild as PPolicy;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            {
+                PPolicy[] temp = new PPolicy[Policys.Count];
+                Policys.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PLabel Clone()
+        {
+            return new ALabel(Policys);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Policys);
+        }
+    }
+    public abstract partial class PPolicy : Production<PPolicy>
+    {
+        public PPolicy()
+        {
+        }
+        
+    }
+    public partial class AVariablePolicy : PPolicy
+    {
+        private TIdentifier _identifier_;
+        
+        public AVariablePolicy(TIdentifier _identifier_)
+            : base()
+        {
+            this.Identifier = _identifier_;
+        }
+        
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in AVariablePolicy cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AVariablePolicy cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Identifier;
+        }
+        
+        public override PPolicy Clone()
+        {
+            return new AVariablePolicy(Identifier.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Identifier);
+        }
+    }
+    public partial class APrincipalPolicy : PPolicy
+    {
+        private PPrincipal _owner_;
+        private NodeList<PPrincipal> _readers_;
+        
+        public APrincipalPolicy(PPrincipal _owner_, IEnumerable<PPrincipal> _readers_)
+            : base()
+        {
+            this.Owner = _owner_;
+            this._readers_ = new NodeList<PPrincipal>(this, _readers_, true);
+        }
+        
+        public PPrincipal Owner
+        {
+            get { return _owner_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Owner in APrincipalPolicy cannot be null.", "value");
+                
+                if (_owner_ != null)
+                    SetParent(_owner_, null);
+                SetParent(value, this);
+                
+                _owner_ = value;
+            }
+        }
+        public NodeList<PPrincipal> Readers
+        {
+            get { return _readers_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Owner == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Owner in APrincipalPolicy cannot be null.", "newChild");
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Owner = newChild as PPrincipal;
+            }
+            else if (oldChild is PPrincipal && Readers.Contains(oldChild as PPrincipal))
+            {
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Readers.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Readers.RemoveAt(index);
+                else
+                    Readers[index] = newChild as PPrincipal;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Owner;
+            {
+                PPrincipal[] temp = new PPrincipal[Readers.Count];
+                Readers.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PPolicy Clone()
+        {
+            return new APrincipalPolicy(Owner.Clone(), Readers);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Owner, Readers);
+        }
+    }
+    public abstract partial class PPrincipal : Production<PPrincipal>
+    {
+        public PPrincipal()
+        {
+        }
+        
+    }
+    public partial class APrincipal : PPrincipal
+    {
+        private TIdentifier _identifier_;
+        
+        public APrincipal(TIdentifier _identifier_)
+            : base()
+        {
+            this.Identifier = _identifier_;
+        }
+        
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in APrincipal cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in APrincipal cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Identifier;
+        }
+        
+        public override PPrincipal Clone()
+        {
+            return new APrincipal(Identifier.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Identifier);
+        }
+    }
+    public partial class ALowerPrincipal : PPrincipal
+    {
+        private TUnderscore _underscore_;
+        
+        public ALowerPrincipal(TUnderscore _underscore_)
+            : base()
+        {
+            this.Underscore = _underscore_;
+        }
+        
+        public TUnderscore Underscore
+        {
+            get { return _underscore_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Underscore in ALowerPrincipal cannot be null.", "value");
+                
+                if (_underscore_ != null)
+                    SetParent(_underscore_, null);
+                SetParent(value, this);
+                
+                _underscore_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Underscore == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Underscore in ALowerPrincipal cannot be null.", "newChild");
+                if (!(newChild is TUnderscore) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Underscore = newChild as TUnderscore;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Underscore;
+        }
+        
+        public override PPrincipal Clone()
+        {
+            return new ALowerPrincipal(Underscore.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Underscore);
+        }
+    }
+    public partial class AUpperPrincipal : PPrincipal
+    {
+        private TAsterisk _asterisk_;
+        
+        public AUpperPrincipal(TAsterisk _asterisk_)
+            : base()
+        {
+            this.Asterisk = _asterisk_;
+        }
+        
+        public TAsterisk Asterisk
+        {
+            get { return _asterisk_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Asterisk in AUpperPrincipal cannot be null.", "value");
+                
+                if (_asterisk_ != null)
+                    SetParent(_asterisk_, null);
+                SetParent(value, this);
+                
+                _asterisk_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Asterisk == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Asterisk in AUpperPrincipal cannot be null.", "newChild");
+                if (!(newChild is TAsterisk) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Asterisk = newChild as TAsterisk;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Asterisk;
+        }
+        
+        public override PPrincipal Clone()
+        {
+            return new AUpperPrincipal(Asterisk.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Asterisk);
         }
     }
     public abstract partial class PExpression : Production<PExpression>

@@ -15,7 +15,9 @@ namespace DLM.Editor
         {
             CGenerator gen = new CGenerator();
 
-            return gen.Visit((dynamic)node);
+            string temp = gen.Visit((dynamic)node);
+
+            return temp;
         }
 
         protected override string HandleDefault(Node node)
@@ -80,8 +82,7 @@ namespace DLM.Editor
         {
             string res = $"{Visit(node.Type)} {Visit(node.Identifier)}(";
 
-            foreach (var e in node.Parameters)
-                res += Visit(e);
+            res += string.Join(", ", node.Parameters.Select(x => Visit(x)));
             res += ") {";
 
             foreach (var s in node.Statements)
@@ -101,6 +102,12 @@ namespace DLM.Editor
 
         protected override string HandleAPointerType(APointerType node) => $"{Visit(node.Type)} *";
         protected override string HandleAType(AType node) => node.Name.Text;
+        protected override string HandleALabel(ALabel node) => string.Empty;
+        protected override string HandleAVariablePolicy(AVariablePolicy node) => string.Empty;
+        protected override string HandleAPrincipalPolicy(APrincipalPolicy node) => string.Empty;
+        protected override string HandleAPrincipal(APrincipal node) => string.Empty;
+        protected override string HandleALowerPrincipal(ALowerPrincipal node) => string.Empty;
+        protected override string HandleAUpperPrincipal(AUpperPrincipal node) => string.Empty;
 
         protected override string HandleAAndExpression(AAndExpression node) => $"{Visit(node.Left)} && {Visit(node.Right)}";
         protected override string HandleAOrExpression(AOrExpression node) => $"{Visit(node.Left)} || {Visit(node.Right)}";

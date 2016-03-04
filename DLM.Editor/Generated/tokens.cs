@@ -301,6 +301,30 @@ namespace DLM.Editor.Nodes
             return new TAssign(Text, Line, Position);
         }
     }
+    public partial class TUnderscore : Token<TUnderscore>
+    {
+        public TUnderscore()
+            : base(@"_")
+        {
+        }
+        public TUnderscore(int line, int pos)
+            : base(@"_", line, pos)
+        {
+        }
+        public TUnderscore(string text)
+            : base(text)
+        {
+        }
+        public TUnderscore(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TUnderscore Clone()
+        {
+            return new TUnderscore(Text, Line, Position);
+        }
+    }
     public partial class TPlus : Token<TPlus>
     {
         public TPlus()
