@@ -94,14 +94,7 @@ namespace DLM.Editor
         protected override string HandleAModuloExpression(AModuloExpression node) => $"{Visit(node.Left)} % {Visit(node.Right)}";
         protected override string HandleANegateExpression(ANegateExpression node) => $"-{Visit(node.Expression)}";
 
-        protected override string HandleAFunctionCallExpression(AFunctionCallExpression node)
-        {
-            string res = node.Function.Text + "(";
-            foreach (var e in node.Arguments)
-                res += Visit(e);
-            res += ")";
-            return res;
-        }
+        protected override string HandleAFunctionCallExpression(AFunctionCallExpression node) => $"{node.Function.Text} ({Visit(node.Arguments, ", ")})";
 
         protected override string HandleAParenthesisExpression(AParenthesisExpression node) => $"({Visit(node.Expression)})";
         protected override string HandleADeclassifyExpression(ADeclassifyExpression node) => node.Identifier.Text;
