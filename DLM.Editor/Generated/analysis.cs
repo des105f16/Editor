@@ -63,6 +63,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(AArrayField node)
+        {
+            HandleAArrayField(node);
+        }
+        protected virtual void HandleAArrayField(AArrayField node)
+        {
+            HandleDefault(node);
+        }
         
         public void Visit(PInclude node)
         {
@@ -94,6 +102,14 @@ namespace DLM.Editor.Analysis
             HandleADeclarationStatement(node);
         }
         protected virtual void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AArrayDeclarationStatement node)
+        {
+            HandleAArrayDeclarationStatement(node);
+        }
+        protected virtual void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             HandleDefault(node);
         }
@@ -822,6 +838,12 @@ namespace DLM.Editor.Analysis
             Visit(node.Type);
             Visit(node.Identifier);
         }
+        protected override void HandleAArrayField(AArrayField node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
+            Visit(node.Size);
+        }
         protected override void HandleAInclude(AInclude node)
         {
             Visit(node.File);
@@ -832,6 +854,12 @@ namespace DLM.Editor.Analysis
             Visit(node.Identifier);
             if (node.HasExpression)
                 Visit(node.Expression);
+        }
+        protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
+            Visit(node.Size);
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
@@ -1044,6 +1072,12 @@ namespace DLM.Editor.Analysis
             Visit(node.Identifier);
             Visit(node.Type);
         }
+        protected override void HandleAArrayField(AArrayField node)
+        {
+            Visit(node.Size);
+            Visit(node.Identifier);
+            Visit(node.Type);
+        }
         protected override void HandleAInclude(AInclude node)
         {
             Visit(node.File);
@@ -1052,6 +1086,12 @@ namespace DLM.Editor.Analysis
         {
             if (node.HasExpression)
                 Visit(node.Expression);
+            Visit(node.Identifier);
+            Visit(node.Type);
+        }
+        protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
+        {
+            Visit(node.Size);
             Visit(node.Identifier);
             Visit(node.Type);
         }
@@ -1278,6 +1318,11 @@ namespace DLM.Editor.Analysis
             return HandleAField(node);
         }
         protected abstract Result HandleAField(AField node);
+        private Result dispatch(AArrayField node)
+        {
+            return HandleAArrayField(node);
+        }
+        protected abstract Result HandleAArrayField(AArrayField node);
         
         public Result Visit(PInclude node)
         {
@@ -1306,6 +1351,11 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node);
+        private Result dispatch(AArrayDeclarationStatement node)
+        {
+            return HandleAArrayDeclarationStatement(node);
+        }
+        protected abstract Result HandleAArrayDeclarationStatement(AArrayDeclarationStatement node);
         private Result dispatch(AAssignmentStatement node)
         {
             return HandleAAssignmentStatement(node);
@@ -1930,6 +1980,11 @@ namespace DLM.Editor.Analysis
             return HandleAField(node, arg1);
         }
         protected abstract Result HandleAField(AField node, T1 arg1);
+        private Result dispatch(AArrayField node, T1 arg1)
+        {
+            return HandleAArrayField(node, arg1);
+        }
+        protected abstract Result HandleAArrayField(AArrayField node, T1 arg1);
         
         public Result Visit(PInclude node, T1 arg1)
         {
@@ -1958,6 +2013,11 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1);
+        private Result dispatch(AArrayDeclarationStatement node, T1 arg1)
+        {
+            return HandleAArrayDeclarationStatement(node, arg1);
+        }
+        protected abstract Result HandleAArrayDeclarationStatement(AArrayDeclarationStatement node, T1 arg1);
         private Result dispatch(AAssignmentStatement node, T1 arg1)
         {
             return HandleAAssignmentStatement(node, arg1);
@@ -2582,6 +2642,11 @@ namespace DLM.Editor.Analysis
             return HandleAField(node, arg1, arg2);
         }
         protected abstract Result HandleAField(AField node, T1 arg1, T2 arg2);
+        private Result dispatch(AArrayField node, T1 arg1, T2 arg2)
+        {
+            return HandleAArrayField(node, arg1, arg2);
+        }
+        protected abstract Result HandleAArrayField(AArrayField node, T1 arg1, T2 arg2);
         
         public Result Visit(PInclude node, T1 arg1, T2 arg2)
         {
@@ -2610,6 +2675,11 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1, arg2);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AArrayDeclarationStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAArrayDeclarationStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAArrayDeclarationStatement(AArrayDeclarationStatement node, T1 arg1, T2 arg2);
         private Result dispatch(AAssignmentStatement node, T1 arg1, T2 arg2)
         {
             return HandleAAssignmentStatement(node, arg1, arg2);
@@ -3234,6 +3304,11 @@ namespace DLM.Editor.Analysis
             return HandleAField(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleAField(AField node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AArrayField node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAArrayField(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAArrayField(AArrayField node, T1 arg1, T2 arg2, T3 arg3);
         
         public Result Visit(PInclude node, T1 arg1, T2 arg2, T3 arg3)
         {
@@ -3262,6 +3337,11 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AArrayDeclarationStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAArrayDeclarationStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAArrayDeclarationStatement(AArrayDeclarationStatement node, T1 arg1, T2 arg2, T3 arg3);
         private Result dispatch(AAssignmentStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleAAssignmentStatement(node, arg1, arg2, arg3);

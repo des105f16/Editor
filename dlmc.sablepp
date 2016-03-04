@@ -86,12 +86,15 @@ Abstract Syntax Tree
     root = P.include* P.struct* statement*;
     
     struct = identifier field* [name]:identifier;
-    field = type identifier;
+    field
+        = type identifier
+        | {array} type identifier [size]:number;
     
     include = file;
     
     statement
         = {declaration} type identifier expression?
+        | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
         | {acts_for} [method]:identifier [principal]:identifier statement*
         | {if} expression statement*
@@ -111,13 +114,17 @@ Productions
     root = P.include* P.struct* glstmt*;
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
-    field = type identifier semicolon -> New field(type, identifier);
+    field
+        = type identifier semicolon -> New field(type, identifier)
+        | {a} type identifier l_squ number r_squ semicolon -> New field.array(type, identifier, number)
+        ;
     
     include = T.include file -> New include(file);
     
     glstmt -> statement
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
+        | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {func} type identifier l_par fparams r_par l_cur stmt* r_cur -> New statement.function_declaration(type, identifier, [fparams], [stmt])
         ;
     fparams -> function_parameter*
@@ -138,6 +145,7 @@ Productions
     otherstmt -> statement
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
+        | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
         | {act} [m]:identifier acts_for [p]:identifier l_cur stmt* r_cur -> New statement.acts_for(m, p, [stmt])

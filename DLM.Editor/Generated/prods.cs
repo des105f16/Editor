@@ -303,6 +303,77 @@ namespace DLM.Editor.Nodes
             return string.Format("{0} {1}", Type, Identifier);
         }
     }
+    public partial class AArrayField : PField
+    {
+        private TNumber _size_;
+        
+        public AArrayField(PType _type_, TIdentifier _identifier_, TNumber _size_)
+            : base(_type_, _identifier_)
+        {
+            this.Size = _size_;
+        }
+        
+        public TNumber Size
+        {
+            get { return _size_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Size in AArrayField cannot be null.", "value");
+                
+                if (_size_ != null)
+                    SetParent(_size_, null);
+                SetParent(value, this);
+                
+                _size_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in AArrayField cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AArrayField cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (Size == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Size in AArrayField cannot be null.", "newChild");
+                if (!(newChild is TNumber) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Size = newChild as TNumber;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+            yield return Size;
+        }
+        
+        public override PField Clone()
+        {
+            return new AArrayField(Type.Clone(), Identifier.Clone(), Size.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Type, Identifier, Size);
+        }
+    }
     public abstract partial class PInclude : Production<PInclude>
     {
         private TFile _file_;
@@ -474,6 +545,111 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1} {2}", Type, Identifier, Expression);
+        }
+    }
+    public partial class AArrayDeclarationStatement : PStatement
+    {
+        private PType _type_;
+        private TIdentifier _identifier_;
+        private TNumber _size_;
+        
+        public AArrayDeclarationStatement(PType _type_, TIdentifier _identifier_, TNumber _size_)
+            : base()
+        {
+            this.Type = _type_;
+            this.Identifier = _identifier_;
+            this.Size = _size_;
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in AArrayDeclarationStatement cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in AArrayDeclarationStatement cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public TNumber Size
+        {
+            get { return _size_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Size in AArrayDeclarationStatement cannot be null.", "value");
+                
+                if (_size_ != null)
+                    SetParent(_size_, null);
+                SetParent(value, this);
+                
+                _size_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in AArrayDeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AArrayDeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (Size == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Size in AArrayDeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is TNumber) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Size = newChild as TNumber;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+            yield return Size;
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AArrayDeclarationStatement(Type.Clone(), Identifier.Clone(), Size.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Type, Identifier, Size);
         }
     }
     public partial class AAssignmentStatement : PStatement

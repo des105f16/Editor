@@ -47,6 +47,7 @@ namespace DLM.Editor
 
         protected override string HandleAStruct(AStruct node) => $"typedef struct {Visit(node.Identifier)} {{" + Visit(node.Fields, "\r\n") + $"}} {Visit(node.Name)};";
         protected override string HandleAField(AField node) => Visit(node.Type) + " " + Visit(node.Identifier) + ";";
+        protected override string HandleAArrayField(AArrayField node) => $"{Visit(node.Type)} {Visit(node.Identifier)}[{Visit(node.Size)}];";
 
         protected override string HandleADeclarationStatement(ADeclarationStatement node)
         {
@@ -55,6 +56,7 @@ namespace DLM.Editor
             else
                 return $"{Visit(node.Type)} {node.Identifier};";
         }
+        protected override string HandleAArrayDeclarationStatement(AArrayDeclarationStatement node) => $"{Visit(node.Type)} {Visit(node.Identifier)}[{Visit(node.Size)}];";
         protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
         protected override string HandleAActsForStatement(AActsForStatement node) => Visit(node.Statements);
         protected override string HandleAIfStatement(AIfStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.Statements)}";
