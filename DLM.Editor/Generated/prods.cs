@@ -5,13 +5,161 @@ using DLM.Editor.Analysis;
 
 namespace DLM.Editor.Nodes
 {
+    public abstract partial class PRoot : Production<PRoot>
+    {
+        private NodeList<PInclude> _includes_;
+        private NodeList<PStatement> _statements_;
+        
+        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PStatement> _statements_)
+        {
+            this._includes_ = new NodeList<PInclude>(this, _includes_, true);
+            this._statements_ = new NodeList<PStatement>(this, _statements_, true);
+        }
+        
+        public NodeList<PInclude> Includes
+        {
+            get { return _includes_; }
+        }
+        public NodeList<PStatement> Statements
+        {
+            get { return _statements_; }
+        }
+        
+    }
+    public partial class ARoot : PRoot
+    {
+        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PStatement> _statements_)
+            : base(_includes_, _statements_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (oldChild is PInclude && Includes.Contains(oldChild as PInclude))
+            {
+                if (!(newChild is PInclude) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Includes.IndexOf(oldChild as PInclude);
+                if (newChild == null)
+                    Includes.RemoveAt(index);
+                else
+                    Includes[index] = newChild as PInclude;
+            }
+            else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Statements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    Statements.RemoveAt(index);
+                else
+                    Statements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            {
+                PInclude[] temp = new PInclude[Includes.Count];
+                Includes.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
+                PStatement[] temp = new PStatement[Statements.Count];
+                Statements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PRoot Clone()
+        {
+            return new ARoot(Includes, Statements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Includes, Statements);
+        }
+    }
+    public abstract partial class PInclude : Production<PInclude>
+    {
+        private TFile _file_;
+        
+        public PInclude(TFile _file_)
+        {
+            this.File = _file_;
+        }
+        
+        public TFile File
+        {
+            get { return _file_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("File in PInclude cannot be null.", "value");
+                
+                if (_file_ != null)
+                    SetParent(_file_, null);
+                SetParent(value, this);
+                
+                _file_ = value;
+            }
+        }
+        
+    }
+    public partial class AInclude : PInclude
+    {
+        public AInclude(TFile _file_)
+            : base(_file_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (File == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("File in AInclude cannot be null.", "newChild");
+                if (!(newChild is TFile) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                File = newChild as TFile;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return File;
+        }
+        
+        public override PInclude Clone()
+        {
+            return new AInclude(File.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", File);
+        }
+    }
     public abstract partial class PStatement : Production<PStatement>
+    {
+        public PStatement()
+        {
+        }
+        
+    }
+    public partial class ADeclarationStatement : PStatement
     {
         private PType _type_;
         private TIdentifier _identifier_;
         private PExpression _expression_;
         
-        public PStatement(PType _type_, TIdentifier _identifier_, PExpression _expression_)
+        public ADeclarationStatement(PType _type_, TIdentifier _identifier_, PExpression _expression_)
+            : base()
         {
             this.Type = _type_;
             this.Identifier = _identifier_;
@@ -24,7 +172,7 @@ namespace DLM.Editor.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Type in PStatement cannot be null.", "value");
+                    throw new ArgumentException("Type in ADeclarationStatement cannot be null.", "value");
                 
                 if (_type_ != null)
                     SetParent(_type_, null);
@@ -39,7 +187,7 @@ namespace DLM.Editor.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Identifier in PStatement cannot be null.", "value");
+                    throw new ArgumentException("Identifier in ADeclarationStatement cannot be null.", "value");
                 
                 if (_identifier_ != null)
                     SetParent(_identifier_, null);
@@ -64,14 +212,6 @@ namespace DLM.Editor.Nodes
         public bool HasExpression
         {
             get { return _expression_ != null; }
-        }
-        
-    }
-    public partial class ADeclarationStatement : PStatement
-    {
-        public ADeclarationStatement(PType _type_, TIdentifier _identifier_, PExpression _expression_)
-            : base(_type_, _identifier_, _expression_)
-        {
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
@@ -116,6 +256,601 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1} {2}", Type, Identifier, Expression);
+        }
+    }
+    public partial class AAssignmentStatement : PStatement
+    {
+        private TIdentifier _identifier_;
+        private PExpression _expression_;
+        
+        public AAssignmentStatement(TIdentifier _identifier_, PExpression _expression_)
+            : base()
+        {
+            this.Identifier = _identifier_;
+            this.Expression = _expression_;
+        }
+        
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in AAssignmentStatement cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in AAssignmentStatement cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AAssignmentStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in AAssignmentStatement cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Identifier;
+            yield return Expression;
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AAssignmentStatement(Identifier.Clone(), Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Identifier, Expression);
+        }
+    }
+    public partial class AIfStatement : PStatement
+    {
+        private PExpression _expression_;
+        private NodeList<PStatement> _statements_;
+        
+        public AIfStatement(PExpression _expression_, IEnumerable<PStatement> _statements_)
+            : base()
+        {
+            this.Expression = _expression_;
+            this._statements_ = new NodeList<PStatement>(this, _statements_, true);
+        }
+        
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in AIfStatement cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        public NodeList<PStatement> Statements
+        {
+            get { return _statements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in AIfStatement cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Statements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    Statements.RemoveAt(index);
+                else
+                    Statements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Expression;
+            {
+                PStatement[] temp = new PStatement[Statements.Count];
+                Statements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AIfStatement(Expression.Clone(), Statements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Expression, Statements);
+        }
+    }
+    public partial class AIfElseStatement : PStatement
+    {
+        private PExpression _expression_;
+        private NodeList<PStatement> _ifstatements_;
+        private NodeList<PStatement> _elsestatements_;
+        
+        public AIfElseStatement(PExpression _expression_, IEnumerable<PStatement> _ifstatements_, IEnumerable<PStatement> _elsestatements_)
+            : base()
+        {
+            this.Expression = _expression_;
+            this._ifstatements_ = new NodeList<PStatement>(this, _ifstatements_, true);
+            this._elsestatements_ = new NodeList<PStatement>(this, _elsestatements_, true);
+        }
+        
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in AIfElseStatement cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        public NodeList<PStatement> IfStatements
+        {
+            get { return _ifstatements_; }
+        }
+        public NodeList<PStatement> ElseStatements
+        {
+            get { return _elsestatements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in AIfElseStatement cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else if (oldChild is PStatement && IfStatements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = IfStatements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    IfStatements.RemoveAt(index);
+                else
+                    IfStatements[index] = newChild as PStatement;
+            }
+            else if (oldChild is PStatement && ElseStatements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = ElseStatements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    ElseStatements.RemoveAt(index);
+                else
+                    ElseStatements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Expression;
+            {
+                PStatement[] temp = new PStatement[IfStatements.Count];
+                IfStatements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
+                PStatement[] temp = new PStatement[ElseStatements.Count];
+                ElseStatements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AIfElseStatement(Expression.Clone(), IfStatements, ElseStatements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Expression, IfStatements, ElseStatements);
+        }
+    }
+    public partial class AWhileStatement : PStatement
+    {
+        private PExpression _expression_;
+        private NodeList<PStatement> _statements_;
+        
+        public AWhileStatement(PExpression _expression_, IEnumerable<PStatement> _statements_)
+            : base()
+        {
+            this.Expression = _expression_;
+            this._statements_ = new NodeList<PStatement>(this, _statements_, true);
+        }
+        
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in AWhileStatement cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        public NodeList<PStatement> Statements
+        {
+            get { return _statements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in AWhileStatement cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Statements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    Statements.RemoveAt(index);
+                else
+                    Statements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Expression;
+            {
+                PStatement[] temp = new PStatement[Statements.Count];
+                Statements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AWhileStatement(Expression.Clone(), Statements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Expression, Statements);
+        }
+    }
+    public partial class AFunctionDeclarationStatement : PStatement
+    {
+        private PType _type_;
+        private TIdentifier _identifier_;
+        private NodeList<PFunctionParameter> _parameters_;
+        private NodeList<PStatement> _statements_;
+        
+        public AFunctionDeclarationStatement(PType _type_, TIdentifier _identifier_, IEnumerable<PFunctionParameter> _parameters_, IEnumerable<PStatement> _statements_)
+            : base()
+        {
+            this.Type = _type_;
+            this.Identifier = _identifier_;
+            this._parameters_ = new NodeList<PFunctionParameter>(this, _parameters_, true);
+            this._statements_ = new NodeList<PStatement>(this, _statements_, true);
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in AFunctionDeclarationStatement cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in AFunctionDeclarationStatement cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        public NodeList<PFunctionParameter> Parameters
+        {
+            get { return _parameters_; }
+        }
+        public NodeList<PStatement> Statements
+        {
+            get { return _statements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in AFunctionDeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AFunctionDeclarationStatement cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else if (oldChild is PFunctionParameter && Parameters.Contains(oldChild as PFunctionParameter))
+            {
+                if (!(newChild is PFunctionParameter) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Parameters.IndexOf(oldChild as PFunctionParameter);
+                if (newChild == null)
+                    Parameters.RemoveAt(index);
+                else
+                    Parameters[index] = newChild as PFunctionParameter;
+            }
+            else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Statements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    Statements.RemoveAt(index);
+                else
+                    Statements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+            {
+                PFunctionParameter[] temp = new PFunctionParameter[Parameters.Count];
+                Parameters.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
+                PStatement[] temp = new PStatement[Statements.Count];
+                Statements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters, Statements);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2} {3}", Type, Identifier, Parameters, Statements);
+        }
+    }
+    public partial class AReturnStatement : PStatement
+    {
+        private PExpression _expression_;
+        
+        public AReturnStatement(PExpression _expression_)
+            : base()
+        {
+            this.Expression = _expression_;
+        }
+        
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        public bool HasExpression
+        {
+            get { return _expression_ != null; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Expression == oldChild)
+            {
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            if (HasExpression)
+                yield return Expression;
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AReturnStatement(Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Expression);
+        }
+    }
+    public abstract partial class PFunctionParameter : Production<PFunctionParameter>
+    {
+        private PType _type_;
+        private TIdentifier _identifier_;
+        
+        public PFunctionParameter(PType _type_, TIdentifier _identifier_)
+        {
+            this.Type = _type_;
+            this.Identifier = _identifier_;
+        }
+        
+        public PType Type
+        {
+            get { return _type_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Type in PFunctionParameter cannot be null.", "value");
+                
+                if (_type_ != null)
+                    SetParent(_type_, null);
+                SetParent(value, this);
+                
+                _type_ = value;
+            }
+        }
+        public TIdentifier Identifier
+        {
+            get { return _identifier_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Identifier in PFunctionParameter cannot be null.", "value");
+                
+                if (_identifier_ != null)
+                    SetParent(_identifier_, null);
+                SetParent(value, this);
+                
+                _identifier_ = value;
+            }
+        }
+        
+    }
+    public partial class AFunctionParameter : PFunctionParameter
+    {
+        public AFunctionParameter(PType _type_, TIdentifier _identifier_)
+            : base(_type_, _identifier_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Type == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Type in AFunctionParameter cannot be null.", "newChild");
+                if (!(newChild is PType) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Type = newChild as PType;
+            }
+            else if (Identifier == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Identifier in AFunctionParameter cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Identifier = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Type;
+            yield return Identifier;
+        }
+        
+        public override PFunctionParameter Clone()
+        {
+            return new AFunctionParameter(Type.Clone(), Identifier.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Type, Identifier);
         }
     }
     public abstract partial class PType : Production<PType>

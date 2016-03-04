@@ -11,7 +11,13 @@ Helpers
     not_star_slash = [not_star - '/'];
     long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
 
+States
+    normal, include;
+
 Tokens
+    {normal -> include} include = '#include';
+    {include -> normal} file = '<' [all - '>']* '>';
+    
     bool = 'true'|'false';
     number = digit+;
     
@@ -68,17 +74,56 @@ Token Syntax Highlight
     {label_start, label_end} text: #c90, bold;
 
 Abstract Syntax Tree
+    root = P.include* statement*;
+    
+    include = file;
+    
     statement
         = {declaration} type identifier expression?
+        | {assignment} identifier expression
+        | {if} expression statement*
+        | {if_else} expression [if_statements]:statement* [else_statements]:statement*
+        | {while} expression statement*
+        | {function_declaration} type identifier [parameters]:function_parameter* statement*
+        | {return} expression?
+        ;
+    function_parameter
+        = type identifier
         ;
     type
         = [name]:identifier
         | {pointer} type asterisk
         ;
 Productions
-    stmt -> statement
+    root = P.include* glstmt*;
+    
+    include = T.include file -> New include(file);
+    
+    glstmt -> statement
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
+        | {func} type identifier l_par fparams r_par l_cur stmt* r_cur -> New statement.function_declaration(type, identifier, [fparams], [stmt])
+        ;
+    fparams -> function_parameter*
+        = type identifier -> [New function_parameter(type, identifier)]
+        | {tail} [t1]:type [i1]:identifier comma fparams -> [New function_parameter(t1, i1), fparams]
+        ;
+    stmt -> statement
+        = {one} if l_par expr r_par block -> New statement.if(expr, [block])
+        | {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
+        | {w} while l_par expr r_par block -> New statement.while(expr, [block])
+        | otherstmt -> otherstmt
+        ;
+    stmt2 -> statement
+        = {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
+        | {w} while l_par expr r_par block2 -> New statement.while(expr, [block2])
+        | otherstmt -> otherstmt
+        ;
+    otherstmt -> statement
+        = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
+        | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
+        | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
+        | {r} return expr? semicolon -> New statement.return(expr)
         ;
     type
         = identifier -> New type(identifier)
@@ -86,6 +131,10 @@ Productions
         ;
     block -> statement*
         = {one} stmt -> [stmt]
+        | {many} l_cur stmt* r_cur -> [stmt]
+        ;
+    block2 -> statement*
+        = {one} stmt2 -> [stmt2]
         | {many} l_cur stmt* r_cur -> [stmt]
         ;
 

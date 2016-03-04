@@ -11,8 +11,42 @@ namespace DLM.Editor.Analysis
     public partial class AnalysisAdapter : AnalysisAdapter<object>
     {
     }
-    public partial class AnalysisAdapter<Value> : Adapter<Value, PStatement>
+    public partial class AnalysisAdapter<Value> : Adapter<Value, PRoot>
     {
+        public void Visit(PRoot node)
+        {
+            HandlePRoot(node);
+        }
+        protected virtual void HandlePRoot(PRoot node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(ARoot node)
+        {
+            HandleARoot(node);
+        }
+        protected virtual void HandleARoot(ARoot node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PInclude node)
+        {
+            HandlePInclude(node);
+        }
+        protected virtual void HandlePInclude(PInclude node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AInclude node)
+        {
+            HandleAInclude(node);
+        }
+        protected virtual void HandleAInclude(AInclude node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PStatement node)
         {
             HandlePStatement(node);
@@ -26,6 +60,71 @@ namespace DLM.Editor.Analysis
             HandleADeclarationStatement(node);
         }
         protected virtual void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AAssignmentStatement node)
+        {
+            HandleAAssignmentStatement(node);
+        }
+        protected virtual void HandleAAssignmentStatement(AAssignmentStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AIfStatement node)
+        {
+            HandleAIfStatement(node);
+        }
+        protected virtual void HandleAIfStatement(AIfStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AIfElseStatement node)
+        {
+            HandleAIfElseStatement(node);
+        }
+        protected virtual void HandleAIfElseStatement(AIfElseStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AWhileStatement node)
+        {
+            HandleAWhileStatement(node);
+        }
+        protected virtual void HandleAWhileStatement(AWhileStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AFunctionDeclarationStatement node)
+        {
+            HandleAFunctionDeclarationStatement(node);
+        }
+        protected virtual void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AReturnStatement node)
+        {
+            HandleAReturnStatement(node);
+        }
+        protected virtual void HandleAReturnStatement(AReturnStatement node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PFunctionParameter node)
+        {
+            HandlePFunctionParameter(node);
+        }
+        protected virtual void HandlePFunctionParameter(PFunctionParameter node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AFunctionParameter node)
+        {
+            HandleAFunctionParameter(node);
+        }
+        protected virtual void HandleAFunctionParameter(AFunctionParameter node)
         {
             HandleDefault(node);
         }
@@ -225,6 +324,22 @@ namespace DLM.Editor.Analysis
             HandleDefault(node);
         }
         
+        public void Visit(TInclude node)
+        {
+            HandleTInclude(node);
+        }
+        protected virtual void HandleTInclude(TInclude node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TFile node)
+        {
+            HandleTFile(node);
+        }
+        protected virtual void HandleTFile(TFile node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TBool node)
         {
             HandleTBool(node);
@@ -511,18 +626,65 @@ namespace DLM.Editor.Analysis
                 Visit((dynamic)temp[i]);
         }
         
-        protected override void HandleStart(Start<PStatement> node)
+        protected override void HandleStart(Start<PRoot> node)
         {
             Visit(node.Root);
             Visit(node.EOF);
         }
         
+        protected override void HandleARoot(ARoot node)
+        {
+            Visit(node.Includes);
+            Visit(node.Statements);
+        }
+        protected override void HandleAInclude(AInclude node)
+        {
+            Visit(node.File);
+        }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             Visit(node.Type);
             Visit(node.Identifier);
             if (node.HasExpression)
                 Visit(node.Expression);
+        }
+        protected override void HandleAAssignmentStatement(AAssignmentStatement node)
+        {
+            Visit(node.Identifier);
+            Visit(node.Expression);
+        }
+        protected override void HandleAIfStatement(AIfStatement node)
+        {
+            Visit(node.Expression);
+            Visit(node.Statements);
+        }
+        protected override void HandleAIfElseStatement(AIfElseStatement node)
+        {
+            Visit(node.Expression);
+            Visit(node.IfStatements);
+            Visit(node.ElseStatements);
+        }
+        protected override void HandleAWhileStatement(AWhileStatement node)
+        {
+            Visit(node.Expression);
+            Visit(node.Statements);
+        }
+        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
+            Visit(node.Parameters);
+            Visit(node.Statements);
+        }
+        protected override void HandleAReturnStatement(AReturnStatement node)
+        {
+            if (node.HasExpression)
+                Visit(node.Expression);
+        }
+        protected override void HandleAFunctionParameter(AFunctionParameter node)
+        {
+            Visit(node.Type);
+            Visit(node.Identifier);
         }
         protected override void HandleAType(AType node)
         {
@@ -635,16 +797,63 @@ namespace DLM.Editor.Analysis
                 Visit((dynamic)temp[i]);
         }
         
-        protected override void HandleStart(Start<PStatement> node)
+        protected override void HandleStart(Start<PRoot> node)
         {
             Visit(node.EOF);
             Visit(node.Root);
         }
         
+        protected override void HandleARoot(ARoot node)
+        {
+            Visit(node.Statements);
+            Visit(node.Includes);
+        }
+        protected override void HandleAInclude(AInclude node)
+        {
+            Visit(node.File);
+        }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             if (node.HasExpression)
                 Visit(node.Expression);
+            Visit(node.Identifier);
+            Visit(node.Type);
+        }
+        protected override void HandleAAssignmentStatement(AAssignmentStatement node)
+        {
+            Visit(node.Expression);
+            Visit(node.Identifier);
+        }
+        protected override void HandleAIfStatement(AIfStatement node)
+        {
+            Visit(node.Statements);
+            Visit(node.Expression);
+        }
+        protected override void HandleAIfElseStatement(AIfElseStatement node)
+        {
+            Visit(node.ElseStatements);
+            Visit(node.IfStatements);
+            Visit(node.Expression);
+        }
+        protected override void HandleAWhileStatement(AWhileStatement node)
+        {
+            Visit(node.Statements);
+            Visit(node.Expression);
+        }
+        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            Visit(node.Statements);
+            Visit(node.Parameters);
+            Visit(node.Identifier);
+            Visit(node.Type);
+        }
+        protected override void HandleAReturnStatement(AReturnStatement node)
+        {
+            if (node.HasExpression)
+                Visit(node.Expression);
+        }
+        protected override void HandleAFunctionParameter(AFunctionParameter node)
+        {
             Visit(node.Identifier);
             Visit(node.Type);
         }
@@ -751,8 +960,36 @@ namespace DLM.Editor.Analysis
     
     #region Return analysis adapters
     
-    public abstract partial class ReturnAnalysisAdapter<Result> : ReturnAdapter<Result, PStatement>
+    public abstract partial class ReturnAnalysisAdapter<Result> : ReturnAdapter<Result, PRoot>
     {
+        public Result Visit(PRoot node)
+        {
+            return HandlePRoot(node);
+        }
+        protected virtual Result HandlePRoot(PRoot node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(ARoot node)
+        {
+            return HandleARoot(node);
+        }
+        protected abstract Result HandleARoot(ARoot node);
+        
+        public Result Visit(PInclude node)
+        {
+            return HandlePInclude(node);
+        }
+        protected virtual Result HandlePInclude(PInclude node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AInclude node)
+        {
+            return HandleAInclude(node);
+        }
+        protected abstract Result HandleAInclude(AInclude node);
+        
         public Result Visit(PStatement node)
         {
             return HandlePStatement(node);
@@ -766,6 +1003,50 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node);
+        private Result dispatch(AAssignmentStatement node)
+        {
+            return HandleAAssignmentStatement(node);
+        }
+        protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node);
+        private Result dispatch(AIfStatement node)
+        {
+            return HandleAIfStatement(node);
+        }
+        protected abstract Result HandleAIfStatement(AIfStatement node);
+        private Result dispatch(AIfElseStatement node)
+        {
+            return HandleAIfElseStatement(node);
+        }
+        protected abstract Result HandleAIfElseStatement(AIfElseStatement node);
+        private Result dispatch(AWhileStatement node)
+        {
+            return HandleAWhileStatement(node);
+        }
+        protected abstract Result HandleAWhileStatement(AWhileStatement node);
+        private Result dispatch(AFunctionDeclarationStatement node)
+        {
+            return HandleAFunctionDeclarationStatement(node);
+        }
+        protected abstract Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node);
+        private Result dispatch(AReturnStatement node)
+        {
+            return HandleAReturnStatement(node);
+        }
+        protected abstract Result HandleAReturnStatement(AReturnStatement node);
+        
+        public Result Visit(PFunctionParameter node)
+        {
+            return HandlePFunctionParameter(node);
+        }
+        protected virtual Result HandlePFunctionParameter(PFunctionParameter node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AFunctionParameter node)
+        {
+            return HandleAFunctionParameter(node);
+        }
+        protected abstract Result HandleAFunctionParameter(AFunctionParameter node);
         
         public Result Visit(PType node)
         {
@@ -899,6 +1180,22 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleAPointerElement(APointerElement node);
         
+        public Result Visit(TInclude node)
+        {
+            return HandleTInclude(node);
+        }
+        protected virtual Result HandleTInclude(TInclude node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TFile node)
+        {
+            return HandleTFile(node);
+        }
+        protected virtual Result HandleTFile(TFile node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TBool node)
         {
             return HandleTBool(node);
@@ -1172,8 +1469,36 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, Result> : ReturnAdapter<T1, Result, PStatement>
+    public abstract partial class ReturnAnalysisAdapter<T1, Result> : ReturnAdapter<T1, Result, PRoot>
     {
+        public Result Visit(PRoot node, T1 arg1)
+        {
+            return HandlePRoot(node, arg1);
+        }
+        protected virtual Result HandlePRoot(PRoot node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(ARoot node, T1 arg1)
+        {
+            return HandleARoot(node, arg1);
+        }
+        protected abstract Result HandleARoot(ARoot node, T1 arg1);
+        
+        public Result Visit(PInclude node, T1 arg1)
+        {
+            return HandlePInclude(node, arg1);
+        }
+        protected virtual Result HandlePInclude(PInclude node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AInclude node, T1 arg1)
+        {
+            return HandleAInclude(node, arg1);
+        }
+        protected abstract Result HandleAInclude(AInclude node, T1 arg1);
+        
         public Result Visit(PStatement node, T1 arg1)
         {
             return HandlePStatement(node, arg1);
@@ -1187,6 +1512,50 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1);
+        private Result dispatch(AAssignmentStatement node, T1 arg1)
+        {
+            return HandleAAssignmentStatement(node, arg1);
+        }
+        protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1);
+        private Result dispatch(AIfStatement node, T1 arg1)
+        {
+            return HandleAIfStatement(node, arg1);
+        }
+        protected abstract Result HandleAIfStatement(AIfStatement node, T1 arg1);
+        private Result dispatch(AIfElseStatement node, T1 arg1)
+        {
+            return HandleAIfElseStatement(node, arg1);
+        }
+        protected abstract Result HandleAIfElseStatement(AIfElseStatement node, T1 arg1);
+        private Result dispatch(AWhileStatement node, T1 arg1)
+        {
+            return HandleAWhileStatement(node, arg1);
+        }
+        protected abstract Result HandleAWhileStatement(AWhileStatement node, T1 arg1);
+        private Result dispatch(AFunctionDeclarationStatement node, T1 arg1)
+        {
+            return HandleAFunctionDeclarationStatement(node, arg1);
+        }
+        protected abstract Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node, T1 arg1);
+        private Result dispatch(AReturnStatement node, T1 arg1)
+        {
+            return HandleAReturnStatement(node, arg1);
+        }
+        protected abstract Result HandleAReturnStatement(AReturnStatement node, T1 arg1);
+        
+        public Result Visit(PFunctionParameter node, T1 arg1)
+        {
+            return HandlePFunctionParameter(node, arg1);
+        }
+        protected virtual Result HandlePFunctionParameter(PFunctionParameter node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AFunctionParameter node, T1 arg1)
+        {
+            return HandleAFunctionParameter(node, arg1);
+        }
+        protected abstract Result HandleAFunctionParameter(AFunctionParameter node, T1 arg1);
         
         public Result Visit(PType node, T1 arg1)
         {
@@ -1320,6 +1689,22 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleAPointerElement(APointerElement node, T1 arg1);
         
+        public Result Visit(TInclude node, T1 arg1)
+        {
+            return HandleTInclude(node, arg1);
+        }
+        protected virtual Result HandleTInclude(TInclude node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TFile node, T1 arg1)
+        {
+            return HandleTFile(node, arg1);
+        }
+        protected virtual Result HandleTFile(TFile node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TBool node, T1 arg1)
         {
             return HandleTBool(node, arg1);
@@ -1593,8 +1978,36 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, T2, Result> : ReturnAdapter<T1, T2, Result, PStatement>
+    public abstract partial class ReturnAnalysisAdapter<T1, T2, Result> : ReturnAdapter<T1, T2, Result, PRoot>
     {
+        public Result Visit(PRoot node, T1 arg1, T2 arg2)
+        {
+            return HandlePRoot(node, arg1, arg2);
+        }
+        protected virtual Result HandlePRoot(PRoot node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(ARoot node, T1 arg1, T2 arg2)
+        {
+            return HandleARoot(node, arg1, arg2);
+        }
+        protected abstract Result HandleARoot(ARoot node, T1 arg1, T2 arg2);
+        
+        public Result Visit(PInclude node, T1 arg1, T2 arg2)
+        {
+            return HandlePInclude(node, arg1, arg2);
+        }
+        protected virtual Result HandlePInclude(PInclude node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AInclude node, T1 arg1, T2 arg2)
+        {
+            return HandleAInclude(node, arg1, arg2);
+        }
+        protected abstract Result HandleAInclude(AInclude node, T1 arg1, T2 arg2);
+        
         public Result Visit(PStatement node, T1 arg1, T2 arg2)
         {
             return HandlePStatement(node, arg1, arg2);
@@ -1608,6 +2021,50 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1, arg2);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AAssignmentStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAAssignmentStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AIfStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAIfStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAIfStatement(AIfStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AIfElseStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAIfElseStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAIfElseStatement(AIfElseStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AWhileStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAWhileStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAWhileStatement(AWhileStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AFunctionDeclarationStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAFunctionDeclarationStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node, T1 arg1, T2 arg2);
+        private Result dispatch(AReturnStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAReturnStatement(node, arg1, arg2);
+        }
+        protected abstract Result HandleAReturnStatement(AReturnStatement node, T1 arg1, T2 arg2);
+        
+        public Result Visit(PFunctionParameter node, T1 arg1, T2 arg2)
+        {
+            return HandlePFunctionParameter(node, arg1, arg2);
+        }
+        protected virtual Result HandlePFunctionParameter(PFunctionParameter node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AFunctionParameter node, T1 arg1, T2 arg2)
+        {
+            return HandleAFunctionParameter(node, arg1, arg2);
+        }
+        protected abstract Result HandleAFunctionParameter(AFunctionParameter node, T1 arg1, T2 arg2);
         
         public Result Visit(PType node, T1 arg1, T2 arg2)
         {
@@ -1741,6 +2198,22 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleAPointerElement(APointerElement node, T1 arg1, T2 arg2);
         
+        public Result Visit(TInclude node, T1 arg1, T2 arg2)
+        {
+            return HandleTInclude(node, arg1, arg2);
+        }
+        protected virtual Result HandleTInclude(TInclude node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TFile node, T1 arg1, T2 arg2)
+        {
+            return HandleTFile(node, arg1, arg2);
+        }
+        protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TBool node, T1 arg1, T2 arg2)
         {
             return HandleTBool(node, arg1, arg2);
@@ -2014,8 +2487,36 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2);
         }
     }
-    public abstract partial class ReturnAnalysisAdapter<T1, T2, T3, Result> : ReturnAdapter<T1, T2, T3, Result, PStatement>
+    public abstract partial class ReturnAnalysisAdapter<T1, T2, T3, Result> : ReturnAdapter<T1, T2, T3, Result, PRoot>
     {
+        public Result Visit(PRoot node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePRoot(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePRoot(PRoot node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ARoot node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleARoot(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleARoot(ARoot node, T1 arg1, T2 arg2, T3 arg3);
+        
+        public Result Visit(PInclude node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePInclude(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePInclude(PInclude node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AInclude node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAInclude(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAInclude(AInclude node, T1 arg1, T2 arg2, T3 arg3);
+        
         public Result Visit(PStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePStatement(node, arg1, arg2, arg3);
@@ -2029,6 +2530,50 @@ namespace DLM.Editor.Analysis
             return HandleADeclarationStatement(node, arg1, arg2, arg3);
         }
         protected abstract Result HandleADeclarationStatement(ADeclarationStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AAssignmentStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAAssignmentStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAAssignmentStatement(AAssignmentStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AIfStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAIfStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAIfStatement(AIfStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AIfElseStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAIfElseStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAIfElseStatement(AIfElseStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AWhileStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAWhileStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAWhileStatement(AWhileStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AFunctionDeclarationStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAFunctionDeclarationStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node, T1 arg1, T2 arg2, T3 arg3);
+        private Result dispatch(AReturnStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAReturnStatement(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAReturnStatement(AReturnStatement node, T1 arg1, T2 arg2, T3 arg3);
+        
+        public Result Visit(PFunctionParameter node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePFunctionParameter(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePFunctionParameter(PFunctionParameter node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AFunctionParameter node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAFunctionParameter(node, arg1, arg2, arg3);
+        }
+        protected abstract Result HandleAFunctionParameter(AFunctionParameter node, T1 arg1, T2 arg2, T3 arg3);
         
         public Result Visit(PType node, T1 arg1, T2 arg2, T3 arg3)
         {
@@ -2162,6 +2707,22 @@ namespace DLM.Editor.Analysis
         }
         protected abstract Result HandleAPointerElement(APointerElement node, T1 arg1, T2 arg2, T3 arg3);
         
+        public Result Visit(TInclude node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTInclude(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTInclude(TInclude node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TFile node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTFile(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         public Result Visit(TBool node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTBool(node, arg1, arg2, arg3);

@@ -5,6 +5,46 @@ using DLM.Editor.Analysis;
 
 namespace DLM.Editor.Nodes
 {
+    public partial class TInclude : Token<TInclude>
+    {
+        public TInclude()
+            : base(@"#include")
+        {
+        }
+        public TInclude(int line, int pos)
+            : base(@"#include", line, pos)
+        {
+        }
+        public TInclude(string text)
+            : base(text)
+        {
+        }
+        public TInclude(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TInclude Clone()
+        {
+            return new TInclude(Text, Line, Position);
+        }
+    }
+    public partial class TFile : Token<TFile>
+    {
+        public TFile(string text)
+            : base(text)
+        {
+        }
+        public TFile(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TFile Clone()
+        {
+            return new TFile(Text, Line, Position);
+        }
+    }
     public partial class TBool : Token<TBool>
     {
         public TBool(string text)
