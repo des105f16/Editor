@@ -17,51 +17,74 @@ namespace DLM.Editor
     {
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
-            CompileWithGCC(root, compilationOptions.ErrorManager);
+            Validator v = new Validator(root, compilationOptions);
+
+            v.CompileWithGCC();
+            if (v.Errors)
+                return;
         }
 
-        private static void CompileWithGCC(Start<PRoot> root, ErrorManager errors)
+        private class Validator
         {
-            var file = Path.GetTempFileName();
-            File.WriteAllText(file, CGenerator.GenerateC(root));
+            private ValidationData data;
 
-            ProcessStartInfo psi = new ProcessStartInfo(@"C:\MinGW\bin\gcc.exe", "-x c \"" + file + "\"")
+            private readonly Start<PRoot> root;
+            private readonly CompilationOptions compilationOptions;
+            private ErrorManager errorManager => compilationOptions.ErrorManager;
+
+            public Validator(Start<PRoot> root, CompilationOptions compilationOptions)
             {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                UseShellExecute = false
-            };
+                this.data = new ValidationData();
 
-            psi.CreateNoWindow = true;
-
-            string[] lines;
-
-            using (var p = Process.Start(psi))
-            {
-                p.WaitForExit();
-                lines = p.StandardError.ReadToEnd().Split('\r', '\n');
+                this.root = root;
+                this.compilationOptions = compilationOptions;
             }
 
-            foreach (var l in lines)
+            public bool Errors => compilationOptions.ErrorManager.Errors.Count > 0;
+
+            public void CompileWithGCC()
             {
-                var m = Regex.Match(l, @"\:(?<line>[0-9]+)\:(?<pos>[0-9]+)\:(?<message>[^\n\r]+)");
-                if (m.Success)
+                var file = Path.GetTempFileName();
+                File.WriteAllText(file, CGenerator.GenerateC(root));
+
+                ProcessStartInfo psi = new ProcessStartInfo(@"C:\MinGW\bin\gcc.exe", "-x c \"" + file + "\"")
                 {
-                    int line = int.Parse(m.Groups["line"].Value);
-                    int pos = int.Parse(m.Groups["pos"].Value);
-                    string message = m.Groups["message"].Value.Trim();
+                    CreateNoWindow = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
 
-                    ErrorType type = ErrorType.Error;
+                psi.CreateNoWindow = true;
 
-                    var typeStr = Regex.Match(message, "(?<type>error): (?<message>[^\n\r]+)");
-                    if (typeStr.Success)
+                string[] lines;
+
+                using (var p = Process.Start(psi))
+                {
+                    p.WaitForExit();
+                    lines = p.StandardError.ReadToEnd().Split('\r', '\n');
+                }
+
+                foreach (var l in lines)
+                {
+                    var m = Regex.Match(l, @"\:(?<line>[0-9]+)\:(?<pos>[0-9]+)\:(?<message>[^\n\r]+)");
+                    if (m.Success)
                     {
-                        type = ErrorType.Error;
-                        message = typeStr.Groups["message"].Value.Trim();
-                    }
+                        int line = int.Parse(m.Groups["line"].Value);
+                        int pos = int.Parse(m.Groups["pos"].Value);
+                        string message = m.Groups["message"].Value.Trim();
 
-                    CompilerError e = new CompilerError(ErrorType.Error, new Position(line, pos), new Position(line, pos), "GCC; " + message);
-                    errors.Register(e);
+                        ErrorType type = ErrorType.Error;
+
+                        var typeStr = Regex.Match(message, "(?<type>error): (?<message>[^\n\r]+)");
+                        if (typeStr.Success)
+                        {
+                            type = ErrorType.Error;
+                            message = typeStr.Groups["message"].Value.Trim();
+                        }
+
+                        CompilerError e = new CompilerError(ErrorType.Error, new Position(line, pos), new Position(line, pos), "GCC; " + message);
+                        errorManager.Register(e);
+                    }
                 }
             }
         }
