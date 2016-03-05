@@ -21,6 +21,7 @@ Tokens
     bool = 'true'|'false';
     number = digit+;
     
+    principall = 'principal';
     typedef = 'typedef';
     struct = 'struct';
     
@@ -82,14 +83,17 @@ Token Syntax Highlight
     {label_start, label_end, acts_for, declassify_start, declassify_end, r_arrow, join} text: #8d19aa, background: #e6e7fa, bold;
 
 Abstract Syntax Tree
-    root = P.include* P.struct* statement*;
+    root = P.include* principal_declaration* P.struct* statement*;
+    
+    include = file;
+    
+    principal_declaration = [name]:identifier;
     
     struct = identifier field* [name]:identifier;
     field
         = type identifier
-        | {array} type identifier [size]:number;
-    
-    include = file;
+        | {array} type identifier [size]:number
+        ;
     
     statement
         = {declaration} type identifier expression?
@@ -110,15 +114,17 @@ Abstract Syntax Tree
         | {pointer} type asterisk
         ;
 Productions
-    root = P.include* P.struct* glstmt*;
+    root = P.include* principal_declaration* P.struct* glstmt*;
+    
+    include = T.include file -> New include(file);
+    
+    principal_declaration = principall identifier semicolon -> New principal_declaration(identifier);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
         = type identifier semicolon -> New field(type, identifier)
         | {a} type identifier l_squ number r_squ semicolon -> New field.array(type, identifier, number)
         ;
-    
-    include = T.include file -> New include(file);
     
     glstmt -> statement
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)

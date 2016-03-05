@@ -8,12 +8,14 @@ namespace DLM.Editor.Nodes
     public abstract partial class PRoot : Production<PRoot>
     {
         private NodeList<PInclude> _includes_;
+        private NodeList<PPrincipalDeclaration> _principaldeclarations_;
         private NodeList<PStruct> _structs_;
         private NodeList<PStatement> _statements_;
         
-        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
         {
             this._includes_ = new NodeList<PInclude>(this, _includes_, true);
+            this._principaldeclarations_ = new NodeList<PPrincipalDeclaration>(this, _principaldeclarations_, true);
             this._structs_ = new NodeList<PStruct>(this, _structs_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
@@ -21,6 +23,10 @@ namespace DLM.Editor.Nodes
         public NodeList<PInclude> Includes
         {
             get { return _includes_; }
+        }
+        public NodeList<PPrincipalDeclaration> PrincipalDeclarations
+        {
+            get { return _principaldeclarations_; }
         }
         public NodeList<PStruct> Structs
         {
@@ -34,8 +40,8 @@ namespace DLM.Editor.Nodes
     }
     public partial class ARoot : PRoot
     {
-        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
-            : base(_includes_, _structs_, _statements_)
+        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+            : base(_includes_, _principaldeclarations_, _structs_, _statements_)
         {
         }
         
@@ -51,6 +57,17 @@ namespace DLM.Editor.Nodes
                     Includes.RemoveAt(index);
                 else
                     Includes[index] = newChild as PInclude;
+            }
+            else if (oldChild is PPrincipalDeclaration && PrincipalDeclarations.Contains(oldChild as PPrincipalDeclaration))
+            {
+                if (!(newChild is PPrincipalDeclaration) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = PrincipalDeclarations.IndexOf(oldChild as PPrincipalDeclaration);
+                if (newChild == null)
+                    PrincipalDeclarations.RemoveAt(index);
+                else
+                    PrincipalDeclarations[index] = newChild as PPrincipalDeclaration;
             }
             else if (oldChild is PStruct && Structs.Contains(oldChild as PStruct))
             {
@@ -85,6 +102,12 @@ namespace DLM.Editor.Nodes
                     yield return temp[i];
             }
             {
+                PPrincipalDeclaration[] temp = new PPrincipalDeclaration[PrincipalDeclarations.Count];
+                PrincipalDeclarations.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
                 PStruct[] temp = new PStruct[Structs.Count];
                 Structs.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
@@ -100,12 +123,132 @@ namespace DLM.Editor.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes, Structs, Statements);
+            return new ARoot(Includes, PrincipalDeclarations, Structs, Statements);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Includes, Structs, Statements);
+            return string.Format("{0} {1} {2} {3}", Includes, PrincipalDeclarations, Structs, Statements);
+        }
+    }
+    public abstract partial class PInclude : Production<PInclude>
+    {
+        private TFile _file_;
+        
+        public PInclude(TFile _file_)
+        {
+            this.File = _file_;
+        }
+        
+        public TFile File
+        {
+            get { return _file_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("File in PInclude cannot be null.", "value");
+                
+                if (_file_ != null)
+                    SetParent(_file_, null);
+                SetParent(value, this);
+                
+                _file_ = value;
+            }
+        }
+        
+    }
+    public partial class AInclude : PInclude
+    {
+        public AInclude(TFile _file_)
+            : base(_file_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (File == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("File in AInclude cannot be null.", "newChild");
+                if (!(newChild is TFile) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                File = newChild as TFile;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return File;
+        }
+        
+        public override PInclude Clone()
+        {
+            return new AInclude(File.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", File);
+        }
+    }
+    public abstract partial class PPrincipalDeclaration : Production<PPrincipalDeclaration>
+    {
+        private TIdentifier _name_;
+        
+        public PPrincipalDeclaration(TIdentifier _name_)
+        {
+            this.Name = _name_;
+        }
+        
+        public TIdentifier Name
+        {
+            get { return _name_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Name in PPrincipalDeclaration cannot be null.", "value");
+                
+                if (_name_ != null)
+                    SetParent(_name_, null);
+                SetParent(value, this);
+                
+                _name_ = value;
+            }
+        }
+        
+    }
+    public partial class APrincipalDeclaration : PPrincipalDeclaration
+    {
+        public APrincipalDeclaration(TIdentifier _name_)
+            : base(_name_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Name == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Name in APrincipalDeclaration cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Name = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Name;
+        }
+        
+        public override PPrincipalDeclaration Clone()
+        {
+            return new APrincipalDeclaration(Name.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Name);
         }
     }
     public abstract partial class PStruct : Production<PStruct>
@@ -372,66 +515,6 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1} {2}", Type, Identifier, Size);
-        }
-    }
-    public abstract partial class PInclude : Production<PInclude>
-    {
-        private TFile _file_;
-        
-        public PInclude(TFile _file_)
-        {
-            this.File = _file_;
-        }
-        
-        public TFile File
-        {
-            get { return _file_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("File in PInclude cannot be null.", "value");
-                
-                if (_file_ != null)
-                    SetParent(_file_, null);
-                SetParent(value, this);
-                
-                _file_ = value;
-            }
-        }
-        
-    }
-    public partial class AInclude : PInclude
-    {
-        public AInclude(TFile _file_)
-            : base(_file_)
-        {
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (File == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("File in AInclude cannot be null.", "newChild");
-                if (!(newChild is TFile) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                File = newChild as TFile;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return File;
-        }
-        
-        public override PInclude Clone()
-        {
-            return new AInclude(File.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", File);
         }
     }
     public abstract partial class PStatement : Production<PStatement>

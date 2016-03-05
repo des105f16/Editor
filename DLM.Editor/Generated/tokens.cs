@@ -77,6 +77,30 @@ namespace DLM.Editor.Nodes
             return new TNumber(Text, Line, Position);
         }
     }
+    public partial class TPrincipall : Token<TPrincipall>
+    {
+        public TPrincipall()
+            : base(@"principal")
+        {
+        }
+        public TPrincipall(int line, int pos)
+            : base(@"principal", line, pos)
+        {
+        }
+        public TPrincipall(string text)
+            : base(text)
+        {
+        }
+        public TPrincipall(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TPrincipall Clone()
+        {
+            return new TPrincipall(Text, Line, Position);
+        }
+    }
     public partial class TTypedef : Token<TTypedef>
     {
         public TTypedef()
