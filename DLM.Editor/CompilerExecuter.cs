@@ -10,6 +10,7 @@ using SablePP.Tools.Error;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.IO;
+using FastColoredTextBoxNS;
 
 namespace DLM.Editor
 {
@@ -17,6 +18,8 @@ namespace DLM.Editor
     {
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
+            compilationOptions.Highlight(new TypeHighlighter());
+
             Validator v = new Validator(root, compilationOptions);
 
             v.CompileWithGCC();
@@ -86,6 +89,24 @@ namespace DLM.Editor
                         errorManager.Register(e);
                     }
                 }
+            }
+        }
+
+        private class TypeHighlighter : IHighlighter
+        {
+            private Style style = new TextStyle(System.Drawing.Brushes.Blue, null, System.Drawing.FontStyle.Bold);
+
+            public Style GetStyle(Token token)
+            {
+                if (!(token is TIdentifier))
+                    return null;
+
+                var par = token.GetParent().GetType().Name;
+
+                if (token.GetParent() is PType || token.GetParent() is PStruct)
+                    return style;
+                else
+                    return null;
             }
         }
     }
