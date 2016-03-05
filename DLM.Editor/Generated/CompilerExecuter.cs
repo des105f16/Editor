@@ -29,7 +29,7 @@ namespace DLM.Editor
                 return style1;
             if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
                 return style2;
-            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TRArrow || token is TJoin)
+            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TRArrow || token is TJoin || token is TPrincipall)
                 return style3;
             return null;
         }
