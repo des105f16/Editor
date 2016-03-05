@@ -77,10 +77,9 @@ Ignored Tokens
     whitespace, comment;
 
 Token Syntax Highlight
-    {identifier} text: #069;
-    {comment} text: #060, italic;
-    {if, else, while, return, acts_for} text: #00c, bold;
-    {label_start, label_end} text: #c90, bold;
+    {comment} text: #393, italic;
+    {if, else, while, return, typedef, struct} text: #00c, bold;
+    {label_start, label_end, acts_for, declassify_start, declassify_end, r_arrow, join} text: #8d19aa, background: #e6e7fa, bold;
 
 Abstract Syntax Tree
     root = P.include* P.struct* statement*;

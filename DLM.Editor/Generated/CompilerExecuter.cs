@@ -25,19 +25,16 @@ namespace DLM.Editor
         
         public override Style GetSimpleStyle(Token token)
         {
-            if (token is TIdentifier)
-                return style1;
             if (token is TComment)
+                return style1;
+            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
                 return style2;
-            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TActsFor)
+            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TRArrow || token is TJoin)
                 return style3;
-            if (token is TLabelStart || token is TLabelEnd)
-                return style4;
             return null;
         }
-        private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(0, 102, 153)), null, FontStyle.Regular);
-        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(0, 102, 0)), null, FontStyle.Italic);
-        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(0, 0, 204)), null, FontStyle.Bold);
-        private TextStyle style4 = new TextStyle(new SolidBrush(Color.FromArgb(204, 153, 0)), null, FontStyle.Bold);
+        private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(51, 153, 51)), null, FontStyle.Italic);
+        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(0, 0, 204)), null, FontStyle.Bold);
+        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(141, 25, 170)), new SolidBrush(Color.FromArgb(230, 231, 250)), FontStyle.Bold);
     }
 }
