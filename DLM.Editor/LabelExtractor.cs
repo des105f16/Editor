@@ -62,7 +62,7 @@ namespace DLM.Editor
                 foreach (var reader in node.Readers)
                 {
                     if (reader is ALowerPrincipal)
-                        errorManager.Register(reader, "Only a * owner can specify the _ reader-set.");
+                        continue;
                     else if (reader is AUpperPrincipal)
                         errorManager.Register(reader, "Only a _ owner can specify the * reader-set.");
                     else
