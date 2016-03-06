@@ -4,23 +4,33 @@ using SablePP.Tools;
 using SablePP.Tools.Error;
 using System.Collections.Generic;
 using DLM.Editor.Nodes;
+using SablePP.Tools.Nodes;
 
 namespace DLM.Editor
 {
     class LabelInferer : DepthFirstAdapter
     {
+        private List<Constraint> constraints;
+
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
-        
-        private Stack<Label> activeBasicBlock;
+
+        private LabelStack basicBlock;
+        private int blockNameCount = 1;
 
         public LabelInferer(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
 
+            constraints = new List<Constraint>();
+
             types = new ScopedDictionary<string, PType>();
-            activeBasicBlock = new Stack<Label>();
-            activeBasicBlock.Push(Label.LowerBound);
+            basicBlock = new LabelStack(true);
+        }
+
+        private void Add(Label left, Label right)
+        {
+            constraints.Add(new Constraint(left + basicBlock, right));
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
@@ -33,39 +43,129 @@ namespace DLM.Editor
             Visit(node.Statements);
 
             types.CloseScope();
+
+            var res = Inference.ConstraintResolver.Resolve(constraints);
         }
 
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
-            base.HandleADeclarationStatement(node);
+            types.Add(node.Identifier.Text, node.Type);
+
+            Label lbl = node.HasExpression ?
+                ExpressionLabeler.GetLabel(node.Expression, types) :
+                Label.LowerBound;
+
+            Add(lbl, node.Type.DeclaredLabel);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
-            base.HandleAArrayDeclarationStatement(node);
+            types.Add(node.Identifier.Text, node.Type);
+
+            Add(Label.LowerBound, node.Type.DeclaredLabel);
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
-            base.HandleAAssignmentStatement(node);
+            Label lbl = ExpressionLabeler.GetLabel(node.Expression, types);
+
+            var type = types[node.Identifier.Text];
+
+            Add(lbl, type.DeclaredLabel);
         }
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
-            base.HandleAActsForStatement(node);
+            Visit(node.Statements);
+            //throw new System.NotImplementedException();
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
-            base.HandleAIfStatement(node);
+            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+
+            basicBlock.Push(lbl);
+            Visit(node.Statements);
+            basicBlock.Pop();
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
-            base.HandleAIfElseStatement(node);
+            throw new System.NotImplementedException();
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
-            base.HandleAWhileStatement(node);
+            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+
+            basicBlock.Push(lbl);
+            Visit(node.Statements);
+            basicBlock.Pop();
         }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
-            base.HandleAReturnStatement(node);
+            Label lbl = ExpressionLabeler.GetLabel(node.Expression, types);
+
+            var type = node.GetFirstParent<AFunctionDeclarationStatement>().Type;
+
+            Add(lbl, type.DeclaredLabel);
+        }
+
+        private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
+        {
+            private ScopedDictionary<string, PType> types;
+
+            private ExpressionLabeler(ScopedDictionary<string, PType> types)
+            {
+                this.types = types;
+            }
+
+            public static Label GetLabel(PExpression expression, ScopedDictionary<string, PType> types)
+            {
+                return new ExpressionLabeler(types).Visit(expression);
+            }
+
+            protected override Label HandleDefault(Node node)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            protected override Label HandleAAndExpression(AAndExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleABooleanExpression(ABooleanExpression node) => Label.LowerBound;
+            protected override Label HandleAComparisonExpression(AComparisonExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
+            {
+                return new VariableLabel("Ld");
+            }
+            protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAElementExpression(AElementExpression node)
+            {
+                return Visit(node.Expression);
+            }
+            protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
+            {
+                Label lbl = Label.LowerBound;
+
+                foreach (var a in node.Arguments)
+                    lbl += Visit(a);
+
+                return lbl;
+            }
+            protected override Label HandleAIdentifierExpression(AIdentifierExpression node)
+            {
+                var type = types[node.Identifier.Text];
+
+                return type.DeclaredLabel;
+            }
+            protected override Label HandleAIndexExpression(AIndexExpression node)
+            {
+                return Visit(node.Expression) + Visit(node.Index);
+            }
+            protected override Label HandleAMinusExpression(AMinusExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAModuloExpression(AModuloExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAMultiplyExpression(AMultiplyExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleANegateExpression(ANegateExpression node) => Visit(node.Expression);
+            protected override Label HandleANotExpression(ANotExpression node) => Visit(node.Expression);
+            protected override Label HandleANumberExpression(ANumberExpression node) => Label.LowerBound;
+            protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
+            protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
         }
     }
 }
