@@ -189,6 +189,7 @@ Productions
     policy
         = {id} identifier -> New policy.variable(identifier)
         | principal r_arrow lprincipal -> New policy.principal(principal, [lprincipal])
+        | {one} principal r_arrow -> New policy.principal(principal, [])
         ;
     lpolicy -> policy+
         = policy -> [policy]
