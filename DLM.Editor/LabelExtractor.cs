@@ -36,6 +36,7 @@ namespace DLM.Editor
                 return;
 
             Visit(node.Structs);
+            Visit(node.Statements);
 
             // Stop validation if there were errors
             if (errorManager.Errors.Count > 0)
@@ -51,6 +52,25 @@ namespace DLM.Editor
                 if (field.Type.DeclaredLabel == null)
                     field.Type.DeclaredLabel = Label.LowerBound;
             }
+        }
+
+        protected override void HandleADeclarationStatement(ADeclarationStatement node)
+        {
+            Visit(node.Type);
+
+            if (node.Type.DeclaredLabel == null)
+                node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
+
+            namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+        }
+        protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
+        {
+            Visit(node.Type);
+
+            if (node.Type.DeclaredLabel == null)
+                node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
+
+            namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
         }
 
         protected override void HandleAType(AType node)
