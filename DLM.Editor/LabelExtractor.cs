@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DLM.Editor.Nodes;
 using DLM.Inference;
 using SablePP.Tools.Error;
+using SablePP.Tools;
 
 namespace DLM.Editor
 {
@@ -10,11 +11,13 @@ namespace DLM.Editor
     {
         private ErrorManager errorManager;
         private Dictionary<string, Principal> principals;
+        private ScopedDictionary<string, Label> namedLabels;
 
         public LabelExtractor(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
             this.principals = new Dictionary<string, Principal>();
+            this.namedLabels = new ScopedDictionary<string, Label>();
         }
 
         protected override void HandlePRoot(PRoot node)
