@@ -25,6 +25,10 @@ namespace DLM.Editor
             v.CompileWithGCC();
             if (v.Errors)
                 return;
+
+            v.ExtractLabels();
+            if (v.Errors)
+                return;
         }
 
         private class Validator
@@ -89,6 +93,12 @@ namespace DLM.Editor
                         errorManager.Register(e);
                     }
                 }
+            }
+
+            public void ExtractLabels()
+            {
+                LabelExtractor le = new LabelExtractor(errorManager);
+                le.Visit(root);
             }
         }
 
