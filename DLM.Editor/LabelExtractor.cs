@@ -36,6 +36,35 @@ namespace DLM.Editor
                 return;
         }
 
+        protected override void HandleAType(AType node)
+        {
+            if (node.HasLabel)
+                Visit(node.Label);
+
+            node.DeclaredLabel = Output[node.Label] as Label;
+        }
+        protected override void HandleAPointerType(APointerType node)
+        {
+            Visit(node.Type);
+
+            node.DeclaredLabel = node.Type.DeclaredLabel;
+        }
+
+        protected override void HandlePLabel(PLabel node)
+        {
+            Label lbl = Label.LowerBound;
+
+            foreach (var p in node.Policys)
+            {
+                Visit(p);
+                Label plbl = Output[p] as Label;
+
+                if (plbl != null)
+                    lbl += plbl;
+            }
+
+            Output[node] = lbl;
+        }
         protected override void HandleAVariablePolicy(AVariablePolicy node)
         {
             Label lbl;
