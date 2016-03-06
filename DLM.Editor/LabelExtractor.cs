@@ -54,6 +54,34 @@ namespace DLM.Editor
             }
         }
 
+        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            namedLabels.OpenScope();
+
+            foreach (var par in node.Parameters)
+            {
+                Visit(par.Type);
+
+                if (par.Type.DeclaredLabel == null)
+                    par.Type.DeclaredLabel = new ConstantLabel(par.Identifier.Text);
+
+                namedLabels.Add(par.Identifier.Text, par.Type.DeclaredLabel);
+            }
+
+            Visit(node.Type);
+            if (node.Type.DeclaredLabel == null)
+                node.Type.DeclaredLabel = Label.LowerBound;
+
+            if (errorManager.Errors.Count > 0)
+            {
+                namedLabels.CloseScope();
+                return;
+            }
+
+            Visit(node.Statements);
+
+            namedLabels.CloseScope();
+        }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             Visit(node.Type);
