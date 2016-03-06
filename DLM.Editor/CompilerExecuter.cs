@@ -29,6 +29,10 @@ namespace DLM.Editor
             v.ExtractLabels();
             if (v.Errors)
                 return;
+
+            v.InferLabels();
+            if (v.Errors)
+                return;
         }
 
         private class Validator
@@ -98,6 +102,11 @@ namespace DLM.Editor
             public void ExtractLabels()
             {
                 LabelExtractor le = new LabelExtractor(errorManager);
+                le.Visit(root);
+            }
+            public void InferLabels()
+            {
+                LabelInferer le = new LabelInferer(errorManager);
                 le.Visit(root);
             }
         }
