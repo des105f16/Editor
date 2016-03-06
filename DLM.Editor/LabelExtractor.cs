@@ -34,6 +34,23 @@ namespace DLM.Editor
             // Stop validation if there were errors
             if (errorManager.Errors.Count > 0)
                 return;
+
+            Visit(node.Structs);
+
+            // Stop validation if there were errors
+            if (errorManager.Errors.Count > 0)
+                return;
+        }
+
+        protected override void HandlePStruct(PStruct node)
+        {
+            foreach (var field in node.Fields)
+            {
+                Visit(field.Type);
+
+                if (field.Type.DeclaredLabel == null)
+                    field.Type.DeclaredLabel = Label.LowerBound;
+            }
         }
 
         protected override void HandleAType(AType node)
