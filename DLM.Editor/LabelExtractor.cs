@@ -36,6 +36,17 @@ namespace DLM.Editor
                 return;
         }
 
+        protected override void HandleAVariablePolicy(AVariablePolicy node)
+        {
+            Label lbl;
+            if (!namedLabels.TryGetValue(node.Identifier.Text, out lbl, false))
+            {
+                errorManager.Register(node, $"Unknown reference \"{node.Identifier.Text}\".");
+                Output[node] = null;
+            }
+            else
+                Output[node] = lbl;
+        }
         protected override void HandleAPrincipalPolicy(APrincipalPolicy node)
         {
             Label lbl = null;
