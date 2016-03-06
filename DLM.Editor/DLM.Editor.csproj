@@ -58,6 +58,7 @@
     <Compile Include="Generated\prods.cs" />
     <Compile Include="Generated\tokens.cs" />
     <Compile Include="LabelExtractor.cs" />
+    <Compile Include="Nodes\PType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationData.cs" />
