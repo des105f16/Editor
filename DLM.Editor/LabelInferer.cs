@@ -18,6 +18,8 @@ namespace DLM.Editor
         private LabelStack basicBlock;
         private int blockNameCount = 1;
 
+        private List<VariableLabel> variables;
+
         public LabelInferer(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
@@ -26,7 +28,11 @@ namespace DLM.Editor
 
             types = new ScopedDictionary<string, PType>();
             basicBlock = new LabelStack(true);
+
+            this.variables = new List<VariableLabel>();
         }
+
+        public VariableLabel[] GetVariableLabels() => variables.ToArray();
 
         private void Add(Label left, Label right)
         {
@@ -44,7 +50,7 @@ namespace DLM.Editor
 
             types.CloseScope();
 
-            var res = Inference.ConstraintResolver.Resolve(constraints);
+            variables.AddRange(ConstraintResolver.Resolve(constraints));
         }
 
         protected override void HandleADeclarationStatement(ADeclarationStatement node)

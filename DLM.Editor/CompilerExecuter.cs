@@ -11,11 +11,15 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.IO;
 using FastColoredTextBoxNS;
+using DLM.Inference;
 
 namespace DLM.Editor
 {
     public partial class CompilerExecuter
     {
+        private VariableLabel[] variables;
+        public VariableLabel[] Variables => variables;
+
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
             compilationOptions.Highlight(new TypeHighlighter());
@@ -30,9 +34,11 @@ namespace DLM.Editor
             if (v.Errors)
                 return;
 
-            v.InferLabels();
+            var vars = v.InferLabels();
             if (v.Errors)
                 return;
+
+            variables = vars;
         }
 
         private class Validator
@@ -104,10 +110,11 @@ namespace DLM.Editor
                 LabelExtractor le = new LabelExtractor(errorManager);
                 le.Visit(root);
             }
-            public void InferLabels()
+            public VariableLabel[] InferLabels()
             {
                 LabelInferer le = new LabelInferer(errorManager);
                 le.Visit(root);
+                return le.GetVariableLabels();
             }
         }
 
