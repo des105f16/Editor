@@ -1791,19 +1791,117 @@ namespace DLM.Editor.Nodes
             return string.Format("{0} {1}", Owner, Readers);
         }
     }
-    public abstract partial class PPrincipal : Production<PPrincipal>
+    public partial class ALowerPolicy : PPolicy
     {
-        public PPrincipal()
+        private TUnderscore _underscore_;
+        
+        public ALowerPolicy(TUnderscore _underscore_)
+            : base()
         {
+            this.Underscore = _underscore_;
         }
         
+        public TUnderscore Underscore
+        {
+            get { return _underscore_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Underscore in ALowerPolicy cannot be null.", "value");
+                
+                if (_underscore_ != null)
+                    SetParent(_underscore_, null);
+                SetParent(value, this);
+                
+                _underscore_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Underscore == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Underscore in ALowerPolicy cannot be null.", "newChild");
+                if (!(newChild is TUnderscore) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Underscore = newChild as TUnderscore;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Underscore;
+        }
+        
+        public override PPolicy Clone()
+        {
+            return new ALowerPolicy(Underscore.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Underscore);
+        }
     }
-    public partial class APrincipal : PPrincipal
+    public partial class AUpperPolicy : PPolicy
+    {
+        private THat _hat_;
+        
+        public AUpperPolicy(THat _hat_)
+            : base()
+        {
+            this.Hat = _hat_;
+        }
+        
+        public THat Hat
+        {
+            get { return _hat_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Hat in AUpperPolicy cannot be null.", "value");
+                
+                if (_hat_ != null)
+                    SetParent(_hat_, null);
+                SetParent(value, this);
+                
+                _hat_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Hat == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Hat in AUpperPolicy cannot be null.", "newChild");
+                if (!(newChild is THat) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Hat = newChild as THat;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Hat;
+        }
+        
+        public override PPolicy Clone()
+        {
+            return new AUpperPolicy(Hat.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Hat);
+        }
+    }
+    public abstract partial class PPrincipal : Production<PPrincipal>
     {
         private TIdentifier _identifier_;
         
-        public APrincipal(TIdentifier _identifier_)
-            : base()
+        public PPrincipal(TIdentifier _identifier_)
         {
             this.Identifier = _identifier_;
         }
@@ -1814,7 +1912,7 @@ namespace DLM.Editor.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Identifier in APrincipal cannot be null.", "value");
+                    throw new ArgumentException("Identifier in PPrincipal cannot be null.", "value");
                 
                 if (_identifier_ != null)
                     SetParent(_identifier_, null);
@@ -1822,6 +1920,14 @@ namespace DLM.Editor.Nodes
                 
                 _identifier_ = value;
             }
+        }
+        
+    }
+    public partial class APrincipal : PPrincipal
+    {
+        public APrincipal(TIdentifier _identifier_)
+            : base(_identifier_)
+        {
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
@@ -1849,112 +1955,6 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0}", Identifier);
-        }
-    }
-    public partial class ALowerPrincipal : PPrincipal
-    {
-        private TUnderscore _underscore_;
-        
-        public ALowerPrincipal(TUnderscore _underscore_)
-            : base()
-        {
-            this.Underscore = _underscore_;
-        }
-        
-        public TUnderscore Underscore
-        {
-            get { return _underscore_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Underscore in ALowerPrincipal cannot be null.", "value");
-                
-                if (_underscore_ != null)
-                    SetParent(_underscore_, null);
-                SetParent(value, this);
-                
-                _underscore_ = value;
-            }
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (Underscore == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("Underscore in ALowerPrincipal cannot be null.", "newChild");
-                if (!(newChild is TUnderscore) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Underscore = newChild as TUnderscore;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return Underscore;
-        }
-        
-        public override PPrincipal Clone()
-        {
-            return new ALowerPrincipal(Underscore.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", Underscore);
-        }
-    }
-    public partial class AUpperPrincipal : PPrincipal
-    {
-        private TAsterisk _asterisk_;
-        
-        public AUpperPrincipal(TAsterisk _asterisk_)
-            : base()
-        {
-            this.Asterisk = _asterisk_;
-        }
-        
-        public TAsterisk Asterisk
-        {
-            get { return _asterisk_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Asterisk in AUpperPrincipal cannot be null.", "value");
-                
-                if (_asterisk_ != null)
-                    SetParent(_asterisk_, null);
-                SetParent(value, this);
-                
-                _asterisk_ = value;
-            }
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (Asterisk == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("Asterisk in AUpperPrincipal cannot be null.", "newChild");
-                if (!(newChild is TAsterisk) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Asterisk = newChild as TAsterisk;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return Asterisk;
-        }
-        
-        public override PPrincipal Clone()
-        {
-            return new AUpperPrincipal(Asterisk.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", Asterisk);
         }
     }
     public abstract partial class PExpression : Production<PExpression>

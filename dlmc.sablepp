@@ -44,6 +44,7 @@ Tokens
     assign = '=';
     
     underscore = '_';
+    hat = '^';
     plus = '+';
     minus = '-';
     asterisk = '*';
@@ -175,12 +176,10 @@ Abstract Syntax Tree
     policy
         = {variable} identifier
         | {principal} [owner]:principal [readers]:principal*
-        ;
-    principal
-        = identifier
         | {lower} underscore
-        | {upper} asterisk
+        | {upper} hat
         ;
+    principal = identifier;
 
 Productions
     label
@@ -190,17 +189,15 @@ Productions
         = {id} identifier -> New policy.variable(identifier)
         | principal r_arrow lprincipal -> New policy.principal(principal, [lprincipal])
         | {one} principal r_arrow -> New policy.principal(principal, [])
+        | {l} underscore -> New policy.lower(underscore)
+        | {u} hat -> New policy.upper(hat)
         ;
     lpolicy -> policy+
         = policy -> [policy]
         | {tail} policy semicolon lpolicy -> [policy, lpolicy]
         | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
-    principal
-        = identifier
-        | {l} underscore -> New principal.lower(underscore)
-        | {u} asterisk -> New principal.upper(asterisk)
-        ;
+    principal = identifier;
     lprincipal -> principal*
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
