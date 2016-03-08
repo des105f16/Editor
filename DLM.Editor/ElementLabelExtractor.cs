@@ -19,5 +19,11 @@ namespace DLM.Editor
             this.errorManager = errorManager;
             this.structs = new Dictionary<string, PStruct>();
         }
+
+        protected override void HandleAElementExpression(AElementExpression node)
+        {
+            if (!(node.Expression is AIndexExpression))
+                errorManager.Register(node.Expression, "Array accessor must be of form id[index]");
+        }
     }
 }
