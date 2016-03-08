@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DLM.Editor
 {
-    public partial class Editor : SablePP.Tools.Editor.SimpleEditor
+    public partial class Editor : SablePP.Tools.Editor.EditorForm
     {
         private ListForm list;
 
