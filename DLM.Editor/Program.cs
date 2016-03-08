@@ -17,13 +17,7 @@ namespace DLM.Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            var editor = new Editor();
-            editor.CodeTextBox.Executer = new CompilerExecuter();
-            editor.FileExtension = ".ncif";
-            editor.Text = "Not CIF";
-
-            Application.Run(editor);
+            Application.Run(new Editor());
         }
     }
 }

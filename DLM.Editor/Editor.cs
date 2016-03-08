@@ -9,6 +9,10 @@ namespace DLM.Editor
         {
             InitializeComponent();
 
+            codeTextBox1.Executer = new CompilerExecuter();
+            FileExtension = ".ncif";
+            Text = "Not CIF";
+
             HookEditToTextBox(codeTextBox1);
 
             codeTextBox1.CompilationCompleted += CodeTextBox_CompilationCompleted;
