@@ -23,7 +23,13 @@ namespace DLM.Editor
         protected override void HandleAElementExpression(AElementExpression node)
         {
             if (!(node.Expression is AIndexExpression))
-                errorManager.Register(node.Expression, "Array accessor must be of form id[index]");
+                errorManager.Register(node.Expression, "Struct array field access must be of form id[exp].id");
+        }
+
+        protected override void HandleAIndexExpression(AIndexExpression node)
+        {
+            if (!(node.Expression is AIdentifierExpression))
+                errorManager.Register(node.Expression, "Array access must be of form id[exp]");
         }
     }
 }
