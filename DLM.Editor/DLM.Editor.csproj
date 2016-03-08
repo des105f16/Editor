@@ -57,6 +57,7 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ElementLabelExtractor.cs" />
     <Compile Include="Generated\analysis.cs" />
     <Compile Include="Generated\CompilerExecuter.cs" />
     <Compile Include="Generated\lexer.cs" />
