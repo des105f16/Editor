@@ -193,14 +193,14 @@ namespace DLM.Editor.Nodes
     }
     public abstract partial class PPrincipalDeclaration : Production<PPrincipalDeclaration>
     {
-        private TIdentifier _name_;
+        private PPrincipal _name_;
         
-        public PPrincipalDeclaration(TIdentifier _name_)
+        public PPrincipalDeclaration(PPrincipal _name_)
         {
             this.Name = _name_;
         }
         
-        public TIdentifier Name
+        public PPrincipal Name
         {
             get { return _name_; }
             set
@@ -219,7 +219,7 @@ namespace DLM.Editor.Nodes
     }
     public partial class APrincipalDeclaration : PPrincipalDeclaration
     {
-        public APrincipalDeclaration(TIdentifier _name_)
+        public APrincipalDeclaration(PPrincipal _name_)
             : base(_name_)
         {
         }
@@ -230,9 +230,9 @@ namespace DLM.Editor.Nodes
             {
                 if (newChild == null)
                     throw new ArgumentException("Name in APrincipalDeclaration cannot be null.", "newChild");
-                if (!(newChild is TIdentifier) && newChild != null)
+                if (!(newChild is PPrincipal) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Name = newChild as TIdentifier;
+                Name = newChild as PPrincipal;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }

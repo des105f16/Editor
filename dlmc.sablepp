@@ -88,7 +88,7 @@ Abstract Syntax Tree
     
     include = file;
     
-    principal_declaration = [name]:identifier;
+    principal_declaration = [name]:principal;
     
     struct = identifier field* [name]:identifier;
     field
@@ -119,7 +119,7 @@ Productions
     
     include = T.include file -> New include(file);
     
-    principal_declaration = principall identifier semicolon -> New principal_declaration(identifier);
+    principal_declaration = principall principal semicolon -> New principal_declaration(principal);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
