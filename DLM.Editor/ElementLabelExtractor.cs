@@ -86,8 +86,10 @@ namespace DLM.Editor
                 return;
             }
             var indexExpr = ((AIndexExpression)node.Expression);
+            if (!(indexExpr.Expression is AIdentifierExpression))
+                return;
             var identExpr = ((AIdentifierExpression)indexExpr.Expression);
-            node.StructDecl = structDeclarations[identExpr.Identifier.Text];
+            node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
         }
 
         protected override void HandleAIndexExpression(AIndexExpression node)
