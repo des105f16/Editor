@@ -20,6 +20,11 @@ namespace DLM.Editor
             this.structs = new Dictionary<string, PStruct>();
         }
 
+        protected override void HandlePStruct(PStruct node)
+        {
+            structs.Add(node.Name.Text, node);
+        }
+
         protected override void HandleAElementExpression(AElementExpression node)
         {
             if (!(node.Expression is AIndexExpression))
