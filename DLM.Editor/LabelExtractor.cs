@@ -161,7 +161,7 @@ namespace DLM.Editor
                     readers.Add(r);
             }
 
-            if (owner != null)
+            if (errorManager.Errors.Count > 0)
                 Output[node] = new PolicyLabel(new Policy(owner, readers));
         }
     }
