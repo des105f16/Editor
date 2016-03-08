@@ -583,14 +583,14 @@ namespace DLM.Editor.Parsing
                         TRCur trcur = Pop<TRCur>();
                         List<PStatement> pstatementlist = isOn(1, index - 42) ? Pop<List<PStatement>>() : new List<PStatement>();
                         TLCur tlcur = Pop<TLCur>();
-                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        PPrincipal pprincipal = Pop<PPrincipal>();
                         TActsFor tactsfor = Pop<TActsFor>();
-                        TIdentifier tidentifier2 = Pop<TIdentifier>();
+                        TIdentifier tidentifier = Pop<TIdentifier>();
                         List<PStatement> pstatementlist2 = new List<PStatement>();
                         pstatementlist2.AddRange(pstatementlist);
                         AActsForStatement aactsforstatement = new AActsForStatement(
-                            tidentifier2,
                             tidentifier,
+                            pprincipal,
                             pstatementlist2
                         );
                         Push(9, aactsforstatement);
@@ -1854,7 +1854,7 @@ namespace DLM.Editor.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 152},
-                new int[] {11, 0, 161},
+                new int[] {11, 0, 78},
             },
             new int[][] {
                 new int[] {-1, 3, 153},
@@ -2337,6 +2337,7 @@ namespace DLM.Editor.Parsing
                 new int[] {-1, 39},
                 new int[] {52, 79},
                 new int[] {105, 79},
+                new int[] {152, 161},
             },
             new int[][] {
                 new int[] {-1, 80},
@@ -2462,6 +2463,7 @@ namespace DLM.Editor.Parsing
             "Expecting: TCompare, '+', '-', '&&', '||', ',', ';', ')' or ']'",
             "Expecting: ')'",
             "Expecting: ']'",
+            "Expecting: ',', ';', '}}', '{' or '⊔'",
             "Expecting: ',', ';', '}}' or '⊔'",
             "Expecting: TBool, TNumber, TIdentifier, '<|', '-', '!', '(' or ')'",
             "Expecting: '|>' or ','",
@@ -2485,16 +2487,16 @@ namespace DLM.Editor.Parsing
             10, 2, 11, 9, 12, 9, 0, 6, 7, 8, 6, 7, 8, 7, 8, 8,
             6, 13, 14, 15, 15, 15, 16, 17, 18, 8, 2, 19, 7, 8, 8, 8,
             20, 11, 11, 21, 22, 23, 23, 24, 2, 25, 26, 18, 10, 27, 28, 29,
-            30, 23, 23, 23, 31, 9, 32, 8, 2, 20, 9, 20, 16, 16, 33, 33,
-            15, 34, 35, 29, 28, 31, 8, 18, 18, 18, 26, 26, 2, 25, 25, 25,
-            2, 18, 13, 36, 8, 10, 37, 2, 20, 2, 23, 36, 31, 23, 38, 23,
-            27, 27, 28, 29, 29, 23, 30, 30, 30, 23, 32, 39, 2, 7, 20, 19,
-            10, 15, 18, 23, 40, 23, 41, 41, 42, 43, 8, 39, 39, 9, 39, 31,
-            32, 7, 31, 23, 18, 18, 44, 10, 2, 18, 45, 8, 39, 10, 31, 31,
-            44, 13, 10, 18, 44, 19, 20, 46, 46, 39, 44, 10, 32, 39, 39, 39,
-            41, 41, 39, 44, 44, 39, 47, 44, 39, 44, 44, 39, 39, 18, 18, 44,
-            39, 46, 44, 39, 31, 31, 44, 41, 41, 39, 44, 39, 46, 46, 18, 18,
-            44, 39, 44, 47, 31, 31, 44, 46, 46, 46, 44, 47, 46, 44,
+            30, 23, 23, 23, 31, 9, 32, 8, 2, 20, 9, 20, 16, 16, 33, 34,
+            15, 35, 36, 29, 28, 31, 8, 18, 18, 18, 26, 26, 2, 25, 25, 25,
+            2, 18, 13, 37, 8, 10, 38, 2, 20, 2, 23, 37, 31, 23, 39, 23,
+            27, 27, 28, 29, 29, 23, 30, 30, 30, 23, 32, 40, 2, 7, 20, 19,
+            10, 15, 18, 23, 41, 23, 42, 42, 43, 44, 8, 40, 40, 9, 40, 31,
+            32, 7, 31, 23, 18, 18, 45, 10, 2, 18, 46, 8, 40, 10, 31, 31,
+            45, 13, 10, 18, 45, 19, 20, 47, 47, 40, 45, 10, 32, 40, 40, 40,
+            42, 42, 40, 45, 45, 40, 48, 45, 40, 45, 45, 40, 40, 18, 18, 45,
+            40, 47, 45, 40, 31, 31, 45, 42, 42, 40, 45, 40, 47, 47, 18, 18,
+            45, 40, 45, 48, 31, 31, 45, 47, 47, 47, 45, 48, 47, 45,
         };
         #endregion
     }

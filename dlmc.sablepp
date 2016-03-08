@@ -100,7 +100,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
-        | {acts_for} [method]:identifier [principal]:identifier statement*
+        | {acts_for} [method]:identifier principal statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -154,7 +154,7 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
-        | {act} [m]:identifier acts_for [p]:identifier l_cur stmt* r_cur -> New statement.acts_for(m, p, [stmt])
+        | {act} [m]:identifier acts_for [p]:principal l_cur stmt* r_cur -> New statement.acts_for(m, p, [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
