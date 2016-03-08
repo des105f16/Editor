@@ -138,7 +138,7 @@ namespace DLM.Editor
             Label lbl;
             if (!namedLabels.TryGetValue(node.Identifier.Text, out lbl, false))
             {
-                errorManager.Register(node, $"Unknown reference \"{node.Identifier.Text}\".");
+                errorManager.Register(node, $"Unknown variable reference \"{node.Identifier.Text}\".");
                 Output[node] = null;
             }
             else
