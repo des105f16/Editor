@@ -164,5 +164,13 @@ namespace DLM.Editor
             if (errorManager.Errors.Count > 0)
                 Output[node] = new PolicyLabel(new Policy(owner, readers));
         }
+        protected override void HandleALowerPolicy(ALowerPolicy node)
+        {
+            Output[node] = Label.LowerBound;
+        }
+        protected override void HandleAUpperPolicy(AUpperPolicy node)
+        {
+            Output[node] = Label.UpperBound;
+        }
     }
 }
