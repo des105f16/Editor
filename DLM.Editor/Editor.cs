@@ -25,7 +25,7 @@ namespace DLM.Editor
                 list.Close();
             };
 
-            CodeTextBox.CompilationCompleted += CodeTextBox_CompilationCompleted;
+            codeTextBox1.CompilationCompleted += CodeTextBox_CompilationCompleted;
         }
         protected override void OnLoad(EventArgs e)
         {
@@ -35,10 +35,9 @@ namespace DLM.Editor
 
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
         {
-            var comp = CodeTextBox.Executer as CompilerExecuter;
+            var comp = codeTextBox1.Executer as CompilerExecuter;
 
             list.Set(comp.Result);
-
         }
     }
 }
