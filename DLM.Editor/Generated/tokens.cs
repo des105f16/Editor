@@ -437,6 +437,30 @@ namespace DLM.Editor.Nodes
             return new TUnderscore(Text, Line, Position);
         }
     }
+    public partial class THat : Token<THat>
+    {
+        public THat()
+            : base(@"^")
+        {
+        }
+        public THat(int line, int pos)
+            : base(@"^", line, pos)
+        {
+        }
+        public THat(string text)
+            : base(text)
+        {
+        }
+        public THat(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override THat Clone()
+        {
+            return new THat(Text, Line, Position);
+        }
+    }
     public partial class TPlus : Token<TPlus>
     {
         public TPlus()

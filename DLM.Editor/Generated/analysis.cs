@@ -270,6 +270,22 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ALowerPolicy node)
+        {
+            HandleALowerPolicy(node);
+        }
+        protected virtual void HandleALowerPolicy(ALowerPolicy node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AUpperPolicy node)
+        {
+            HandleAUpperPolicy(node);
+        }
+        protected virtual void HandleAUpperPolicy(AUpperPolicy node)
+        {
+            HandleDefault(node);
+        }
         
         public void Visit(PPrincipal node)
         {
@@ -284,22 +300,6 @@ namespace DLM.Editor.Analysis
             HandleAPrincipal(node);
         }
         protected virtual void HandleAPrincipal(APrincipal node)
-        {
-            HandleDefault(node);
-        }
-        private void dispatch(ALowerPrincipal node)
-        {
-            HandleALowerPrincipal(node);
-        }
-        protected virtual void HandleALowerPrincipal(ALowerPrincipal node)
-        {
-            HandleDefault(node);
-        }
-        private void dispatch(AUpperPrincipal node)
-        {
-            HandleAUpperPrincipal(node);
-        }
-        protected virtual void HandleAUpperPrincipal(AUpperPrincipal node)
         {
             HandleDefault(node);
         }
@@ -642,6 +642,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(THat node)
+        {
+            HandleTHat(node);
+        }
+        protected virtual void HandleTHat(THat node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TPlus node)
         {
             HandleTPlus(node);
@@ -959,17 +967,17 @@ namespace DLM.Editor.Analysis
             Visit(node.Owner);
             Visit(node.Readers);
         }
-        protected override void HandleAPrincipal(APrincipal node)
-        {
-            Visit(node.Identifier);
-        }
-        protected override void HandleALowerPrincipal(ALowerPrincipal node)
+        protected override void HandleALowerPolicy(ALowerPolicy node)
         {
             Visit(node.Underscore);
         }
-        protected override void HandleAUpperPrincipal(AUpperPrincipal node)
+        protected override void HandleAUpperPolicy(AUpperPolicy node)
         {
-            Visit(node.Asterisk);
+            Visit(node.Hat);
+        }
+        protected override void HandleAPrincipal(APrincipal node)
+        {
+            Visit(node.Identifier);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1198,17 +1206,17 @@ namespace DLM.Editor.Analysis
             Visit(node.Readers);
             Visit(node.Owner);
         }
-        protected override void HandleAPrincipal(APrincipal node)
-        {
-            Visit(node.Identifier);
-        }
-        protected override void HandleALowerPrincipal(ALowerPrincipal node)
+        protected override void HandleALowerPolicy(ALowerPolicy node)
         {
             Visit(node.Underscore);
         }
-        protected override void HandleAUpperPrincipal(AUpperPrincipal node)
+        protected override void HandleAUpperPolicy(AUpperPolicy node)
         {
-            Visit(node.Asterisk);
+            Visit(node.Hat);
+        }
+        protected override void HandleAPrincipal(APrincipal node)
+        {
+            Visit(node.Identifier);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1569,6 +1577,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        private Result dispatch(ALowerPolicy node)
+        {
+            return HandleALowerPolicy(node);
+        }
+        protected virtual Result HandleALowerPolicy(ALowerPolicy node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(AUpperPolicy node)
+        {
+            return HandleAUpperPolicy(node);
+        }
+        protected virtual Result HandleAUpperPolicy(AUpperPolicy node)
+        {
+            return HandleDefault(node);
+        }
         
         public Result Visit(PPrincipal node)
         {
@@ -1583,22 +1607,6 @@ namespace DLM.Editor.Analysis
             return HandleAPrincipal(node);
         }
         protected virtual Result HandleAPrincipal(APrincipal node)
-        {
-            return HandleDefault(node);
-        }
-        private Result dispatch(ALowerPrincipal node)
-        {
-            return HandleALowerPrincipal(node);
-        }
-        protected virtual Result HandleALowerPrincipal(ALowerPrincipal node)
-        {
-            return HandleDefault(node);
-        }
-        private Result dispatch(AUpperPrincipal node)
-        {
-            return HandleAUpperPrincipal(node);
-        }
-        protected virtual Result HandleAUpperPrincipal(AUpperPrincipal node)
         {
             return HandleDefault(node);
         }
@@ -1938,6 +1946,14 @@ namespace DLM.Editor.Analysis
             return HandleTUnderscore(node);
         }
         protected virtual Result HandleTUnderscore(TUnderscore node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(THat node)
+        {
+            return HandleTHat(node);
+        }
+        protected virtual Result HandleTHat(THat node)
         {
             return HandleDefault(node);
         }
@@ -2385,6 +2401,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(ALowerPolicy node, T1 arg1)
+        {
+            return HandleALowerPolicy(node, arg1);
+        }
+        protected virtual Result HandleALowerPolicy(ALowerPolicy node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(AUpperPolicy node, T1 arg1)
+        {
+            return HandleAUpperPolicy(node, arg1);
+        }
+        protected virtual Result HandleAUpperPolicy(AUpperPolicy node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         
         public Result Visit(PPrincipal node, T1 arg1)
         {
@@ -2399,22 +2431,6 @@ namespace DLM.Editor.Analysis
             return HandleAPrincipal(node, arg1);
         }
         protected virtual Result HandleAPrincipal(APrincipal node, T1 arg1)
-        {
-            return HandleDefault(node, arg1);
-        }
-        private Result dispatch(ALowerPrincipal node, T1 arg1)
-        {
-            return HandleALowerPrincipal(node, arg1);
-        }
-        protected virtual Result HandleALowerPrincipal(ALowerPrincipal node, T1 arg1)
-        {
-            return HandleDefault(node, arg1);
-        }
-        private Result dispatch(AUpperPrincipal node, T1 arg1)
-        {
-            return HandleAUpperPrincipal(node, arg1);
-        }
-        protected virtual Result HandleAUpperPrincipal(AUpperPrincipal node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -2754,6 +2770,14 @@ namespace DLM.Editor.Analysis
             return HandleTUnderscore(node, arg1);
         }
         protected virtual Result HandleTUnderscore(TUnderscore node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(THat node, T1 arg1)
+        {
+            return HandleTHat(node, arg1);
+        }
+        protected virtual Result HandleTHat(THat node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3201,6 +3225,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(ALowerPolicy node, T1 arg1, T2 arg2)
+        {
+            return HandleALowerPolicy(node, arg1, arg2);
+        }
+        protected virtual Result HandleALowerPolicy(ALowerPolicy node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(AUpperPolicy node, T1 arg1, T2 arg2)
+        {
+            return HandleAUpperPolicy(node, arg1, arg2);
+        }
+        protected virtual Result HandleAUpperPolicy(AUpperPolicy node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         
         public Result Visit(PPrincipal node, T1 arg1, T2 arg2)
         {
@@ -3215,22 +3255,6 @@ namespace DLM.Editor.Analysis
             return HandleAPrincipal(node, arg1, arg2);
         }
         protected virtual Result HandleAPrincipal(APrincipal node, T1 arg1, T2 arg2)
-        {
-            return HandleDefault(node, arg1, arg2);
-        }
-        private Result dispatch(ALowerPrincipal node, T1 arg1, T2 arg2)
-        {
-            return HandleALowerPrincipal(node, arg1, arg2);
-        }
-        protected virtual Result HandleALowerPrincipal(ALowerPrincipal node, T1 arg1, T2 arg2)
-        {
-            return HandleDefault(node, arg1, arg2);
-        }
-        private Result dispatch(AUpperPrincipal node, T1 arg1, T2 arg2)
-        {
-            return HandleAUpperPrincipal(node, arg1, arg2);
-        }
-        protected virtual Result HandleAUpperPrincipal(AUpperPrincipal node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -3570,6 +3594,14 @@ namespace DLM.Editor.Analysis
             return HandleTUnderscore(node, arg1, arg2);
         }
         protected virtual Result HandleTUnderscore(TUnderscore node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(THat node, T1 arg1, T2 arg2)
+        {
+            return HandleTHat(node, arg1, arg2);
+        }
+        protected virtual Result HandleTHat(THat node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4017,6 +4049,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        private Result dispatch(ALowerPolicy node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleALowerPolicy(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleALowerPolicy(ALowerPolicy node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AUpperPolicy node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAUpperPolicy(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAUpperPolicy(AUpperPolicy node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         
         public Result Visit(PPrincipal node, T1 arg1, T2 arg2, T3 arg3)
         {
@@ -4031,22 +4079,6 @@ namespace DLM.Editor.Analysis
             return HandleAPrincipal(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleAPrincipal(APrincipal node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleDefault(node, arg1, arg2, arg3);
-        }
-        private Result dispatch(ALowerPrincipal node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleALowerPrincipal(node, arg1, arg2, arg3);
-        }
-        protected virtual Result HandleALowerPrincipal(ALowerPrincipal node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleDefault(node, arg1, arg2, arg3);
-        }
-        private Result dispatch(AUpperPrincipal node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleAUpperPrincipal(node, arg1, arg2, arg3);
-        }
-        protected virtual Result HandleAUpperPrincipal(AUpperPrincipal node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
@@ -4386,6 +4418,14 @@ namespace DLM.Editor.Analysis
             return HandleTUnderscore(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTUnderscore(TUnderscore node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(THat node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTHat(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTHat(THat node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
