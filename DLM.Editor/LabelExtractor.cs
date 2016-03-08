@@ -144,51 +144,28 @@ namespace DLM.Editor
         protected override void HandleAPrincipalPolicy(APrincipalPolicy node)
         {
             Label lbl = null;
-            if (node.Owner is ALowerPrincipal)
+
+            var ownerName = (node.Owner as APrincipal).Identifier.Text;
+            Principal owner;
+
+            if (!principals.TryGetValue(ownerName, out owner))
+                errorManager.Register(node.Owner, $"Use of undeclared principal {ownerName}.");
+
+            List<Principal> readers = new List<Principal>();
+            foreach (var reader in node.Readers)
             {
-                if (node.Readers.Count != 1 || !(node.Readers[0] is AUpperPrincipal))
-                    errorManager.Register(node, "A policy with no owners must specify * for its readers.");
+                string name = (reader as APrincipal).Identifier.Text;
+                Principal r;
+
+                if (!principals.TryGetValue(name, out r))
+                    errorManager.Register(node.Owner, $"Use of undeclared principal {name}.");
                 else
-                    lbl = Label.LowerBound;
+                    readers.Add(r);
             }
-            else if (node.Owner is AUpperPrincipal)
-            {
-                if (node.Readers.Count != 1 || !(node.Readers[0] is ALowerPrincipal))
-                    errorManager.Register(node, "A policy with all principals as owners must specify _ for its readers.");
-                else
-                    lbl = Label.UpperBound;
-            }
-            else
-            {
-                var ownerName = (node.Owner as APrincipal).Identifier.Text;
-                Principal owner;
 
-                if (!principals.TryGetValue(ownerName, out owner))
-                    errorManager.Register(node.Owner, $"Use of undeclared principal {ownerName}.");
-
-                List<Principal> readers = new List<Principal>();
-                foreach (var reader in node.Readers)
-                {
-                    if (reader is ALowerPrincipal)
-                        continue;
-                    else if (reader is AUpperPrincipal)
-                        errorManager.Register(reader, "Only a _ owner can specify the * reader-set.");
-                    else
-                    {
-                        string name = (reader as APrincipal).Identifier.Text;
-                        Principal r;
-
-                        if (!principals.TryGetValue(name, out r))
-                            errorManager.Register(node.Owner, $"Use of undeclared principal {name}.");
-                        else
-                            readers.Add(r);
-                    }
-                }
-
-                if (owner != null)
-                    lbl = new PolicyLabel(
-                        new Policy(owner, readers));
-            }
+            if (owner != null)
+                lbl = new PolicyLabel(
+                    new Policy(owner, readers));
 
             Output[node] = lbl;
         }
