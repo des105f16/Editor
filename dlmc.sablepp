@@ -130,7 +130,7 @@ Productions
     glstmt -> statement
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
-        | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
+        | {arr} type identifier l_squ number r_squ semicolon -> New statement.array_declaration(type, identifier, number)
         | {func} type identifier l_par fparams r_par l_cur stmt* r_cur -> New statement.function_declaration(type, identifier, [fparams], [stmt])
         ;
     fparams -> function_parameter*
