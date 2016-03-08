@@ -23,6 +23,16 @@ namespace DLM.Editor
             this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
+        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            structDeclarations.OpenScope();
+
+            Visit(node.Parameters);
+            Visit(node.Statements);
+
+            structDeclarations.CloseScope();
+        }
+
         protected override void HandlePStruct(PStruct node)
         {
             structTypedefs.Add(node.Name.Text, node);
