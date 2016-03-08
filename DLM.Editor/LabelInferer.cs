@@ -93,7 +93,13 @@ namespace DLM.Editor
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
-            throw new System.NotImplementedException();
+            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+
+            basicBlock.Push(lbl);
+            Visit(node.IfStatements);
+            Visit(node.ElseStatements);
+            basicBlock.Pop();
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
