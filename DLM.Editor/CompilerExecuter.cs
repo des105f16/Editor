@@ -17,8 +17,8 @@ namespace DLM.Editor
 {
     public partial class CompilerExecuter
     {
-        private VariableLabel[] variables;
-        public VariableLabel[] Variables => variables;
+        private InferenceResult result;
+        public InferenceResult Result => result;
 
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
@@ -38,7 +38,7 @@ namespace DLM.Editor
             if (v.Errors)
                 return;
 
-            variables = vars;
+            result = vars;
         }
 
         private class Validator
@@ -110,11 +110,11 @@ namespace DLM.Editor
                 LabelExtractor le = new LabelExtractor(errorManager);
                 le.Visit(root);
             }
-            public VariableLabel[] InferLabels()
+            public InferenceResult InferLabels()
             {
                 LabelInferer le = new LabelInferer(errorManager);
                 le.Visit(root);
-                return le.GetVariableLabels();
+                return Inference.ConstraintResolver.Resolve(le.Constraints);
             }
         }
 
