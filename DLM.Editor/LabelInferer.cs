@@ -145,7 +145,7 @@ namespace DLM.Editor
             protected override Label HandleAComparisonExpression(AComparisonExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
             {
-                return new VariableLabel("Ld");
+                return new VariableLabel("d{" + node.Identifier.Text + "}");
             }
             protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAElementExpression(AElementExpression node)
