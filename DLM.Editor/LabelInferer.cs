@@ -165,7 +165,7 @@ namespace DLM.Editor
             protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAElementExpression(AElementExpression node)
             {
-                return Visit(node.Expression);
+                return Visit(node.Expression) + node.FieldTypeDecl.Type.DeclaredLabel;
             }
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {

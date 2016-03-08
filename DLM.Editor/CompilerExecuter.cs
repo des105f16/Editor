@@ -29,8 +29,12 @@ namespace DLM.Editor
             v.CompileWithGCC();
             if (v.Errors)
                 return;
-
+            
             v.ExtractLabels();
+            if (v.Errors)
+                return;
+
+            v.ExtractElementLabels();
             if (v.Errors)
                 return;
 
@@ -115,6 +119,12 @@ namespace DLM.Editor
                 LabelInferer le = new LabelInferer(errorManager);
                 le.Visit(root);
                 return Inference.ConstraintResolver.Resolve(le.Constraints);
+            }
+
+            public void ExtractElementLabels()
+            {
+                ElementLabelExtractor ele = new ElementLabelExtractor(errorManager);
+                ele.Visit(root);
             }
         }
 

@@ -57,6 +57,7 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ElementLabelExtractor.cs" />
     <Compile Include="Generated\analysis.cs" />
     <Compile Include="Generated\CompilerExecuter.cs" />
     <Compile Include="Generated\lexer.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="ListForm.Designer.cs">
       <DependentUpon>ListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\AElementExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />
     <Compile Include="Nodes\PPrincipal.cs" />
     <Compile Include="Nodes\PType.cs" />
