@@ -143,8 +143,6 @@ namespace DLM.Editor
         }
         protected override void HandleAPrincipalPolicy(APrincipalPolicy node)
         {
-            Label lbl = null;
-
             var ownerName = (node.Owner as APrincipal).Identifier.Text;
             Principal owner;
 
@@ -164,10 +162,7 @@ namespace DLM.Editor
             }
 
             if (owner != null)
-                lbl = new PolicyLabel(
-                    new Policy(owner, readers));
-
-            Output[node] = lbl;
+                Output[node] = new PolicyLabel(new Policy(owner, readers));
         }
     }
 }
