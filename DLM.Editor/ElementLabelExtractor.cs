@@ -1,5 +1,6 @@
 ﻿using DLM.Editor.Analysis;
 using DLM.Editor.Nodes;
+using SablePP.Tools;
 using SablePP.Tools.Error;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,19 @@ namespace DLM.Editor
     public class ElementLabelExtractor : DepthFirstAdapter
     {
         private ErrorManager errorManager;
-        private Dictionary<string, PStruct> structs;
+        private Dictionary<string, PStruct> structTypedefs;
+        private ScopedDictionary<string, PStruct> structDeclarations;
 
         public ElementLabelExtractor(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
-            this.structs = new Dictionary<string, PStruct>();
+            this.structTypedefs = new Dictionary<string, PStruct>();
+            this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
         protected override void HandlePStruct(PStruct node)
         {
-            structs.Add(node.Name.Text, node);
+            structTypedefs.Add(node.Name.Text, node);
         }
 
         protected override void HandleAElementExpression(AElementExpression node)
