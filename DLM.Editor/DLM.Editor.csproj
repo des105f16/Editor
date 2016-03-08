@@ -66,12 +66,6 @@
     <Compile Include="Generated\tokens.cs" />
     <Compile Include="LabelExtractor.cs" />
     <Compile Include="LabelInferer.cs" />
-    <Compile Include="ListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ListForm.Designer.cs">
-      <DependentUpon>ListForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Nodes\AElementExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />
     <Compile Include="Nodes\PPrincipal.cs" />
@@ -81,9 +75,6 @@
     <Compile Include="ValidationData.cs" />
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ListForm.resx">
-      <DependentUpon>ListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
