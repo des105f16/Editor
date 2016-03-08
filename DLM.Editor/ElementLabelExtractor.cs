@@ -49,6 +49,18 @@ namespace DLM.Editor
                 structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
         }
 
+        protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
+        {
+            var type = node.Type;
+            while (type is APointerType)
+                type = (type as APointerType).Type;
+
+            var newType = (AType)type;
+
+            if (structTypedefs.ContainsKey(newType.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
+        }
+
         protected override void HandlePStruct(PStruct node)
         {
             structTypedefs.Add(node.Name.Text, node);
