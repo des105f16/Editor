@@ -39,26 +39,25 @@ namespace DLM.Editor
             while (type is APointerType)
                 type = (type as APointerType).Type;
 
-            var newType = (AType)type;
+            var actualType = (AType)type;
 
-            if (structTypedefs.ContainsKey(newType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
+            if (structTypedefs.ContainsKey(actualType.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
         }
 
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             var type = node.Type;
             while (type is APointerType)
-            {
                 type = (type as APointerType).Type;
-            }
-            var newType = (AType)type;
+
+            var actualType = (AType)type;
 
             if (node.HasExpression)
                 Visit(node.Expression);
 
-            if (structTypedefs.ContainsKey(newType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
+            if (structTypedefs.ContainsKey(actualType.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
         }
 
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
@@ -85,9 +84,11 @@ namespace DLM.Editor
                 errorManager.Register(node.Expression, "Struct array field access must be of form id[exp].id");
                 return;
             }
+
             var indexExpr = ((AIndexExpression)node.Expression);
             if (!(indexExpr.Expression is AIdentifierExpression))
                 return;
+
             var identExpr = ((AIdentifierExpression)indexExpr.Expression);
             node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
         }
