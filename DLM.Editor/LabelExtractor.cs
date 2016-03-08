@@ -157,7 +157,7 @@ namespace DLM.Editor
                     readers.Add(reader.DeclaredPrincipal);
             }
 
-            if (errorManager.Errors.Count > 0)
+            if (errorManager.Errors.Count == 0)
                 Output[node] = new PolicyLabel(new Policy(owner, readers));
         }
         protected override void HandleALowerPolicy(ALowerPolicy node)
