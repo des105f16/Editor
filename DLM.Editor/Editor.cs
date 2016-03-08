@@ -37,8 +37,7 @@ namespace DLM.Editor
         {
             var comp = CodeTextBox.Executer as CompilerExecuter;
 
-            list.Clear();
-            list.AddRange(comp.Variables);
+            list.Set(comp.Result);
 
         }
     }

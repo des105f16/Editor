@@ -26,23 +26,24 @@ namespace DLM.Editor
             base.OnClosing(e);
         }
 
-        public void Clear()
-        {
-            listBox1.Items.Clear();
-        }
-
         private string getString(VariableLabel label)
         {
             return label.Name + " \u2248 " + label.NoVariables.ToString();
         }
 
-        public void AddRange(IEnumerable<VariableLabel> labels)
+        public void Set(InferenceResult result)
         {
-            listBox1.Items.AddRange(labels.Select(getString).ToArray());
-        }
-        public void Add(VariableLabel label)
-        {
-            listBox1.Items.Add(getString(label));
+            listBox1.Items.Clear();
+
+            if (result.Succes)
+            {
+                foreach (var v in result.Variables)
+                    listBox1.Items.Add(getString(v));
+            }
+            else
+            {
+                listBox1.Items.Add("ERROR");
+            }
         }
     }
 }
