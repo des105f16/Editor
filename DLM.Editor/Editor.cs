@@ -1,4 +1,5 @@
-﻿using SablePP.Tools.Editor;
+﻿using DLM.Inference;
+using SablePP.Tools.Editor;
 using System;
 
 namespace DLM.Editor
@@ -66,6 +67,23 @@ namespace DLM.Editor
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
         {
             var comp = codeTextBox1.Executer as CompilerExecuter;
+            var result = comp.Result;
+
+            listBox1.Items.Clear();
+
+            if (result == null)
+                return;
+
+            if (result.Succes)
+                foreach (var v in result.Variables)
+                    listBox1.Items.Add(getString(v));
+            else
+                listBox1.Items.Add("ERROR");
+        }
+
+        private string getString(VariableLabel label)
+        {
+            return label.Name + " \u2248 " + label.NoVariables.ToString();
         }
     }
 }
