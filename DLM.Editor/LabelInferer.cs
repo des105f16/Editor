@@ -124,6 +124,7 @@ namespace DLM.Editor
             private LabelInferer owner;
             private ScopedDictionary<string, PType> types => owner.types;
             private ErrorManager errorManager => owner.errorManager;
+            private Label authority => owner.authority;
 
             private ExpressionLabeler(LabelInferer owner)
             {
@@ -147,6 +148,15 @@ namespace DLM.Editor
             {
                 if (node.HasLabel)
                 {
+                    var L1 = types[node.Identifier.Text].DeclaredLabel;
+                    var L2 = node.Label.LabelValue;
+
+                    if (L1 <= L2 + authority)
+                        return L2;
+                    else
+                    {
+
+                    }
                 }
                 else
                     return new VariableLabel("d{" + node.Identifier.Text + "}");
