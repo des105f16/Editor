@@ -155,7 +155,8 @@ namespace DLM.Editor
                         return L2;
                     else
                     {
-
+                        errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
+                        return Label.LowerBound;
                     }
                 }
                 else
