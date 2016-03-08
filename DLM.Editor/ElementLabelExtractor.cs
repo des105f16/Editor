@@ -81,7 +81,13 @@ namespace DLM.Editor
         protected override void HandleAElementExpression(AElementExpression node)
         {
             if (!(node.Expression is AIndexExpression))
+            {
                 errorManager.Register(node.Expression, "Struct array field access must be of form id[exp].id");
+                return;
+            }
+            var indexExpr = ((AIndexExpression)node.Expression);
+            var identExpr = ((AIdentifierExpression)indexExpr.Expression);
+            node.StructTypedef = structDeclarations[identExpr.Identifier.Text];
         }
 
         protected override void HandleAIndexExpression(AIndexExpression node)
