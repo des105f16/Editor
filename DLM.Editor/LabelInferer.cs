@@ -15,17 +15,20 @@ namespace DLM.Editor
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
 
+        private LabelStack authority;
         private LabelStack basicBlock;
-        private int blockNameCount = 1;
+        private int blockNameCount;
 
         public LabelInferer(ErrorManager errorManager)
         {
-            this.errorManager = errorManager;
-
             constraints = new List<Constraint>();
 
+            this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
+
+            authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
+            blockNameCount = 1;
         }
 
         public Constraint[] Constraints => constraints.ToArray();
@@ -73,8 +76,11 @@ namespace DLM.Editor
         }
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
+            var label = new PolicyLabel(
+                new Policy(node.Principal.DeclaredPrincipal));
+            authority.Push(label);
             Visit(node.Statements);
-            //throw new System.NotImplementedException();
+            authority.Pop();
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {

@@ -24,7 +24,7 @@ namespace DLM.Editor
         {
             foreach (var p in node.PrincipalDeclarations)
             {
-                string name = p.Name.Text;
+                string name = p.Name.Identifier.Text;
                 if (principals.ContainsKey(name))
                     errorManager.Register(p, $"The principal {name} has already been defined.");
                 else
@@ -143,22 +143,15 @@ namespace DLM.Editor
         }
         protected override void HandleAPrincipalPolicy(APrincipalPolicy node)
         {
-            var ownerName = (node.Owner as APrincipal).Identifier.Text;
-            Principal owner;
-
-            if (!principals.TryGetValue(ownerName, out owner))
-                errorManager.Register(node.Owner, $"Use of undeclared principal {ownerName}.");
+            Visit(node.Owner);
+            var owner = node.Owner.DeclaredPrincipal;
 
             List<Principal> readers = new List<Principal>();
             foreach (var reader in node.Readers)
             {
-                string name = (reader as APrincipal).Identifier.Text;
-                Principal r;
-
-                if (!principals.TryGetValue(name, out r))
-                    errorManager.Register(reader, $"Use of undeclared principal {name}.");
-                else
-                    readers.Add(r);
+                Visit(reader);
+                if (reader.DeclaredPrincipal != null)
+                    readers.Add(reader.DeclaredPrincipal);
             }
 
             if (errorManager.Errors.Count > 0)
@@ -171,6 +164,17 @@ namespace DLM.Editor
         protected override void HandleAUpperPolicy(AUpperPolicy node)
         {
             Output[node] = Label.UpperBound;
+        }
+
+        protected override void HandlePPrincipal(PPrincipal node)
+        {
+            Principal principal;
+            string name = node.Identifier.Text;
+
+            if (!principals.TryGetValue(name, out principal))
+                errorManager.Register(node, $"Use of undeclared principal {name}.");
+            else
+                node.DeclaredPrincipal = principal;
         }
     }
 }
