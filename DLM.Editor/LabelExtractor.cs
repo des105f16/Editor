@@ -109,7 +109,7 @@ namespace DLM.Editor
             if (node.HasLabel)
                 Visit(node.Label);
 
-            node.DeclaredLabel = node.Label.LabelValue;
+            node.DeclaredLabel = node.Label?.LabelValue;
         }
         protected override void HandleAPointerType(APointerType node)
         {
