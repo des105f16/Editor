@@ -71,6 +71,7 @@
     <Compile Include="ListForm.Designer.cs">
       <DependentUpon>ListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\PLabel.cs" />
     <Compile Include="Nodes\PPrincipal.cs" />
     <Compile Include="Nodes\PType.cs" />
     <Compile Include="Program.cs" />

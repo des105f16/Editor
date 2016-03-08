@@ -86,6 +86,9 @@ namespace DLM.Editor
         {
             Visit(node.Type);
 
+            if (node.HasExpression)
+                Visit(node.Expression);
+
             if (node.Type.DeclaredLabel == null)
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
@@ -106,7 +109,7 @@ namespace DLM.Editor
             if (node.HasLabel)
                 Visit(node.Label);
 
-            node.DeclaredLabel = Output[node.Label] as Label;
+            node.DeclaredLabel = node.Label?.LabelValue;
         }
         protected override void HandleAPointerType(APointerType node)
         {
@@ -128,14 +131,14 @@ namespace DLM.Editor
                     lbl += plbl;
             }
 
-            Output[node] = lbl;
+            node.LabelValue = lbl;
         }
         protected override void HandleAVariablePolicy(AVariablePolicy node)
         {
             Label lbl;
             if (!namedLabels.TryGetValue(node.Identifier.Text, out lbl, false))
             {
-                errorManager.Register(node, $"Unknown reference \"{node.Identifier.Text}\".");
+                errorManager.Register(node, $"Unknown variable reference \"{node.Identifier.Text}\".");
                 Output[node] = null;
             }
             else
@@ -154,7 +157,7 @@ namespace DLM.Editor
                     readers.Add(reader.DeclaredPrincipal);
             }
 
-            if (errorManager.Errors.Count > 0)
+            if (errorManager.Errors.Count == 0)
                 Output[node] = new PolicyLabel(new Policy(owner, readers));
         }
         protected override void HandleALowerPolicy(ALowerPolicy node)

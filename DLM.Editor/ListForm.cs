@@ -35,6 +35,9 @@ namespace DLM.Editor
         {
             listBox1.Items.Clear();
 
+            if (result == null)
+                return;
+
             if (result.Succes)
             {
                 foreach (var v in result.Variables)

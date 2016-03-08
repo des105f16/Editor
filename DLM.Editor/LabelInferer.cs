@@ -124,6 +124,7 @@ namespace DLM.Editor
             private LabelInferer owner;
             private ScopedDictionary<string, PType> types => owner.types;
             private ErrorManager errorManager => owner.errorManager;
+            private Label authority => owner.authority;
 
             private ExpressionLabeler(LabelInferer owner)
             {
@@ -145,7 +146,21 @@ namespace DLM.Editor
             protected override Label HandleAComparisonExpression(AComparisonExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
             {
-                return new VariableLabel("Ld");
+                if (node.HasLabel)
+                {
+                    var L1 = types[node.Identifier.Text].DeclaredLabel;
+                    var L2 = node.Label.LabelValue;
+
+                    if (L1 <= L2 + authority)
+                        return L2;
+                    else
+                    {
+                        errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
+                        return Label.LowerBound;
+                    }
+                }
+                else
+                    return new VariableLabel("d{" + node.Identifier.Text + "}");
             }
             protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAElementExpression(AElementExpression node)
