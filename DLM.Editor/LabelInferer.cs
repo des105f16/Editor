@@ -8,7 +8,7 @@ using SablePP.Tools.Nodes;
 
 namespace DLM.Editor
 {
-  public  class LabelInferer : DepthFirstAdapter
+    public class LabelInferer : DepthFirstAdapter
     {
         private List<Constraint> constraints;
 
@@ -17,7 +17,7 @@ namespace DLM.Editor
 
         private LabelStack basicBlock;
         private int blockNameCount = 1;
-        
+
         public LabelInferer(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
@@ -52,7 +52,7 @@ namespace DLM.Editor
             types.Add(node.Identifier.Text, node.Type);
 
             Label lbl = node.HasExpression ?
-                ExpressionLabeler.GetLabel(node.Expression, types) :
+                ExpressionLabeler.GetLabel(node.Expression, this) :
                 Label.LowerBound;
 
             Add(lbl, node.Type.DeclaredLabel);
@@ -65,7 +65,7 @@ namespace DLM.Editor
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
-            Label lbl = ExpressionLabeler.GetLabel(node.Expression, types);
+            Label lbl = ExpressionLabeler.GetLabel(node.Expression, this);
 
             var type = types[node.Identifier.Text];
 
@@ -79,7 +79,7 @@ namespace DLM.Editor
         protected override void HandleAIfStatement(AIfStatement node)
         {
             Label lbl = new VariableLabel("L" + blockNameCount++);
-            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -88,7 +88,7 @@ namespace DLM.Editor
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Label lbl = new VariableLabel("L" + blockNameCount++);
-            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
             Visit(node.IfStatements);
@@ -98,7 +98,7 @@ namespace DLM.Editor
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Label lbl = new VariableLabel("L" + blockNameCount++);
-            Add(ExpressionLabeler.GetLabel(node.Expression, types), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -106,7 +106,7 @@ namespace DLM.Editor
         }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
-            Label lbl = ExpressionLabeler.GetLabel(node.Expression, types);
+            Label lbl = ExpressionLabeler.GetLabel(node.Expression, this);
 
             var type = node.GetFirstParent<AFunctionDeclarationStatement>().Type;
 
@@ -115,16 +115,18 @@ namespace DLM.Editor
 
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
         {
-            private ScopedDictionary<string, PType> types;
+            private LabelInferer owner;
+            private ScopedDictionary<string, PType> types => owner.types;
+            private ErrorManager errorManager => owner.errorManager;
 
-            private ExpressionLabeler(ScopedDictionary<string, PType> types)
+            private ExpressionLabeler(LabelInferer owner)
             {
-                this.types = types;
+                this.owner = owner;
             }
 
-            public static Label GetLabel(PExpression expression, ScopedDictionary<string, PType> types)
+            public static Label GetLabel(PExpression expression, LabelInferer owner)
             {
-                return new ExpressionLabeler(types).Visit(expression);
+                return new ExpressionLabeler(owner).Visit(expression);
             }
 
             protected override Label HandleDefault(Node node)
