@@ -156,7 +156,7 @@ namespace DLM.Editor
                 Principal r;
 
                 if (!principals.TryGetValue(name, out r))
-                    errorManager.Register(node.Owner, $"Use of undeclared principal {name}.");
+                    errorManager.Register(reader, $"Use of undeclared principal {name}.");
                 else
                     readers.Add(r);
             }
