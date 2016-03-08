@@ -82,8 +82,8 @@ namespace DLM.Editor
         protected override string HandleAVariablePolicy(AVariablePolicy node) => string.Empty;
         protected override string HandleAPrincipalPolicy(APrincipalPolicy node) => string.Empty;
         protected override string HandleAPrincipal(APrincipal node) => string.Empty;
-        protected override string HandleALowerPrincipal(ALowerPrincipal node) => string.Empty;
-        protected override string HandleAUpperPrincipal(AUpperPrincipal node) => string.Empty;
+        protected override string HandleALowerPolicy(ALowerPolicy node) => string.Empty;
+        protected override string HandleAUpperPolicy(AUpperPolicy node) => string.Empty;
 
         protected override string HandleAAndExpression(AAndExpression node) => $"{Visit(node.Left)} && {Visit(node.Right)}";
         protected override string HandleAOrExpression(AOrExpression node) => $"{Visit(node.Left)} || {Visit(node.Right)}";
