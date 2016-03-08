@@ -87,7 +87,7 @@ namespace DLM.Editor
             }
             var indexExpr = ((AIndexExpression)node.Expression);
             var identExpr = ((AIdentifierExpression)indexExpr.Expression);
-            node.StructTypedef = structDeclarations[identExpr.Identifier.Text];
+            node.StructDecl = structDeclarations[identExpr.Identifier.Text];
         }
 
         protected override void HandleAIndexExpression(AIndexExpression node)

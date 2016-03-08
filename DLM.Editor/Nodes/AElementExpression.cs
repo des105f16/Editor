@@ -8,8 +8,8 @@ namespace DLM.Editor.Nodes
 {
     public partial class AElementExpression
     {
-        private PStruct structTypedef;
+        private PStruct structDecl;
 
-        public PStruct StructTypedef { get { return structTypedef; } set { structTypedef = value; } }
+        public PStruct StructDecl { get { return structDecl; } set { structDecl = value; } }
     }
 }
