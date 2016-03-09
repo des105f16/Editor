@@ -35,41 +35,34 @@ namespace DLM.Editor
 
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {
-            var type = node.Type;
-            while (type is APointerType)
-                type = (type as APointerType).Type;
+            var type = getType(node.Type);
 
-            var actualType = (AType)type;
-
-            if (structTypedefs.ContainsKey(actualType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
-
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
-            var type = node.Type;
-            while (type is APointerType)
-                type = (type as APointerType).Type;
-
-            var actualType = (AType)type;
+            var type = getType(node.Type);
 
             if (node.HasExpression)
                 Visit(node.Expression);
 
-            if (structTypedefs.ContainsKey(actualType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
-
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
-            var type = node.Type;
+            var type = getType(node.Type);
+
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
+        }
+
+        private AType getType(PType type)
+        {
             while (type is APointerType)
                 type = (type as APointerType).Type;
-
-            var newType = (AType)type;
-
-            if (structTypedefs.ContainsKey(newType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
+            return type as AType;
         }
 
         protected override void HandlePStruct(PStruct node)
@@ -79,32 +72,18 @@ namespace DLM.Editor
 
         protected override void HandleAElementExpression(AElementExpression node)
         {
-            AIdentifierExpression identExpr;
-            if (node.Expression is AIndexExpression)
-            {
-                var indexExpr = ((AIndexExpression)node.Expression);
-                if (!(indexExpr.Expression is AIdentifierExpression))
-                    return;
+            var expr = node.Expression;
 
-                identExpr = ((AIdentifierExpression)indexExpr.Expression);
-            }
-            else if (node.Expression is AIdentifierExpression)
+            if (expr is AIndexExpression)
+                expr = (expr as AIndexExpression).Expression;
+
+            if(expr is AIdentifierExpression)
             {
-                identExpr = ((AIdentifierExpression)node.Expression);
+                var identExpr = expr as AIdentifierExpression;
+                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
             }
             else
-            {
                 errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
-                return;
-            }
-
-            node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
-        }
-
-        protected override void HandleAIndexExpression(AIndexExpression node)
-        {
-            if (!(node.Expression is AIdentifierExpression))
-                errorManager.Register(node.Expression, "Array access must be of form id[exp]");
         }
     }
 }
