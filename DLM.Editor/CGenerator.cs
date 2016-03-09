@@ -91,7 +91,7 @@ namespace DLM.Editor
         protected override string HandleAComparisonExpression(AComparisonExpression node) => $"{Visit(node.Left)} {node.Compare.Text} {Visit(node.Right)}";
 
         protected override string HandleAElementExpression(AElementExpression node) => Visit(node.Expression) + Visit(node.Element);
-        protected override string HandleAIndexExpression(AIndexExpression node) => $"{Visit(node.Expression)}[{node.Index}]";
+        protected override string HandleAIndexExpression(AIndexExpression node) => $"{Visit(node.Expression)}[{Visit(node.Index)}]";
 
         protected override string HandleAPlusExpression(APlusExpression node) => $"{Visit(node.Left)} + {Visit(node.Right)}";
         protected override string HandleAMinusExpression(AMinusExpression node) => $"{Visit(node.Left)} - {Visit(node.Right)}";
