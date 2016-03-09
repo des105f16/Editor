@@ -155,7 +155,10 @@ namespace DLM.Editor
                         return L2;
                     else
                     {
-                        errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
+                        if (L1 is VariableLabel)
+                            errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}. Consider removing the explicit declassification or adding an explicit label to {node.Identifier}.");
+                        else
+                            errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
                         return Label.LowerBound;
                     }
                 }
