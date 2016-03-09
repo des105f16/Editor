@@ -106,6 +106,8 @@
             this.codeTextBox1.Size = new System.Drawing.Size(336, 258);
             this.codeTextBox1.TabIndex = 0;
             this.codeTextBox1.Zoom = 100;
+            this.codeTextBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.EditorForm_DragDrop);
+            this.codeTextBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.EditorForm_DragEnter);
             // 
             // listBox1
             // 
@@ -140,6 +142,8 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "Editor";
             this.Text = "Editor";
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.EditorForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.EditorForm_DragEnter);
             this.Controls.SetChildIndex(this.splitContainer1, 0);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

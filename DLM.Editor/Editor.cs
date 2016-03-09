@@ -1,6 +1,8 @@
 ﻿using DLM.Inference;
 using SablePP.Tools.Editor;
 using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace DLM.Editor
 {
@@ -62,6 +64,23 @@ namespace DLM.Editor
             listBox1.Items.Clear();
 
             base.OnFileClosed(e);
+        }
+        
+        private void EditorForm_DragEnter(object sender, DragEventArgs e)
+        {
+            var files = GetDraggedFiles(e);
+            if (files.Length != 1)
+                e.Effect = DragDropEffects.None;
+            else
+            {
+                FileOpeningEventArgs fdea = new FileOpeningEventArgs(files[0], Path.GetExtension(files[0]) == "." + this.FileExtension);
+                OnFileOpening(fdea);
+                e.Effect = fdea.AllowFile ? DragDropEffects.Move : DragDropEffects.None;
+            }
+        }
+        private void EditorForm_DragDrop(object sender, DragEventArgs e)
+        {
+            OpenFile(GetDraggedFiles(e)[0]);
         }
 
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
