@@ -163,7 +163,14 @@ namespace DLM.Editor
                     }
                 }
                 else
-                    return new VariableLabel("d{" + node.Identifier.Text + "}");
+                {
+                    var Ld = new VariableLabel("d{" + node.Identifier.Text + "}");
+                    var Lvar = types[node.Identifier.Text].DeclaredLabel;
+
+                    owner.Add(Lvar, Ld + authority);
+
+                    return Ld;
+                }
             }
             protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAElementExpression(AElementExpression node)
