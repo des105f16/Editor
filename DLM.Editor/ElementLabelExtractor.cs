@@ -35,41 +35,34 @@ namespace DLM.Editor
 
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {
-            var type = node.Type;
-            while (type is APointerType)
-                type = (type as APointerType).Type;
+            var type = getType(node.Type);
 
-            var actualType = (AType)type;
-
-            if (structTypedefs.ContainsKey(actualType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
-
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
-            var type = node.Type;
-            while (type is APointerType)
-                type = (type as APointerType).Type;
-
-            var actualType = (AType)type;
+            var type = getType(node.Type);
 
             if (node.HasExpression)
                 Visit(node.Expression);
 
-            if (structTypedefs.ContainsKey(actualType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[actualType.Name.Text]);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
-
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
-            var type = node.Type;
+            var type = getType(node.Type);
+
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
+        }
+
+        private AType getType(PType type)
+        {
             while (type is APointerType)
                 type = (type as APointerType).Type;
-
-            var newType = (AType)type;
-
-            if (structTypedefs.ContainsKey(newType.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[newType.Name.Text]);
+            return type as AType;
         }
 
         protected override void HandlePStruct(PStruct node)
