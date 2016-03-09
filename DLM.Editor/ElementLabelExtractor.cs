@@ -72,29 +72,18 @@ namespace DLM.Editor
 
         protected override void HandleAElementExpression(AElementExpression node)
         {
-            AIdentifierExpression identExpr;
-            if (node.Expression is AIndexExpression)
-            {
-                var indexExpr = ((AIndexExpression)node.Expression);
+            var expr = node.Expression;
 
-                if (!(indexExpr.Expression is AIdentifierExpression))
-                    errorManager.Register(indexExpr, "Array access (on struct fields) must be of form id[exp].");
-                if (!(indexExpr.Expression is AIdentifierExpression))
-                    return;
+            if (expr is AIndexExpression)
+                expr = (expr as AIndexExpression).Expression;
 
-                identExpr = ((AIdentifierExpression)indexExpr.Expression);
-            }
-            else if (node.Expression is AIdentifierExpression)
+            if(expr is AIdentifierExpression)
             {
-                identExpr = ((AIdentifierExpression)node.Expression);
+                var identExpr = expr as AIdentifierExpression;
+                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
             }
             else
-            {
                 errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
-                return;
-            }
-
-            node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
         }
     }
 }
