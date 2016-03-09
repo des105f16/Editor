@@ -76,6 +76,9 @@ namespace DLM.Editor
             if (node.Expression is AIndexExpression)
             {
                 var indexExpr = ((AIndexExpression)node.Expression);
+
+                if (!(indexExpr.Expression is AIdentifierExpression))
+                    errorManager.Register(indexExpr, "Array access (on struct fields) must be of form id[exp].");
                 if (!(indexExpr.Expression is AIdentifierExpression))
                     return;
 
@@ -92,12 +95,6 @@ namespace DLM.Editor
             }
 
             node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
-        }
-
-        protected override void HandleAIndexExpression(AIndexExpression node)
-        {
-            if (!(node.Expression is AIdentifierExpression))
-                errorManager.Register(node.Expression, "Array access must be of form id[exp]");
         }
     }
 }
