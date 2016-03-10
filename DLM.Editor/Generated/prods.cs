@@ -817,14 +817,14 @@ namespace DLM.Editor.Nodes
     public partial class AActsForStatement : PStatement
     {
         private TIdentifier _method_;
-        private PPrincipal _principal_;
+        private NodeList<PPrincipal> _principals_;
         private NodeList<PStatement> _statements_;
         
-        public AActsForStatement(TIdentifier _method_, PPrincipal _principal_, IEnumerable<PStatement> _statements_)
+        public AActsForStatement(TIdentifier _method_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _statements_)
             : base()
         {
             this.Method = _method_;
-            this.Principal = _principal_;
+            this._principals_ = new NodeList<PPrincipal>(this, _principals_, false);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
@@ -843,20 +843,9 @@ namespace DLM.Editor.Nodes
                 _method_ = value;
             }
         }
-        public PPrincipal Principal
+        public NodeList<PPrincipal> Principals
         {
-            get { return _principal_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Principal in AActsForStatement cannot be null.", "value");
-                
-                if (_principal_ != null)
-                    SetParent(_principal_, null);
-                SetParent(value, this);
-                
-                _principal_ = value;
-            }
+            get { return _principals_; }
         }
         public NodeList<PStatement> Statements
         {
@@ -873,13 +862,16 @@ namespace DLM.Editor.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Method = newChild as TIdentifier;
             }
-            else if (Principal == oldChild)
+            else if (oldChild is PPrincipal && Principals.Contains(oldChild as PPrincipal))
             {
-                if (newChild == null)
-                    throw new ArgumentException("Principal in AActsForStatement cannot be null.", "newChild");
                 if (!(newChild is PPrincipal) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Principal = newChild as PPrincipal;
+                
+                int index = Principals.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Principals.RemoveAt(index);
+                else
+                    Principals[index] = newChild as PPrincipal;
             }
             else if (oldChild is PStatement && Statements.Contains(oldChild as PStatement))
             {
@@ -897,7 +889,12 @@ namespace DLM.Editor.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Method;
-            yield return Principal;
+            {
+                PPrincipal[] temp = new PPrincipal[Principals.Count];
+                Principals.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
             {
                 PStatement[] temp = new PStatement[Statements.Count];
                 Statements.CopyTo(temp, 0);
@@ -908,12 +905,12 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AActsForStatement(Method.Clone(), Principal.Clone(), Statements);
+            return new AActsForStatement(Method.Clone(), Principals, Statements);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Method, Principal, Statements);
+            return string.Format("{0} {1} {2}", Method, Principals, Statements);
         }
     }
     public partial class AIfStatement : PStatement

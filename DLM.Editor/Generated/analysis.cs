@@ -907,7 +907,7 @@ namespace DLM.Editor.Analysis
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
             Visit(node.Method);
-            Visit(node.Principal);
+            Visit(node.Principals);
             Visit(node.Statements);
         }
         protected override void HandleAIfStatement(AIfStatement node)
@@ -1146,7 +1146,7 @@ namespace DLM.Editor.Analysis
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
             Visit(node.Statements);
-            Visit(node.Principal);
+            Visit(node.Principals);
             Visit(node.Method);
         }
         protected override void HandleAIfStatement(AIfStatement node)
