@@ -76,6 +76,11 @@ namespace DLM.Editor
         }
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
+            if (node.Claimant is ACallerAfclaimant)
+                errorManager.Register(node.Claimant, ErrorType.Warning, "'caller' keyword not yet implemented.");
+            else if (node.Claimant is AThisAfclaimant)
+                errorManager.Register(node.Claimant, ErrorType.Warning, "'this' keyword not yet implemented.");
+
             foreach (var p in node.Principals)
             {
                 var label = new PolicyLabel(
