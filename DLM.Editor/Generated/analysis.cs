@@ -304,6 +304,31 @@ namespace DLM.Editor.Analysis
             HandleDefault(node);
         }
         
+        public void Visit(PAfclaimant node)
+        {
+            HandlePAfclaimant(node);
+        }
+        protected virtual void HandlePAfclaimant(PAfclaimant node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(AThisAfclaimant node)
+        {
+            HandleAThisAfclaimant(node);
+        }
+        protected virtual void HandleAThisAfclaimant(AThisAfclaimant node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(ACallerAfclaimant node)
+        {
+            HandleACallerAfclaimant(node);
+        }
+        protected virtual void HandleACallerAfclaimant(ACallerAfclaimant node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PExpression node)
         {
             HandlePExpression(node);
@@ -567,6 +592,22 @@ namespace DLM.Editor.Analysis
             HandleTReturn(node);
         }
         protected virtual void HandleTReturn(TReturn node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TThis node)
+        {
+            HandleTThis(node);
+        }
+        protected virtual void HandleTThis(TThis node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TCaller node)
+        {
+            HandleTCaller(node);
+        }
+        protected virtual void HandleTCaller(TCaller node)
         {
             HandleDefault(node);
         }
@@ -906,7 +947,7 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
-            Visit(node.Method);
+            Visit(node.Claimant);
             Visit(node.Principals);
             Visit(node.Statements);
         }
@@ -978,6 +1019,14 @@ namespace DLM.Editor.Analysis
         protected override void HandleAPrincipal(APrincipal node)
         {
             Visit(node.Identifier);
+        }
+        protected override void HandleAThisAfclaimant(AThisAfclaimant node)
+        {
+            Visit(node.This);
+        }
+        protected override void HandleACallerAfclaimant(ACallerAfclaimant node)
+        {
+            Visit(node.Caller);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1147,7 +1196,7 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Statements);
             Visit(node.Principals);
-            Visit(node.Method);
+            Visit(node.Claimant);
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
@@ -1217,6 +1266,14 @@ namespace DLM.Editor.Analysis
         protected override void HandleAPrincipal(APrincipal node)
         {
             Visit(node.Identifier);
+        }
+        protected override void HandleAThisAfclaimant(AThisAfclaimant node)
+        {
+            Visit(node.This);
+        }
+        protected override void HandleACallerAfclaimant(ACallerAfclaimant node)
+        {
+            Visit(node.Caller);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1611,6 +1668,31 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node);
         }
         
+        public Result Visit(PAfclaimant node)
+        {
+            return HandlePAfclaimant(node);
+        }
+        protected virtual Result HandlePAfclaimant(PAfclaimant node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(AThisAfclaimant node)
+        {
+            return HandleAThisAfclaimant(node);
+        }
+        protected virtual Result HandleAThisAfclaimant(AThisAfclaimant node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(ACallerAfclaimant node)
+        {
+            return HandleACallerAfclaimant(node);
+        }
+        protected virtual Result HandleACallerAfclaimant(ACallerAfclaimant node)
+        {
+            return HandleDefault(node);
+        }
+        
         public Result Visit(PExpression node)
         {
             return HandlePExpression(node);
@@ -1874,6 +1956,22 @@ namespace DLM.Editor.Analysis
             return HandleTReturn(node);
         }
         protected virtual Result HandleTReturn(TReturn node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TThis node)
+        {
+            return HandleTThis(node);
+        }
+        protected virtual Result HandleTThis(TThis node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TCaller node)
+        {
+            return HandleTCaller(node);
+        }
+        protected virtual Result HandleTCaller(TCaller node)
         {
             return HandleDefault(node);
         }
@@ -2435,6 +2533,31 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1);
         }
         
+        public Result Visit(PAfclaimant node, T1 arg1)
+        {
+            return HandlePAfclaimant(node, arg1);
+        }
+        protected virtual Result HandlePAfclaimant(PAfclaimant node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(AThisAfclaimant node, T1 arg1)
+        {
+            return HandleAThisAfclaimant(node, arg1);
+        }
+        protected virtual Result HandleAThisAfclaimant(AThisAfclaimant node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(ACallerAfclaimant node, T1 arg1)
+        {
+            return HandleACallerAfclaimant(node, arg1);
+        }
+        protected virtual Result HandleACallerAfclaimant(ACallerAfclaimant node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        
         public Result Visit(PExpression node, T1 arg1)
         {
             return HandlePExpression(node, arg1);
@@ -2698,6 +2821,22 @@ namespace DLM.Editor.Analysis
             return HandleTReturn(node, arg1);
         }
         protected virtual Result HandleTReturn(TReturn node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TThis node, T1 arg1)
+        {
+            return HandleTThis(node, arg1);
+        }
+        protected virtual Result HandleTThis(TThis node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TCaller node, T1 arg1)
+        {
+            return HandleTCaller(node, arg1);
+        }
+        protected virtual Result HandleTCaller(TCaller node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3259,6 +3398,31 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
+        public Result Visit(PAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return HandlePAfclaimant(node, arg1, arg2);
+        }
+        protected virtual Result HandlePAfclaimant(PAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(AThisAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return HandleAThisAfclaimant(node, arg1, arg2);
+        }
+        protected virtual Result HandleAThisAfclaimant(AThisAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(ACallerAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return HandleACallerAfclaimant(node, arg1, arg2);
+        }
+        protected virtual Result HandleACallerAfclaimant(ACallerAfclaimant node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        
         public Result Visit(PExpression node, T1 arg1, T2 arg2)
         {
             return HandlePExpression(node, arg1, arg2);
@@ -3522,6 +3686,22 @@ namespace DLM.Editor.Analysis
             return HandleTReturn(node, arg1, arg2);
         }
         protected virtual Result HandleTReturn(TReturn node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TThis node, T1 arg1, T2 arg2)
+        {
+            return HandleTThis(node, arg1, arg2);
+        }
+        protected virtual Result HandleTThis(TThis node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TCaller node, T1 arg1, T2 arg2)
+        {
+            return HandleTCaller(node, arg1, arg2);
+        }
+        protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4083,6 +4263,31 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
+        public Result Visit(PAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePAfclaimant(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePAfclaimant(PAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AThisAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAThisAfclaimant(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAThisAfclaimant(AThisAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ACallerAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleACallerAfclaimant(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleACallerAfclaimant(ACallerAfclaimant node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        
         public Result Visit(PExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePExpression(node, arg1, arg2, arg3);
@@ -4346,6 +4551,22 @@ namespace DLM.Editor.Analysis
             return HandleTReturn(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTReturn(TReturn node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TThis node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTThis(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTThis(TThis node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TCaller node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTCaller(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

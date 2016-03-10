@@ -813,31 +813,31 @@ namespace DLM.Editor.Nodes
     }
     public partial class AActsForStatement : PStatement
     {
-        private TIdentifier _method_;
+        private PAfclaimant _claimant_;
         private NodeList<PPrincipal> _principals_;
         private NodeList<PStatement> _statements_;
         
-        public AActsForStatement(TIdentifier _method_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _statements_)
+        public AActsForStatement(PAfclaimant _claimant_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _statements_)
             : base()
         {
-            this.Method = _method_;
+            this.Claimant = _claimant_;
             this._principals_ = new NodeList<PPrincipal>(this, _principals_, false);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
-        public TIdentifier Method
+        public PAfclaimant Claimant
         {
-            get { return _method_; }
+            get { return _claimant_; }
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Method in AActsForStatement cannot be null.", "value");
+                    throw new ArgumentException("Claimant in AActsForStatement cannot be null.", "value");
                 
-                if (_method_ != null)
-                    SetParent(_method_, null);
+                if (_claimant_ != null)
+                    SetParent(_claimant_, null);
                 SetParent(value, this);
                 
-                _method_ = value;
+                _claimant_ = value;
             }
         }
         public NodeList<PPrincipal> Principals
@@ -851,13 +851,13 @@ namespace DLM.Editor.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Method == oldChild)
+            if (Claimant == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("Method in AActsForStatement cannot be null.", "newChild");
-                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Claimant in AActsForStatement cannot be null.", "newChild");
+                if (!(newChild is PAfclaimant) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Method = newChild as TIdentifier;
+                Claimant = newChild as PAfclaimant;
             }
             else if (oldChild is PPrincipal && Principals.Contains(oldChild as PPrincipal))
             {
@@ -885,7 +885,7 @@ namespace DLM.Editor.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
-            yield return Method;
+            yield return Claimant;
             {
                 PPrincipal[] temp = new PPrincipal[Principals.Count];
                 Principals.CopyTo(temp, 0);
@@ -902,12 +902,12 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AActsForStatement(Method.Clone(), Principals, Statements);
+            return new AActsForStatement(Claimant.Clone(), Principals, Statements);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Method, Principals, Statements);
+            return string.Format("{0} {1} {2}", Claimant, Principals, Statements);
         }
     }
     public partial class AIfStatement : PStatement
@@ -1949,6 +1949,119 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0}", Identifier);
+        }
+    }
+    public abstract partial class PAfclaimant : Production<PAfclaimant>
+    {
+        public PAfclaimant()
+        {
+        }
+        
+    }
+    public partial class AThisAfclaimant : PAfclaimant
+    {
+        private TThis _this_;
+        
+        public AThisAfclaimant(TThis _this_)
+            : base()
+        {
+            this.This = _this_;
+        }
+        
+        public TThis This
+        {
+            get { return _this_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("This in AThisAfclaimant cannot be null.", "value");
+                
+                if (_this_ != null)
+                    SetParent(_this_, null);
+                SetParent(value, this);
+                
+                _this_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (This == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("This in AThisAfclaimant cannot be null.", "newChild");
+                if (!(newChild is TThis) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                This = newChild as TThis;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return This;
+        }
+        
+        public override PAfclaimant Clone()
+        {
+            return new AThisAfclaimant(This.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", This);
+        }
+    }
+    public partial class ACallerAfclaimant : PAfclaimant
+    {
+        private TCaller _caller_;
+        
+        public ACallerAfclaimant(TCaller _caller_)
+            : base()
+        {
+            this.Caller = _caller_;
+        }
+        
+        public TCaller Caller
+        {
+            get { return _caller_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Caller in ACallerAfclaimant cannot be null.", "value");
+                
+                if (_caller_ != null)
+                    SetParent(_caller_, null);
+                SetParent(value, this);
+                
+                _caller_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Caller == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Caller in ACallerAfclaimant cannot be null.", "newChild");
+                if (!(newChild is TCaller) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Caller = newChild as TCaller;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Caller;
+        }
+        
+        public override PAfclaimant Clone()
+        {
+            return new ACallerAfclaimant(Caller.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Caller);
         }
     }
     public abstract partial class PExpression : Production<PExpression>
