@@ -193,62 +193,59 @@ namespace DLM.Editor.Nodes
     }
     public abstract partial class PPrincipalDeclaration : Production<PPrincipalDeclaration>
     {
-        private PPrincipal _name_;
+        private NodeList<PPrincipal> _principals_;
         
-        public PPrincipalDeclaration(PPrincipal _name_)
+        public PPrincipalDeclaration(IEnumerable<PPrincipal> _principals_)
         {
-            this.Name = _name_;
+            this._principals_ = new NodeList<PPrincipal>(this, _principals_, false);
         }
         
-        public PPrincipal Name
+        public NodeList<PPrincipal> Principals
         {
-            get { return _name_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Name in PPrincipalDeclaration cannot be null.", "value");
-                
-                if (_name_ != null)
-                    SetParent(_name_, null);
-                SetParent(value, this);
-                
-                _name_ = value;
-            }
+            get { return _principals_; }
         }
         
     }
     public partial class APrincipalDeclaration : PPrincipalDeclaration
     {
-        public APrincipalDeclaration(PPrincipal _name_)
-            : base(_name_)
+        public APrincipalDeclaration(IEnumerable<PPrincipal> _principals_)
+            : base(_principals_)
         {
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Name == oldChild)
+            if (oldChild is PPrincipal && Principals.Contains(oldChild as PPrincipal))
             {
-                if (newChild == null)
-                    throw new ArgumentException("Name in APrincipalDeclaration cannot be null.", "newChild");
                 if (!(newChild is PPrincipal) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Name = newChild as PPrincipal;
+                
+                int index = Principals.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Principals.RemoveAt(index);
+                else
+                    Principals[index] = newChild as PPrincipal;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
-            yield return Name;
+            {
+                PPrincipal[] temp = new PPrincipal[Principals.Count];
+                Principals.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
         }
         
         public override PPrincipalDeclaration Clone()
         {
-            return new APrincipalDeclaration(Name.Clone());
+            return new APrincipalDeclaration(Principals);
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Name);
+            return string.Format("{0}", Principals);
         }
     }
     public abstract partial class PStruct : Production<PStruct>

@@ -867,7 +867,7 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
-            Visit(node.Name);
+            Visit(node.Principals);
         }
         protected override void HandleAStruct(AStruct node)
         {
@@ -1106,7 +1106,7 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
-            Visit(node.Name);
+            Visit(node.Principals);
         }
         protected override void HandleAStruct(AStruct node)
         {
