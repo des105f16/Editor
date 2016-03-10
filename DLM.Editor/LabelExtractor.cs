@@ -22,13 +22,16 @@ namespace DLM.Editor
 
         protected override void HandlePRoot(PRoot node)
         {
-            foreach (var p in node.PrincipalDeclarations)
+            foreach (var pd in node.PrincipalDeclarations)
             {
-                string name = p.Name.Identifier.Text;
-                if (principals.ContainsKey(name))
-                    errorManager.Register(p, $"The principal {name} has already been defined.");
-                else
-                    principals.Add(name, new Principal(name));
+                foreach (var p in pd.Principals)
+                {
+                    string name = p.Identifier.Text;
+                    if (principals.ContainsKey(name))
+                        errorManager.Register(p, $"The principal {name} has already been defined.");
+                    else
+                        principals.Add(name, new Principal(name));
+                }
             }
 
             // Stop validation if there were errors
