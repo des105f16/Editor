@@ -141,6 +141,8 @@ namespace DLM.Editor
         private class TypeHighlighter : IHighlighter
         {
             private Style typestyle = new TextStyle(fromRgb(0x0000cc), null, FontStyle.Bold);
+            private Style principalstyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold);
+            private Style varpolicystyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold | FontStyle.Underline);
 
             public Style GetStyle(Token token)
             {
@@ -151,6 +153,10 @@ namespace DLM.Editor
 
                 if (token.GetParent() is PType || token.GetParent() is PStruct)
                     return typestyle;
+                else if (token.GetParent() is PPrincipal)
+                    return principalstyle;
+                else if (token.GetParent() is AVariablePolicy)
+                    return varpolicystyle;
                 else
                     return null;
             }
