@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using FastColoredTextBoxNS;
 using DLM.Inference;
+using System.Drawing;
 
 namespace DLM.Editor
 {
@@ -29,7 +30,7 @@ namespace DLM.Editor
             v.CompileWithGCC();
             if (v.Errors)
                 return;
-            
+
             v.ExtractLabels();
             if (v.Errors)
                 return;
@@ -126,6 +127,15 @@ namespace DLM.Editor
                 ElementLabelExtractor ele = new ElementLabelExtractor(errorManager);
                 ele.Visit(root);
             }
+        }
+
+        private static Brush fromRgb(int rgb)
+        {
+            var r = (rgb >> 16) & 255;
+            var g = (rgb >> 8) & 255;
+            var b = (rgb >> 0) & 255;
+
+            return new SolidBrush(Color.FromArgb(r, g, b));
         }
 
         private class TypeHighlighter : IHighlighter
