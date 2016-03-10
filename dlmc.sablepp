@@ -30,6 +30,9 @@ Tokens
     else = 'else';
     return = 'return';
     
+    this = 'this';
+    caller = 'caller';
+    
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
     acts_for = '-->?' | '?>';
@@ -100,7 +103,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
-        | {acts_for} [method]:identifier principal+ statement*
+        | {acts_for} [claimant]:afclaimant principal+ statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -154,7 +157,7 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
-        | {act} [m]:identifier acts_for [p]:afprincipal l_cur stmt* r_cur -> New statement.acts_for(m, [p], [stmt])
+        | {act} [c]:afclaimant acts_for [p]:afprincipal l_cur stmt* r_cur -> New statement.acts_for(c, [p], [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
@@ -168,15 +171,6 @@ Productions
         = {one} stmt2 -> [stmt2]
         | {many} l_cur stmt* r_cur -> [stmt]
         ;
-    dprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma dprincipal -> [principal, dprincipal]
-        ;
-    afprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma afprincipal -> [principal, afprincipal]
-        ;
-
 Abstract Syntax Tree
     label
         = policy+
@@ -188,7 +182,10 @@ Abstract Syntax Tree
         | {upper} hat
         ;
     principal = identifier;
-
+    afclaimant
+        = {this} this
+        | {caller} caller
+        ;
 Productions
     label
         = label_start lpolicy label_end -> New label([lpolicy])
@@ -210,7 +207,18 @@ Productions
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
         ;
-
+    dprincipal -> principal+
+        = principal -> [principal]
+        | {tail} principal comma dprincipal -> [principal, dprincipal]
+        ;
+    afprincipal -> principal+
+        = principal -> [principal]
+        | {tail} principal comma afprincipal -> [principal, afprincipal]
+        ;
+    afclaimant
+        = {this} this
+        | {caller} caller
+        ;
 Abstract Syntax Tree
     expression
         = {and} [left]:expression [right]:expression
