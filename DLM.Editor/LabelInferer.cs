@@ -76,9 +76,12 @@ namespace DLM.Editor
         }
         protected override void HandleAActsForStatement(AActsForStatement node)
         {
-            var label = new PolicyLabel(
-                new Policy(node.Principal.DeclaredPrincipal));
-            authority.Push(label);
+            foreach (var p in node.Principals)
+            {
+                var label = new PolicyLabel(
+                    new Policy(p.DeclaredPrincipal));
+                authority.Push(label);
+            }
             Visit(node.Statements);
             authority.Pop();
         }
