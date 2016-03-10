@@ -140,7 +140,7 @@ namespace DLM.Editor
 
         private class TypeHighlighter : IHighlighter
         {
-            private Style style = new TextStyle(System.Drawing.Brushes.Blue, null, System.Drawing.FontStyle.Bold);
+            private Style typestyle = new TextStyle(fromRgb(0x0000cc), null, FontStyle.Bold);
 
             public Style GetStyle(Token token)
             {
@@ -150,7 +150,7 @@ namespace DLM.Editor
                 var par = token.GetParent().GetType().Name;
 
                 if (token.GetParent() is PType || token.GetParent() is PStruct)
-                    return style;
+                    return typestyle;
                 else
                     return null;
             }
