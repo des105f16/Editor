@@ -30,6 +30,9 @@ Tokens
     else = 'else';
     return = 'return';
     
+    this = 'this';
+    caller = 'caller';
+    
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
     acts_for = '-->?' | '?>';
@@ -81,7 +84,7 @@ Ignored Tokens
 Token Syntax Highlight
     {comment} text: #393, italic;
     {if, else, while, return, typedef, struct} text: #00c, bold;
-    {label_start, label_end, acts_for, declassify_start, declassify_end, r_arrow, join, principall} text: #8d19aa, background: #e6e7fa, bold;
+    {label_start, label_end, acts_for, declassify_start, declassify_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
 
 Abstract Syntax Tree
     root = P.include* principal_declaration* P.struct* statement*;
@@ -100,7 +103,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
-        | {acts_for} [method]:identifier principal+ statement*
+        | {acts_for} claimant principal+ statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -119,7 +122,7 @@ Productions
     
     include = T.include file -> New include(file);
     
-    principal_declaration = principall dprincipal semicolon -> New principal_declaration([dprincipal]);
+    principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
@@ -154,7 +157,7 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
-        | {act} [m]:identifier acts_for [p]:afprincipal l_cur stmt* r_cur -> New statement.acts_for(m, [p], [stmt])
+        | {act} claimant acts_for lprincipal l_cur stmt* r_cur -> New statement.acts_for(claimant, [lprincipal], [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
@@ -168,15 +171,6 @@ Productions
         = {one} stmt2 -> [stmt2]
         | {many} l_cur stmt* r_cur -> [stmt]
         ;
-    dprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma dprincipal -> [principal, dprincipal]
-        ;
-    afprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma afprincipal -> [principal, afprincipal]
-        ;
-
 Abstract Syntax Tree
     label
         = policy+
@@ -188,7 +182,10 @@ Abstract Syntax Tree
         | {upper} hat
         ;
     principal = identifier;
-
+    claimant
+        = {this} this
+        | {caller} caller
+        ;
 Productions
     label
         = label_start lpolicy label_end -> New label([lpolicy])
@@ -206,11 +203,14 @@ Productions
         | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
     principal = identifier;
-    lprincipal -> principal*
+    lprincipal -> principal+
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
         ;
-
+    claimant
+        = {this} this
+        | {caller} caller
+        ;
 Abstract Syntax Tree
     expression
         = {and} [left]:expression [right]:expression

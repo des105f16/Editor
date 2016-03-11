@@ -245,6 +245,54 @@ namespace DLM.Editor.Nodes
             return new TReturn(Text, Line, Position);
         }
     }
+    public partial class TThis : Token<TThis>
+    {
+        public TThis()
+            : base(@"this")
+        {
+        }
+        public TThis(int line, int pos)
+            : base(@"this", line, pos)
+        {
+        }
+        public TThis(string text)
+            : base(text)
+        {
+        }
+        public TThis(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TThis Clone()
+        {
+            return new TThis(Text, Line, Position);
+        }
+    }
+    public partial class TCaller : Token<TCaller>
+    {
+        public TCaller()
+            : base(@"caller")
+        {
+        }
+        public TCaller(int line, int pos)
+            : base(@"caller", line, pos)
+        {
+        }
+        public TCaller(string text)
+            : base(text)
+        {
+        }
+        public TCaller(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TCaller Clone()
+        {
+            return new TCaller(Text, Line, Position);
+        }
+    }
     public partial class TIdentifier : Token<TIdentifier>
     {
         public TIdentifier(string text)
