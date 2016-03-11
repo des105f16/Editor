@@ -103,7 +103,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
-        | {acts_for} [claimant]:afclaimant principal+ statement*
+        | {acts_for} claimant principal+ statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -122,7 +122,7 @@ Productions
     
     include = T.include file -> New include(file);
     
-    principal_declaration = principall dprincipal semicolon -> New principal_declaration([dprincipal]);
+    principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
@@ -157,7 +157,7 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
-        | {act} [c]:afclaimant acts_for [p]:afprincipal l_cur stmt* r_cur -> New statement.acts_for(c, [p], [stmt])
+        | {act} claimant acts_for lprincipal l_cur stmt* r_cur -> New statement.acts_for(claimant, [lprincipal], [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
@@ -182,7 +182,7 @@ Abstract Syntax Tree
         | {upper} hat
         ;
     principal = identifier;
-    afclaimant
+    claimant
         = {this} this
         | {caller} caller
         ;
@@ -203,19 +203,11 @@ Productions
         | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
     principal = identifier;
-    lprincipal -> principal*
+    lprincipal -> principal+
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
         ;
-    dprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma dprincipal -> [principal, dprincipal]
-        ;
-    afprincipal -> principal+
-        = principal -> [principal]
-        | {tail} principal comma afprincipal -> [principal, afprincipal]
-        ;
-    afclaimant
+    claimant
         = {this} this
         | {caller} caller
         ;
