@@ -813,11 +813,11 @@ namespace DLM.Editor.Nodes
     }
     public partial class AActsForStatement : PStatement
     {
-        private PAfclaimant _claimant_;
+        private PClaimant _claimant_;
         private NodeList<PPrincipal> _principals_;
         private NodeList<PStatement> _statements_;
         
-        public AActsForStatement(PAfclaimant _claimant_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _statements_)
+        public AActsForStatement(PClaimant _claimant_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _statements_)
             : base()
         {
             this.Claimant = _claimant_;
@@ -825,7 +825,7 @@ namespace DLM.Editor.Nodes
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
-        public PAfclaimant Claimant
+        public PClaimant Claimant
         {
             get { return _claimant_; }
             set
@@ -855,9 +855,9 @@ namespace DLM.Editor.Nodes
             {
                 if (newChild == null)
                     throw new ArgumentException("Claimant in AActsForStatement cannot be null.", "newChild");
-                if (!(newChild is PAfclaimant) && newChild != null)
+                if (!(newChild is PClaimant) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Claimant = newChild as PAfclaimant;
+                Claimant = newChild as PClaimant;
             }
             else if (oldChild is PPrincipal && Principals.Contains(oldChild as PPrincipal))
             {
@@ -1951,18 +1951,18 @@ namespace DLM.Editor.Nodes
             return string.Format("{0}", Identifier);
         }
     }
-    public abstract partial class PAfclaimant : Production<PAfclaimant>
+    public abstract partial class PClaimant : Production<PClaimant>
     {
-        public PAfclaimant()
+        public PClaimant()
         {
         }
         
     }
-    public partial class AThisAfclaimant : PAfclaimant
+    public partial class AThisClaimant : PClaimant
     {
         private TThis _this_;
         
-        public AThisAfclaimant(TThis _this_)
+        public AThisClaimant(TThis _this_)
             : base()
         {
             this.This = _this_;
@@ -1974,7 +1974,7 @@ namespace DLM.Editor.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("This in AThisAfclaimant cannot be null.", "value");
+                    throw new ArgumentException("This in AThisClaimant cannot be null.", "value");
                 
                 if (_this_ != null)
                     SetParent(_this_, null);
@@ -1989,7 +1989,7 @@ namespace DLM.Editor.Nodes
             if (This == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("This in AThisAfclaimant cannot be null.", "newChild");
+                    throw new ArgumentException("This in AThisClaimant cannot be null.", "newChild");
                 if (!(newChild is TThis) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 This = newChild as TThis;
@@ -2001,9 +2001,9 @@ namespace DLM.Editor.Nodes
             yield return This;
         }
         
-        public override PAfclaimant Clone()
+        public override PClaimant Clone()
         {
-            return new AThisAfclaimant(This.Clone());
+            return new AThisClaimant(This.Clone());
         }
         
         public override string ToString()
@@ -2011,11 +2011,11 @@ namespace DLM.Editor.Nodes
             return string.Format("{0}", This);
         }
     }
-    public partial class ACallerAfclaimant : PAfclaimant
+    public partial class ACallerClaimant : PClaimant
     {
         private TCaller _caller_;
         
-        public ACallerAfclaimant(TCaller _caller_)
+        public ACallerClaimant(TCaller _caller_)
             : base()
         {
             this.Caller = _caller_;
@@ -2027,7 +2027,7 @@ namespace DLM.Editor.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Caller in ACallerAfclaimant cannot be null.", "value");
+                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "value");
                 
                 if (_caller_ != null)
                     SetParent(_caller_, null);
@@ -2042,7 +2042,7 @@ namespace DLM.Editor.Nodes
             if (Caller == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("Caller in ACallerAfclaimant cannot be null.", "newChild");
+                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "newChild");
                 if (!(newChild is TCaller) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Caller = newChild as TCaller;
@@ -2054,9 +2054,9 @@ namespace DLM.Editor.Nodes
             yield return Caller;
         }
         
-        public override PAfclaimant Clone()
+        public override PClaimant Clone()
         {
-            return new ACallerAfclaimant(Caller.Clone());
+            return new ACallerClaimant(Caller.Clone());
         }
         
         public override string ToString()
