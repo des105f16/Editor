@@ -31,6 +31,10 @@ namespace DLM.Editor
             if (v.Errors)
                 return;
 
+            v.ExtractPrincipals();
+            if (v.Errors)
+                return;
+
             v.ExtractLabels();
             if (v.Errors)
                 return;
@@ -54,12 +58,16 @@ namespace DLM.Editor
             private readonly CompilationOptions compilationOptions;
             private ErrorManager errorManager => compilationOptions.ErrorManager;
 
+            private Dictionary<string, Principal> principals;
+
             public Validator(Start<PRoot> root, CompilationOptions compilationOptions)
             {
                 this.data = new ValidationData();
 
                 this.root = root;
                 this.compilationOptions = compilationOptions;
+
+                this.principals = new Dictionary<string, Principal>();
             }
 
             public bool Errors => compilationOptions.ErrorManager.Errors.Count > 0;
@@ -110,9 +118,17 @@ namespace DLM.Editor
                 }
             }
 
+            public void ExtractPrincipals()
+            {
+                PrincipalExtractor pe = new PrincipalExtractor(errorManager);
+                pe.Visit(root);
+
+                principals = pe.Principals;
+            }
+
             public void ExtractLabels()
             {
-                LabelExtractor le = new LabelExtractor(errorManager);
+                LabelExtractor le = new LabelExtractor(errorManager, principals);
                 le.Visit(root);
             }
             public InferenceResult InferLabels()
