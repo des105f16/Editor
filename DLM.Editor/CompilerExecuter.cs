@@ -140,9 +140,9 @@ namespace DLM.Editor
 
         private class TypeHighlighter : IHighlighter
         {
-            private Style typestyle = new TextStyle(fromRgb(0x0000cc), null, FontStyle.Bold);
-            private Style principalstyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold);
-            private Style varpolicystyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold | FontStyle.Underline);
+            private static Style typestyle = new TextStyle(fromRgb(0x0000cc), null, FontStyle.Bold);
+            private static Style principalstyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold);
+            private static Style varpolicystyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold | FontStyle.Underline);
 
             public Style GetStyle(Token token)
             {
