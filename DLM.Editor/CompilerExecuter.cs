@@ -31,6 +31,10 @@ namespace DLM.Editor
             if (v.Errors)
                 return;
 
+            v.ExtractPrincipals();
+            if (v.Errors)
+                return;
+
             v.ExtractLabels();
             if (v.Errors)
                 return;
@@ -108,6 +112,11 @@ namespace DLM.Editor
                         errorManager.Register(e);
                     }
                 }
+            }
+
+            public void ExtractPrincipals()
+            {
+                PrincipalExtractor pe = new PrincipalExtractor();
             }
 
             public void ExtractLabels()
