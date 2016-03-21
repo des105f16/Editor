@@ -13,31 +13,15 @@ namespace DLM.Editor
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
-        public LabelExtractor(ErrorManager errorManager)
+        public LabelExtractor(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             this.errorManager = errorManager;
-            this.principals = new Dictionary<string, Principal>();
+            this.principals = principals;
             this.namedLabels = new ScopedDictionary<string, Label>();
         }
 
         protected override void HandlePRoot(PRoot node)
         {
-            foreach (var pd in node.PrincipalDeclarations)
-            {
-                foreach (var p in pd.Principals)
-                {
-                    string name = p.Identifier.Text;
-                    if (principals.ContainsKey(name))
-                        errorManager.Register(p, $"The principal {name} has already been defined.");
-                    else
-                        principals.Add(name, new Principal(name));
-                }
-            }
-
-            // Stop validation if there were errors
-            if (errorManager.Errors.Count > 0)
-                return;
-
             Visit(node.Structs);
             Visit(node.Statements);
 

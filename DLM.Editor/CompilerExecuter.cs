@@ -58,7 +58,7 @@ namespace DLM.Editor
             private readonly CompilationOptions compilationOptions;
             private ErrorManager errorManager => compilationOptions.ErrorManager;
 
-            private List<Principal> principals;
+            private Dictionary<string, Principal> principals;
 
             public Validator(Start<PRoot> root, CompilationOptions compilationOptions)
             {
@@ -67,7 +67,7 @@ namespace DLM.Editor
                 this.root = root;
                 this.compilationOptions = compilationOptions;
 
-                this.principals = new List<Principal>();
+                this.principals = new Dictionary<string, Principal>();
             }
 
             public bool Errors => compilationOptions.ErrorManager.Errors.Count > 0;
@@ -125,7 +125,7 @@ namespace DLM.Editor
 
             public void ExtractLabels()
             {
-                LabelExtractor le = new LabelExtractor(errorManager);
+                LabelExtractor le = new LabelExtractor(errorManager, principals);
                 le.Visit(root);
             }
             public InferenceResult InferLabels()
