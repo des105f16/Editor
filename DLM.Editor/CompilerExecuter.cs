@@ -58,12 +58,16 @@ namespace DLM.Editor
             private readonly CompilationOptions compilationOptions;
             private ErrorManager errorManager => compilationOptions.ErrorManager;
 
+            private List<Principal> principals;
+
             public Validator(Start<PRoot> root, CompilationOptions compilationOptions)
             {
                 this.data = new ValidationData();
 
                 this.root = root;
                 this.compilationOptions = compilationOptions;
+
+                this.principals = new List<Principal>();
             }
 
             public bool Errors => compilationOptions.ErrorManager.Errors.Count > 0;
@@ -116,7 +120,7 @@ namespace DLM.Editor
 
             public void ExtractPrincipals()
             {
-                PrincipalExtractor pe = new PrincipalExtractor();
+                principals = new PrincipalExtractor(errorManager).Extract(root);
             }
 
             public void ExtractLabels()
