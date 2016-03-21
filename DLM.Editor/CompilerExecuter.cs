@@ -120,7 +120,10 @@ namespace DLM.Editor
 
             public void ExtractPrincipals()
             {
-                principals = new PrincipalExtractor(errorManager).Extract(root);
+                PrincipalExtractor pe = new PrincipalExtractor(errorManager);
+                pe.Visit(root);
+
+                principals = pe.Principals;
             }
 
             public void ExtractLabels()
