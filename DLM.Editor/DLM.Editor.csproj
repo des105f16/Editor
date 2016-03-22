@@ -73,6 +73,7 @@
     <Compile Include="PrincipalExtractor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchableString.cs" />
     <Compile Include="ValidationData.cs" />
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
