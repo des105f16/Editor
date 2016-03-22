@@ -14,6 +14,7 @@ namespace DLM.Editor
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
+        private Dictionary<string, Label> functionLabels;
 
         private LabelStack authority;
         private LabelStack basicBlock;
@@ -25,6 +26,7 @@ namespace DLM.Editor
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
+            functionLabels = new Dictionary<string, Label>();
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
@@ -40,6 +42,9 @@ namespace DLM.Editor
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
+            var fName = node.Identifier.Text;
+            functionLabels.Add(fName, node.Type.DeclaredLabel);
+
             types.OpenScope();
 
             foreach (var p in node.Parameters)
@@ -187,12 +192,17 @@ namespace DLM.Editor
             }
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
-                Label lbl = Label.LowerBound;
+                var fcName = node.Function.Text;
+                Label fcLabel;
 
-                foreach (var a in node.Arguments)
-                    lbl += Visit(a);
+                if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
+                {
+                    fcLabel = Label.LowerBound;
+                    foreach (var a in node.Arguments)
+                        fcLabel += Visit(a);
+                }
 
-                return lbl;
+                return fcLabel;
             }
             protected override Label HandleAIdentifierExpression(AIdentifierExpression node)
             {
