@@ -118,6 +118,10 @@ Abstract Syntax Tree
         = [name]:identifier label?
         | {pointer} type asterisk
         ;
+    claimant
+        = {this} this
+        | {caller} caller
+        ;
 Productions
     root = P.include* principal_declaration* P.struct* glstmt*;
     
@@ -172,6 +176,10 @@ Productions
         = {one} stmt2 -> [stmt2]
         | {many} l_cur stmt* r_cur -> [stmt]
         ;
+    claimant
+        = {this} this
+        | {caller} caller
+        ;
 
 Abstract Syntax Tree
     label
@@ -184,10 +192,6 @@ Abstract Syntax Tree
         | {upper} hat
         ;
     principal = identifier;
-    claimant
-        = {this} this
-        | {caller} caller
-        ;
 Productions
     label
         = label_start lpolicy label_end -> New label([lpolicy])
@@ -208,10 +212,6 @@ Productions
     lprincipal -> principal+
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
-        ;
-    claimant
-        = {this} this
-        | {caller} caller
         ;
 
 Abstract Syntax Tree

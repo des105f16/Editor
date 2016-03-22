@@ -674,6 +674,24 @@ namespace DLM.Editor.Parsing
                     break;
                 case 55:
                     {
+                        TThis tthis = Pop<TThis>();
+                        AThisClaimant athisclaimant = new AThisClaimant(
+                            tthis
+                        );
+                        Push(13, athisclaimant);
+                    }
+                    break;
+                case 56:
+                    {
+                        TCaller tcaller = Pop<TCaller>();
+                        ACallerClaimant acallerclaimant = new ACallerClaimant(
+                            tcaller
+                        );
+                        Push(13, acallerclaimant);
+                    }
+                    break;
+                case 57:
+                    {
                         TLabelEnd tlabelend = Pop<TLabelEnd>();
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TLabelStart tlabelstart = Pop<TLabelStart>();
@@ -682,19 +700,19 @@ namespace DLM.Editor.Parsing
                         ALabel alabel = new ALabel(
                             ppolicylist2
                         );
-                        Push(13, alabel);
+                        Push(14, alabel);
                     }
                     break;
-                case 56:
+                case 58:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         AVariablePolicy avariablepolicy = new AVariablePolicy(
                             tidentifier
                         );
-                        Push(14, avariablepolicy);
+                        Push(15, avariablepolicy);
                     }
                     break;
-                case 57:
+                case 59:
                     {
                         List<PPrincipal> pprincipallist = Pop<List<PPrincipal>>();
                         TRArrow trarrow = Pop<TRArrow>();
@@ -705,10 +723,10 @@ namespace DLM.Editor.Parsing
                             pprincipal,
                             pprincipallist2
                         );
-                        Push(14, aprincipalpolicy);
+                        Push(15, aprincipalpolicy);
                     }
                     break;
-                case 58:
+                case 60:
                     {
                         TRArrow trarrow = Pop<TRArrow>();
                         PPrincipal pprincipal = Pop<PPrincipal>();
@@ -717,36 +735,36 @@ namespace DLM.Editor.Parsing
                             pprincipal,
                             pprincipallist
                         );
-                        Push(14, aprincipalpolicy);
+                        Push(15, aprincipalpolicy);
                     }
                     break;
-                case 59:
+                case 61:
                     {
                         TUnderscore tunderscore = Pop<TUnderscore>();
                         ALowerPolicy alowerpolicy = new ALowerPolicy(
                             tunderscore
                         );
-                        Push(14, alowerpolicy);
+                        Push(15, alowerpolicy);
                     }
                     break;
-                case 60:
+                case 62:
                     {
                         THat that = Pop<THat>();
                         AUpperPolicy aupperpolicy = new AUpperPolicy(
                             that
                         );
-                        Push(14, aupperpolicy);
+                        Push(15, aupperpolicy);
                     }
                     break;
-                case 61:
+                case 63:
                     {
                         PPolicy ppolicy = Pop<PPolicy>();
                         List<PPolicy> ppolicylist = new List<PPolicy>();
                         ppolicylist.Add(ppolicy);
-                        Push(15, ppolicylist);
+                        Push(16, ppolicylist);
                     }
                     break;
-                case 62:
+                case 64:
                     {
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TSemicolon tsemicolon = Pop<TSemicolon>();
@@ -754,10 +772,10 @@ namespace DLM.Editor.Parsing
                         List<PPolicy> ppolicylist2 = new List<PPolicy>();
                         ppolicylist2.Add(ppolicy);
                         ppolicylist2.AddRange(ppolicylist);
-                        Push(15, ppolicylist2);
+                        Push(16, ppolicylist2);
                     }
                     break;
-                case 63:
+                case 65:
                     {
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TJoin tjoin = Pop<TJoin>();
@@ -765,27 +783,27 @@ namespace DLM.Editor.Parsing
                         List<PPolicy> ppolicylist2 = new List<PPolicy>();
                         ppolicylist2.Add(ppolicy);
                         ppolicylist2.AddRange(ppolicylist);
-                        Push(15, ppolicylist2);
+                        Push(16, ppolicylist2);
                     }
                     break;
-                case 64:
+                case 66:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         APrincipal aprincipal = new APrincipal(
                             tidentifier
                         );
-                        Push(16, aprincipal);
+                        Push(17, aprincipal);
                     }
                     break;
-                case 65:
+                case 67:
                     {
                         PPrincipal pprincipal = Pop<PPrincipal>();
                         List<PPrincipal> pprincipallist = new List<PPrincipal>();
                         pprincipallist.Add(pprincipal);
-                        Push(17, pprincipallist);
+                        Push(18, pprincipallist);
                     }
                     break;
-                case 66:
+                case 68:
                     {
                         List<PPrincipal> pprincipallist = Pop<List<PPrincipal>>();
                         TComma tcomma = Pop<TComma>();
@@ -793,25 +811,7 @@ namespace DLM.Editor.Parsing
                         List<PPrincipal> pprincipallist2 = new List<PPrincipal>();
                         pprincipallist2.Add(pprincipal);
                         pprincipallist2.AddRange(pprincipallist);
-                        Push(17, pprincipallist2);
-                    }
-                    break;
-                case 67:
-                    {
-                        TThis tthis = Pop<TThis>();
-                        AThisClaimant athisclaimant = new AThisClaimant(
-                            tthis
-                        );
-                        Push(18, athisclaimant);
-                    }
-                    break;
-                case 68:
-                    {
-                        TCaller tcaller = Pop<TCaller>();
-                        ACallerClaimant acallerclaimant = new ACallerClaimant(
-                            tcaller
-                        );
-                        Push(18, acallerclaimant);
+                        Push(18, pprincipallist2);
                     }
                     break;
                 case 69:
@@ -1256,10 +1256,10 @@ namespace DLM.Editor.Parsing
                 new int[] {-1, 1, 16},
             },
             new int[][] {
-                new int[] {-1, 1, 64},
+                new int[] {-1, 1, 66},
             },
             new int[][] {
-                new int[] {-1, 1, 65},
+                new int[] {-1, 1, 67},
                 new int[] {32, 0, 34},
             },
             new int[][] {
@@ -1341,17 +1341,17 @@ namespace DLM.Editor.Parsing
                 new int[] {41, 0, 52},
             },
             new int[][] {
-                new int[] {-1, 1, 56},
-                new int[] {17, 1, 64},
-            },
-            new int[][] {
-                new int[] {-1, 1, 59},
-            },
-            new int[][] {
-                new int[] {-1, 1, 60},
+                new int[] {-1, 1, 58},
+                new int[] {17, 1, 66},
             },
             new int[][] {
                 new int[] {-1, 1, 61},
+            },
+            new int[][] {
+                new int[] {-1, 1, 62},
+            },
+            new int[][] {
+                new int[] {-1, 1, 63},
                 new int[] {34, 0, 53},
                 new int[] {43, 0, 54},
             },
@@ -1403,7 +1403,7 @@ namespace DLM.Editor.Parsing
                 new int[] {13, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 66},
+                new int[] {-1, 1, 68},
             },
             new int[][] {
                 new int[] {-1, 3, 52},
@@ -1423,10 +1423,10 @@ namespace DLM.Editor.Parsing
                 new int[] {22, 0, 39},
             },
             new int[][] {
-                new int[] {-1, 1, 55},
+                new int[] {-1, 1, 57},
             },
             new int[][] {
-                new int[] {-1, 1, 58},
+                new int[] {-1, 1, 60},
                 new int[] {13, 0, 16},
             },
             new int[][] {
@@ -1545,13 +1545,13 @@ namespace DLM.Editor.Parsing
                 new int[] {42, 0, 107},
             },
             new int[][] {
-                new int[] {-1, 1, 62},
+                new int[] {-1, 1, 64},
             },
             new int[][] {
-                new int[] {-1, 1, 63},
+                new int[] {-1, 1, 65},
             },
             new int[][] {
-                new int[] {-1, 1, 57},
+                new int[] {-1, 1, 59},
             },
             new int[][] {
                 new int[] {-1, 3, 84},
@@ -1785,10 +1785,10 @@ namespace DLM.Editor.Parsing
                 new int[] {37, 0, 63},
             },
             new int[][] {
-                new int[] {-1, 1, 67},
+                new int[] {-1, 1, 55},
             },
             new int[][] {
-                new int[] {-1, 1, 68},
+                new int[] {-1, 1, 56},
             },
             new int[][] {
                 new int[] {-1, 1, 46},
@@ -2438,6 +2438,9 @@ namespace DLM.Editor.Parsing
                 new int[] {229, 230},
             },
             new int[][] {
+                new int[] {-1, 136},
+            },
+            new int[][] {
                 new int[] {-1, 21},
                 new int[] {113, 147},
             },
@@ -2460,9 +2463,6 @@ namespace DLM.Editor.Parsing
                 new int[] {34, 51},
                 new int[] {56, 83},
                 new int[] {155, 172},
-            },
-            new int[][] {
-                new int[] {-1, 136},
             },
             new int[][] {
                 new int[] {-1, 110},

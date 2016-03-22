@@ -1592,6 +1592,119 @@ namespace DLM.Editor.Nodes
             return string.Format("{0} {1}", Type, Asterisk);
         }
     }
+    public abstract partial class PClaimant : Production<PClaimant>
+    {
+        public PClaimant()
+        {
+        }
+        
+    }
+    public partial class AThisClaimant : PClaimant
+    {
+        private TThis _this_;
+        
+        public AThisClaimant(TThis _this_)
+            : base()
+        {
+            this.This = _this_;
+        }
+        
+        public TThis This
+        {
+            get { return _this_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("This in AThisClaimant cannot be null.", "value");
+                
+                if (_this_ != null)
+                    SetParent(_this_, null);
+                SetParent(value, this);
+                
+                _this_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (This == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("This in AThisClaimant cannot be null.", "newChild");
+                if (!(newChild is TThis) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                This = newChild as TThis;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return This;
+        }
+        
+        public override PClaimant Clone()
+        {
+            return new AThisClaimant(This.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", This);
+        }
+    }
+    public partial class ACallerClaimant : PClaimant
+    {
+        private TCaller _caller_;
+        
+        public ACallerClaimant(TCaller _caller_)
+            : base()
+        {
+            this.Caller = _caller_;
+        }
+        
+        public TCaller Caller
+        {
+            get { return _caller_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "value");
+                
+                if (_caller_ != null)
+                    SetParent(_caller_, null);
+                SetParent(value, this);
+                
+                _caller_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Caller == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "newChild");
+                if (!(newChild is TCaller) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Caller = newChild as TCaller;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Caller;
+        }
+        
+        public override PClaimant Clone()
+        {
+            return new ACallerClaimant(Caller.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Caller);
+        }
+    }
     public abstract partial class PLabel : Production<PLabel>
     {
         private NodeList<PPolicy> _policys_;
@@ -1949,119 +2062,6 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0}", Identifier);
-        }
-    }
-    public abstract partial class PClaimant : Production<PClaimant>
-    {
-        public PClaimant()
-        {
-        }
-        
-    }
-    public partial class AThisClaimant : PClaimant
-    {
-        private TThis _this_;
-        
-        public AThisClaimant(TThis _this_)
-            : base()
-        {
-            this.This = _this_;
-        }
-        
-        public TThis This
-        {
-            get { return _this_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("This in AThisClaimant cannot be null.", "value");
-                
-                if (_this_ != null)
-                    SetParent(_this_, null);
-                SetParent(value, this);
-                
-                _this_ = value;
-            }
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (This == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("This in AThisClaimant cannot be null.", "newChild");
-                if (!(newChild is TThis) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                This = newChild as TThis;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return This;
-        }
-        
-        public override PClaimant Clone()
-        {
-            return new AThisClaimant(This.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", This);
-        }
-    }
-    public partial class ACallerClaimant : PClaimant
-    {
-        private TCaller _caller_;
-        
-        public ACallerClaimant(TCaller _caller_)
-            : base()
-        {
-            this.Caller = _caller_;
-        }
-        
-        public TCaller Caller
-        {
-            get { return _caller_; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "value");
-                
-                if (_caller_ != null)
-                    SetParent(_caller_, null);
-                SetParent(value, this);
-                
-                _caller_ = value;
-            }
-        }
-        
-        public override void ReplaceChild(Node oldChild, Node newChild)
-        {
-            if (Caller == oldChild)
-            {
-                if (newChild == null)
-                    throw new ArgumentException("Caller in ACallerClaimant cannot be null.", "newChild");
-                if (!(newChild is TCaller) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Caller = newChild as TCaller;
-            }
-            else throw new ArgumentException("Node to be replaced is not a child in this production.");
-        }
-        protected override IEnumerable<Node> GetChildren()
-        {
-            yield return Caller;
-        }
-        
-        public override PClaimant Clone()
-        {
-            return new ACallerClaimant(Caller.Clone());
-        }
-        
-        public override string ToString()
-        {
-            return string.Format("{0}", Caller);
         }
     }
     public abstract partial class PExpression : Production<PExpression>
