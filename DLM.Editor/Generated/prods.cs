@@ -9,13 +9,15 @@ namespace DLM.Editor.Nodes
     {
         private NodeList<PInclude> _includes_;
         private NodeList<PPrincipalDeclaration> _principaldeclarations_;
+        private NodeList<PPrincipalHierarchyStmt> _principalhierarchystmts_;
         private NodeList<PStruct> _structs_;
         private NodeList<PStatement> _statements_;
         
-        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyStmt> _principalhierarchystmts_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
         {
             this._includes_ = new NodeList<PInclude>(this, _includes_, true);
             this._principaldeclarations_ = new NodeList<PPrincipalDeclaration>(this, _principaldeclarations_, true);
+            this._principalhierarchystmts_ = new NodeList<PPrincipalHierarchyStmt>(this, _principalhierarchystmts_, true);
             this._structs_ = new NodeList<PStruct>(this, _structs_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
@@ -27,6 +29,10 @@ namespace DLM.Editor.Nodes
         public NodeList<PPrincipalDeclaration> PrincipalDeclarations
         {
             get { return _principaldeclarations_; }
+        }
+        public NodeList<PPrincipalHierarchyStmt> PrincipalHierarchyStmts
+        {
+            get { return _principalhierarchystmts_; }
         }
         public NodeList<PStruct> Structs
         {
@@ -40,8 +46,8 @@ namespace DLM.Editor.Nodes
     }
     public partial class ARoot : PRoot
     {
-        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
-            : base(_includes_, _principaldeclarations_, _structs_, _statements_)
+        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyStmt> _principalhierarchystmts_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+            : base(_includes_, _principaldeclarations_, _principalhierarchystmts_, _structs_, _statements_)
         {
         }
         
@@ -68,6 +74,17 @@ namespace DLM.Editor.Nodes
                     PrincipalDeclarations.RemoveAt(index);
                 else
                     PrincipalDeclarations[index] = newChild as PPrincipalDeclaration;
+            }
+            else if (oldChild is PPrincipalHierarchyStmt && PrincipalHierarchyStmts.Contains(oldChild as PPrincipalHierarchyStmt))
+            {
+                if (!(newChild is PPrincipalHierarchyStmt) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = PrincipalHierarchyStmts.IndexOf(oldChild as PPrincipalHierarchyStmt);
+                if (newChild == null)
+                    PrincipalHierarchyStmts.RemoveAt(index);
+                else
+                    PrincipalHierarchyStmts[index] = newChild as PPrincipalHierarchyStmt;
             }
             else if (oldChild is PStruct && Structs.Contains(oldChild as PStruct))
             {
@@ -108,6 +125,12 @@ namespace DLM.Editor.Nodes
                     yield return temp[i];
             }
             {
+                PPrincipalHierarchyStmt[] temp = new PPrincipalHierarchyStmt[PrincipalHierarchyStmts.Count];
+                PrincipalHierarchyStmts.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
                 PStruct[] temp = new PStruct[Structs.Count];
                 Structs.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
@@ -123,12 +146,12 @@ namespace DLM.Editor.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes, PrincipalDeclarations, Structs, Statements);
+            return new ARoot(Includes, PrincipalDeclarations, PrincipalHierarchyStmts, Structs, Statements);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}", Includes, PrincipalDeclarations, Structs, Statements);
+            return string.Format("{0} {1} {2} {3} {4}", Includes, PrincipalDeclarations, PrincipalHierarchyStmts, Structs, Statements);
         }
     }
     public abstract partial class PInclude : Production<PInclude>
@@ -246,6 +269,89 @@ namespace DLM.Editor.Nodes
         public override string ToString()
         {
             return string.Format("{0}", Principals);
+        }
+    }
+    public abstract partial class PPrincipalHierarchyStmt : Production<PPrincipalHierarchyStmt>
+    {
+        private PPrincipal _principal_;
+        private NodeList<PPrincipal> _subordinates_;
+        
+        public PPrincipalHierarchyStmt(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
+        {
+            this.Principal = _principal_;
+            this._subordinates_ = new NodeList<PPrincipal>(this, _subordinates_, false);
+        }
+        
+        public PPrincipal Principal
+        {
+            get { return _principal_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Principal in PPrincipalHierarchyStmt cannot be null.", "value");
+                
+                if (_principal_ != null)
+                    SetParent(_principal_, null);
+                SetParent(value, this);
+                
+                _principal_ = value;
+            }
+        }
+        public NodeList<PPrincipal> Subordinates
+        {
+            get { return _subordinates_; }
+        }
+        
+    }
+    public partial class APrincipalHierarchyStmt : PPrincipalHierarchyStmt
+    {
+        public APrincipalHierarchyStmt(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
+            : base(_principal_, _subordinates_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Principal == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Principal in APrincipalHierarchyStmt cannot be null.", "newChild");
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Principal = newChild as PPrincipal;
+            }
+            else if (oldChild is PPrincipal && Subordinates.Contains(oldChild as PPrincipal))
+            {
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Subordinates.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Subordinates.RemoveAt(index);
+                else
+                    Subordinates[index] = newChild as PPrincipal;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Principal;
+            {
+                PPrincipal[] temp = new PPrincipal[Subordinates.Count];
+                Subordinates.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PPrincipalHierarchyStmt Clone()
+        {
+            return new APrincipalHierarchyStmt(Principal.Clone(), Subordinates);
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Principal, Subordinates);
         }
     }
     public abstract partial class PStruct : Production<PStruct>

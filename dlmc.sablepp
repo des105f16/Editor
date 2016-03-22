@@ -35,6 +35,7 @@ Tokens
     
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
+    acts_for = '-->';
     if_acts_for = '-->?' | '?>';
     declassify_start = '<|';
     declassify_end = '|>';
@@ -84,15 +85,17 @@ Ignored Tokens
 Token Syntax Highlight
     {comment} text: #393, italic;
     {if, else, while, return, typedef, struct} text: #00c, bold;
-    {label_start, label_end, if_acts_for, declassify_start, declassify_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
+    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
-    root = P.include* principal_declaration* P.struct* statement*;
+    root = P.include* principal_declaration* principal_hierarchy_stmt* P.struct* statement*;
     
     include = file;
     
     principal_declaration = principal+;
+    
+    principal_hierarchy_stmt = [principal]:principal [subordinates]:principal+;
     
     struct = identifier field* [name]:identifier;
     field
@@ -123,11 +126,13 @@ Abstract Syntax Tree
         | {caller} caller
         ;
 Productions
-    root = P.include* principal_declaration* P.struct* glstmt*;
+    root = P.include* principal_declaration* principal_hierarchy_stmt* P.struct* glstmt*;
     
     include = T.include file -> New include(file);
     
     principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
+    
+    principal_hierarchy_stmt = principal acts_for lprincipal semicolon -> New principal_hierarchy_stmt(principal, [lprincipal]);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
