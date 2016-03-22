@@ -119,7 +119,7 @@ namespace DLM.Editor
             ClearRange(node, "{{", "}}");
         }
 
-        protected override void HandleAActsForStatement(AActsForStatement node)
+        protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             var first = FirstToken.Find(node);
             var last = LastToken.Find(node.Principals);

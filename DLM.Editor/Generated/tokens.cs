@@ -311,6 +311,14 @@ namespace DLM.Editor.Nodes
     }
     public partial class TActsFor : Token<TActsFor>
     {
+        public TActsFor()
+            : base(@"-->")
+        {
+        }
+        public TActsFor(int line, int pos)
+            : base(@"-->", line, pos)
+        {
+        }
         public TActsFor(string text)
             : base(text)
         {
@@ -323,6 +331,22 @@ namespace DLM.Editor.Nodes
         public override TActsFor Clone()
         {
             return new TActsFor(Text, Line, Position);
+        }
+    }
+    public partial class TIfActsFor : Token<TIfActsFor>
+    {
+        public TIfActsFor(string text)
+            : base(text)
+        {
+        }
+        public TIfActsFor(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TIfActsFor Clone()
+        {
+            return new TIfActsFor(Text, Line, Position);
         }
     }
     public partial class TDeclassifyStart : Token<TDeclassifyStart>
