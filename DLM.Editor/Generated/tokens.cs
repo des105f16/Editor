@@ -397,6 +397,54 @@ namespace DLM.Editor.Nodes
             return new TDeclassifyEnd(Text, Line, Position);
         }
     }
+    public partial class TFuncAuthStart : Token<TFuncAuthStart>
+    {
+        public TFuncAuthStart()
+            : base(@"<<<")
+        {
+        }
+        public TFuncAuthStart(int line, int pos)
+            : base(@"<<<", line, pos)
+        {
+        }
+        public TFuncAuthStart(string text)
+            : base(text)
+        {
+        }
+        public TFuncAuthStart(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TFuncAuthStart Clone()
+        {
+            return new TFuncAuthStart(Text, Line, Position);
+        }
+    }
+    public partial class TFuncAuthEnd : Token<TFuncAuthEnd>
+    {
+        public TFuncAuthEnd()
+            : base(@">>>")
+        {
+        }
+        public TFuncAuthEnd(int line, int pos)
+            : base(@">>>", line, pos)
+        {
+        }
+        public TFuncAuthEnd(string text)
+            : base(text)
+        {
+        }
+        public TFuncAuthEnd(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TFuncAuthEnd Clone()
+        {
+            return new TFuncAuthEnd(Text, Line, Position);
+        }
+    }
     public partial class TRArrow : Token<TRArrow>
     {
         public TRArrow()
