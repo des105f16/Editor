@@ -44,13 +44,41 @@ namespace DLM.Editor
 
         protected override void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
         {
-            var pName = node.Principal.Identifier.Text;
-            Principal principal;
+            var dName = node.Principal.Identifier.Text;
+            Principal dominant;
 
-            if (!principals.TryGetValue(pName, out principal))
+            if (!principals.TryGetValue(dName, out dominant))
             {
-                errorManager.Register(node.Principal, $"Use of undeclared principal {pName}.");
+                errorManager.Register(node.Principal, $"Use of undeclared principal {dName}.");
                 return;
+            }
+
+            foreach (var s in node.Subordinates)
+            {
+                var sName = s.Identifier.Text;
+                Principal subordinate;
+                if (!principals.TryGetValue(sName, out subordinate))
+                {
+                    errorManager.Register(s, $"Use of undeclared principal {sName}.");
+                    return;
+                }
+                else if (dominant == subordinate)
+                {
+                    errorManager.Register(s, $"Principal {dominant.Name} cannot be its own subordinate.");
+                    return;
+                }
+                else if (dominant.Subordinates.Contains(subordinate))
+                {
+                    errorManager.Register(s, $"Principal {subordinate.Name} is already a subordinate of {dominant.Name}.");
+                    return;
+                }
+                else if (subordinate.ActualSubordinates.Contains(dominant))
+                {
+                    errorManager.Register(s, $"Circular hierarchy: {subordinate.Name} is its own subordinate.");
+                    return;
+                }
+                else
+                    dominant.AddSubordinate(subordinate);
             }
         }
     }
