@@ -108,5 +108,41 @@ namespace DLM.Editor
 
             text.ReplaceRange(start, end, ' ');
         }
+
+        protected override void HandlePPrincipalDeclaration(PPrincipalDeclaration node)
+        {
+            ClearRange(node, "principal", ";");
+        }
+
+        protected override void HandlePLabel(PLabel node)
+        {
+            ClearRange(node, "{{", "}}");
+        }
+
+        protected override void HandleAActsForStatement(AActsForStatement node)
+        {
+            var first = FirstToken.Find(node);
+            var last = LastToken.Find(node.Principals);
+
+            ClearRange(first, last);
+
+            Visit(node.Statements);
+        }
+
+        protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            var first = text.TokenStart(FirstToken.Find(node));
+            var last = text.TokenEnd(LastToken.Find(node));
+
+            first = text.SearchBackwards(first, "<|");
+            last = text.SearchForwards(last, "|>");
+
+            text.ReplaceRange(first, first + 1, ' ');
+            text.ReplaceRange(last, last + 1, ' ');
+
+            base.HandleADeclassifyExpression(node);
+
+            var g = text.ToString();
+        }
     }
 }
