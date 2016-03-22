@@ -8,8 +8,20 @@ namespace DLM.Editor
 {
     public class CGenerator : Analysis.DepthFirstAdapter
     {
-        private CGenerator()
+        private readonly SearchableString text;
+
+        private CGenerator(string source)
         {
+            this.text = new SearchableString(source, "\r\n");
+        }
+
+        public static string GenerateC(Node node, string source)
+        {
+            CGenerator gen = new CGenerator(source);
+
+            gen.Visit((dynamic)node);
+
+            return gen.text.ToString();
         }
     }
 }

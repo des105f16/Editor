@@ -27,7 +27,7 @@ namespace DLM.Editor
 
             Validator v = new Validator(root, compilationOptions);
 
-            v.CompileWithGCC();
+            v.CompileWithGCC(compilationOptions.Input);
             if (v.Errors)
                 return;
 
@@ -72,10 +72,10 @@ namespace DLM.Editor
 
             public bool Errors => compilationOptions.ErrorManager.Errors.Count > 0;
 
-            public void CompileWithGCC()
+            public void CompileWithGCC(string source)
             {
                 var file = Path.GetTempFileName();
-                File.WriteAllText(file, CGenerator.GenerateC(root));
+                File.WriteAllText(file, CGenerator.GenerateC(root, source));
 
                 ProcessStartInfo psi = new ProcessStartInfo(@"C:\MinGW\bin\gcc.exe", "-x c \"" + file + "\"")
                 {
