@@ -1,125 +1,148 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SablePP.Tools.Nodes;
 using DLM.Editor.Nodes;
 using System.Collections.Generic;
 
 namespace DLM.Editor
 {
-    public class CGenerator : Analysis.ReturnAnalysisAdapter<string>
+    public class CGenerator : Analysis.DepthFirstAdapter
     {
-        private CGenerator()
+        private readonly SearchableString text;
+
+        private CGenerator(string source)
         {
+            this.text = new SearchableString(source, "\r\n");
         }
 
-        public static string GenerateC(Node node)
+        public static string GenerateC(Node node, string source)
         {
-            CGenerator gen = new CGenerator();
+            CGenerator gen = new CGenerator(source);
 
-            string temp = gen.Visit((dynamic)node);
+            gen.Visit((dynamic)node);
 
-            return temp;
+            return gen.text.ToString();
         }
 
-        protected override string HandleDefault(Node node)
+        #region Token Locater classes
+
+        private class FirstToken : SablePP.Tools.Analysis.DepthFirstTreeWalker
         {
-            if (node is Token)
-                return (node as Token).Text;
-            else
-                throw new NotImplementedException();
+            private Token token = null;
+
+            public static Token Find(Node node)
+            {
+                var finder = new FirstToken();
+                finder.Visit(node);
+                return finder.token;
+            }
+            public static Token Find(IEnumerable<Node> nodes)
+            {
+                return Find(nodes.First());
+            }
+
+            private FirstToken() { }
+
+            public override void Visit(Production production)
+            {
+                if (this.token == null)
+                    base.Visit(production);
+            }
+            public override void Visit(Token token)
+            {
+                if (this.token == null)
+                    this.token = token;
+            }
+        }
+        private class LastToken : SablePP.Tools.Analysis.DepthFirstReversedTreeWalker
+        {
+            private Token token = null;
+
+            public static Token Find(Node node)
+            {
+                var finder = new LastToken();
+                finder.Visit(node);
+                return finder.token;
+            }
+            public static Token Find(IEnumerable<Node> nodes)
+            {
+                return Find(nodes.Last());
+            }
+
+            private LastToken() { }
+
+            public override void Visit(Production production)
+            {
+                if (this.token == null)
+                    base.Visit(production);
+            }
+            public override void Visit(Token token)
+            {
+                if (this.token == null)
+                    this.token = token;
+            }
         }
 
-        protected override string HandleStart(Start<PRoot> node)
+        #endregion
+
+        private void ClearRange(Node node, string before = null, string after = null)
         {
-            return Visit(node.Root);
+            ClearRange(FirstToken.Find(node), FirstToken.Find(node), before, after);
         }
-        protected override string HandleARoot(ARoot node)
+        private void ClearRange(Token from, Token to, string before = null, string after = null)
         {
-            string res = "";
+            var start = text.TokenStart(from);
+            var end = text.TokenEnd(to);
 
-            foreach (var i in node.Includes)
-                res += Visit(i) + "\r\n";
-            foreach (var i in node.Structs)
-                res += Visit(i) + "\r\n";
-            foreach (var s in node.Statements)
-                res += Visit(s) + "\r\n";
+            if (before != null && before.Length > 0)
+                start = text.SearchBackwards(start, before);
 
-            return res;
+            if (after != null && after.Length > 0)
+                end = text.SearchForwards(end, after) + (after.Length - 1);
+
+            text.ReplaceRange(start, end, ' ');
         }
-
-        protected override string HandleAInclude(AInclude node) => "#include " + node.File.Text;
-
-        protected override string HandleAStruct(AStruct node) => $"typedef struct {Visit(node.Identifier)} {{" + Visit(node.Fields, "\r\n") + $"}} {Visit(node.Name)};";
-        protected override string HandleAField(AField node) => Visit(node.Type) + " " + Visit(node.Identifier) + ";";
-        protected override string HandleAArrayField(AArrayField node) => $"{Visit(node.Type)} {Visit(node.Identifier)}[{Visit(node.Size)}];";
-
-        protected override string HandleADeclarationStatement(ADeclarationStatement node)
+        private void ClearRange(Token token)
         {
-            if (node.HasExpression)
-                return $"{Visit(node.Type)} {node.Identifier} = {Visit(node.Expression)};";
-            else
-                return $"{Visit(node.Type)} {node.Identifier};";
-        }
-        protected override string HandleAArrayDeclarationStatement(AArrayDeclarationStatement node) => $"{Visit(node.Type)} {Visit(node.Identifier)}[{Visit(node.Size)}];";
-        protected override string HandleAAssignmentStatement(AAssignmentStatement node) => $"{Visit(node.Identifier)} = {Visit(node.Expression)};";
-        protected override string HandleAActsForStatement(AActsForStatement node) => Visit(node.Statements);
-        protected override string HandleAIfStatement(AIfStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.Statements)}";
-        protected override string HandleAIfElseStatement(AIfElseStatement node) => $"if ({Visit(node.Expression)}) {Visit(node.IfStatements)} else {Visit(node.ElseStatements)}";
-        protected override string HandleAWhileStatement(AWhileStatement node) => $"while ({Visit(node.Expression)}) {Visit(node.Statements)}";
-        protected override string HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node) => $"{Visit(node.Type)} {Visit(node.Identifier)}({Visit(node.Parameters)}) {Visit(node.Statements)}";
-        protected override string HandleAFunctionParameter(AFunctionParameter node) => $"{Visit(node.Type)} {Visit(node.Identifier)}";
-        protected override string HandleAReturnStatement(AReturnStatement node)
-        {
-            if (node.HasExpression)
-                return "return " + Visit(node.Expression) + ";";
-            else
-                return "return;";
+            var start = text.TokenStart(token);
+            var end = text.TokenEnd(token);
+
+            text.ReplaceRange(start, end, ' ');
         }
 
-        protected override string HandleAPointerType(APointerType node) => $"{Visit(node.Type)} *";
-        protected override string HandleAType(AType node) => node.Name.Text;
-        protected override string HandleALabel(ALabel node) => string.Empty;
-        protected override string HandleAVariablePolicy(AVariablePolicy node) => string.Empty;
-        protected override string HandleAPrincipalPolicy(APrincipalPolicy node) => string.Empty;
-        protected override string HandleAPrincipal(APrincipal node) => string.Empty;
-        protected override string HandleALowerPolicy(ALowerPolicy node) => string.Empty;
-        protected override string HandleAUpperPolicy(AUpperPolicy node) => string.Empty;
-
-        protected override string HandleAAndExpression(AAndExpression node) => $"{Visit(node.Left)} && {Visit(node.Right)}";
-        protected override string HandleAOrExpression(AOrExpression node) => $"{Visit(node.Left)} || {Visit(node.Right)}";
-        protected override string HandleANotExpression(ANotExpression node) => $"!{Visit(node.Expression)}";
-        protected override string HandleAComparisonExpression(AComparisonExpression node) => $"{Visit(node.Left)} {node.Compare.Text} {Visit(node.Right)}";
-
-        protected override string HandleAElementExpression(AElementExpression node) => Visit(node.Expression) + Visit(node.Element);
-        protected override string HandleAIndexExpression(AIndexExpression node) => $"{Visit(node.Expression)}[{Visit(node.Index)}]";
-
-        protected override string HandleAPlusExpression(APlusExpression node) => $"{Visit(node.Left)} + {Visit(node.Right)}";
-        protected override string HandleAMinusExpression(AMinusExpression node) => $"{Visit(node.Left)} - {Visit(node.Right)}";
-        protected override string HandleAMultiplyExpression(AMultiplyExpression node) => $"{Visit(node.Left)} * {Visit(node.Right)}";
-        protected override string HandleADivideExpression(ADivideExpression node) => $"{Visit(node.Left)} / {Visit(node.Right)}";
-        protected override string HandleAModuloExpression(AModuloExpression node) => $"{Visit(node.Left)} % {Visit(node.Right)}";
-        protected override string HandleANegateExpression(ANegateExpression node) => $"-{Visit(node.Expression)}";
-
-        protected override string HandleAFunctionCallExpression(AFunctionCallExpression node) => $"{node.Function.Text} ({Visit(node.Arguments, ", ")})";
-
-        protected override string HandleAParenthesisExpression(AParenthesisExpression node) => $"({Visit(node.Expression)})";
-        protected override string HandleADeclassifyExpression(ADeclassifyExpression node) => node.Identifier.Text;
-        protected override string HandleAIdentifierExpression(AIdentifierExpression node) => node.Identifier.Text;
-        protected override string HandleANumberExpression(ANumberExpression node) => node.Number.Text;
-        protected override string HandleABooleanExpression(ABooleanExpression node) => node.Bool.Text;
-
-        protected override string HandleAElement(AElement node) => "." + node.Identifier.Text;
-        protected override string HandleAPointerElement(APointerElement node) => "->" + node.Identifier.Text;
-
-        private string Visit(IEnumerable<PStatement> statements)
+        protected override void HandlePPrincipalDeclaration(PPrincipalDeclaration node)
         {
-            string ret = "{";
-            foreach (var s in statements)
-                ret += "\r\n" + Visit(s);
-            ret += "\r\n}";
-            return ret;
+            ClearRange(node, "principal", ";");
         }
-        private string Visit(IEnumerable<PFunctionParameter> parameters) => string.Join(", ", parameters.Select(x => Visit(x)));
-        private string Visit<T>(IEnumerable<T> parameters, string sep) where T : Node => string.Join(sep, parameters.Select(x => Visit((dynamic)x)));
+
+        protected override void HandlePLabel(PLabel node)
+        {
+            ClearRange(node, "{{", "}}");
+        }
+
+        protected override void HandleAActsForStatement(AActsForStatement node)
+        {
+            var first = FirstToken.Find(node);
+            var last = LastToken.Find(node.Principals);
+
+            ClearRange(first, last);
+
+            Visit(node.Statements);
+        }
+
+        protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            var first = text.TokenStart(FirstToken.Find(node));
+            var last = text.TokenEnd(LastToken.Find(node));
+
+            first = text.SearchBackwards(first, "<|");
+            last = text.SearchForwards(last, "|>");
+
+            text.ReplaceRange(first, first + 1, ' ');
+            text.ReplaceRange(last, last + 1, ' ');
+
+            base.HandleADeclassifyExpression(node);
+
+            var g = text.ToString();
+        }
     }
 }
