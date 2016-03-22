@@ -123,7 +123,7 @@ namespace DLM.Editor.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes, PrincipalDeclarations, Structs, Statements);
+            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), Structs.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -240,7 +240,7 @@ namespace DLM.Editor.Nodes
         
         public override PPrincipalDeclaration Clone()
         {
-            return new APrincipalDeclaration(Principals);
+            return new APrincipalDeclaration(Principals.Clone());
         }
         
         public override string ToString()
@@ -349,7 +349,7 @@ namespace DLM.Editor.Nodes
         
         public override PStruct Clone()
         {
-            return new AStruct(Identifier.Clone(), Fields, Name.Clone());
+            return new AStruct(Identifier.Clone(), Fields.Clone(), Name.Clone());
         }
         
         public override string ToString()
@@ -619,7 +619,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression.Clone());
+            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression?.Clone());
         }
         
         public override string ToString()
@@ -902,7 +902,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AActsForStatement(Claimant.Clone(), Principals, Statements);
+            return new AActsForStatement(Claimant.Clone(), Principals.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -978,7 +978,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfStatement(Expression.Clone(), Statements);
+            return new AIfStatement(Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1077,7 +1077,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfElseStatement(Expression.Clone(), IfStatements, ElseStatements);
+            return new AIfElseStatement(Expression.Clone(), IfStatements.Clone(), ElseStatements.Clone());
         }
         
         public override string ToString()
@@ -1153,7 +1153,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AWhileStatement(Expression.Clone(), Statements);
+            return new AWhileStatement(Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1278,7 +1278,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters, Statements);
+            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1332,7 +1332,7 @@ namespace DLM.Editor.Nodes
         
         public override PStatement Clone()
         {
-            return new AReturnStatement(Expression.Clone());
+            return new AReturnStatement(Expression?.Clone());
         }
         
         public override string ToString()
@@ -1505,7 +1505,7 @@ namespace DLM.Editor.Nodes
         
         public override PType Clone()
         {
-            return new AType(Name.Clone(), Label.Clone());
+            return new AType(Name.Clone(), Label?.Clone());
         }
         
         public override string ToString()
@@ -1641,7 +1641,7 @@ namespace DLM.Editor.Nodes
         
         public override PLabel Clone()
         {
-            return new ALabel(Policys);
+            return new ALabel(Policys.Clone());
         }
         
         public override string ToString()
@@ -1777,7 +1777,7 @@ namespace DLM.Editor.Nodes
         
         public override PPolicy Clone()
         {
-            return new APrincipalPolicy(Owner.Clone(), Readers);
+            return new APrincipalPolicy(Owner.Clone(), Readers.Clone());
         }
         
         public override string ToString()
@@ -3061,7 +3061,7 @@ namespace DLM.Editor.Nodes
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(Function.Clone(), Arguments);
+            return new AFunctionCallExpression(Function.Clone(), Arguments.Clone());
         }
         
         public override string ToString()
@@ -3194,7 +3194,7 @@ namespace DLM.Editor.Nodes
         
         public override PExpression Clone()
         {
-            return new ADeclassifyExpression(Identifier.Clone(), Label.Clone());
+            return new ADeclassifyExpression(Identifier.Clone(), Label?.Clone());
         }
         
         public override string ToString()
