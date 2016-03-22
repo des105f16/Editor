@@ -114,12 +114,17 @@ namespace DLM.Editor
             ClearRange(node, "principal", ";");
         }
 
+        protected override void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        {
+            ClearRange(node, after: ";");
+        }
+
         protected override void HandlePLabel(PLabel node)
         {
             ClearRange(node, "{{", "}}");
         }
 
-        protected override void HandleAActsForStatement(AActsForStatement node)
+        protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             var first = FirstToken.Find(node);
             var last = LastToken.Find(node.Principals);

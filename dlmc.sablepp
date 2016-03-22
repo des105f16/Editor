@@ -35,7 +35,8 @@ Tokens
     
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
-    acts_for = '-->?' | '?>';
+    acts_for = '-->';
+    if_acts_for = '-->?' | '?>';
     declassify_start = '<|';
     declassify_end = '|>';
     
@@ -84,15 +85,17 @@ Ignored Tokens
 Token Syntax Highlight
     {comment} text: #393, italic;
     {if, else, while, return, typedef, struct} text: #00c, bold;
-    {label_start, label_end, acts_for, declassify_start, declassify_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
+    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
-    root = P.include* principal_declaration* P.struct* statement*;
+    root = P.include* principal_declaration* principal_hierarchy_statement* P.struct* statement*;
     
     include = file;
     
     principal_declaration = principal+;
+    
+    principal_hierarchy_statement = [principal]:principal [subordinates]:principal+;
     
     struct = identifier field* [name]:identifier;
     field
@@ -104,7 +107,7 @@ Abstract Syntax Tree
         = {declaration} type identifier expression?
         | {array_declaration} type identifier [size]:number
         | {assignment} identifier expression
-        | {acts_for} claimant principal+ statement*
+        | {if_acts_for} claimant principal+ statement*
         | {if} expression statement*
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
@@ -123,11 +126,13 @@ Abstract Syntax Tree
         | {caller} caller
         ;
 Productions
-    root = P.include* principal_declaration* P.struct* glstmt*;
+    root = P.include* principal_declaration* principal_hierarchy_statement* P.struct* glstmt*;
     
     include = T.include file -> New include(file);
     
     principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
+    
+    principal_hierarchy_statement = principal acts_for lprincipal semicolon -> New principal_hierarchy_statement(principal, [lprincipal]);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field
@@ -149,13 +154,13 @@ Productions
         = {one} if l_par expr r_par block -> New statement.if(expr, [block])
         | {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
         | {w} while l_par expr r_par block -> New statement.while(expr, [block])
-        | {act} claimant acts_for lprincipal block -> New statement.acts_for(claimant, [lprincipal], [block])
+        | {act} claimant if_acts_for lprincipal block -> New statement.if_acts_for(claimant, [lprincipal], [block])
         | otherstmt -> otherstmt
         ;
     stmt2 -> statement
         = {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
         | {w} while l_par expr r_par block2 -> New statement.while(expr, [block2])
-        | {act} claimant acts_for lprincipal block2 -> New statement.acts_for(claimant, [lprincipal], [block2])
+        | {act} claimant if_acts_for lprincipal block2 -> New statement.if_acts_for(claimant, [lprincipal], [block2])
         | otherstmt -> otherstmt
         ;
     otherstmt -> statement

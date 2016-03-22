@@ -74,7 +74,7 @@ namespace DLM.Editor
 
             Add(lbl, type.DeclaredLabel);
         }
-        protected override void HandleAActsForStatement(AActsForStatement node)
+        protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             if (node.Claimant is ACallerClaimant)
                 errorManager.Register(node.Claimant, ErrorType.Warning, "'caller' keyword not yet implemented.");

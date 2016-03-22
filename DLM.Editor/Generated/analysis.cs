@@ -64,6 +64,23 @@ namespace DLM.Editor.Analysis
             HandleDefault(node);
         }
         
+        public void Visit(PPrincipalHierarchyStatement node)
+        {
+            HandlePPrincipalHierarchyStatement(node);
+        }
+        protected virtual void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(APrincipalHierarchyStatement node)
+        {
+            HandleAPrincipalHierarchyStatement(node);
+        }
+        protected virtual void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PStruct node)
         {
             HandlePStruct(node);
@@ -138,11 +155,11 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
-        private void dispatch(AActsForStatement node)
+        private void dispatch(AIfActsForStatement node)
         {
-            HandleAActsForStatement(node);
+            HandleAIfActsForStatement(node);
         }
-        protected virtual void HandleAActsForStatement(AActsForStatement node)
+        protected virtual void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             HandleDefault(node);
         }
@@ -627,6 +644,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TIfActsFor node)
+        {
+            HandleTIfActsFor(node);
+        }
+        protected virtual void HandleTIfActsFor(TIfActsFor node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TDeclassifyStart node)
         {
             HandleTDeclassifyStart(node);
@@ -899,6 +924,7 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Includes);
             Visit(node.PrincipalDeclarations);
+            Visit(node.PrincipalHierarchyStatements);
             Visit(node.Structs);
             Visit(node.Statements);
         }
@@ -909,6 +935,11 @@ namespace DLM.Editor.Analysis
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
             Visit(node.Principals);
+        }
+        protected override void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        {
+            Visit(node.Principal);
+            Visit(node.Subordinates);
         }
         protected override void HandleAStruct(AStruct node)
         {
@@ -945,7 +976,7 @@ namespace DLM.Editor.Analysis
             Visit(node.Identifier);
             Visit(node.Expression);
         }
-        protected override void HandleAActsForStatement(AActsForStatement node)
+        protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             Visit(node.Claimant);
             Visit(node.Principals);
@@ -1146,6 +1177,7 @@ namespace DLM.Editor.Analysis
         {
             Visit(node.Statements);
             Visit(node.Structs);
+            Visit(node.PrincipalHierarchyStatements);
             Visit(node.PrincipalDeclarations);
             Visit(node.Includes);
         }
@@ -1156,6 +1188,11 @@ namespace DLM.Editor.Analysis
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
             Visit(node.Principals);
+        }
+        protected override void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        {
+            Visit(node.Subordinates);
+            Visit(node.Principal);
         }
         protected override void HandleAStruct(AStruct node)
         {
@@ -1192,7 +1229,7 @@ namespace DLM.Editor.Analysis
             Visit(node.Expression);
             Visit(node.Identifier);
         }
-        protected override void HandleAActsForStatement(AActsForStatement node)
+        protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             Visit(node.Statements);
             Visit(node.Principals);
@@ -1428,6 +1465,23 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node);
         }
         
+        public Result Visit(PPrincipalHierarchyStatement node)
+        {
+            return HandlePPrincipalHierarchyStatement(node);
+        }
+        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(APrincipalHierarchyStatement node)
+        {
+            return HandleAPrincipalHierarchyStatement(node);
+        }
+        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        {
+            return HandleDefault(node);
+        }
+        
         public Result Visit(PStruct node)
         {
             return HandlePStruct(node);
@@ -1502,11 +1556,11 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
-        private Result dispatch(AActsForStatement node)
+        private Result dispatch(AIfActsForStatement node)
         {
-            return HandleAActsForStatement(node);
+            return HandleAIfActsForStatement(node);
         }
-        protected virtual Result HandleAActsForStatement(AActsForStatement node)
+        protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node)
         {
             return HandleDefault(node);
         }
@@ -1991,6 +2045,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TIfActsFor node)
+        {
+            return HandleTIfActsFor(node);
+        }
+        protected virtual Result HandleTIfActsFor(TIfActsFor node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TDeclassifyStart node)
         {
             return HandleTDeclassifyStart(node);
@@ -2293,6 +2355,23 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1);
         }
         
+        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1)
+        {
+            return HandlePPrincipalHierarchyStatement(node, arg1);
+        }
+        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1)
+        {
+            return HandleAPrincipalHierarchyStatement(node, arg1);
+        }
+        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        
         public Result Visit(PStruct node, T1 arg1)
         {
             return HandlePStruct(node, arg1);
@@ -2367,11 +2446,11 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
-        private Result dispatch(AActsForStatement node, T1 arg1)
+        private Result dispatch(AIfActsForStatement node, T1 arg1)
         {
-            return HandleAActsForStatement(node, arg1);
+            return HandleAIfActsForStatement(node, arg1);
         }
-        protected virtual Result HandleAActsForStatement(AActsForStatement node, T1 arg1)
+        protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -2856,6 +2935,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TIfActsFor node, T1 arg1)
+        {
+            return HandleTIfActsFor(node, arg1);
+        }
+        protected virtual Result HandleTIfActsFor(TIfActsFor node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TDeclassifyStart node, T1 arg1)
         {
             return HandleTDeclassifyStart(node, arg1);
@@ -3158,6 +3245,23 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
+        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        {
+            return HandlePPrincipalHierarchyStatement(node, arg1, arg2);
+        }
+        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAPrincipalHierarchyStatement(node, arg1, arg2);
+        }
+        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        
         public Result Visit(PStruct node, T1 arg1, T2 arg2)
         {
             return HandlePStruct(node, arg1, arg2);
@@ -3232,11 +3336,11 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
-        private Result dispatch(AActsForStatement node, T1 arg1, T2 arg2)
+        private Result dispatch(AIfActsForStatement node, T1 arg1, T2 arg2)
         {
-            return HandleAActsForStatement(node, arg1, arg2);
+            return HandleAIfActsForStatement(node, arg1, arg2);
         }
-        protected virtual Result HandleAActsForStatement(AActsForStatement node, T1 arg1, T2 arg2)
+        protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -3721,6 +3825,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TIfActsFor node, T1 arg1, T2 arg2)
+        {
+            return HandleTIfActsFor(node, arg1, arg2);
+        }
+        protected virtual Result HandleTIfActsFor(TIfActsFor node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TDeclassifyStart node, T1 arg1, T2 arg2)
         {
             return HandleTDeclassifyStart(node, arg1, arg2);
@@ -4023,6 +4135,23 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
+        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePPrincipalHierarchyStatement(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAPrincipalHierarchyStatement(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        
         public Result Visit(PStruct node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePStruct(node, arg1, arg2, arg3);
@@ -4097,11 +4226,11 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
-        private Result dispatch(AActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
+        private Result dispatch(AIfActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandleAActsForStatement(node, arg1, arg2, arg3);
+            return HandleAIfActsForStatement(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandleAActsForStatement(AActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
@@ -4583,6 +4712,14 @@ namespace DLM.Editor.Analysis
             return HandleTActsFor(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTActsFor(TActsFor node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TIfActsFor node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTIfActsFor(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTIfActsFor(TIfActsFor node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

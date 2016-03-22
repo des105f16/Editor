@@ -32,37 +32,38 @@ namespace DLM.Editor.Lexing
                 case 12: return new TCaller(text, line, position);
                 case 13: return new TIdentifier(text, line, position);
                 case 14: return new TActsFor(text, line, position);
-                case 15: return new TDeclassifyStart(text, line, position);
-                case 16: return new TDeclassifyEnd(text, line, position);
-                case 17: return new TRArrow(text, line, position);
-                case 18: return new TLArrow(text, line, position);
-                case 19: return new TCompare(text, line, position);
-                case 20: return new TAssign(text, line, position);
-                case 21: return new TUnderscore(text, line, position);
-                case 22: return new THat(text, line, position);
-                case 23: return new TPlus(text, line, position);
-                case 24: return new TMinus(text, line, position);
-                case 25: return new TAsterisk(text, line, position);
-                case 26: return new TSlash(text, line, position);
-                case 27: return new TPercent(text, line, position);
-                case 28: return new TBang(text, line, position);
-                case 29: return new TAnd(text, line, position);
-                case 30: return new TOr(text, line, position);
-                case 31: return new TPeriod(text, line, position);
-                case 32: return new TComma(text, line, position);
-                case 33: return new TColon(text, line, position);
-                case 34: return new TSemicolon(text, line, position);
-                case 35: return new TLabelStart(text, line, position);
-                case 36: return new TLabelEnd(text, line, position);
-                case 37: return new TLPar(text, line, position);
-                case 38: return new TRPar(text, line, position);
-                case 39: return new TLSqu(text, line, position);
-                case 40: return new TRSqu(text, line, position);
-                case 41: return new TLCur(text, line, position);
-                case 42: return new TRCur(text, line, position);
-                case 43: return new TJoin(text, line, position);
-                case 44: return new TComment(text, line, position);
-                case 45: return new TWhitespace(text, line, position);
+                case 15: return new TIfActsFor(text, line, position);
+                case 16: return new TDeclassifyStart(text, line, position);
+                case 17: return new TDeclassifyEnd(text, line, position);
+                case 18: return new TRArrow(text, line, position);
+                case 19: return new TLArrow(text, line, position);
+                case 20: return new TCompare(text, line, position);
+                case 21: return new TAssign(text, line, position);
+                case 22: return new TUnderscore(text, line, position);
+                case 23: return new THat(text, line, position);
+                case 24: return new TPlus(text, line, position);
+                case 25: return new TMinus(text, line, position);
+                case 26: return new TAsterisk(text, line, position);
+                case 27: return new TSlash(text, line, position);
+                case 28: return new TPercent(text, line, position);
+                case 29: return new TBang(text, line, position);
+                case 30: return new TAnd(text, line, position);
+                case 31: return new TOr(text, line, position);
+                case 32: return new TPeriod(text, line, position);
+                case 33: return new TComma(text, line, position);
+                case 34: return new TColon(text, line, position);
+                case 35: return new TSemicolon(text, line, position);
+                case 36: return new TLabelStart(text, line, position);
+                case 37: return new TLabelEnd(text, line, position);
+                case 38: return new TLPar(text, line, position);
+                case 39: return new TRPar(text, line, position);
+                case 40: return new TLSqu(text, line, position);
+                case 41: return new TRSqu(text, line, position);
+                case 42: return new TLCur(text, line, position);
+                case 43: return new TRCur(text, line, position);
+                case 44: return new TJoin(text, line, position);
+                case 45: return new TComment(text, line, position);
+                case 46: return new TWhitespace(text, line, position);
                 default:
                     throw new ArgumentException("Unknown token index.", "tokenIndex");
             }
@@ -1137,22 +1138,22 @@ namespace DLM.Editor.Lexing
         
         private static int[][] acceptTable = {
             new int[] {
-                -1, 45, 45, 45, 45, 28, -1, 27, -1, 37, 38, 25, 23, 32, 24, 31,
-                26, 3, 33, 34, 19, 20, 19, -1, 13, 39, 40, 22, 21, 13, 13, 13,
-                13, 13, 13, 13, 13, 13, 13, 41, -1, 42, 43, -1, 29, -1, 17, -1,
-                44, 18, 19, 15, 19, 19, 14, 13, 13, 13, 13, 13, 13, 13, 8, 13,
-                13, 13, 13, 13, 13, 13, 35, 16, 30, 36, -1, -1, -1, -1, 44, 13,
-                13, 13, 13, 13, 13, 13, 13, 13, 13, -1, 14, -1, 44, 13, 9, 13,
+                -1, 46, 46, 46, 46, 29, -1, 28, -1, 38, 39, 26, 24, 33, 25, 32,
+                27, 3, 34, 35, 20, 21, 20, -1, 13, 40, 41, 23, 22, 13, 13, 13,
+                13, 13, 13, 13, 13, 13, 13, 42, -1, 43, 44, -1, 30, -1, 18, -1,
+                45, 19, 20, 16, 20, 20, 15, 13, 13, 13, 13, 13, 13, 13, 8, 13,
+                13, 13, 13, 13, 13, 13, 36, 17, 31, 37, -1, 14, -1, -1, 45, 13,
+                13, 13, 13, 13, 13, 13, 13, 13, 13, -1, 15, -1, 45, 13, 9, 13,
                 13, 13, 13, 11, 2, 13, 13, -1, -1, -1, 13, 2, 13, 13, 13, 13,
                 7, -1, 12, 13, 10, 6, 13, -1, 13, 5, 0, 13, 4,
             },
             new int[] {
-                -1, 45, 45, 45, 45, 28, 27, -1, 37, 38, 25, 23, 32, 24, 31, 26,
-                3, 33, 34, 19, 20, 19, -1, 13, 39, 40, 22, 21, 13, 13, 13, 13,
-                13, 13, 13, 13, 13, 13, 41, -1, 42, 43, 29, -1, 17, -1, 44, -1,
-                18, 19, 1, 15, 19, 19, 14, 13, 13, 13, 13, 13, 13, 13, 8, 13,
-                13, 13, 13, 13, 13, 13, 35, 16, 30, 36, -1, -1, -1, 44, 13, 13,
-                13, 13, 13, 13, 13, 13, 13, 13, 14, -1, 44, 13, 9, 13, 13, 13,
+                -1, 46, 46, 46, 46, 29, 28, -1, 38, 39, 26, 24, 33, 25, 32, 27,
+                3, 34, 35, 20, 21, 20, -1, 13, 40, 41, 23, 22, 13, 13, 13, 13,
+                13, 13, 13, 13, 13, 13, 42, -1, 43, 44, 30, -1, 18, -1, 45, -1,
+                19, 20, 1, 16, 20, 20, 15, 13, 13, 13, 13, 13, 13, 13, 8, 13,
+                13, 13, 13, 13, 13, 13, 36, 17, 31, 37, 14, -1, -1, 45, 13, 13,
+                13, 13, 13, 13, 13, 13, 13, 13, 15, -1, 45, 13, 9, 13, 13, 13,
                 13, 11, 2, 13, 13, -1, -1, 13, 2, 13, 13, 13, 13, 7, 12, 13,
                 10, 6, 13, 13, 5, 13, 4,
             },
