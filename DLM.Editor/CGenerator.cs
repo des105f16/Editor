@@ -114,6 +114,11 @@ namespace DLM.Editor
             ClearRange(node, "principal", ";");
         }
 
+        protected override void HandlePPrincipalHierarchyStmt(PPrincipalHierarchyStmt node)
+        {
+            ClearRange(node, after: ";");
+        }
+
         protected override void HandlePLabel(PLabel node)
         {
             ClearRange(node, "{{", "}}");
