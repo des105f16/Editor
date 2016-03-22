@@ -140,9 +140,12 @@ namespace DLM.Editor
             text.ReplaceRange(first, first + 1, ' ');
             text.ReplaceRange(last, last + 1, ' ');
 
-            base.HandleADeclassifyExpression(node);
-
-            var g = text.ToString();
+            if (node.HasLabel)
+            {
+                var comma = text.SearchForwards(text.TokenEnd(node.Identifier), ",");
+                text.ReplaceRange(comma, comma, ' ');
+                Visit(node.Label);
+            }
         }
     }
 }

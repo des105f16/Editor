@@ -138,6 +138,7 @@ namespace DLM.Editor
         private readonly string source;
         private readonly string[] sourcelines;
 
+        private string state => string.Join("\r\n", lines.Select(x => x.ToString()));
         private StringBuilder[] lines;
 
         public SearchableString(string source, string separator)
@@ -183,6 +184,6 @@ namespace DLM.Editor
                 l.Character = replacement;
         }
 
-        public override string ToString() => string.Join("\r\n", lines.Select(x => x.ToString()));
+        public override string ToString() => state;
     }
 }
