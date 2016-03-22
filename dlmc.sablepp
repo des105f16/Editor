@@ -149,11 +149,13 @@ Productions
         = {one} if l_par expr r_par block -> New statement.if(expr, [block])
         | {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
         | {w} while l_par expr r_par block -> New statement.while(expr, [block])
+        | {act} claimant acts_for lprincipal block -> New statement.acts_for(claimant, [lprincipal], [block])
         | otherstmt -> otherstmt
         ;
     stmt2 -> statement
         = {two} if l_par expr r_par [b1]:block2 else [b2]:block2 -> New statement.if_else(expr, [b1], [b2])
         | {w} while l_par expr r_par block2 -> New statement.while(expr, [block2])
+        | {act} claimant acts_for lprincipal block2 -> New statement.acts_for(claimant, [lprincipal], [block2])
         | otherstmt -> otherstmt
         ;
     otherstmt -> statement
@@ -162,7 +164,6 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
-        | {act} claimant acts_for lprincipal l_cur stmt* r_cur -> New statement.acts_for(claimant, [lprincipal], [stmt])
         ;
     type
         = identifier label? -> New type(identifier, label)
