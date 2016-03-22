@@ -14,6 +14,7 @@ namespace DLM.Editor
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
+        private Dictionary<string, Label> functionLabels;
 
         private LabelStack authority;
         private LabelStack basicBlock;
@@ -25,6 +26,7 @@ namespace DLM.Editor
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
+            functionLabels = new Dictionary<string, Label>();
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
@@ -40,6 +42,9 @@ namespace DLM.Editor
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
+            var fName = node.Identifier.Text;
+            functionLabels.Add(fName, node.Type.DeclaredLabel);
+
             types.OpenScope();
 
             foreach (var p in node.Parameters)
