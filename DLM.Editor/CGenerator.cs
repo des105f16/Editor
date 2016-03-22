@@ -114,7 +114,7 @@ namespace DLM.Editor
             ClearRange(node, "principal", ";");
         }
 
-        protected override void HandlePPrincipalHierarchyStmt(PPrincipalHierarchyStmt node)
+        protected override void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
         {
             ClearRange(node, after: ";");
         }

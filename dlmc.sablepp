@@ -89,13 +89,13 @@ Token Syntax Highlight
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
-    root = P.include* principal_declaration* principal_hierarchy_stmt* P.struct* statement*;
+    root = P.include* principal_declaration* principal_hierarchy_statement* P.struct* statement*;
     
     include = file;
     
     principal_declaration = principal+;
     
-    principal_hierarchy_stmt = [principal]:principal [subordinates]:principal+;
+    principal_hierarchy_statement = [principal]:principal [subordinates]:principal+;
     
     struct = identifier field* [name]:identifier;
     field
@@ -126,13 +126,13 @@ Abstract Syntax Tree
         | {caller} caller
         ;
 Productions
-    root = P.include* principal_declaration* principal_hierarchy_stmt* P.struct* glstmt*;
+    root = P.include* principal_declaration* principal_hierarchy_statement* P.struct* glstmt*;
     
     include = T.include file -> New include(file);
     
     principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
     
-    principal_hierarchy_stmt = principal acts_for lprincipal semicolon -> New principal_hierarchy_stmt(principal, [lprincipal]);
+    principal_hierarchy_statement = principal acts_for lprincipal semicolon -> New principal_hierarchy_statement(principal, [lprincipal]);
     
     struct = typedef T.struct identifier l_cur field* r_cur [name]:identifier semicolon -> New struct(identifier, [field], name);
     field

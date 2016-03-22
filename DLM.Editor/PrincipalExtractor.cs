@@ -39,17 +39,17 @@ namespace DLM.Editor
                 }
             }
 
-            Visit(node.PrincipalHierarchyStmts);
+            Visit(node.PrincipalHierarchyStatements);
         }
 
-        protected override void HandlePPrincipalHierarchyStmt(PPrincipalHierarchyStmt node)
+        protected override void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
         {
-            var principalName = node.Principal.Identifier.Text;
+            var pName = node.Principal.Identifier.Text;
             Principal principal;
 
-            if (!principals.TryGetValue(principalName, out principal))
+            if (!principals.TryGetValue(pName, out principal))
             {
-                errorManager.Register(node.Principal, $"Use of undeclared principal {principalName}.");
+                errorManager.Register(node.Principal, $"Use of undeclared principal {pName}.");
                 return;
             }
         }

@@ -250,15 +250,15 @@ namespace DLM.Editor.Parsing
                     {
                         List<PStatement> pstatementlist = isOn(16, index - 0) ? Pop<List<PStatement>>() : new List<PStatement>();
                         List<PStruct> pstructlist = isOn(8, index - 0) ? Pop<List<PStruct>>() : new List<PStruct>();
-                        List<PPrincipalHierarchyStmt> pprincipalhierarchystmtlist = isOn(4, index - 0) ? Pop<List<PPrincipalHierarchyStmt>>() : new List<PPrincipalHierarchyStmt>();
+                        List<PPrincipalHierarchyStatement> pprincipalhierarchystatementlist = isOn(4, index - 0) ? Pop<List<PPrincipalHierarchyStatement>>() : new List<PPrincipalHierarchyStatement>();
                         List<PPrincipalDeclaration> pprincipaldeclarationlist = isOn(2, index - 0) ? Pop<List<PPrincipalDeclaration>>() : new List<PPrincipalDeclaration>();
                         List<PInclude> pincludelist = isOn(1, index - 0) ? Pop<List<PInclude>>() : new List<PInclude>();
                         List<PInclude> pincludelist2 = new List<PInclude>();
                         pincludelist2.AddRange(pincludelist);
                         List<PPrincipalDeclaration> pprincipaldeclarationlist2 = new List<PPrincipalDeclaration>();
                         pprincipaldeclarationlist2.AddRange(pprincipaldeclarationlist);
-                        List<PPrincipalHierarchyStmt> pprincipalhierarchystmtlist2 = new List<PPrincipalHierarchyStmt>();
-                        pprincipalhierarchystmtlist2.AddRange(pprincipalhierarchystmtlist);
+                        List<PPrincipalHierarchyStatement> pprincipalhierarchystatementlist2 = new List<PPrincipalHierarchyStatement>();
+                        pprincipalhierarchystatementlist2.AddRange(pprincipalhierarchystatementlist);
                         List<PStruct> pstructlist2 = new List<PStruct>();
                         pstructlist2.AddRange(pstructlist);
                         List<PStatement> pstatementlist2 = new List<PStatement>();
@@ -266,7 +266,7 @@ namespace DLM.Editor.Parsing
                         ARoot aroot = new ARoot(
                             pincludelist2,
                             pprincipaldeclarationlist2,
-                            pprincipalhierarchystmtlist2,
+                            pprincipalhierarchystatementlist2,
                             pstructlist2,
                             pstatementlist2
                         );
@@ -304,11 +304,11 @@ namespace DLM.Editor.Parsing
                         PPrincipal pprincipal = Pop<PPrincipal>();
                         List<PPrincipal> pprincipallist2 = new List<PPrincipal>();
                         pprincipallist2.AddRange(pprincipallist);
-                        APrincipalHierarchyStmt aprincipalhierarchystmt = new APrincipalHierarchyStmt(
+                        APrincipalHierarchyStatement aprincipalhierarchystatement = new APrincipalHierarchyStatement(
                             pprincipal,
                             pprincipallist2
                         );
-                        Push(3, aprincipalhierarchystmt);
+                        Push(3, aprincipalhierarchystatement);
                     }
                     break;
                 case 35:
@@ -1192,12 +1192,12 @@ namespace DLM.Editor.Parsing
                     }
                     break;
                 case 120:
-                    Push(31, new List<PPrincipalHierarchyStmt>() { Pop<PPrincipalHierarchyStmt>() });
+                    Push(31, new List<PPrincipalHierarchyStatement>() { Pop<PPrincipalHierarchyStatement>() });
                     break;
                 case 121:
                     {
-                        PPrincipalHierarchyStmt item = Pop<PPrincipalHierarchyStmt>();
-                        List<PPrincipalHierarchyStmt> list = Pop<List<PPrincipalHierarchyStmt>>();
+                        PPrincipalHierarchyStatement item = Pop<PPrincipalHierarchyStatement>();
+                        List<PPrincipalHierarchyStatement> list = Pop<List<PPrincipalHierarchyStatement>>();
                         list.Add(item);
                         Push(31, list);
                     }
