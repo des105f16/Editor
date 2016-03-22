@@ -83,5 +83,30 @@ namespace DLM.Editor
         }
 
         #endregion
+
+        private void ClearRange(Node node, string before = null, string after = null)
+        {
+            ClearRange(FirstToken.Find(node), FirstToken.Find(node), before, after);
+        }
+        private void ClearRange(Token from, Token to, string before = null, string after = null)
+        {
+            var start = text.TokenStart(from);
+            var end = text.TokenEnd(to);
+
+            if (before != null && before.Length > 0)
+                start = text.SearchBackwards(start, before);
+
+            if (after != null && after.Length > 0)
+                end = text.SearchForwards(end, after) + (after.Length - 1);
+
+            text.ReplaceRange(start, end, ' ');
+        }
+        private void ClearRange(Token token)
+        {
+            var start = text.TokenStart(token);
+            var end = text.TokenEnd(token);
+
+            text.ReplaceRange(start, end, ' ');
+        }
     }
 }
