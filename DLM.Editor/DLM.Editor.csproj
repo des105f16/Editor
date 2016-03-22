@@ -101,7 +101,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DLM.Inference\DLM.Inference.csproj">
+    <ProjectReference Include="..\DLM.Inference\Source\DLM.Inference.csproj">
       <Project>{05e6995f-1d7a-4f0e-b368-5ad463aa11e1}</Project>
       <Name>DLM.Inference</Name>
     </ProjectReference>
