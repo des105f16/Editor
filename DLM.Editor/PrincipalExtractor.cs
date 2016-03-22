@@ -38,6 +38,20 @@ namespace DLM.Editor
                         principals.Add(name, new Principal(name));
                 }
             }
+
+            Visit(node.PrincipalHierarchyStmts);
+        }
+
+        protected override void HandlePPrincipalHierarchyStmt(PPrincipalHierarchyStmt node)
+        {
+            var principalName = node.Principal.Identifier.Text;
+            Principal principal;
+
+            if (!principals.TryGetValue(principalName, out principal))
+            {
+                errorManager.Register(node.Principal, $"Use of undeclared principal {principalName}.");
+                return;
+            }
         }
     }
 }
