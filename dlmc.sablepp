@@ -225,7 +225,7 @@ Productions
         | {pi} [p]:timing_period comma [i]:timing_interval+ -> New timing(p, i, Null)
         | {pic} [p]:timing_period comma [i]:timing_interval+ asterisk [c]:number -> New timing(p, i, c)
         ;
-    timing_period = [f]:time [t]:time;
+    timing_period = [f]:time minus [t]:time -> New timing_period(f, t);
     timing_interval = number [unit]:interval_unit;
     
     policy
