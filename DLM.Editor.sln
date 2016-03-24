@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLM.Inference.Tests", "DLM.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLM.Compiler", "DLM.Compiler\DLM.Compiler.csproj", "{A01ED618-F0C9-4254-9031-442F73A7288F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLM.Wpf", "DLM.Wpf\DLM.Wpf.csproj", "{D7554943-B363-416F-A56E-D72F5B8FEA3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A01ED618-F0C9-4254-9031-442F73A7288F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A01ED618-F0C9-4254-9031-442F73A7288F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A01ED618-F0C9-4254-9031-442F73A7288F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7554943-B363-416F-A56E-D72F5B8FEA3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7554943-B363-416F-A56E-D72F5B8FEA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7554943-B363-416F-A56E-D72F5B8FEA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7554943-B363-416F-A56E-D72F5B8FEA3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
