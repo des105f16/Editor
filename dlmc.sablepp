@@ -20,11 +20,7 @@ Tokens
     
     {label} at = '@';
     {label} time = digit+ ':' digit+;
-    {label} interval_day = 'd' | 'D';
-    {label} interval_hour = 'h' | 'H';
-    {label} interval_millisecond = ('m' | 'M')('s' | 'S');
-    {label} interval_minute = 'm' | 'M';
-    {label} interval_second = 's' | 'S';
+    {label} interval_unit = 'd' | 'h' | 'm' | 's' | 'ms';
     
     bool = 'true'|'false';
     number = digit+;
@@ -200,19 +196,12 @@ Productions
         ;
 
 Abstract Syntax Tree
-    label
-        = policy+ timing?
-        ;
+    label = policy+ timing?;
+    
     timing = [period]:timing_period? [interval]:timing_interval* [count]:number?;
     timing_period = [from]:time [to]:time;
     timing_interval = number [unit]:interval_unit;
-    interval_unit
-        = {day} interval_day
-        | {hour} interval_hour
-        | {millisecond} interval_millisecond
-        | {minute} interval_minute
-        | {second} interval_second
-        ;
+    
     policy
         = {variable} identifier
         | {principal} [owner]:principal [readers]:principal*
@@ -225,6 +214,7 @@ Productions
         = {none} label_start lpolicy label_end -> New label([lpolicy], Null)
         | {time} label_start lpolicy at timing label_end -> New label([lpolicy], timing)
         ;
+    
     timing
         = {p} [p]:timing_period -> New timing(p, [], Null)
         | {pc} [p]:timing_period asterisk [c]:number -> New timing(p, [], c)
@@ -235,13 +225,7 @@ Productions
         ;
     timing_period = [f]:time [t]:time;
     timing_interval = number [unit]:interval_unit;
-    interval_unit
-        = {day} interval_day
-        | {hour} interval_hour
-        | {millisecond} interval_millisecond
-        | {minute} interval_minute
-        | {second} interval_second
-        ;
+    
     policy
         = {id} identifier -> New policy.variable(identifier)
         | principal r_arrow lprincipal -> New policy.principal(principal, [lprincipal])
