@@ -5,6 +5,7 @@ using SablePP.Tools.Error;
 using System.Collections.Generic;
 using DLM.Editor.Nodes;
 using SablePP.Tools.Nodes;
+using System.Linq;
 
 namespace DLM.Editor
 {
@@ -193,10 +194,23 @@ namespace DLM.Editor
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
-                Label fcLabel = Label.LowerBound;
+                Label fcLabel;
+
+                IEnumerable<Principal> authorityOwners;
+                if (authority is LowerBoundLabel)
+                    authorityOwners = new Principal[0];
+                else
+                    authorityOwners = (authority as PolicyLabel).Owners();
+
+                foreach (var pn in node.Authorities)
+                {
+                    if (!authorityOwners.Contains(pn.DeclaredPrincipal))
+                        errorManager.Register(pn, $"Principal {pn.DeclaredPrincipal.Name} is not in the effective authority.");
+                }
 
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
+                    fcLabel = Label.LowerBound;
                     foreach (var a in node.Arguments)
                         fcLabel += Visit(a);
                 }
