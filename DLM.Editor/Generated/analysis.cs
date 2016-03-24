@@ -296,6 +296,57 @@ namespace DLM.Editor.Analysis
             HandleDefault(node);
         }
         
+        public void Visit(PTiming node)
+        {
+            HandlePTiming(node);
+        }
+        protected virtual void HandlePTiming(PTiming node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(ATiming node)
+        {
+            HandleATiming(node);
+        }
+        protected virtual void HandleATiming(ATiming node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PTimingPeriod node)
+        {
+            HandlePTimingPeriod(node);
+        }
+        protected virtual void HandlePTimingPeriod(PTimingPeriod node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(ATimingPeriod node)
+        {
+            HandleATimingPeriod(node);
+        }
+        protected virtual void HandleATimingPeriod(ATimingPeriod node)
+        {
+            HandleDefault(node);
+        }
+        
+        public void Visit(PTimingInterval node)
+        {
+            HandlePTimingInterval(node);
+        }
+        protected virtual void HandlePTimingInterval(PTimingInterval node)
+        {
+            dispatch((dynamic)node);
+        }
+        private void dispatch(ATimingInterval node)
+        {
+            HandleATimingInterval(node);
+        }
+        protected virtual void HandleATimingInterval(ATimingInterval node)
+        {
+            HandleDefault(node);
+        }
+        
         public void Visit(PPolicy node)
         {
             HandlePPolicy(node);
@@ -545,6 +596,30 @@ namespace DLM.Editor.Analysis
             HandleTFile(node);
         }
         protected virtual void HandleTFile(TFile node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TAt node)
+        {
+            HandleTAt(node);
+        }
+        protected virtual void HandleTAt(TAt node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TTime node)
+        {
+            HandleTTime(node);
+        }
+        protected virtual void HandleTTime(TTime node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TIntervalUnit node)
+        {
+            HandleTIntervalUnit(node);
+        }
+        protected virtual void HandleTIntervalUnit(TIntervalUnit node)
         {
             HandleDefault(node);
         }
@@ -1065,6 +1140,26 @@ namespace DLM.Editor.Analysis
         protected override void HandleALabel(ALabel node)
         {
             Visit(node.Policys);
+            if (node.HasTiming)
+                Visit(node.Timing);
+        }
+        protected override void HandleATiming(ATiming node)
+        {
+            if (node.HasPeriod)
+                Visit(node.Period);
+            Visit(node.Interval);
+            if (node.HasCount)
+                Visit(node.Count);
+        }
+        protected override void HandleATimingPeriod(ATimingPeriod node)
+        {
+            Visit(node.From);
+            Visit(node.To);
+        }
+        protected override void HandleATimingInterval(ATimingInterval node)
+        {
+            Visit(node.Number);
+            Visit(node.Unit);
         }
         protected override void HandleAVariablePolicy(AVariablePolicy node)
         {
@@ -1322,7 +1417,27 @@ namespace DLM.Editor.Analysis
         }
         protected override void HandleALabel(ALabel node)
         {
+            if (node.HasTiming)
+                Visit(node.Timing);
             Visit(node.Policys);
+        }
+        protected override void HandleATiming(ATiming node)
+        {
+            if (node.HasCount)
+                Visit(node.Count);
+            Visit(node.Interval);
+            if (node.HasPeriod)
+                Visit(node.Period);
+        }
+        protected override void HandleATimingPeriod(ATimingPeriod node)
+        {
+            Visit(node.To);
+            Visit(node.From);
+        }
+        protected override void HandleATimingInterval(ATimingInterval node)
+        {
+            Visit(node.Unit);
+            Visit(node.Number);
         }
         protected override void HandleAVariablePolicy(AVariablePolicy node)
         {
@@ -1731,6 +1846,57 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node);
         }
         
+        public Result Visit(PTiming node)
+        {
+            return HandlePTiming(node);
+        }
+        protected virtual Result HandlePTiming(PTiming node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(ATiming node)
+        {
+            return HandleATiming(node);
+        }
+        protected virtual Result HandleATiming(ATiming node)
+        {
+            return HandleDefault(node);
+        }
+        
+        public Result Visit(PTimingPeriod node)
+        {
+            return HandlePTimingPeriod(node);
+        }
+        protected virtual Result HandlePTimingPeriod(PTimingPeriod node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(ATimingPeriod node)
+        {
+            return HandleATimingPeriod(node);
+        }
+        protected virtual Result HandleATimingPeriod(ATimingPeriod node)
+        {
+            return HandleDefault(node);
+        }
+        
+        public Result Visit(PTimingInterval node)
+        {
+            return HandlePTimingInterval(node);
+        }
+        protected virtual Result HandlePTimingInterval(PTimingInterval node)
+        {
+            return dispatch((dynamic)node);
+        }
+        private Result dispatch(ATimingInterval node)
+        {
+            return HandleATimingInterval(node);
+        }
+        protected virtual Result HandleATimingInterval(ATimingInterval node)
+        {
+            return HandleDefault(node);
+        }
+        
         public Result Visit(PPolicy node)
         {
             return HandlePPolicy(node);
@@ -1980,6 +2146,30 @@ namespace DLM.Editor.Analysis
             return HandleTFile(node);
         }
         protected virtual Result HandleTFile(TFile node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TAt node)
+        {
+            return HandleTAt(node);
+        }
+        protected virtual Result HandleTAt(TAt node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TTime node)
+        {
+            return HandleTTime(node);
+        }
+        protected virtual Result HandleTTime(TTime node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TIntervalUnit node)
+        {
+            return HandleTIntervalUnit(node);
+        }
+        protected virtual Result HandleTIntervalUnit(TIntervalUnit node)
         {
             return HandleDefault(node);
         }
@@ -2645,6 +2835,57 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1);
         }
         
+        public Result Visit(PTiming node, T1 arg1)
+        {
+            return HandlePTiming(node, arg1);
+        }
+        protected virtual Result HandlePTiming(PTiming node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(ATiming node, T1 arg1)
+        {
+            return HandleATiming(node, arg1);
+        }
+        protected virtual Result HandleATiming(ATiming node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        
+        public Result Visit(PTimingPeriod node, T1 arg1)
+        {
+            return HandlePTimingPeriod(node, arg1);
+        }
+        protected virtual Result HandlePTimingPeriod(PTimingPeriod node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(ATimingPeriod node, T1 arg1)
+        {
+            return HandleATimingPeriod(node, arg1);
+        }
+        protected virtual Result HandleATimingPeriod(ATimingPeriod node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        
+        public Result Visit(PTimingInterval node, T1 arg1)
+        {
+            return HandlePTimingInterval(node, arg1);
+        }
+        protected virtual Result HandlePTimingInterval(PTimingInterval node, T1 arg1)
+        {
+            return dispatch((dynamic)node, arg1);
+        }
+        private Result dispatch(ATimingInterval node, T1 arg1)
+        {
+            return HandleATimingInterval(node, arg1);
+        }
+        protected virtual Result HandleATimingInterval(ATimingInterval node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        
         public Result Visit(PPolicy node, T1 arg1)
         {
             return HandlePPolicy(node, arg1);
@@ -2894,6 +3135,30 @@ namespace DLM.Editor.Analysis
             return HandleTFile(node, arg1);
         }
         protected virtual Result HandleTFile(TFile node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TAt node, T1 arg1)
+        {
+            return HandleTAt(node, arg1);
+        }
+        protected virtual Result HandleTAt(TAt node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TTime node, T1 arg1)
+        {
+            return HandleTTime(node, arg1);
+        }
+        protected virtual Result HandleTTime(TTime node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TIntervalUnit node, T1 arg1)
+        {
+            return HandleTIntervalUnit(node, arg1);
+        }
+        protected virtual Result HandleTIntervalUnit(TIntervalUnit node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3559,6 +3824,57 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
+        public Result Visit(PTiming node, T1 arg1, T2 arg2)
+        {
+            return HandlePTiming(node, arg1, arg2);
+        }
+        protected virtual Result HandlePTiming(PTiming node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(ATiming node, T1 arg1, T2 arg2)
+        {
+            return HandleATiming(node, arg1, arg2);
+        }
+        protected virtual Result HandleATiming(ATiming node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        
+        public Result Visit(PTimingPeriod node, T1 arg1, T2 arg2)
+        {
+            return HandlePTimingPeriod(node, arg1, arg2);
+        }
+        protected virtual Result HandlePTimingPeriod(PTimingPeriod node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(ATimingPeriod node, T1 arg1, T2 arg2)
+        {
+            return HandleATimingPeriod(node, arg1, arg2);
+        }
+        protected virtual Result HandleATimingPeriod(ATimingPeriod node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        
+        public Result Visit(PTimingInterval node, T1 arg1, T2 arg2)
+        {
+            return HandlePTimingInterval(node, arg1, arg2);
+        }
+        protected virtual Result HandlePTimingInterval(PTimingInterval node, T1 arg1, T2 arg2)
+        {
+            return dispatch((dynamic)node, arg1, arg2);
+        }
+        private Result dispatch(ATimingInterval node, T1 arg1, T2 arg2)
+        {
+            return HandleATimingInterval(node, arg1, arg2);
+        }
+        protected virtual Result HandleATimingInterval(ATimingInterval node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        
         public Result Visit(PPolicy node, T1 arg1, T2 arg2)
         {
             return HandlePPolicy(node, arg1, arg2);
@@ -3808,6 +4124,30 @@ namespace DLM.Editor.Analysis
             return HandleTFile(node, arg1, arg2);
         }
         protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TAt node, T1 arg1, T2 arg2)
+        {
+            return HandleTAt(node, arg1, arg2);
+        }
+        protected virtual Result HandleTAt(TAt node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TTime node, T1 arg1, T2 arg2)
+        {
+            return HandleTTime(node, arg1, arg2);
+        }
+        protected virtual Result HandleTTime(TTime node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TIntervalUnit node, T1 arg1, T2 arg2)
+        {
+            return HandleTIntervalUnit(node, arg1, arg2);
+        }
+        protected virtual Result HandleTIntervalUnit(TIntervalUnit node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4473,6 +4813,57 @@ namespace DLM.Editor.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
+        public Result Visit(PTiming node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePTiming(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePTiming(PTiming node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ATiming node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleATiming(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleATiming(ATiming node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        
+        public Result Visit(PTimingPeriod node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePTimingPeriod(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePTimingPeriod(PTimingPeriod node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ATimingPeriod node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleATimingPeriod(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleATimingPeriod(ATimingPeriod node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        
+        public Result Visit(PTimingInterval node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandlePTimingInterval(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandlePTimingInterval(PTimingInterval node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return dispatch((dynamic)node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ATimingInterval node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleATimingInterval(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleATimingInterval(ATimingInterval node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        
         public Result Visit(PPolicy node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandlePPolicy(node, arg1, arg2, arg3);
@@ -4722,6 +5113,30 @@ namespace DLM.Editor.Analysis
             return HandleTFile(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TAt node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTAt(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTAt(TAt node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TTime node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTTime(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTTime(TTime node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TIntervalUnit node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTIntervalUnit(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTIntervalUnit(TIntervalUnit node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

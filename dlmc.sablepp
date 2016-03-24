@@ -12,11 +12,15 @@ Helpers
     long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
 
 States
-    normal, include;
+    normal, include, label;
 
 Tokens
     {normal -> include} include = '#include';
     {include -> normal} file = '<' [all - '>']* '>';
+    
+    {label} at = '@';
+    {label} time = digit+ ':' digit+;
+    {label} interval_unit = 'd' | 'h' | 'm' | 's' | 'ms';
     
     bool = 'true'|'false';
     number = digit+;
@@ -66,8 +70,8 @@ Tokens
     colon = ':';
     semicolon = ';';
     
-    label_start = '{{';
-    label_end = '}}';
+    {normal -> label} label_start = '{{';
+    {label -> normal} label_end = '}}';
     
     l_par = '(';
     r_par = ')';
@@ -87,7 +91,9 @@ Ignored Tokens
 Token Syntax Highlight
     {comment} text: #393, italic;
     {if, else, while, return, typedef, struct} text: #00c, bold;
-    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end, func_auth_start, func_auth_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
+    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
+     func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,
+     at, time, interval_unit} text: #8d19aa, background: #e6e7fa, bold;
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
@@ -192,9 +198,12 @@ Productions
         ;
 
 Abstract Syntax Tree
-    label
-        = policy+
-        ;
+    label = policy+ timing?;
+    
+    timing = [period]:timing_period? [interval]:timing_interval* [count]:number?;
+    timing_period = [from]:time [to]:time;
+    timing_interval = number [unit]:interval_unit;
+    
     policy
         = {variable} identifier
         | {principal} [owner]:principal [readers]:principal*
@@ -204,8 +213,21 @@ Abstract Syntax Tree
     principal = identifier;
 Productions
     label
-        = label_start lpolicy label_end -> New label([lpolicy])
+        = {none} label_start lpolicy label_end -> New label([lpolicy], Null)
+        | {time} label_start lpolicy at timing label_end -> New label([lpolicy], timing)
         ;
+    
+    timing
+        = {p} [p]:timing_period -> New timing(p, [], Null)
+        | {pc} [p]:timing_period asterisk [c]:number -> New timing(p, [], c)
+        | {i} [i]:timing_interval+ -> New timing(Null, i, Null)
+        | {ic} [i]:timing_interval+ asterisk [c]:number-> New timing(Null, i, c)
+        | {pi} [p]:timing_period comma [i]:timing_interval+ -> New timing(p, i, Null)
+        | {pic} [p]:timing_period comma [i]:timing_interval+ asterisk [c]:number -> New timing(p, i, c)
+        ;
+    timing_period = [f]:time [t]:time;
+    timing_interval = number [unit]:interval_unit;
+    
     policy
         = {id} identifier -> New policy.variable(identifier)
         | principal r_arrow lprincipal -> New policy.principal(principal, [lprincipal])

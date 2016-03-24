@@ -45,6 +45,62 @@ namespace DLM.Editor.Nodes
             return new TFile(Text, Line, Position);
         }
     }
+    public partial class TAt : Token<TAt>
+    {
+        public TAt()
+            : base(@"@")
+        {
+        }
+        public TAt(int line, int pos)
+            : base(@"@", line, pos)
+        {
+        }
+        public TAt(string text)
+            : base(text)
+        {
+        }
+        public TAt(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TAt Clone()
+        {
+            return new TAt(Text, Line, Position);
+        }
+    }
+    public partial class TTime : Token<TTime>
+    {
+        public TTime(string text)
+            : base(text)
+        {
+        }
+        public TTime(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TTime Clone()
+        {
+            return new TTime(Text, Line, Position);
+        }
+    }
+    public partial class TIntervalUnit : Token<TIntervalUnit>
+    {
+        public TIntervalUnit(string text)
+            : base(text)
+        {
+        }
+        public TIntervalUnit(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TIntervalUnit Clone()
+        {
+            return new TIntervalUnit(Text, Line, Position);
+        }
+    }
     public partial class TBool : Token<TBool>
     {
         public TBool(string text)
