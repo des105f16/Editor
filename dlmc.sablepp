@@ -91,7 +91,9 @@ Ignored Tokens
 Token Syntax Highlight
     {comment} text: #393, italic;
     {if, else, while, return, typedef, struct} text: #00c, bold;
-    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end, func_auth_start, func_auth_end, r_arrow, join, principall, this, caller} text: #8d19aa, background: #e6e7fa, bold;
+    {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
+     func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,
+     at, time, interval_unit} text: #8d19aa, background: #e6e7fa, bold;
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
