@@ -3102,12 +3102,14 @@ namespace DLM.Editor.Nodes
     public partial class AFunctionCallExpression : PExpression
     {
         private TIdentifier _function_;
+        private NodeList<PPrincipal> _authorities_;
         private NodeList<PExpression> _arguments_;
         
-        public AFunctionCallExpression(TIdentifier _function_, IEnumerable<PExpression> _arguments_)
+        public AFunctionCallExpression(TIdentifier _function_, IEnumerable<PPrincipal> _authorities_, IEnumerable<PExpression> _arguments_)
             : base()
         {
             this.Function = _function_;
+            this._authorities_ = new NodeList<PPrincipal>(this, _authorities_, true);
             this._arguments_ = new NodeList<PExpression>(this, _arguments_, true);
         }
         
@@ -3126,6 +3128,10 @@ namespace DLM.Editor.Nodes
                 _function_ = value;
             }
         }
+        public NodeList<PPrincipal> Authorities
+        {
+            get { return _authorities_; }
+        }
         public NodeList<PExpression> Arguments
         {
             get { return _arguments_; }
@@ -3140,6 +3146,17 @@ namespace DLM.Editor.Nodes
                 if (!(newChild is TIdentifier) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Function = newChild as TIdentifier;
+            }
+            else if (oldChild is PPrincipal && Authorities.Contains(oldChild as PPrincipal))
+            {
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Authorities.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Authorities.RemoveAt(index);
+                else
+                    Authorities[index] = newChild as PPrincipal;
             }
             else if (oldChild is PExpression && Arguments.Contains(oldChild as PExpression))
             {
@@ -3158,6 +3175,12 @@ namespace DLM.Editor.Nodes
         {
             yield return Function;
             {
+                PPrincipal[] temp = new PPrincipal[Authorities.Count];
+                Authorities.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
                 PExpression[] temp = new PExpression[Arguments.Count];
                 Arguments.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
@@ -3167,12 +3190,12 @@ namespace DLM.Editor.Nodes
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(Function.Clone(), Arguments);
+            return new AFunctionCallExpression(Function.Clone(), Authorities, Arguments);
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Function, Arguments);
+            return string.Format("{0} {1} {2}", Function, Authorities, Arguments);
         }
     }
     public partial class AParenthesisExpression : PExpression

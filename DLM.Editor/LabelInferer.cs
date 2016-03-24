@@ -5,6 +5,7 @@ using SablePP.Tools.Error;
 using System.Collections.Generic;
 using DLM.Editor.Nodes;
 using SablePP.Tools.Nodes;
+using System.Linq;
 
 namespace DLM.Editor
 {
@@ -194,12 +195,30 @@ namespace DLM.Editor
             {
                 var fcName = node.Function.Text;
                 Label fcLabel;
-
+                var hasCallerAuthority = node.Authorities.Count > 0;
+                
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
+                    if (hasCallerAuthority)
+                        errorManager.Register(node, ErrorType.Warning, $"Caller authority has no effect on library function {fcName}.");
+
                     fcLabel = Label.LowerBound;
                     foreach (var a in node.Arguments)
                         fcLabel += Visit(a);
+                }
+
+                if (hasCallerAuthority)
+                {
+                    IEnumerable<Principal> authorityOwners;
+                    if (authority is LowerBoundLabel)
+                        authorityOwners = new Principal[0];
+                    else
+                        authorityOwners = (authority as PolicyLabel).Owners();
+                    foreach (var pn in node.Authorities)
+                    {
+                        if (!authorityOwners.Contains(pn.DeclaredPrincipal))
+                            errorManager.Register(pn, $"Principal {pn.DeclaredPrincipal.Name} is not in the effective authority.");
+                    }
                 }
 
                 return fcLabel;

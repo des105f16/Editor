@@ -152,5 +152,20 @@ namespace DLM.Editor
                 Visit(node.Label);
             }
         }
+
+        protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
+        {
+            if (node.Authorities.Count > 0)
+            {
+                var first = text.TokenStart(FirstToken.Find(node.Authorities));
+                var last = text.TokenEnd(LastToken.Find(node.Authorities));
+
+                first = text.SearchBackwards(first, "<<<");
+                last = text.SearchForwards(last, ">>>");
+
+                text.ReplaceRange(first, last + 2, ' ');
+            }
+            Visit(node.Arguments);
+        }
     }
 }

@@ -668,6 +668,22 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TFuncAuthStart node)
+        {
+            HandleTFuncAuthStart(node);
+        }
+        protected virtual void HandleTFuncAuthStart(TFuncAuthStart node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TFuncAuthEnd node)
+        {
+            HandleTFuncAuthEnd(node);
+        }
+        protected virtual void HandleTFuncAuthEnd(TFuncAuthEnd node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TRArrow node)
         {
             HandleTRArrow(node);
@@ -1121,6 +1137,7 @@ namespace DLM.Editor.Analysis
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
             Visit(node.Function);
+            Visit(node.Authorities);
             Visit(node.Arguments);
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
@@ -1374,6 +1391,7 @@ namespace DLM.Editor.Analysis
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
             Visit(node.Arguments);
+            Visit(node.Authorities);
             Visit(node.Function);
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
@@ -2066,6 +2084,22 @@ namespace DLM.Editor.Analysis
             return HandleTDeclassifyEnd(node);
         }
         protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TFuncAuthStart node)
+        {
+            return HandleTFuncAuthStart(node);
+        }
+        protected virtual Result HandleTFuncAuthStart(TFuncAuthStart node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TFuncAuthEnd node)
+        {
+            return HandleTFuncAuthEnd(node);
+        }
+        protected virtual Result HandleTFuncAuthEnd(TFuncAuthEnd node)
         {
             return HandleDefault(node);
         }
@@ -2959,6 +2993,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TFuncAuthStart node, T1 arg1)
+        {
+            return HandleTFuncAuthStart(node, arg1);
+        }
+        protected virtual Result HandleTFuncAuthStart(TFuncAuthStart node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TFuncAuthEnd node, T1 arg1)
+        {
+            return HandleTFuncAuthEnd(node, arg1);
+        }
+        protected virtual Result HandleTFuncAuthEnd(TFuncAuthEnd node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TRArrow node, T1 arg1)
         {
             return HandleTRArrow(node, arg1);
@@ -3849,6 +3899,22 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TFuncAuthStart node, T1 arg1, T2 arg2)
+        {
+            return HandleTFuncAuthStart(node, arg1, arg2);
+        }
+        protected virtual Result HandleTFuncAuthStart(TFuncAuthStart node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TFuncAuthEnd node, T1 arg1, T2 arg2)
+        {
+            return HandleTFuncAuthEnd(node, arg1, arg2);
+        }
+        protected virtual Result HandleTFuncAuthEnd(TFuncAuthEnd node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TRArrow node, T1 arg1, T2 arg2)
         {
             return HandleTRArrow(node, arg1, arg2);
@@ -4736,6 +4802,22 @@ namespace DLM.Editor.Analysis
             return HandleTDeclassifyEnd(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTDeclassifyEnd(TDeclassifyEnd node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TFuncAuthStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTFuncAuthStart(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTFuncAuthStart(TFuncAuthStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TFuncAuthEnd node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTFuncAuthEnd(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTFuncAuthEnd(TFuncAuthEnd node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
