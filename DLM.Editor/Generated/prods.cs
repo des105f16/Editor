@@ -1867,22 +1867,41 @@ namespace DLM.Editor.Nodes
     public abstract partial class PLabel : Production<PLabel>
     {
         private NodeList<PPolicy> _policys_;
+        private PTiming _timing_;
         
-        public PLabel(IEnumerable<PPolicy> _policys_)
+        public PLabel(IEnumerable<PPolicy> _policys_, PTiming _timing_)
         {
             this._policys_ = new NodeList<PPolicy>(this, _policys_, false);
+            this.Timing = _timing_;
         }
         
         public NodeList<PPolicy> Policys
         {
             get { return _policys_; }
         }
+        public PTiming Timing
+        {
+            get { return _timing_; }
+            set
+            {
+                if (_timing_ != null)
+                    SetParent(_timing_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _timing_ = value;
+            }
+        }
+        public bool HasTiming
+        {
+            get { return _timing_ != null; }
+        }
         
     }
     public partial class ALabel : PLabel
     {
-        public ALabel(IEnumerable<PPolicy> _policys_)
-            : base(_policys_)
+        public ALabel(IEnumerable<PPolicy> _policys_, PTiming _timing_)
+            : base(_policys_, _timing_)
         {
         }
         
@@ -1899,6 +1918,12 @@ namespace DLM.Editor.Nodes
                 else
                     Policys[index] = newChild as PPolicy;
             }
+            else if (Timing == oldChild)
+            {
+                if (!(newChild is PTiming) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Timing = newChild as PTiming;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
@@ -1909,16 +1934,301 @@ namespace DLM.Editor.Nodes
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
+            if (HasTiming)
+                yield return Timing;
         }
         
         public override PLabel Clone()
         {
-            return new ALabel(Policys.Clone());
+            return new ALabel(Policys.Clone(), Timing?.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Policys);
+            return string.Format("{0} {1}", Policys, Timing);
+        }
+    }
+    public abstract partial class PTiming : Production<PTiming>
+    {
+        private PTimingPeriod _period_;
+        private NodeList<PTimingInterval> _interval_;
+        private TNumber _count_;
+        
+        public PTiming(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
+        {
+            this.Period = _period_;
+            this._interval_ = new NodeList<PTimingInterval>(this, _interval_, true);
+            this.Count = _count_;
+        }
+        
+        public PTimingPeriod Period
+        {
+            get { return _period_; }
+            set
+            {
+                if (_period_ != null)
+                    SetParent(_period_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _period_ = value;
+            }
+        }
+        public bool HasPeriod
+        {
+            get { return _period_ != null; }
+        }
+        public NodeList<PTimingInterval> Interval
+        {
+            get { return _interval_; }
+        }
+        public TNumber Count
+        {
+            get { return _count_; }
+            set
+            {
+                if (_count_ != null)
+                    SetParent(_count_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _count_ = value;
+            }
+        }
+        public bool HasCount
+        {
+            get { return _count_ != null; }
+        }
+        
+    }
+    public partial class ATiming : PTiming
+    {
+        public ATiming(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
+            : base(_period_, _interval_, _count_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Period == oldChild)
+            {
+                if (!(newChild is PTimingPeriod) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Period = newChild as PTimingPeriod;
+            }
+            else if (oldChild is PTimingInterval && Interval.Contains(oldChild as PTimingInterval))
+            {
+                if (!(newChild is PTimingInterval) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Interval.IndexOf(oldChild as PTimingInterval);
+                if (newChild == null)
+                    Interval.RemoveAt(index);
+                else
+                    Interval[index] = newChild as PTimingInterval;
+            }
+            else if (Count == oldChild)
+            {
+                if (!(newChild is TNumber) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Count = newChild as TNumber;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            if (HasPeriod)
+                yield return Period;
+            {
+                PTimingInterval[] temp = new PTimingInterval[Interval.Count];
+                Interval.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            if (HasCount)
+                yield return Count;
+        }
+        
+        public override PTiming Clone()
+        {
+            return new ATiming(Period?.Clone(), Interval.Clone(), Count?.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Period, Interval, Count);
+        }
+    }
+    public abstract partial class PTimingPeriod : Production<PTimingPeriod>
+    {
+        private TTime _from_;
+        private TTime _to_;
+        
+        public PTimingPeriod(TTime _from_, TTime _to_)
+        {
+            this.From = _from_;
+            this.To = _to_;
+        }
+        
+        public TTime From
+        {
+            get { return _from_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("From in PTimingPeriod cannot be null.", "value");
+                
+                if (_from_ != null)
+                    SetParent(_from_, null);
+                SetParent(value, this);
+                
+                _from_ = value;
+            }
+        }
+        public TTime To
+        {
+            get { return _to_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("To in PTimingPeriod cannot be null.", "value");
+                
+                if (_to_ != null)
+                    SetParent(_to_, null);
+                SetParent(value, this);
+                
+                _to_ = value;
+            }
+        }
+        
+    }
+    public partial class ATimingPeriod : PTimingPeriod
+    {
+        public ATimingPeriod(TTime _from_, TTime _to_)
+            : base(_from_, _to_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (From == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("From in ATimingPeriod cannot be null.", "newChild");
+                if (!(newChild is TTime) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                From = newChild as TTime;
+            }
+            else if (To == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("To in ATimingPeriod cannot be null.", "newChild");
+                if (!(newChild is TTime) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                To = newChild as TTime;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return From;
+            yield return To;
+        }
+        
+        public override PTimingPeriod Clone()
+        {
+            return new ATimingPeriod(From.Clone(), To.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", From, To);
+        }
+    }
+    public abstract partial class PTimingInterval : Production<PTimingInterval>
+    {
+        private TNumber _number_;
+        private TIntervalUnit _unit_;
+        
+        public PTimingInterval(TNumber _number_, TIntervalUnit _unit_)
+        {
+            this.Number = _number_;
+            this.Unit = _unit_;
+        }
+        
+        public TNumber Number
+        {
+            get { return _number_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Number in PTimingInterval cannot be null.", "value");
+                
+                if (_number_ != null)
+                    SetParent(_number_, null);
+                SetParent(value, this);
+                
+                _number_ = value;
+            }
+        }
+        public TIntervalUnit Unit
+        {
+            get { return _unit_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Unit in PTimingInterval cannot be null.", "value");
+                
+                if (_unit_ != null)
+                    SetParent(_unit_, null);
+                SetParent(value, this);
+                
+                _unit_ = value;
+            }
+        }
+        
+    }
+    public partial class ATimingInterval : PTimingInterval
+    {
+        public ATimingInterval(TNumber _number_, TIntervalUnit _unit_)
+            : base(_number_, _unit_)
+        {
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Number == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Number in ATimingInterval cannot be null.", "newChild");
+                if (!(newChild is TNumber) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Number = newChild as TNumber;
+            }
+            else if (Unit == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Unit in ATimingInterval cannot be null.", "newChild");
+                if (!(newChild is TIntervalUnit) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Unit = newChild as TIntervalUnit;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Number;
+            yield return Unit;
+        }
+        
+        public override PTimingInterval Clone()
+        {
+            return new ATimingInterval(Number.Clone(), Unit.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Number, Unit);
         }
     }
     public abstract partial class PPolicy : Production<PPolicy>
