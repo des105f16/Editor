@@ -195,21 +195,25 @@ namespace DLM.Editor
             {
                 var fcName = node.Function.Text;
                 Label fcLabel;
-
+                var hasCallerAuthority = node.Authorities.Count > 0;
+                
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
+                    if (hasCallerAuthority)
+                        errorManager.Register(node, ErrorType.Warning, $"Caller authority has no effect on library function {fcName}.");
+
                     fcLabel = Label.LowerBound;
                     foreach (var a in node.Arguments)
                         fcLabel += Visit(a);
                 }
-                else
+
+                if (hasCallerAuthority)
                 {
                     IEnumerable<Principal> authorityOwners;
                     if (authority is LowerBoundLabel)
                         authorityOwners = new Principal[0];
                     else
                         authorityOwners = (authority as PolicyLabel).Owners();
-
                     foreach (var pn in node.Authorities)
                     {
                         if (!authorityOwners.Contains(pn.DeclaredPrincipal))
