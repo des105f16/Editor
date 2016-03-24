@@ -193,11 +193,10 @@ namespace DLM.Editor
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
-                Label fcLabel;
+                Label fcLabel = Label.LowerBound;
 
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
-                    fcLabel = Label.LowerBound;
                     foreach (var a in node.Arguments)
                         fcLabel += Visit(a);
                 }
