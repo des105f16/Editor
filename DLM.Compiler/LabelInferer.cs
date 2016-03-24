@@ -1,13 +1,13 @@
-﻿using DLM.Editor.Analysis;
+﻿using DLM.Compiler.Analysis;
 using DLM.Inference;
 using SablePP.Tools;
 using SablePP.Tools.Error;
 using System.Collections.Generic;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 using SablePP.Tools.Nodes;
 using System.Linq;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public class LabelInferer : DepthFirstAdapter
     {

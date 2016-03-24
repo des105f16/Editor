@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using SablePP.Tools.Nodes;
-using DLM.Editor.Analysis;
+using DLM.Compiler.Analysis;
 
-namespace DLM.Editor.Nodes
+namespace DLM.Compiler.Nodes
 {
     public partial class TInclude : Token<TInclude>
     {

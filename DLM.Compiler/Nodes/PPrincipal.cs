@@ -1,6 +1,6 @@
 ﻿using DLM.Inference;
 
-namespace DLM.Editor.Nodes
+namespace DLM.Compiler.Nodes
 {
     public partial class PPrincipal
     {

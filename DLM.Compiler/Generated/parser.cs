@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 using SablePP.Tools.Nodes;
 
-namespace DLM.Editor.Parsing
+namespace DLM.Compiler.Parsing
 {
     public class Parser : SablePP.Tools.Parsing.Parser<PRoot>
     {

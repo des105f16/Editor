@@ -3,13 +3,13 @@ using System.IO;
 
 using SablePP.Tools.Nodes;
 
-using DLM.Editor.Lexing;
-using DLM.Editor.Nodes;
-using DLM.Editor.Parsing;
+using DLM.Compiler.Lexing;
+using DLM.Compiler.Nodes;
+using DLM.Compiler.Parsing;
 
 using FastColoredTextBoxNS;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public partial class CompilerExecuter : SablePP.Tools.CompilerExecuter<PRoot, Lexer, Parser>
     {

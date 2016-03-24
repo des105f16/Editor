@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DLM.Editor.Nodes;
+﻿using System.Collections.Generic;
+using DLM.Compiler.Nodes;
 using SablePP.Tools;
 using SablePP.Tools.Nodes;
 using SablePP.Tools.Error;
@@ -14,7 +10,7 @@ using FastColoredTextBoxNS;
 using DLM.Inference;
 using System.Drawing;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public partial class CompilerExecuter
     {

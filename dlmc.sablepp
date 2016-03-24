@@ -1,4 +1,4 @@
-﻿Namespace DLM.Editor;
+﻿Namespace DLM.Compiler;
 
 Helpers
     lower = ['a'..'z'];

@@ -30,8 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\SablePP\SablePP\FastColoredTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +44,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CGenerator.cs" />
+    <Compile Include="CompilerExecuter.cs" />
+    <Compile Include="ElementLabelExtractor.cs" />
+    <Compile Include="Generated\analysis.cs" />
+    <Compile Include="Generated\CompilerExecuter.cs" />
+    <Compile Include="Generated\lexer.cs" />
+    <Compile Include="Generated\parser.cs" />
+    <Compile Include="Generated\prods.cs" />
+    <Compile Include="Generated\tokens.cs" />
+    <Compile Include="LabelExtractor.cs" />
+    <Compile Include="LabelInferer.cs" />
+    <Compile Include="Nodes\AElementExpression.cs" />
+    <Compile Include="Nodes\PLabel.cs" />
+    <Compile Include="Nodes\PPrincipal.cs" />
+    <Compile Include="Nodes\PType.cs" />
+    <Compile Include="PrincipalExtractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchableString.cs" />
+    <Compile Include="ValidationData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DLM.Inference\Source\DLM.Inference.csproj">

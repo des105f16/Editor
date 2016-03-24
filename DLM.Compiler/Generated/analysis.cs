@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using SablePP.Tools.Analysis;
 using SablePP.Tools.Nodes;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 
-namespace DLM.Editor.Analysis
+namespace DLM.Compiler.Analysis
 {
     #region Analysis adapters
     

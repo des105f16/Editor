@@ -1,11 +1,11 @@
-﻿using DLM.Editor.Analysis;
+﻿using DLM.Compiler.Analysis;
 using System.Collections.Generic;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 using DLM.Inference;
 using SablePP.Tools.Error;
 using SablePP.Tools;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public class LabelExtractor : DepthFirstAdapter
     {

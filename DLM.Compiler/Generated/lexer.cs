@@ -1,7 +1,7 @@
 using System;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 
-namespace DLM.Editor.Lexing
+namespace DLM.Compiler.Lexing
 {
     public class Lexer : SablePP.Tools.Lexing.Lexer
     {

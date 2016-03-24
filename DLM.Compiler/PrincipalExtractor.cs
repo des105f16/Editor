@@ -1,15 +1,11 @@
-﻿using DLM.Editor.Analysis;
-using DLM.Editor.Nodes;
+﻿using DLM.Compiler.Analysis;
+using DLM.Compiler.Nodes;
 using DLM.Inference;
 using SablePP.Tools.Error;
-using SablePP.Tools.Nodes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public class PrincipalExtractor : DepthFirstAdapter
     {

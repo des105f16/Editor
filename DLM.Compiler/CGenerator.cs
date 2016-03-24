@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using SablePP.Tools.Nodes;
-using DLM.Editor.Nodes;
+using DLM.Compiler.Nodes;
 using System.Collections.Generic;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public class CGenerator : Analysis.DepthFirstAdapter
     {

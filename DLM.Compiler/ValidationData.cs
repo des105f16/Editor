@@ -1,7 +1,7 @@
 ﻿using DLM.Inference;
 using SablePP.Tools;
 
-namespace DLM.Editor
+namespace DLM.Compiler
 {
     public class ValidationData
     {

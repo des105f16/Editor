@@ -1,4 +1,5 @@
-﻿using DLM.Inference;
+﻿using DLM.Compiler;
+using DLM.Inference;
 using SablePP.Tools.Editor;
 using System;
 using System.IO;
