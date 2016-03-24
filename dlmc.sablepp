@@ -12,11 +12,19 @@ Helpers
     long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
 
 States
-    normal, include;
+    normal, include, label;
 
 Tokens
     {normal -> include} include = '#include';
     {include -> normal} file = '<' [all - '>']* '>';
+    
+    {label} at = '@';
+    {label} time = digit+ ':' digit+;
+    {label} interval_day = 'd' | 'D';
+    {label} interval_hour = 'h' | 'H';
+    {label} interval_millisecond = ('m' | 'M')('s' | 'S');
+    {label} interval_minute = 'm' | 'M';
+    {label} interval_second = 's' | 'S';
     
     bool = 'true'|'false';
     number = digit+;
@@ -66,8 +74,8 @@ Tokens
     colon = ':';
     semicolon = ';';
     
-    label_start = '{{';
-    label_end = '}}';
+    {normal -> label} label_start = '{{';
+    {label -> normal} label_end = '}}';
     
     l_par = '(';
     r_par = ')';
