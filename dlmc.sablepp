@@ -114,6 +114,7 @@ Abstract Syntax Tree
         | {if_else} expression [if_statements]:statement* [else_statements]:statement*
         | {while} expression statement*
         | {function_declaration} type identifier [parameters]:function_parameter* statement*
+        | {expression} expression
         | {return} expression?
         ;
     function_parameter
@@ -171,6 +172,7 @@ Productions
         | {arr} type identifier l_squ number r_squ -> New statement.array_declaration(type, identifier, number)
         | {as} identifier assign expr semicolon -> New statement.assignment(identifier, expr)
         | {r} return expr? semicolon -> New statement.return(expr)
+        | {expr} expressionstmt -> expressionstmt
         ;
     type
         = identifier label? -> New type(identifier, label)
@@ -294,6 +296,9 @@ Productions
         | {id} identifier -> New expression.identifier(identifier)
         | {dec} declassify_start identifier declassify_end -> New expression.declassify(identifier, Null)
         | {dec2} declassify_start identifier comma label declassify_end -> New expression.declassify(identifier, label)
+        ;
+    expressionstmt -> statement
+        = {f} funccall -> New statement.expression(funccall)
         ;
 
     funccall -> expression

@@ -195,6 +195,14 @@ namespace DLM.Editor.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(AExpressionStatement node)
+        {
+            HandleAExpressionStatement(node);
+        }
+        protected virtual void HandleAExpressionStatement(AExpressionStatement node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(AReturnStatement node)
         {
             HandleAReturnStatement(node);
@@ -1021,6 +1029,10 @@ namespace DLM.Editor.Analysis
             Visit(node.Parameters);
             Visit(node.Statements);
         }
+        protected override void HandleAExpressionStatement(AExpressionStatement node)
+        {
+            Visit(node.Expression);
+        }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
             if (node.HasExpression)
@@ -1274,6 +1286,10 @@ namespace DLM.Editor.Analysis
             Visit(node.Parameters);
             Visit(node.Identifier);
             Visit(node.Type);
+        }
+        protected override void HandleAExpressionStatement(AExpressionStatement node)
+        {
+            Visit(node.Expression);
         }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
@@ -1611,6 +1627,14 @@ namespace DLM.Editor.Analysis
             return HandleAFunctionDeclarationStatement(node);
         }
         protected virtual Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(AExpressionStatement node)
+        {
+            return HandleAExpressionStatement(node);
+        }
+        protected virtual Result HandleAExpressionStatement(AExpressionStatement node)
         {
             return HandleDefault(node);
         }
@@ -2520,6 +2544,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(AExpressionStatement node, T1 arg1)
+        {
+            return HandleAExpressionStatement(node, arg1);
+        }
+        protected virtual Result HandleAExpressionStatement(AExpressionStatement node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         private Result dispatch(AReturnStatement node, T1 arg1)
         {
             return HandleAReturnStatement(node, arg1);
@@ -3426,6 +3458,14 @@ namespace DLM.Editor.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(AExpressionStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAExpressionStatement(node, arg1, arg2);
+        }
+        protected virtual Result HandleAExpressionStatement(AExpressionStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         private Result dispatch(AReturnStatement node, T1 arg1, T2 arg2)
         {
             return HandleAReturnStatement(node, arg1, arg2);
@@ -4329,6 +4369,14 @@ namespace DLM.Editor.Analysis
             return HandleAFunctionDeclarationStatement(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AExpressionStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAExpressionStatement(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAExpressionStatement(AExpressionStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
