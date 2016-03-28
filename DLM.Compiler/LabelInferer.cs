@@ -221,7 +221,7 @@ namespace DLM.Compiler
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
                     checkArgumentLabels(node.Arguments, funcDecl);
-                    fcLabel = getExplicitLabel(funcDecl.Type.DeclaredLabel, node.Arguments.Select(x => Visit(x)).ToList(), funcDecl);
+                    fcLabel = getExplicitLabel((dynamic)funcDecl.Type.DeclaredLabel, node.Arguments.Select(x => Visit(x)).ToList(), funcDecl);
                 }
                 else
                 {
