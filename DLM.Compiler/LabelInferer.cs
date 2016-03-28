@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using DLM.Compiler.Nodes;
 using SablePP.Tools.Nodes;
 using System.Linq;
+using System;
 
 namespace DLM.Compiler
 {
@@ -15,7 +16,7 @@ namespace DLM.Compiler
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
-        private Dictionary<string, Label> functionLabels;
+        private Dictionary<string, FunctionDeclaration> functionLabels;
 
         private LabelStack authority;
         private LabelStack basicBlock;
@@ -46,7 +47,7 @@ namespace DLM.Compiler
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
-            functionLabels = new Dictionary<string, Label>();
+            functionLabels = new Dictionary<string, FunctionDeclaration>();
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
@@ -63,7 +64,7 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             var fName = node.Identifier.Text;
-            functionLabels.Add(fName, node.Type.DeclaredLabel);
+            functionLabels.Add(fName, new FunctionDeclaration(node));
 
             types.OpenScope();
 
@@ -152,6 +153,53 @@ namespace DLM.Compiler
             Add(lbl, type.DeclaredLabel);
         }
 
+        private class FunctionDeclaration
+        {
+            private string name;
+            private Label label;
+            private Dictionary<string, Parameter> parametersDic;
+            private Parameter[] parametersArr;
+
+            public string Name => name;
+            public Label Label => label;
+            public Parameter this[int number] => parametersArr[number];
+            public Parameter this[string name] => parametersDic[name];
+
+            public FunctionDeclaration(AFunctionDeclarationStatement functionDeclaration)
+            {
+                name = functionDeclaration.Identifier.Text;
+                label = functionDeclaration.Type.DeclaredLabel;
+                parametersDic = new Dictionary<string, Parameter>();
+                for (int i = 0; i < functionDeclaration.Parameters.Count; i++)
+                {
+                    var p = new Parameter(functionDeclaration.Parameters[i], i + 1);
+
+                    parametersDic.Add(p.Name, p);
+
+                    parametersArr = new Parameter[functionDeclaration.Parameters.Count];
+                    parametersArr[i] = p;
+                }
+            }
+
+            public class Parameter
+            {
+                private string name;
+                private int number;
+                private Label label;
+
+                public string Name { get { return name; } }
+                public int Number { get { return number; } }
+                public Label Label { get { return label; } }
+
+                public Parameter(PFunctionParameter parameter, int number)
+                {
+                    name = parameter.Identifier.Text;
+                    this.number = number;
+                    label = parameter.Type.DeclaredLabel;
+                }
+            }
+        }
+
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
         {
             private LabelInferer owner;
@@ -213,10 +261,16 @@ namespace DLM.Compiler
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
-                Label fcLabel;
                 var hasCallerAuthority = node.Authorities.Count > 0;
+                FunctionDeclaration funcDecl;
+                Label fcLabel;
 
-                if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
+                if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
+                {
+                    checkArgumentLabels(node.Arguments, funcDecl);
+                    fcLabel = getExplicitLabel(funcDecl.Label, node.Arguments.Select(x => Visit(x)).ToList(), funcDecl);
+                }
+                else
                 {
                     if (hasCallerAuthority)
                         errorManager.Register(node, ErrorType.Warning, $"Caller authority has no effect on library function {fcName}.");
@@ -227,18 +281,7 @@ namespace DLM.Compiler
                 }
 
                 if (hasCallerAuthority)
-                {
-                    IEnumerable<Principal> authorityOwners;
-                    if (authority is LowerBoundLabel)
-                        authorityOwners = new Principal[0];
-                    else
-                        authorityOwners = (authority as PolicyLabel).Owners();
-                    foreach (var pn in node.Authorities)
-                    {
-                        if (!authorityOwners.Contains(pn.DeclaredPrincipal))
-                            errorManager.Register(pn, $"Principal {pn.DeclaredPrincipal.Name} is not in the effective authority.");
-                    }
-                }
+                    checkAuthority(node.Authorities);
 
                 return fcLabel;
             }
@@ -261,6 +304,44 @@ namespace DLM.Compiler
             protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
             protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
+
+            private void checkArgumentLabels(Production.NodeList<PExpression> arguments, FunctionDeclaration functionDeclaration)
+            {
+                for (int i = 0; i < arguments.Count; i++)
+                {
+                    var argLabel = Visit(arguments[i]);
+                    var paramLabel = functionDeclaration[i].Label;
+                    if (paramLabel is PolicyLabel)
+                        if (!(paramLabel <= argLabel))
+                            errorManager.Register(arguments[i], $"Argument label is less restrictive than parameter label: {argLabel} \u228f {paramLabel}");
+                }
+            }
+
+            private Label getExplicitLabel(ConstantLabel label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration)
+            {
+                int number = functionDeclaration[label.Name].Number;
+                return argumentLabels[number-1];
+            }
+
+            private Label getExplicitLabel(JoinLabel label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration)
+                => getExplicitLabel((dynamic)label.Label1, argumentLabels, functionDeclaration)
+                   + getExplicitLabel((dynamic)label.Label2, argumentLabels, functionDeclaration);
+
+            private Label getExplicitLabel(Label label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration) => label;
+
+            private void checkAuthority(Production.NodeList<PPrincipal> authorities)
+            {
+                IEnumerable<Principal> authorityOwners;
+                if (authority is LowerBoundLabel)
+                    authorityOwners = new Principal[0];
+                else
+                    authorityOwners = (authority as PolicyLabel).Owners();
+                foreach (var p in authorities)
+                {
+                    if (!authorityOwners.Contains(p.DeclaredPrincipal))
+                        errorManager.Register(p, $"Principal {p.DeclaredPrincipal.Name} is not in the effective authority.");
+                }
+            }
         }
     }
 }
