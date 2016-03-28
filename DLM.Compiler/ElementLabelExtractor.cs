@@ -10,14 +10,10 @@ namespace DLM.Compiler
     public class ElementLabelExtractor : DepthFirstAdapter
     {
         private ErrorManager errorManager;
-        private Dictionary<string, PStruct> structTypedefs;
-        private ScopedDictionary<string, PStruct> structDeclarations;
 
         public ElementLabelExtractor(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
-            this.structTypedefs = new Dictionary<string, PStruct>();
-            this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)

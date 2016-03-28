@@ -13,11 +13,17 @@ namespace DLM.Compiler
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
+        private Dictionary<string, PStruct> structTypedefs;
+        private ScopedDictionary<string, PStruct> structDeclarations;
+
         public LabelDecorator(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             this.errorManager = errorManager;
             this.principals = principals;
             this.namedLabels = new ScopedDictionary<string, Label>();
+
+            this.structTypedefs = new Dictionary<string, PStruct>();
+            this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
         protected override void HandlePRoot(PRoot node)
