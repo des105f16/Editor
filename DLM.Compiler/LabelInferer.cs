@@ -19,7 +19,7 @@ namespace DLM.Compiler
 
         private LabelStack authority;
         private LabelStack basicBlock;
-        private int blockNameCount;
+        private SafeNameDictionary<VariableLabel> namedLabels;
 
         public LabelInferer(ErrorManager errorManager)
         {
@@ -31,7 +31,7 @@ namespace DLM.Compiler
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
-            blockNameCount = 1;
+            namedLabels = new SafeNameDictionary<VariableLabel>();
         }
 
         public Constraint[] Constraints => constraints.ToArray();
@@ -196,7 +196,7 @@ namespace DLM.Compiler
                 var fcName = node.Function.Text;
                 Label fcLabel;
                 var hasCallerAuthority = node.Authorities.Count > 0;
-                
+
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
                     if (hasCallerAuthority)
