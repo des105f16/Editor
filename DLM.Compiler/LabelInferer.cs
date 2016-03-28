@@ -16,7 +16,7 @@ namespace DLM.Compiler
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
-        private Dictionary<string, AFunctionDeclarationStatement> functionLabels;
+        private Dictionary<string, FunctionDeclaration> functionLabels;
 
         private LabelStack authority;
         private LabelStack basicBlock;
@@ -47,7 +47,7 @@ namespace DLM.Compiler
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
-            functionLabels = new Dictionary<string, AFunctionDeclarationStatement>();
+            functionLabels = new Dictionary<string, FunctionDeclaration>();
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
@@ -64,7 +64,7 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             var fName = node.Identifier.Text;
-            functionLabels.Add(fName, node);
+            functionLabels.Add(fName, new FunctionDeclaration(node));
 
             types.OpenScope();
 
@@ -153,6 +153,53 @@ namespace DLM.Compiler
             Add(lbl, type.DeclaredLabel);
         }
 
+        private class FunctionDeclaration
+        {
+            private string name;
+            private Label label;
+            private Dictionary<string, Parameter> parametersDic;
+            private Parameter[] parametersArr;
+
+            public string Name => name;
+            public Label Label => label;
+            public Parameter this[int number] => parametersArr[number];
+            public Parameter this[string name] => parametersDic[name];
+
+            public FunctionDeclaration(AFunctionDeclarationStatement functionDeclaration)
+            {
+                name = functionDeclaration.Identifier.Text;
+                label = functionDeclaration.Type.DeclaredLabel;
+                parametersDic = new Dictionary<string, Parameter>();
+                for (int i = 0; i < functionDeclaration.Parameters.Count; i++)
+                {
+                    var p = new Parameter(functionDeclaration.Parameters[i], i + 1);
+
+                    parametersDic.Add(p.Name, p);
+
+                    parametersArr = new Parameter[functionDeclaration.Parameters.Count];
+                    parametersArr[i] = p;
+                }
+            }
+
+            public class Parameter
+            {
+                private string name;
+                private int number;
+                private Label label;
+
+                public string Name { get { return name; } }
+                public int Number { get { return number; } }
+                public Label Label { get { return label; } }
+
+                public Parameter(PFunctionParameter parameter, int number)
+                {
+                    name = parameter.Identifier.Text;
+                    this.number = number;
+                    label = parameter.Type.DeclaredLabel;
+                }
+            }
+        }
+
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
         {
             private LabelInferer owner;
@@ -215,12 +262,12 @@ namespace DLM.Compiler
             {
                 var fcName = node.Function.Text;
                 var hasCallerAuthority = node.Authorities.Count > 0;
-                AFunctionDeclarationStatement funcDecl;
+                FunctionDeclaration funcDecl;
                 Label fcLabel;
 
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
-                    fcLabel = getExplicitLabel(funcDecl.Type.DeclaredLabel);
+                    fcLabel = getExplicitLabel(funcDecl.Label);
                 }
                 else
                 {
@@ -270,7 +317,9 @@ namespace DLM.Compiler
 
             private Label getExplicitLabel(ConstantLabel label)
             {
-                throw new NotImplementedException();
+                // get argument number
+                // return parameter label
+                return label;
             }
 
             private Label getExplicitLabel(JoinLabel label)
