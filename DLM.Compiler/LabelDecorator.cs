@@ -51,15 +51,7 @@ namespace DLM.Compiler
         {
             namedLabels.OpenScope();
 
-            foreach (var par in node.Parameters)
-            {
-                Visit(par.Type);
-
-                if (par.Type.DeclaredLabel == null)
-                    par.Type.DeclaredLabel = new ConstantLabel(par.Identifier.Text);
-
-                namedLabels.Add(par.Identifier.Text, par.Type.DeclaredLabel);
-            }
+            Visit(node.Parameters);
 
             Visit(node.Type);
             if (node.Type.DeclaredLabel == null)
@@ -74,6 +66,15 @@ namespace DLM.Compiler
             Visit(node.Statements);
 
             namedLabels.CloseScope();
+        }
+        protected override void HandleAFunctionParameter(AFunctionParameter node)
+        {
+            Visit(node.Type);
+
+            if (node.Type.DeclaredLabel == null)
+                node.Type.DeclaredLabel = new ConstantLabel(node.Identifier.Text);
+
+            namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
         }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
