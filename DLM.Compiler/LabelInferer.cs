@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using DLM.Compiler.Nodes;
 using SablePP.Tools.Nodes;
 using System.Linq;
+using System;
 
 namespace DLM.Compiler
 {
@@ -216,7 +217,11 @@ namespace DLM.Compiler
                 Label fcLabel;
                 var hasCallerAuthority = node.Authorities.Count > 0;
 
-                if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
+                if (owner.functionLabels.TryGetValue(fcName, out fcLabel))
+                {
+                    fcLabel = getExplicitLabel(fcLabel);
+                }
+                else
                 {
                     if (hasCallerAuthority)
                         errorManager.Register(node, ErrorType.Warning, $"Caller authority has no effect on library function {fcName}.");
@@ -261,6 +266,16 @@ namespace DLM.Compiler
             protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
             protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
+
+            private Label getExplicitLabel(ConstantLabel label)
+            {
+                throw new NotImplementedException();
+            }
+
+            private Label getExplicitLabel(JoinLabel label)
+                => getExplicitLabel((dynamic)label.Label1) + getExplicitLabel((dynamic)label.Label2);
+
+            private Label getExplicitLabel(Label label) => label;
         }
     }
 }
