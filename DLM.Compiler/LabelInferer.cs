@@ -19,7 +19,26 @@ namespace DLM.Compiler
 
         private LabelStack authority;
         private LabelStack basicBlock;
-        private int blockNameCount;
+        private SafeNameDictionary<VariableLabel> namedLabels;
+        private IEnumerable<string> variableNameGenerator(string name)
+        {
+            int i = 1;
+
+            if (name == "while")
+                while (true) yield return $"{{while{i++}}}";
+            else if (name == "if")
+                while (true) yield return $"{{if{i++}}}";
+            else
+                while (true) yield return $"{{d[{name}]{i++}}}";
+        }
+        private VariableLabel getVariableLabel(string name)
+        {
+            name = namedLabels.Add(name);
+            var Ld = new VariableLabel(name);
+            namedLabels.AddItem(Ld, name);
+
+            return Ld;
+        }
 
         public LabelInferer(ErrorManager errorManager)
         {
@@ -31,7 +50,7 @@ namespace DLM.Compiler
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
-            blockNameCount = 1;
+            namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
         public Constraint[] Constraints => constraints.ToArray();
@@ -98,7 +117,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -107,7 +126,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -117,7 +136,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("while");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -178,7 +197,7 @@ namespace DLM.Compiler
                 }
                 else
                 {
-                    var Ld = new VariableLabel("d{" + node.Identifier.Text + "}");
+                    var Ld = owner.getVariableLabel(node.Identifier.Text);
                     var Lvar = types[node.Identifier.Text].DeclaredLabel;
 
                     owner.Add(Lvar, Ld + authority);
@@ -196,7 +215,7 @@ namespace DLM.Compiler
                 var fcName = node.Function.Text;
                 Label fcLabel;
                 var hasCallerAuthority = node.Authorities.Count > 0;
-                
+
                 if (!owner.functionLabels.TryGetValue(fcName, out fcLabel))
                 {
                     if (hasCallerAuthority)
