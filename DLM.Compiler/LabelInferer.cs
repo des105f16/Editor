@@ -20,6 +20,17 @@ namespace DLM.Compiler
         private LabelStack authority;
         private LabelStack basicBlock;
         private SafeNameDictionary<VariableLabel> namedLabels;
+        private IEnumerable<string> variableNameGenerator(string name)
+        {
+            int i = 1;
+
+            if (name == "while")
+                while (true) yield return $"{{while{i++}}}";
+            else if (name == "if")
+                while (true) yield return $"{{if{i++}}}";
+            else
+                while (true) yield return $"{{d[{name}]{i++}}}";
+        }
         private VariableLabel getVariableLabel(string name)
         {
             name = namedLabels.Add(name);
@@ -39,7 +50,7 @@ namespace DLM.Compiler
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
-            namedLabels = new SafeNameDictionary<VariableLabel>();
+            namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
         public Constraint[] Constraints => constraints.ToArray();
