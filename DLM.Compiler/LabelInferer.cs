@@ -268,7 +268,7 @@ namespace DLM.Compiler
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
                     checkArgumentLabels(node.Arguments, funcDecl);
-                    fcLabel = getExplicitLabel(funcDecl.Label);
+                    fcLabel = getExplicitLabel(funcDecl.Label, node.Arguments.Select(x => Visit(x)).ToList(), funcDecl);
                 }
                 else
                 {
@@ -328,17 +328,17 @@ namespace DLM.Compiler
                 }
             }
 
-            private Label getExplicitLabel(ConstantLabel label)
+            private Label getExplicitLabel(ConstantLabel label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration)
             {
-                // get argument number
-                // return parameter label
-                return label;
+                int number = functionDeclaration[label.Name].Number;
+                return argumentLabels[number-1];
             }
 
-            private Label getExplicitLabel(JoinLabel label)
-                => getExplicitLabel((dynamic)label.Label1) + getExplicitLabel((dynamic)label.Label2);
+            private Label getExplicitLabel(JoinLabel label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration)
+                => getExplicitLabel((dynamic)label.Label1, argumentLabels, functionDeclaration)
+                   + getExplicitLabel((dynamic)label.Label2, argumentLabels, functionDeclaration);
 
-            private Label getExplicitLabel(Label label) => label;
+            private Label getExplicitLabel(Label label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration) => label;
         }
     }
 }
