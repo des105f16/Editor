@@ -267,6 +267,7 @@ namespace DLM.Compiler
 
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
+                    checkArgumentLabels(node.Arguments, funcDecl);
                     fcLabel = getExplicitLabel(funcDecl.Label);
                 }
                 else
@@ -314,6 +315,18 @@ namespace DLM.Compiler
             protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
             protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
+
+            private void checkArgumentLabels(Production.NodeList<PExpression> arguments, FunctionDeclaration functionDeclaration)
+            {
+                for (int i = 0; i < arguments.Count; i++)
+                {
+                    var argLabel = Visit(arguments[i]);
+                    var paramLabel = functionDeclaration[i].Label;
+                    if (paramLabel is PolicyLabel)
+                        if (!(paramLabel <= argLabel))
+                            errorManager.Register(arguments[i], $"Argument label is less restrictive than parameter label: {argLabel} \u228f {paramLabel}");
+                }
+            }
 
             private Label getExplicitLabel(ConstantLabel label)
             {
