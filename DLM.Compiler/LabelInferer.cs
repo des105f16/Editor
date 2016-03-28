@@ -281,18 +281,7 @@ namespace DLM.Compiler
                 }
 
                 if (hasCallerAuthority)
-                {
-                    IEnumerable<Principal> authorityOwners;
-                    if (authority is LowerBoundLabel)
-                        authorityOwners = new Principal[0];
-                    else
-                        authorityOwners = (authority as PolicyLabel).Owners();
-                    foreach (var pn in node.Authorities)
-                    {
-                        if (!authorityOwners.Contains(pn.DeclaredPrincipal))
-                            errorManager.Register(pn, $"Principal {pn.DeclaredPrincipal.Name} is not in the effective authority.");
-                    }
-                }
+                    checkAuthority(node.Authorities);
 
                 return fcLabel;
             }
@@ -339,6 +328,20 @@ namespace DLM.Compiler
                    + getExplicitLabel((dynamic)label.Label2, argumentLabels, functionDeclaration);
 
             private Label getExplicitLabel(Label label, List<Label> argumentLabels, FunctionDeclaration functionDeclaration) => label;
+
+            private void checkAuthority(Production.NodeList<PPrincipal> authorities)
+            {
+                IEnumerable<Principal> authorityOwners;
+                if (authority is LowerBoundLabel)
+                    authorityOwners = new Principal[0];
+                else
+                    authorityOwners = (authority as PolicyLabel).Owners();
+                foreach (var p in authorities)
+                {
+                    if (!authorityOwners.Contains(p.DeclaredPrincipal))
+                        errorManager.Register(p, $"Principal {p.DeclaredPrincipal.Name} is not in the effective authority.");
+                }
+            }
         }
     }
 }
