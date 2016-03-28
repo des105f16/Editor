@@ -148,7 +148,7 @@ namespace DLM.Compiler
 
         private class TypeHighlighter : IHighlighter
         {
-            private static Style typestyle = new TextStyle(fromRgb(0x0000cc), null, FontStyle.Bold);
+            private static Style typestyle = new TextStyle(fromRgb(0x247eaf), null, FontStyle.Bold);
             private static Style principalstyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold);
             private static Style varpolicystyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold | FontStyle.Underline);
 
