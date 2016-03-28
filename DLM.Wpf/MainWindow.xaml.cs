@@ -27,9 +27,33 @@ namespace DLM.Wpf
         {
             InitializeComponent();
 
-            var codeTextBox = new CodeTextBox() { Executer = new DLM.Compiler.CompilerExecuter() };
+            var forecolor = System.Drawing.Color.FromArgb(220, 220, 220);
+            var backcolor = System.Drawing.Color.FromArgb(30, 30, 30);
+            var linenumbers = System.Drawing.Color.FromArgb(36, 126, 175);
 
-            Loaded += (s, e) => codegrid.Child = new WindowsFormsHost() { Child = codeTextBox };
+            var currentline = System.Drawing.Color.FromArgb(12, 12, 12);
+
+            var font = new System.Drawing.Font("Consolas", 10f, System.Drawing.FontStyle.Regular);
+
+            var codeTextBox = new CodeTextBox()
+            {
+                Executer = new DLM.Compiler.CompilerExecuter(),
+                BackColor = backcolor,
+                ServiceLinesColor = backcolor,
+                IndentBackColor = backcolor,
+                LineNumberColor = linenumbers,
+                CaretColor = forecolor,
+                ForeColor = forecolor,
+                CurrentLineColor = currentline,
+                Font = font
+            };
+
+            Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
+        }
+
+        private void button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            
         }
     }
 }

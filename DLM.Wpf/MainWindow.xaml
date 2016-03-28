@@ -7,8 +7,29 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None">
-    <Grid>
-        <Grid Name="codegrid" Margin="25,30,25,30"/>
-
+    <Grid Margin="25,30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Name="errorRow" Height="0"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Name="codegrid" Margin="0,0,0,10"/>
+        <Grid Grid.Row="1" Name="hest" Background="LightGreen" Margin="0"/>
+        <Button x:Name="button" HorizontalAlignment="Left" Margin="0" Grid.Row="2" Width="75" MouseEnter="button_MouseEnter">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="pack://siteoforigin:,,,/Resources/error.png" Margin="0,0,5,0" Opacity="0.1"/>
+                <TextBlock>Errors</TextBlock>
+            </StackPanel>
+        </Button>
     </Grid>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="Save?"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="Save?"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
 </Controls:MetroWindow>
