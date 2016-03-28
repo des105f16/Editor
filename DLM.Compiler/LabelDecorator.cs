@@ -50,6 +50,7 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             namedLabels.OpenScope();
+            structDeclarations.OpenScope();
 
             Visit(node.Parameters);
 
@@ -66,6 +67,7 @@ namespace DLM.Compiler
             Visit(node.Statements);
 
             namedLabels.CloseScope();
+            structDeclarations.CloseScope();
         }
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {

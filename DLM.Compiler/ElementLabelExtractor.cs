@@ -16,16 +16,6 @@ namespace DLM.Compiler
             this.errorManager = errorManager;
         }
 
-        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
-        {
-            structDeclarations.OpenScope();
-
-            Visit(node.Parameters);
-            Visit(node.Statements);
-
-            structDeclarations.CloseScope();
-        }
-
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {
             var type = getType(node.Type);
