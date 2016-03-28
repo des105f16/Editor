@@ -20,6 +20,14 @@ namespace DLM.Compiler
         private LabelStack authority;
         private LabelStack basicBlock;
         private SafeNameDictionary<VariableLabel> namedLabels;
+        private VariableLabel getVariableLabel(string name)
+        {
+            name = namedLabels.Add(name);
+            var Ld = new VariableLabel(name);
+            namedLabels.AddItem(Ld, name);
+
+            return Ld;
+        }
 
         public LabelInferer(ErrorManager errorManager)
         {
@@ -98,7 +106,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -107,7 +115,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -117,7 +125,7 @@ namespace DLM.Compiler
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
-            Label lbl = new VariableLabel("L" + blockNameCount++);
+            Label lbl = getVariableLabel("while");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
 
             basicBlock.Push(lbl);
@@ -178,7 +186,7 @@ namespace DLM.Compiler
                 }
                 else
                 {
-                    var Ld = new VariableLabel("d{" + node.Identifier.Text + "}");
+                    var Ld = owner.getVariableLabel(node.Identifier.Text);
                     var Lvar = types[node.Identifier.Text].DeclaredLabel;
 
                     owner.Add(Lvar, Ld + authority);
