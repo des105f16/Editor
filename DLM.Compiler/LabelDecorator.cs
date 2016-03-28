@@ -7,13 +7,13 @@ using SablePP.Tools;
 
 namespace DLM.Compiler
 {
-    public class LabelExtractor : DepthFirstAdapter
+    public class LabelDecorator : DepthFirstAdapter
     {
         private ErrorManager errorManager;
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
-        public LabelExtractor(ErrorManager errorManager, Dictionary<string, Principal> principals)
+        public LabelDecorator(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             this.errorManager = errorManager;
             this.principals = principals;

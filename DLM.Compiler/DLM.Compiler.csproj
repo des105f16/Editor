@@ -53,7 +53,7 @@
     <Compile Include="Generated\parser.cs" />
     <Compile Include="Generated\prods.cs" />
     <Compile Include="Generated\tokens.cs" />
-    <Compile Include="LabelExtractor.cs" />
+    <Compile Include="LabelDecorator.cs" />
     <Compile Include="LabelInferer.cs" />
     <Compile Include="Nodes\AElementExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />

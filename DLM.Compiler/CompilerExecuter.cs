@@ -124,7 +124,7 @@ namespace DLM.Compiler
 
             public void ExtractLabels()
             {
-                LabelExtractor le = new LabelExtractor(errorManager, principals);
+                LabelDecorator le = new LabelDecorator(errorManager, principals);
                 le.Visit(root);
             }
             public InferenceResult InferLabels()
