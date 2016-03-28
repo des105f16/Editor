@@ -16,7 +16,7 @@ namespace DLM.Compiler
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
-        private Dictionary<string, Label> functionLabels;
+        private Dictionary<string, AFunctionDeclarationStatement> functionLabels;
 
         private LabelStack authority;
         private LabelStack basicBlock;
@@ -47,7 +47,7 @@ namespace DLM.Compiler
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
-            functionLabels = new Dictionary<string, Label>();
+            functionLabels = new Dictionary<string, AFunctionDeclarationStatement>();
 
             authority = new LabelStack(true);
             basicBlock = new LabelStack(true);
@@ -64,7 +64,7 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             var fName = node.Identifier.Text;
-            functionLabels.Add(fName, node.Type.DeclaredLabel);
+            functionLabels.Add(fName, node);
 
             types.OpenScope();
 
@@ -214,12 +214,13 @@ namespace DLM.Compiler
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
-                Label fcLabel;
                 var hasCallerAuthority = node.Authorities.Count > 0;
+                AFunctionDeclarationStatement funcDecl;
+                Label fcLabel;
 
-                if (owner.functionLabels.TryGetValue(fcName, out fcLabel))
+                if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
-                    fcLabel = getExplicitLabel(fcLabel);
+                    fcLabel = getExplicitLabel(funcDecl.Type.DeclaredLabel);
                 }
                 else
                 {
