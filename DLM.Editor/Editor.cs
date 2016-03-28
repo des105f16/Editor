@@ -20,6 +20,7 @@ namespace DLM.Editor
             HookEditToTextBox(codeTextBox1);
 
             codeTextBox1.CompilationCompleted += CodeTextBox_CompilationCompleted;
+            codeTextBox1.TextChanged += (s, e) => base.MarkFileAsChanged();
         }
 
         protected override void OnNewFileCreated(EventArgs e)
