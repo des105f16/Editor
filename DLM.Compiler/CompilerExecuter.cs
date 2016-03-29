@@ -123,9 +123,10 @@ namespace DLM.Compiler
                 LabelDecorator le = new LabelDecorator(errorManager, principals);
                 le.Visit(root);
             }
+
             public InferenceResult InferLabels()
             {
-                LabelInferer le = new LabelInferer(errorManager);
+                ConstraintExtractor le = new ConstraintExtractor(errorManager);
                 le.Visit(root);
                 return Inference.ConstraintResolver.Resolve(le.Constraints);
             }

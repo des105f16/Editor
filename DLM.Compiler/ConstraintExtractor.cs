@@ -10,7 +10,7 @@ using System;
 
 namespace DLM.Compiler
 {
-    public class LabelInferer : DepthFirstAdapter
+    public class ConstraintExtractor : DepthFirstAdapter
     {
         private List<Constraint> constraints;
 
@@ -41,7 +41,7 @@ namespace DLM.Compiler
             return Ld;
         }
 
-        public LabelInferer(ErrorManager errorManager)
+        public ConstraintExtractor(ErrorManager errorManager)
         {
             constraints = new List<Constraint>();
 
@@ -156,17 +156,17 @@ namespace DLM.Compiler
 
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
         {
-            private LabelInferer owner;
+            private ConstraintExtractor owner;
             private ScopedDictionary<string, PType> types => owner.types;
             private ErrorManager errorManager => owner.errorManager;
             private AuthorityLabel authority => owner.authority;
 
-            private ExpressionLabeler(LabelInferer owner)
+            private ExpressionLabeler(ConstraintExtractor owner)
             {
                 this.owner = owner;
             }
 
-            public static Label GetLabel(PExpression expression, LabelInferer owner)
+            public static Label GetLabel(PExpression expression, ConstraintExtractor owner)
             {
                 return new ExpressionLabeler(owner).Visit(expression);
             }
