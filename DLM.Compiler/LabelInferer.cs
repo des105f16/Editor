@@ -100,6 +100,10 @@ namespace DLM.Compiler
 
             Add(lbl, type.DeclaredLabel);
         }
+        protected override void HandleAExpressionStatement(AExpressionStatement node)
+        {
+            ExpressionLabeler.GetLabel(node.Expression, this);
+        }
         protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             if (node.Claimant is ACallerClaimant)
