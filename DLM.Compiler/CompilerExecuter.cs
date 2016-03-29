@@ -35,10 +35,6 @@ namespace DLM.Compiler
             if (v.Errors)
                 return;
 
-            v.ExtractElementLabels();
-            if (v.Errors)
-                return;
-
             var vars = v.InferLabels();
             if (v.Errors)
                 return;
@@ -132,12 +128,6 @@ namespace DLM.Compiler
                 LabelInferer le = new LabelInferer(errorManager);
                 le.Visit(root);
                 return Inference.ConstraintResolver.Resolve(le.Constraints);
-            }
-
-            public void ExtractElementLabels()
-            {
-                ElementLabelExtractor ele = new ElementLabelExtractor(errorManager);
-                ele.Visit(root);
             }
         }
 

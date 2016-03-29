@@ -1,5 +1,6 @@
 ﻿using DLM.Compiler.Analysis;
 using System.Collections.Generic;
+using System.Linq;
 using DLM.Compiler.Nodes;
 using DLM.Inference;
 using SablePP.Tools.Error;
@@ -115,6 +116,19 @@ namespace DLM.Compiler
             var type = getType(node.Type);
             if (structTypedefs.ContainsKey(type.Name.Text))
                 structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
+        }
+
+        protected override void HandleAElementExpression(AElementExpression node)
+        {
+            var expr = (node.Expression as AIndexExpression)?.Expression ?? node.Expression;
+
+            if (expr is AIdentifierExpression)
+            {
+                var identExpr = expr as AIdentifierExpression;
+                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
+            }
+            else
+                errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
         }
 
         protected override void HandleAType(AType node)
