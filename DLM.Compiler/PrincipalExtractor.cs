@@ -46,10 +46,10 @@ namespace DLM.Compiler
                 }
             }
             
-            Visit(node.PrincipalHierarchyStatements);
+            Visit(node.PrincipalHierarchyDeclarations);
         }
 
-        protected override void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        protected override void HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node)
         {
             var dName = node.Principal.Identifier.Text;
             Principal dominant;

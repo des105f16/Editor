@@ -64,19 +64,19 @@ namespace DLM.Compiler.Analysis
             HandleDefault(node);
         }
         
-        public void Visit(PPrincipalHierarchyStatement node)
+        public void Visit(PPrincipalHierarchyDeclaration node)
         {
-            HandlePPrincipalHierarchyStatement(node);
+            HandlePPrincipalHierarchyDeclaration(node);
         }
-        protected virtual void HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        protected virtual void HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node)
         {
             dispatch((dynamic)node);
         }
-        private void dispatch(APrincipalHierarchyStatement node)
+        private void dispatch(APrincipalHierarchyDeclaration node)
         {
-            HandleAPrincipalHierarchyStatement(node);
+            HandleAPrincipalHierarchyDeclaration(node);
         }
-        protected virtual void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        protected virtual void HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node)
         {
             HandleDefault(node);
         }
@@ -1023,7 +1023,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Includes);
             Visit(node.PrincipalDeclarations);
-            Visit(node.PrincipalHierarchyStatements);
+            Visit(node.PrincipalHierarchyDeclarations);
             Visit(node.Structs);
             Visit(node.Statements);
         }
@@ -1035,7 +1035,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Principals);
         }
-        protected override void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        protected override void HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node)
         {
             Visit(node.Principal);
             Visit(node.Subordinates);
@@ -1301,7 +1301,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Statements);
             Visit(node.Structs);
-            Visit(node.PrincipalHierarchyStatements);
+            Visit(node.PrincipalHierarchyDeclarations);
             Visit(node.PrincipalDeclarations);
             Visit(node.Includes);
         }
@@ -1313,7 +1313,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Principals);
         }
-        protected override void HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        protected override void HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node)
         {
             Visit(node.Subordinates);
             Visit(node.Principal);
@@ -1614,19 +1614,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node);
         }
         
-        public Result Visit(PPrincipalHierarchyStatement node)
+        public Result Visit(PPrincipalHierarchyDeclaration node)
         {
-            return HandlePPrincipalHierarchyStatement(node);
+            return HandlePPrincipalHierarchyDeclaration(node);
         }
-        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node)
+        protected virtual Result HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node)
         {
             return dispatch((dynamic)node);
         }
-        private Result dispatch(APrincipalHierarchyStatement node)
+        private Result dispatch(APrincipalHierarchyDeclaration node)
         {
-            return HandleAPrincipalHierarchyStatement(node);
+            return HandleAPrincipalHierarchyDeclaration(node);
         }
-        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node)
+        protected virtual Result HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node)
         {
             return HandleDefault(node);
         }
@@ -2603,19 +2603,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1);
         }
         
-        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1)
+        public Result Visit(PPrincipalHierarchyDeclaration node, T1 arg1)
         {
-            return HandlePPrincipalHierarchyStatement(node, arg1);
+            return HandlePPrincipalHierarchyDeclaration(node, arg1);
         }
-        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1)
+        protected virtual Result HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node, T1 arg1)
         {
             return dispatch((dynamic)node, arg1);
         }
-        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1)
+        private Result dispatch(APrincipalHierarchyDeclaration node, T1 arg1)
         {
-            return HandleAPrincipalHierarchyStatement(node, arg1);
+            return HandleAPrincipalHierarchyDeclaration(node, arg1);
         }
-        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1)
+        protected virtual Result HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3592,19 +3592,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
-        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        public Result Visit(PPrincipalHierarchyDeclaration node, T1 arg1, T2 arg2)
         {
-            return HandlePPrincipalHierarchyStatement(node, arg1, arg2);
+            return HandlePPrincipalHierarchyDeclaration(node, arg1, arg2);
         }
-        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        protected virtual Result HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node, T1 arg1, T2 arg2)
         {
             return dispatch((dynamic)node, arg1, arg2);
         }
-        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        private Result dispatch(APrincipalHierarchyDeclaration node, T1 arg1, T2 arg2)
         {
-            return HandleAPrincipalHierarchyStatement(node, arg1, arg2);
+            return HandleAPrincipalHierarchyDeclaration(node, arg1, arg2);
         }
-        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1, T2 arg2)
+        protected virtual Result HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4581,19 +4581,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
-        public Result Visit(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        public Result Visit(PPrincipalHierarchyDeclaration node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandlePPrincipalHierarchyStatement(node, arg1, arg2, arg3);
+            return HandlePPrincipalHierarchyDeclaration(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandlePPrincipalHierarchyStatement(PPrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandlePPrincipalHierarchyDeclaration(PPrincipalHierarchyDeclaration node, T1 arg1, T2 arg2, T3 arg3)
         {
             return dispatch((dynamic)node, arg1, arg2, arg3);
         }
-        private Result dispatch(APrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        private Result dispatch(APrincipalHierarchyDeclaration node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandleAPrincipalHierarchyStatement(node, arg1, arg2, arg3);
+            return HandleAPrincipalHierarchyDeclaration(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandleAPrincipalHierarchyStatement(APrincipalHierarchyStatement node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandleAPrincipalHierarchyDeclaration(APrincipalHierarchyDeclaration node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

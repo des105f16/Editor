@@ -270,15 +270,15 @@ namespace DLM.Compiler.Parsing
                     {
                         List<PStatement> pstatementlist = isOn(16, index - 0) ? Pop<List<PStatement>>() : new List<PStatement>();
                         List<PStruct> pstructlist = isOn(8, index - 0) ? Pop<List<PStruct>>() : new List<PStruct>();
-                        List<PPrincipalHierarchyStatement> pprincipalhierarchystatementlist = isOn(4, index - 0) ? Pop<List<PPrincipalHierarchyStatement>>() : new List<PPrincipalHierarchyStatement>();
+                        List<PPrincipalHierarchyDeclaration> pprincipalhierarchydeclarationlist = isOn(4, index - 0) ? Pop<List<PPrincipalHierarchyDeclaration>>() : new List<PPrincipalHierarchyDeclaration>();
                         List<PPrincipalDeclaration> pprincipaldeclarationlist = isOn(2, index - 0) ? Pop<List<PPrincipalDeclaration>>() : new List<PPrincipalDeclaration>();
                         List<PInclude> pincludelist = isOn(1, index - 0) ? Pop<List<PInclude>>() : new List<PInclude>();
                         List<PInclude> pincludelist2 = new List<PInclude>();
                         pincludelist2.AddRange(pincludelist);
                         List<PPrincipalDeclaration> pprincipaldeclarationlist2 = new List<PPrincipalDeclaration>();
                         pprincipaldeclarationlist2.AddRange(pprincipaldeclarationlist);
-                        List<PPrincipalHierarchyStatement> pprincipalhierarchystatementlist2 = new List<PPrincipalHierarchyStatement>();
-                        pprincipalhierarchystatementlist2.AddRange(pprincipalhierarchystatementlist);
+                        List<PPrincipalHierarchyDeclaration> pprincipalhierarchydeclarationlist2 = new List<PPrincipalHierarchyDeclaration>();
+                        pprincipalhierarchydeclarationlist2.AddRange(pprincipalhierarchydeclarationlist);
                         List<PStruct> pstructlist2 = new List<PStruct>();
                         pstructlist2.AddRange(pstructlist);
                         List<PStatement> pstatementlist2 = new List<PStatement>();
@@ -286,7 +286,7 @@ namespace DLM.Compiler.Parsing
                         ARoot aroot = new ARoot(
                             pincludelist2,
                             pprincipaldeclarationlist2,
-                            pprincipalhierarchystatementlist2,
+                            pprincipalhierarchydeclarationlist2,
                             pstructlist2,
                             pstatementlist2
                         );
@@ -324,11 +324,11 @@ namespace DLM.Compiler.Parsing
                         PPrincipal pprincipal = Pop<PPrincipal>();
                         List<PPrincipal> pprincipallist2 = new List<PPrincipal>();
                         pprincipallist2.AddRange(pprincipallist);
-                        APrincipalHierarchyStatement aprincipalhierarchystatement = new APrincipalHierarchyStatement(
+                        APrincipalHierarchyDeclaration aprincipalhierarchydeclaration = new APrincipalHierarchyDeclaration(
                             pprincipal,
                             pprincipallist2
                         );
-                        Push(3, aprincipalhierarchystatement);
+                        Push(3, aprincipalhierarchydeclaration);
                     }
                     break;
                 case 35:
@@ -1362,12 +1362,12 @@ namespace DLM.Compiler.Parsing
                     }
                     break;
                 case 134:
-                    Push(36, new List<PPrincipalHierarchyStatement>() { Pop<PPrincipalHierarchyStatement>() });
+                    Push(36, new List<PPrincipalHierarchyDeclaration>() { Pop<PPrincipalHierarchyDeclaration>() });
                     break;
                 case 135:
                     {
-                        PPrincipalHierarchyStatement item = Pop<PPrincipalHierarchyStatement>();
-                        List<PPrincipalHierarchyStatement> list = Pop<List<PPrincipalHierarchyStatement>>();
+                        PPrincipalHierarchyDeclaration item = Pop<PPrincipalHierarchyDeclaration>();
+                        List<PPrincipalHierarchyDeclaration> list = Pop<List<PPrincipalHierarchyDeclaration>>();
                         list.Add(item);
                         Push(36, list);
                     }

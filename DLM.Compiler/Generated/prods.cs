@@ -9,15 +9,15 @@ namespace DLM.Compiler.Nodes
     {
         private NodeList<PInclude> _includes_;
         private NodeList<PPrincipalDeclaration> _principaldeclarations_;
-        private NodeList<PPrincipalHierarchyStatement> _principalhierarchystatements_;
+        private NodeList<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_;
         private NodeList<PStruct> _structs_;
         private NodeList<PStatement> _statements_;
         
-        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyStatement> _principalhierarchystatements_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
         {
             this._includes_ = new NodeList<PInclude>(this, _includes_, true);
             this._principaldeclarations_ = new NodeList<PPrincipalDeclaration>(this, _principaldeclarations_, true);
-            this._principalhierarchystatements_ = new NodeList<PPrincipalHierarchyStatement>(this, _principalhierarchystatements_, true);
+            this._principalhierarchydeclarations_ = new NodeList<PPrincipalHierarchyDeclaration>(this, _principalhierarchydeclarations_, true);
             this._structs_ = new NodeList<PStruct>(this, _structs_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
@@ -30,9 +30,9 @@ namespace DLM.Compiler.Nodes
         {
             get { return _principaldeclarations_; }
         }
-        public NodeList<PPrincipalHierarchyStatement> PrincipalHierarchyStatements
+        public NodeList<PPrincipalHierarchyDeclaration> PrincipalHierarchyDeclarations
         {
-            get { return _principalhierarchystatements_; }
+            get { return _principalhierarchydeclarations_; }
         }
         public NodeList<PStruct> Structs
         {
@@ -46,8 +46,8 @@ namespace DLM.Compiler.Nodes
     }
     public partial class ARoot : PRoot
     {
-        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyStatement> _principalhierarchystatements_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
-            : base(_includes_, _principaldeclarations_, _principalhierarchystatements_, _structs_, _statements_)
+        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+            : base(_includes_, _principaldeclarations_, _principalhierarchydeclarations_, _structs_, _statements_)
         {
         }
         
@@ -75,16 +75,16 @@ namespace DLM.Compiler.Nodes
                 else
                     PrincipalDeclarations[index] = newChild as PPrincipalDeclaration;
             }
-            else if (oldChild is PPrincipalHierarchyStatement && PrincipalHierarchyStatements.Contains(oldChild as PPrincipalHierarchyStatement))
+            else if (oldChild is PPrincipalHierarchyDeclaration && PrincipalHierarchyDeclarations.Contains(oldChild as PPrincipalHierarchyDeclaration))
             {
-                if (!(newChild is PPrincipalHierarchyStatement) && newChild != null)
+                if (!(newChild is PPrincipalHierarchyDeclaration) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 
-                int index = PrincipalHierarchyStatements.IndexOf(oldChild as PPrincipalHierarchyStatement);
+                int index = PrincipalHierarchyDeclarations.IndexOf(oldChild as PPrincipalHierarchyDeclaration);
                 if (newChild == null)
-                    PrincipalHierarchyStatements.RemoveAt(index);
+                    PrincipalHierarchyDeclarations.RemoveAt(index);
                 else
-                    PrincipalHierarchyStatements[index] = newChild as PPrincipalHierarchyStatement;
+                    PrincipalHierarchyDeclarations[index] = newChild as PPrincipalHierarchyDeclaration;
             }
             else if (oldChild is PStruct && Structs.Contains(oldChild as PStruct))
             {
@@ -125,8 +125,8 @@ namespace DLM.Compiler.Nodes
                     yield return temp[i];
             }
             {
-                PPrincipalHierarchyStatement[] temp = new PPrincipalHierarchyStatement[PrincipalHierarchyStatements.Count];
-                PrincipalHierarchyStatements.CopyTo(temp, 0);
+                PPrincipalHierarchyDeclaration[] temp = new PPrincipalHierarchyDeclaration[PrincipalHierarchyDeclarations.Count];
+                PrincipalHierarchyDeclarations.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
@@ -146,12 +146,12 @@ namespace DLM.Compiler.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyStatements.Clone(), Structs.Clone(), Statements.Clone());
+            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyDeclarations.Clone(), Structs.Clone(), Statements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4}", Includes, PrincipalDeclarations, PrincipalHierarchyStatements, Structs, Statements);
+            return string.Format("{0} {1} {2} {3} {4}", Includes, PrincipalDeclarations, PrincipalHierarchyDeclarations, Structs, Statements);
         }
     }
     public abstract partial class PInclude : Production<PInclude>
@@ -271,12 +271,12 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0}", Principals);
         }
     }
-    public abstract partial class PPrincipalHierarchyStatement : Production<PPrincipalHierarchyStatement>
+    public abstract partial class PPrincipalHierarchyDeclaration : Production<PPrincipalHierarchyDeclaration>
     {
         private PPrincipal _principal_;
         private NodeList<PPrincipal> _subordinates_;
         
-        public PPrincipalHierarchyStatement(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
+        public PPrincipalHierarchyDeclaration(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
         {
             this.Principal = _principal_;
             this._subordinates_ = new NodeList<PPrincipal>(this, _subordinates_, false);
@@ -288,7 +288,7 @@ namespace DLM.Compiler.Nodes
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Principal in PPrincipalHierarchyStatement cannot be null.", "value");
+                    throw new ArgumentException("Principal in PPrincipalHierarchyDeclaration cannot be null.", "value");
                 
                 if (_principal_ != null)
                     SetParent(_principal_, null);
@@ -303,9 +303,9 @@ namespace DLM.Compiler.Nodes
         }
         
     }
-    public partial class APrincipalHierarchyStatement : PPrincipalHierarchyStatement
+    public partial class APrincipalHierarchyDeclaration : PPrincipalHierarchyDeclaration
     {
-        public APrincipalHierarchyStatement(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
+        public APrincipalHierarchyDeclaration(PPrincipal _principal_, IEnumerable<PPrincipal> _subordinates_)
             : base(_principal_, _subordinates_)
         {
         }
@@ -315,7 +315,7 @@ namespace DLM.Compiler.Nodes
             if (Principal == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("Principal in APrincipalHierarchyStatement cannot be null.", "newChild");
+                    throw new ArgumentException("Principal in APrincipalHierarchyDeclaration cannot be null.", "newChild");
                 if (!(newChild is PPrincipal) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Principal = newChild as PPrincipal;
@@ -344,9 +344,9 @@ namespace DLM.Compiler.Nodes
             }
         }
         
-        public override PPrincipalHierarchyStatement Clone()
+        public override PPrincipalHierarchyDeclaration Clone()
         {
-            return new APrincipalHierarchyStatement(Principal.Clone(), Subordinates.Clone());
+            return new APrincipalHierarchyDeclaration(Principal.Clone(), Subordinates.Clone());
         }
         
         public override string ToString()
