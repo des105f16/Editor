@@ -47,6 +47,13 @@ namespace DLM.Compiler
             }
         }
 
+        private AType getType(PType type)
+        {
+            while (type is APointerType)
+                type = (type as APointerType).Type;
+            return type as AType;
+        }
+
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             namedLabels.OpenScope();
@@ -77,6 +84,10 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new ConstantLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {

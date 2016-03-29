@@ -15,14 +15,7 @@ namespace DLM.Compiler
         {
             this.errorManager = errorManager;
         }
-
-        protected override void HandleAFunctionParameter(AFunctionParameter node)
-        {
-            var type = getType(node.Type);
-
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
-        }
+        
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             var type = getType(node.Type);
@@ -40,14 +33,7 @@ namespace DLM.Compiler
             if (structTypedefs.ContainsKey(type.Name.Text))
                 structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
-
-        private AType getType(PType type)
-        {
-            while (type is APointerType)
-                type = (type as APointerType).Type;
-            return type as AType;
-        }
-
+        
         protected override void HandlePStruct(PStruct node)
         {
             structTypedefs.Add(node.Name.Text, node);
