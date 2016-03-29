@@ -73,7 +73,7 @@ namespace DLM.Compiler
                 var file = Path.GetTempFileName();
                 File.WriteAllText(file, CGenerator.GenerateC(root, source));
 
-                ProcessStartInfo psi = new ProcessStartInfo(@"C:\MinGW\bin\gcc.exe", "-x c \"" + file + "\"")
+                ProcessStartInfo psi = new ProcessStartInfo(@"C:\MinGW\bin\gcc.exe", "-std=c99 -pedantic-errors -x c \"" + file + "\"")
                 {
                     CreateNoWindow = true,
                     RedirectStandardError = true,
