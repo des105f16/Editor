@@ -45,30 +45,6 @@ namespace DLM.Compiler.Nodes
             return new TFile(Text, Line, Position);
         }
     }
-    public partial class TAt : Token<TAt>
-    {
-        public TAt()
-            : base(@"@")
-        {
-        }
-        public TAt(int line, int pos)
-            : base(@"@", line, pos)
-        {
-        }
-        public TAt(string text)
-            : base(text)
-        {
-        }
-        public TAt(string text, int line, int pos)
-            : base(text, line, pos)
-        {
-        }
-        
-        public override TAt Clone()
-        {
-            return new TAt(Text, Line, Position);
-        }
-    }
     public partial class TTime : Token<TTime>
     {
         public TTime(string text)
@@ -947,6 +923,30 @@ namespace DLM.Compiler.Nodes
         public override TLabelStart Clone()
         {
             return new TLabelStart(Text, Line, Position);
+        }
+    }
+    public partial class TTimeStart : Token<TTimeStart>
+    {
+        public TTimeStart()
+            : base(@"@")
+        {
+        }
+        public TTimeStart(int line, int pos)
+            : base(@"@", line, pos)
+        {
+        }
+        public TTimeStart(string text)
+            : base(text)
+        {
+        }
+        public TTimeStart(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TTimeStart Clone()
+        {
+            return new TTimeStart(Text, Line, Position);
         }
     }
     public partial class TLabelEnd : Token<TLabelEnd>

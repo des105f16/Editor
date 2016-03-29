@@ -146,7 +146,7 @@ namespace DLM.Compiler.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyDeclarations.Clone(), Structs.Clone(), Statements.Clone());
+            return new ARoot(Includes, PrincipalDeclarations, PrincipalHierarchyDeclarations, Structs, Statements);
         }
         
         public override string ToString()
@@ -263,7 +263,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPrincipalDeclaration Clone()
         {
-            return new APrincipalDeclaration(Principals.Clone());
+            return new APrincipalDeclaration(Principals);
         }
         
         public override string ToString()
@@ -346,7 +346,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPrincipalHierarchyDeclaration Clone()
         {
-            return new APrincipalHierarchyDeclaration(Principal.Clone(), Subordinates.Clone());
+            return new APrincipalHierarchyDeclaration(Principal.Clone(), Subordinates);
         }
         
         public override string ToString()
@@ -455,7 +455,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStruct Clone()
         {
-            return new AStruct(Identifier.Clone(), Fields.Clone(), Name.Clone());
+            return new AStruct(Identifier.Clone(), Fields, Name.Clone());
         }
         
         public override string ToString()
@@ -725,7 +725,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression?.Clone());
+            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression.Clone());
         }
         
         public override string ToString()
@@ -1008,7 +1008,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfActsForStatement(Claimant.Clone(), Principals.Clone(), Statements.Clone());
+            return new AIfActsForStatement(Claimant.Clone(), Principals, Statements);
         }
         
         public override string ToString()
@@ -1084,7 +1084,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfStatement(Expression.Clone(), Statements.Clone());
+            return new AIfStatement(Expression.Clone(), Statements);
         }
         
         public override string ToString()
@@ -1183,7 +1183,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfElseStatement(Expression.Clone(), IfStatements.Clone(), ElseStatements.Clone());
+            return new AIfElseStatement(Expression.Clone(), IfStatements, ElseStatements);
         }
         
         public override string ToString()
@@ -1259,7 +1259,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AWhileStatement(Expression.Clone(), Statements.Clone());
+            return new AWhileStatement(Expression.Clone(), Statements);
         }
         
         public override string ToString()
@@ -1384,7 +1384,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters.Clone(), Statements.Clone());
+            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters, Statements);
         }
         
         public override string ToString()
@@ -1491,7 +1491,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AReturnStatement(Expression?.Clone());
+            return new AReturnStatement(Expression.Clone());
         }
         
         public override string ToString()
@@ -1664,7 +1664,7 @@ namespace DLM.Compiler.Nodes
         
         public override PType Clone()
         {
-            return new AType(Name.Clone(), Label?.Clone());
+            return new AType(Name.Clone(), Label.Clone());
         }
         
         public override string ToString()
@@ -1940,7 +1940,7 @@ namespace DLM.Compiler.Nodes
         
         public override PLabel Clone()
         {
-            return new ALabel(Policys.Clone(), Timing?.Clone());
+            return new ALabel(Policys, Timing.Clone());
         }
         
         public override string ToString()
@@ -2051,7 +2051,7 @@ namespace DLM.Compiler.Nodes
         
         public override PTiming Clone()
         {
-            return new ATiming(Period?.Clone(), Interval.Clone(), Count?.Clone());
+            return new ATiming(Period.Clone(), Interval, Count.Clone());
         }
         
         public override string ToString()
@@ -2359,7 +2359,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPolicy Clone()
         {
-            return new APrincipalPolicy(Owner.Clone(), Readers.Clone());
+            return new APrincipalPolicy(Owner.Clone(), Readers);
         }
         
         public override string ToString()
@@ -3553,7 +3553,7 @@ namespace DLM.Compiler.Nodes
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(Function.Clone(), Authorities.Clone(), Arguments.Clone());
+            return new AFunctionCallExpression(Function.Clone(), Authorities, Arguments);
         }
         
         public override string ToString()
@@ -3686,7 +3686,7 @@ namespace DLM.Compiler.Nodes
         
         public override PExpression Clone()
         {
-            return new ADeclassifyExpression(Identifier.Clone(), Label?.Clone());
+            return new ADeclassifyExpression(Identifier.Clone(), Label.Clone());
         }
         
         public override string ToString()

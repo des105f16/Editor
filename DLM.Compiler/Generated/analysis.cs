@@ -599,14 +599,6 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
-        public void Visit(TAt node)
-        {
-            HandleTAt(node);
-        }
-        protected virtual void HandleTAt(TAt node)
-        {
-            HandleDefault(node);
-        }
         public void Visit(TTime node)
         {
             HandleTTime(node);
@@ -916,6 +908,14 @@ namespace DLM.Compiler.Analysis
             HandleTLabelStart(node);
         }
         protected virtual void HandleTLabelStart(TLabelStart node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TTimeStart node)
+        {
+            HandleTTimeStart(node);
+        }
+        protected virtual void HandleTTimeStart(TTimeStart node)
         {
             HandleDefault(node);
         }
@@ -2149,14 +2149,6 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
-        public Result Visit(TAt node)
-        {
-            return HandleTAt(node);
-        }
-        protected virtual Result HandleTAt(TAt node)
-        {
-            return HandleDefault(node);
-        }
         public Result Visit(TTime node)
         {
             return HandleTTime(node);
@@ -2466,6 +2458,14 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelStart(node);
         }
         protected virtual Result HandleTLabelStart(TLabelStart node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TTimeStart node)
+        {
+            return HandleTTimeStart(node);
+        }
+        protected virtual Result HandleTTimeStart(TTimeStart node)
         {
             return HandleDefault(node);
         }
@@ -3138,14 +3138,6 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
-        public Result Visit(TAt node, T1 arg1)
-        {
-            return HandleTAt(node, arg1);
-        }
-        protected virtual Result HandleTAt(TAt node, T1 arg1)
-        {
-            return HandleDefault(node, arg1);
-        }
         public Result Visit(TTime node, T1 arg1)
         {
             return HandleTTime(node, arg1);
@@ -3455,6 +3447,14 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelStart(node, arg1);
         }
         protected virtual Result HandleTLabelStart(TLabelStart node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TTimeStart node, T1 arg1)
+        {
+            return HandleTTimeStart(node, arg1);
+        }
+        protected virtual Result HandleTTimeStart(TTimeStart node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4127,14 +4127,6 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
-        public Result Visit(TAt node, T1 arg1, T2 arg2)
-        {
-            return HandleTAt(node, arg1, arg2);
-        }
-        protected virtual Result HandleTAt(TAt node, T1 arg1, T2 arg2)
-        {
-            return HandleDefault(node, arg1, arg2);
-        }
         public Result Visit(TTime node, T1 arg1, T2 arg2)
         {
             return HandleTTime(node, arg1, arg2);
@@ -4444,6 +4436,14 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelStart(node, arg1, arg2);
         }
         protected virtual Result HandleTLabelStart(TLabelStart node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TTimeStart node, T1 arg1, T2 arg2)
+        {
+            return HandleTTimeStart(node, arg1, arg2);
+        }
+        protected virtual Result HandleTTimeStart(TTimeStart node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5116,14 +5116,6 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
-        public Result Visit(TAt node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleTAt(node, arg1, arg2, arg3);
-        }
-        protected virtual Result HandleTAt(TAt node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleDefault(node, arg1, arg2, arg3);
-        }
         public Result Visit(TTime node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTTime(node, arg1, arg2, arg3);
@@ -5433,6 +5425,14 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelStart(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTLabelStart(TLabelStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TTimeStart node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTTimeStart(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTTimeStart(TTimeStart node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

@@ -27,163 +27,163 @@ namespace DLM.Compiler.Parsing
         {
             return 1;
         }
-        private int getIndex(TAt node)
+        private int getIndex(TTime node)
         {
             return 2;
         }
-        private int getIndex(TTime node)
+        private int getIndex(TIntervalUnit node)
         {
             return 3;
         }
-        private int getIndex(TIntervalUnit node)
+        private int getIndex(TBool node)
         {
             return 4;
         }
-        private int getIndex(TBool node)
+        private int getIndex(TNumber node)
         {
             return 5;
         }
-        private int getIndex(TNumber node)
+        private int getIndex(TPrincipall node)
         {
             return 6;
         }
-        private int getIndex(TPrincipall node)
+        private int getIndex(TTypedef node)
         {
             return 7;
         }
-        private int getIndex(TTypedef node)
+        private int getIndex(TStruct node)
         {
             return 8;
         }
-        private int getIndex(TStruct node)
+        private int getIndex(TWhile node)
         {
             return 9;
         }
-        private int getIndex(TWhile node)
+        private int getIndex(TIf node)
         {
             return 10;
         }
-        private int getIndex(TIf node)
+        private int getIndex(TElse node)
         {
             return 11;
         }
-        private int getIndex(TElse node)
+        private int getIndex(TReturn node)
         {
             return 12;
         }
-        private int getIndex(TReturn node)
+        private int getIndex(TThis node)
         {
             return 13;
         }
-        private int getIndex(TThis node)
+        private int getIndex(TCaller node)
         {
             return 14;
         }
-        private int getIndex(TCaller node)
+        private int getIndex(TIdentifier node)
         {
             return 15;
         }
-        private int getIndex(TIdentifier node)
+        private int getIndex(TActsFor node)
         {
             return 16;
         }
-        private int getIndex(TActsFor node)
+        private int getIndex(TIfActsFor node)
         {
             return 17;
         }
-        private int getIndex(TIfActsFor node)
+        private int getIndex(TDeclassifyStart node)
         {
             return 18;
         }
-        private int getIndex(TDeclassifyStart node)
+        private int getIndex(TDeclassifyEnd node)
         {
             return 19;
         }
-        private int getIndex(TDeclassifyEnd node)
+        private int getIndex(TFuncAuthStart node)
         {
             return 20;
         }
-        private int getIndex(TFuncAuthStart node)
+        private int getIndex(TFuncAuthEnd node)
         {
             return 21;
         }
-        private int getIndex(TFuncAuthEnd node)
+        private int getIndex(TRArrow node)
         {
             return 22;
         }
-        private int getIndex(TRArrow node)
+        private int getIndex(TLArrow node)
         {
             return 23;
         }
-        private int getIndex(TLArrow node)
+        private int getIndex(TCompare node)
         {
             return 24;
         }
-        private int getIndex(TCompare node)
+        private int getIndex(TAssign node)
         {
             return 25;
         }
-        private int getIndex(TAssign node)
+        private int getIndex(TUnderscore node)
         {
             return 26;
         }
-        private int getIndex(TUnderscore node)
+        private int getIndex(THat node)
         {
             return 27;
         }
-        private int getIndex(THat node)
+        private int getIndex(TPlus node)
         {
             return 28;
         }
-        private int getIndex(TPlus node)
+        private int getIndex(TMinus node)
         {
             return 29;
         }
-        private int getIndex(TMinus node)
+        private int getIndex(TAsterisk node)
         {
             return 30;
         }
-        private int getIndex(TAsterisk node)
+        private int getIndex(TSlash node)
         {
             return 31;
         }
-        private int getIndex(TSlash node)
+        private int getIndex(TPercent node)
         {
             return 32;
         }
-        private int getIndex(TPercent node)
+        private int getIndex(TBang node)
         {
             return 33;
         }
-        private int getIndex(TBang node)
+        private int getIndex(TAnd node)
         {
             return 34;
         }
-        private int getIndex(TAnd node)
+        private int getIndex(TOr node)
         {
             return 35;
         }
-        private int getIndex(TOr node)
+        private int getIndex(TPeriod node)
         {
             return 36;
         }
-        private int getIndex(TPeriod node)
+        private int getIndex(TComma node)
         {
             return 37;
         }
-        private int getIndex(TComma node)
+        private int getIndex(TColon node)
         {
             return 38;
         }
-        private int getIndex(TColon node)
+        private int getIndex(TSemicolon node)
         {
             return 39;
         }
-        private int getIndex(TSemicolon node)
+        private int getIndex(TLabelStart node)
         {
             return 40;
         }
-        private int getIndex(TLabelStart node)
+        private int getIndex(TTimeStart node)
         {
             return 41;
         }
@@ -788,7 +788,7 @@ namespace DLM.Compiler.Parsing
                     {
                         TLabelEnd tlabelend = Pop<TLabelEnd>();
                         PTiming ptiming = Pop<PTiming>();
-                        TAt tat = Pop<TAt>();
+                        TTimeStart ttimestart = Pop<TTimeStart>();
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TLabelStart tlabelstart = Pop<TLabelStart>();
                         List<PPolicy> ppolicylist2 = new List<PPolicy>();
@@ -1435,9 +1435,9 @@ namespace DLM.Compiler.Parsing
             new int[][] {
                 new int[] {-1, 1, 0},
                 new int[] {0, 0, 1},
-                new int[] {7, 0, 2},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {6, 0, 2},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 3, 1},
@@ -1445,16 +1445,16 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 2},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 3, 3},
-                new int[] {9, 0, 22},
+                new int[] {8, 0, 22},
             },
             new int[][] {
                 new int[] {-1, 1, 64},
-                new int[] {17, 1, 93},
-                new int[] {41, 0, 23},
+                new int[] {16, 1, 93},
+                new int[] {40, 0, 23},
             },
             new int[][] {
                 new int[] {-1, 3, 5},
@@ -1477,39 +1477,39 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 11},
-                new int[] {16, 0, 25},
-                new int[] {31, 0, 26},
+                new int[] {15, 0, 25},
+                new int[] {30, 0, 26},
             },
             new int[][] {
                 new int[] {-1, 3, 12},
-                new int[] {17, 0, 27},
+                new int[] {16, 0, 27},
             },
             new int[][] {
                 new int[] {-1, 1, 1},
                 new int[] {0, 0, 1},
-                new int[] {7, 0, 2},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {6, 0, 2},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 2},
-                new int[] {7, 0, 2},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {6, 0, 2},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 4},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 8},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 16},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 32},
@@ -1519,29 +1519,29 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 94},
-                new int[] {38, 0, 44},
+                new int[] {37, 0, 44},
             },
             new int[][] {
                 new int[] {-1, 3, 21},
-                new int[] {40, 0, 45},
+                new int[] {39, 0, 45},
             },
             new int[][] {
                 new int[] {-1, 3, 22},
-                new int[] {16, 0, 46},
+                new int[] {15, 0, 46},
             },
             new int[][] {
                 new int[] {-1, 3, 23},
-                new int[] {16, 0, 47},
-                new int[] {27, 0, 48},
-                new int[] {28, 0, 49},
+                new int[] {15, 0, 47},
+                new int[] {26, 0, 48},
+                new int[] {27, 0, 49},
             },
             new int[][] {
                 new int[] {-1, 1, 65},
             },
             new int[][] {
                 new int[] {-1, 3, 25},
-                new int[] {26, 0, 53},
-                new int[] {40, 0, 54},
+                new int[] {25, 0, 53},
+                new int[] {39, 0, 54},
                 new int[] {43, 0, 55},
                 new int[] {45, 0, 56},
             },
@@ -1550,77 +1550,77 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 27},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 131},
             },
             new int[][] {
                 new int[] {-1, 1, 3},
-                new int[] {7, 0, 2},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {6, 0, 2},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 5},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 9},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 17},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 133},
             },
             new int[][] {
                 new int[] {-1, 1, 6},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 10},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 18},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 135},
             },
             new int[][] {
                 new int[] {-1, 1, 12},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 20},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 64},
-                new int[] {41, 0, 23},
+                new int[] {40, 0, 23},
             },
             new int[][] {
                 new int[] {-1, 1, 137},
             },
             new int[][] {
                 new int[] {-1, 1, 24},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 139},
             },
             new int[][] {
                 new int[] {-1, 3, 44},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 33},
@@ -1631,7 +1631,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 85},
-                new int[] {23, 1, 93},
+                new int[] {22, 1, 93},
             },
             new int[][] {
                 new int[] {-1, 1, 88},
@@ -1641,26 +1641,26 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 90},
-                new int[] {40, 0, 70},
+                new int[] {39, 0, 70},
                 new int[] {49, 0, 71},
             },
             new int[][] {
                 new int[] {-1, 3, 51},
-                new int[] {2, 0, 72},
+                new int[] {41, 0, 72},
                 new int[] {42, 0, 73},
             },
             new int[][] {
                 new int[] {-1, 3, 52},
-                new int[] {23, 0, 74},
+                new int[] {22, 0, 74},
             },
             new int[][] {
                 new int[] {-1, 3, 53},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -1668,92 +1668,92 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 55},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
                 new int[] {44, 0, 90},
             },
             new int[][] {
                 new int[] {-1, 3, 56},
-                new int[] {6, 0, 93},
+                new int[] {5, 0, 93},
             },
             new int[][] {
                 new int[] {-1, 3, 57},
-                new int[] {40, 0, 94},
+                new int[] {39, 0, 94},
             },
             new int[][] {
                 new int[] {-1, 1, 7},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 4},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 4},
             },
             new int[][] {
                 new int[] {-1, 1, 11},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 19},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 13},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 21},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 25},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 14},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 22},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 26},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 28},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 95},
             },
             new int[][] {
                 new int[] {-1, 3, 69},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
                 new int[] {48, 0, 100},
             },
             new int[][] {
                 new int[] {-1, 3, 70},
-                new int[] {16, 0, 47},
-                new int[] {27, 0, 48},
-                new int[] {28, 0, 49},
+                new int[] {15, 0, 47},
+                new int[] {26, 0, 48},
+                new int[] {27, 0, 49},
             },
             new int[][] {
                 new int[] {-1, 3, 71},
-                new int[] {16, 0, 47},
-                new int[] {27, 0, 48},
-                new int[] {28, 0, 49},
+                new int[] {15, 0, 47},
+                new int[] {26, 0, 48},
+                new int[] {27, 0, 49},
             },
             new int[][] {
                 new int[] {-1, 3, 72},
-                new int[] {3, 0, 106},
-                new int[] {6, 0, 107},
+                new int[] {2, 0, 106},
+                new int[] {5, 0, 107},
             },
             new int[][] {
                 new int[] {-1, 1, 75},
             },
             new int[][] {
                 new int[] {-1, 1, 87},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 118},
@@ -1763,68 +1763,68 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 119},
-                new int[] {21, 0, 113},
+                new int[] {20, 0, 113},
                 new int[] {43, 0, 114},
             },
             new int[][] {
                 new int[] {-1, 3, 78},
-                new int[] {16, 0, 116},
+                new int[] {15, 0, 116},
             },
             new int[][] {
                 new int[] {-1, 3, 79},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 80},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 81},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 82},
-                new int[] {40, 0, 120},
+                new int[] {39, 0, 120},
             },
             new int[][] {
                 new int[] {-1, 1, 96},
             },
             new int[][] {
                 new int[] {-1, 1, 99},
-                new int[] {35, 0, 121},
-                new int[] {36, 0, 122},
+                new int[] {34, 0, 121},
+                new int[] {35, 0, 122},
             },
             new int[][] {
                 new int[] {-1, 1, 102},
-                new int[] {25, 0, 123},
+                new int[] {24, 0, 123},
             },
             new int[][] {
                 new int[] {-1, 1, 106},
-                new int[] {29, 0, 124},
-                new int[] {30, 0, 125},
+                new int[] {28, 0, 124},
+                new int[] {29, 0, 125},
             },
             new int[][] {
                 new int[] {-1, 1, 110},
-                new int[] {23, 0, 126},
-                new int[] {31, 0, 127},
-                new int[] {32, 0, 128},
-                new int[] {33, 0, 129},
-                new int[] {37, 0, 130},
+                new int[] {22, 0, 126},
+                new int[] {30, 0, 127},
+                new int[] {31, 0, 128},
+                new int[] {32, 0, 129},
+                new int[] {36, 0, 130},
                 new int[] {45, 0, 131},
             },
             new int[][] {
@@ -1843,8 +1843,8 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 92},
-                new int[] {16, 0, 134},
-                new int[] {31, 0, 26},
+                new int[] {15, 0, 134},
+                new int[] {30, 0, 26},
             },
             new int[][] {
                 new int[] {-1, 3, 93},
@@ -1855,40 +1855,40 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 15},
-                new int[] {8, 0, 3},
-                new int[] {16, 0, 40},
+                new int[] {7, 0, 3},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 23},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 27},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 29},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 30},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 3, 100},
-                new int[] {16, 0, 137},
+                new int[] {15, 0, 137},
             },
             new int[][] {
                 new int[] {-1, 1, 140},
             },
             new int[][] {
                 new int[] {-1, 3, 102},
-                new int[] {16, 0, 138},
-                new int[] {31, 0, 26},
+                new int[] {15, 0, 138},
+                new int[] {30, 0, 26},
             },
             new int[][] {
                 new int[] {-1, 3, 103},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
                 new int[] {48, 0, 139},
             },
             new int[][] {
@@ -1899,11 +1899,11 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 106},
-                new int[] {30, 0, 141},
+                new int[] {29, 0, 141},
             },
             new int[][] {
                 new int[] {-1, 3, 107},
-                new int[] {4, 0, 142},
+                new int[] {3, 0, 142},
             },
             new int[][] {
                 new int[] {-1, 3, 108},
@@ -1911,32 +1911,32 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 77},
-                new int[] {31, 0, 144},
-                new int[] {38, 0, 145},
+                new int[] {30, 0, 144},
+                new int[] {37, 0, 145},
             },
             new int[][] {
                 new int[] {-1, 1, 144},
             },
             new int[][] {
                 new int[] {-1, 1, 79},
-                new int[] {6, 0, 107},
-                new int[] {31, 0, 146},
+                new int[] {5, 0, 107},
+                new int[] {30, 0, 146},
             },
             new int[][] {
                 new int[] {-1, 1, 86},
             },
             new int[][] {
                 new int[] {-1, 3, 113},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 3, 114},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
                 new int[] {44, 0, 149},
             },
@@ -1946,8 +1946,8 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 116},
-                new int[] {20, 0, 153},
-                new int[] {38, 0, 154},
+                new int[] {19, 0, 153},
+                new int[] {37, 0, 154},
             },
             new int[][] {
                 new int[] {-1, 1, 105},
@@ -1964,102 +1964,102 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 121},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 122},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 123},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 124},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 125},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 126},
-                new int[] {16, 0, 161},
+                new int[] {15, 0, 161},
             },
             new int[][] {
                 new int[] {-1, 3, 127},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 128},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 129},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 130},
-                new int[] {16, 0, 165},
+                new int[] {15, 0, 165},
             },
             new int[][] {
                 new int[] {-1, 3, 131},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 132},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 173},
             },
             new int[][] {
@@ -2068,35 +2068,35 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 46},
-                new int[] {38, 0, 182},
+                new int[] {37, 0, 182},
             },
             new int[][] {
                 new int[] {-1, 3, 135},
-                new int[] {40, 0, 183},
+                new int[] {39, 0, 183},
             },
             new int[][] {
                 new int[] {-1, 1, 31},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 3, 137},
-                new int[] {40, 0, 184},
+                new int[] {39, 0, 184},
             },
             new int[][] {
                 new int[] {-1, 3, 138},
-                new int[] {40, 0, 185},
+                new int[] {39, 0, 185},
                 new int[] {45, 0, 186},
             },
             new int[][] {
                 new int[] {-1, 3, 139},
-                new int[] {16, 0, 187},
+                new int[] {15, 0, 187},
             },
             new int[][] {
                 new int[] {-1, 1, 141},
             },
             new int[][] {
                 new int[] {-1, 3, 141},
-                new int[] {3, 0, 188},
+                new int[] {2, 0, 188},
             },
             new int[][] {
                 new int[] {-1, 1, 84},
@@ -2106,29 +2106,29 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 144},
-                new int[] {6, 0, 189},
+                new int[] {5, 0, 189},
             },
             new int[][] {
                 new int[] {-1, 3, 145},
-                new int[] {6, 0, 107},
+                new int[] {5, 0, 107},
             },
             new int[][] {
                 new int[] {-1, 3, 146},
-                new int[] {6, 0, 191},
+                new int[] {5, 0, 191},
             },
             new int[][] {
                 new int[] {-1, 1, 145},
             },
             new int[][] {
                 new int[] {-1, 3, 148},
-                new int[] {22, 0, 192},
+                new int[] {21, 0, 192},
             },
             new int[][] {
                 new int[] {-1, 1, 123},
             },
             new int[][] {
                 new int[] {-1, 1, 128},
-                new int[] {38, 0, 193},
+                new int[] {37, 0, 193},
             },
             new int[][] {
                 new int[] {-1, 3, 151},
@@ -2136,12 +2136,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 152},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
                 new int[] {44, 0, 195},
             },
@@ -2150,7 +2150,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 154},
-                new int[] {41, 0, 23},
+                new int[] {40, 0, 23},
             },
             new int[][] {
                 new int[] {-1, 1, 115},
@@ -2199,13 +2199,13 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 169},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
-                new int[] {40, 0, 201},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
+                new int[] {39, 0, 201},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -2216,9 +2216,9 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 64},
-                new int[] {21, 0, 113},
-                new int[] {26, 0, 203},
-                new int[] {41, 0, 23},
+                new int[] {20, 0, 113},
+                new int[] {25, 0, 203},
+                new int[] {40, 0, 23},
                 new int[] {43, 0, 114},
             },
             new int[][] {
@@ -2232,43 +2232,43 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 176},
-                new int[] {16, 0, 204},
-                new int[] {31, 0, 26},
+                new int[] {15, 0, 204},
+                new int[] {30, 0, 26},
             },
             new int[][] {
                 new int[] {-1, 3, 177},
-                new int[] {18, 0, 205},
+                new int[] {17, 0, 205},
             },
             new int[][] {
                 new int[] {-1, 1, 63},
             },
             new int[][] {
                 new int[] {-1, 3, 179},
-                new int[] {40, 0, 206},
+                new int[] {39, 0, 206},
             },
             new int[][] {
                 new int[] {-1, 3, 180},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 207},
             },
             new int[][] {
                 new int[] {-1, 3, 181},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 209},
             },
             new int[][] {
                 new int[] {-1, 3, 182},
-                new int[] {16, 0, 40},
+                new int[] {15, 0, 40},
             },
             new int[][] {
                 new int[] {-1, 1, 41},
@@ -2281,11 +2281,11 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 186},
-                new int[] {6, 0, 212},
+                new int[] {5, 0, 212},
             },
             new int[][] {
                 new int[] {-1, 3, 187},
-                new int[] {40, 0, 213},
+                new int[] {39, 0, 213},
             },
             new int[][] {
                 new int[] {-1, 1, 83},
@@ -2295,8 +2295,8 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 81},
-                new int[] {6, 0, 107},
-                new int[] {31, 0, 214},
+                new int[] {5, 0, 107},
+                new int[] {30, 0, 214},
             },
             new int[][] {
                 new int[] {-1, 1, 80},
@@ -2306,12 +2306,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 193},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -2326,29 +2326,29 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 197},
-                new int[] {20, 0, 217},
+                new int[] {19, 0, 217},
             },
             new int[][] {
                 new int[] {-1, 1, 113},
             },
             new int[][] {
                 new int[] {-1, 3, 199},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 200},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -2356,27 +2356,27 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 202},
-                new int[] {40, 0, 220},
+                new int[] {39, 0, 220},
             },
             new int[][] {
                 new int[] {-1, 3, 203},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 204},
-                new int[] {26, 0, 222},
-                new int[] {40, 0, 223},
+                new int[] {25, 0, 222},
+                new int[] {39, 0, 223},
                 new int[] {45, 0, 224},
             },
             new int[][] {
                 new int[] {-1, 3, 205},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 122},
@@ -2392,12 +2392,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 210},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 226},
             },
             new int[][] {
@@ -2412,7 +2412,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 214},
-                new int[] {6, 0, 228},
+                new int[] {5, 0, 228},
             },
             new int[][] {
                 new int[] {-1, 1, 129},
@@ -2436,16 +2436,16 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 221},
-                new int[] {40, 0, 231},
+                new int[] {39, 0, 231},
             },
             new int[][] {
                 new int[] {-1, 3, 222},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -2453,16 +2453,16 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 224},
-                new int[] {6, 0, 233},
+                new int[] {5, 0, 233},
             },
             new int[][] {
                 new int[] {-1, 3, 225},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 234},
             },
             new int[][] {
@@ -2470,29 +2470,29 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 227},
-                new int[] {40, 0, 237},
+                new int[] {39, 0, 237},
             },
             new int[][] {
                 new int[] {-1, 1, 82},
             },
             new int[][] {
                 new int[] {-1, 3, 229},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 234},
             },
             new int[][] {
                 new int[] {-1, 3, 230},
-                new int[] {10, 0, 239},
-                new int[] {11, 0, 240},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 239},
+                new int[] {10, 0, 240},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 241},
             },
             new int[][] {
@@ -2500,7 +2500,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 232},
-                new int[] {40, 0, 247},
+                new int[] {39, 0, 247},
             },
             new int[][] {
                 new int[] {-1, 3, 233},
@@ -2508,12 +2508,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 234},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 249},
             },
             new int[][] {
@@ -2538,12 +2538,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 241},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 253},
             },
             new int[][] {
@@ -2551,18 +2551,18 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 52},
-                new int[] {12, 1, 56},
+                new int[] {11, 1, 56},
             },
             new int[][] {
                 new int[] {-1, 1, 48},
             },
             new int[][] {
                 new int[] {-1, 3, 245},
-                new int[] {12, 0, 255},
+                new int[] {11, 0, 255},
             },
             new int[][] {
                 new int[] {-1, 3, 246},
-                new int[] {18, 0, 256},
+                new int[] {17, 0, 256},
             },
             new int[][] {
                 new int[] {-1, 1, 58},
@@ -2575,61 +2575,61 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 250},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 257},
             },
             new int[][] {
                 new int[] {-1, 3, 251},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 252},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 1, 68},
-                new int[] {12, 1, 71},
+                new int[] {11, 1, 71},
             },
             new int[][] {
                 new int[] {-1, 3, 254},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 260},
             },
             new int[][] {
                 new int[] {-1, 3, 255},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
                 new int[] {-1, 3, 256},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 69},
@@ -2644,7 +2644,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 69},
-                new int[] {12, 1, 72},
+                new int[] {11, 1, 72},
             },
             new int[][] {
                 new int[] {-1, 3, 261},
@@ -2656,12 +2656,12 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 263},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 272},
             },
             new int[][] {
@@ -2672,56 +2672,56 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 266},
-                new int[] {18, 0, 274},
+                new int[] {17, 0, 274},
             },
             new int[][] {
                 new int[] {-1, 3, 267},
-                new int[] {10, 0, 239},
-                new int[] {11, 0, 240},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 239},
+                new int[] {10, 0, 240},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 241},
             },
             new int[][] {
                 new int[] {-1, 3, 268},
-                new int[] {10, 0, 239},
-                new int[] {11, 0, 240},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 239},
+                new int[] {10, 0, 240},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 241},
             },
             new int[][] {
                 new int[] {-1, 3, 269},
-                new int[] {10, 0, 239},
-                new int[] {11, 0, 240},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 239},
+                new int[] {10, 0, 240},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 241},
             },
             new int[][] {
                 new int[] {-1, 3, 270},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 271},
-                new int[] {5, 0, 75},
-                new int[] {6, 0, 76},
-                new int[] {16, 0, 77},
-                new int[] {19, 0, 78},
-                new int[] {30, 0, 79},
-                new int[] {34, 0, 80},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
                 new int[] {43, 0, 81},
             },
             new int[][] {
@@ -2729,17 +2729,17 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 273},
-                new int[] {10, 0, 167},
-                new int[] {11, 0, 168},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 167},
+                new int[] {10, 0, 168},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {48, 0, 280},
             },
             new int[][] {
                 new int[] {-1, 3, 274},
-                new int[] {16, 0, 19},
+                new int[] {15, 0, 19},
             },
             new int[][] {
                 new int[] {-1, 1, 55},
@@ -2749,7 +2749,7 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 277},
-                new int[] {12, 0, 282},
+                new int[] {11, 0, 282},
             },
             new int[][] {
                 new int[] {-1, 3, 278},
@@ -2764,60 +2764,60 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 281},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
                 new int[] {-1, 3, 282},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
                 new int[] {-1, 3, 283},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
                 new int[] {-1, 3, 284},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
                 new int[] {-1, 1, 49},
-                new int[] {12, 1, 53},
+                new int[] {11, 1, 53},
             },
             new int[][] {
                 new int[] {-1, 3, 286},
-                new int[] {12, 0, 287},
+                new int[] {11, 0, 287},
             },
             new int[][] {
                 new int[] {-1, 3, 287},
-                new int[] {10, 0, 261},
-                new int[] {11, 0, 262},
-                new int[] {13, 0, 169},
-                new int[] {14, 0, 170},
-                new int[] {15, 0, 171},
-                new int[] {16, 0, 172},
+                new int[] {9, 0, 261},
+                new int[] {10, 0, 262},
+                new int[] {12, 0, 169},
+                new int[] {13, 0, 170},
+                new int[] {14, 0, 171},
+                new int[] {15, 0, 172},
                 new int[] {47, 0, 263},
             },
             new int[][] {
@@ -3169,24 +3169,24 @@ namespace DLM.Compiler.Parsing
             "Expecting: TIdentifier or end of file",
             "Expecting: TIdentifier or '*'",
             "Expecting: '-->'",
-            "Expecting: '@', 'while', 'if', 'return', 'this', 'caller', TIdentifier, '>>>', ',', ';', '}}', '{' or '⊔'",
+            "Expecting: 'while', 'if', 'return', 'this', 'caller', TIdentifier, '>>>', ',', ';', '@', '}}', '{' or '⊔'",
             "Expecting: ';'",
             "Expecting: TIdentifier, '_' or '^'",
             "Expecting: '=', ';', '(' or '['",
             "Expecting: TIdentifier, '*' or '{{'",
             "Expecting: '{'",
-            "Expecting: '@', '->', ';', '}}' or '⊔'",
-            "Expecting: '@', ';', '}}' or '⊔'",
+            "Expecting: '->', ';', '@', '}}' or '⊔'",
+            "Expecting: ';', '@', '}}' or '⊔'",
             "Expecting: '@' or '}}'",
             "Expecting: '->'",
             "Expecting: TBool, TNumber, TIdentifier, '<|', '-', '!' or '('",
             "Expecting: TIdentifier or ')'",
             "Expecting: TNumber",
-            "Expecting: '@', 'while', 'if', 'return', 'this', 'caller', TIdentifier, '>>>', ';', '}}', '{' or '⊔'",
+            "Expecting: 'while', 'if', 'return', 'this', 'caller', TIdentifier, '>>>', ';', '@', '}}', '{' or '⊔'",
             "Expecting: TIdentifier or '}'",
             "Expecting: TTime or TNumber",
             "Expecting: TIdentifier, '|>' or '*'",
-            "Expecting: '@', TIdentifier, ';', '}}' or '⊔'",
+            "Expecting: TIdentifier, ';', '@', '}}' or '⊔'",
             "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', ')', '[' or ']'",
             "Expecting: '<<<', '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', '(', ')', '[' or ']'",
             "Expecting: TBool, TNumber, TIdentifier, '<|' or '('",

@@ -12,15 +12,14 @@ Helpers
     long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
 
 States
-    normal, include, label;
+    normal, include, label, time;
 
 Tokens
     {normal -> include} include = '#include';
     {include -> normal} file = '<' [all - '>']* '>';
     
-    {label} at = '@';
-    {label} time = digit+ ':' digit+;
-    {label} interval_unit = 'd' | 'h' | 'm' | 's' | 'ms';
+    {time} time = digit+ ':' digit+;
+    {time} interval_unit = 'd' | 'h' | 'm' | 's' | 'ms';
     
     bool = 'true'|'false';
     number = digit+;
@@ -71,7 +70,8 @@ Tokens
     semicolon = ';';
     
     {normal -> label} label_start = '{{';
-    {label -> normal} label_end = '}}';
+    {label -> time} time_start = '@';
+    {time -> normal, label -> normal} label_end = '}}';
     
     l_par = '(';
     r_par = ')';
@@ -93,7 +93,7 @@ Token Syntax Highlight
     {if, else, while, return, typedef, struct} text: #00c, bold;
     {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
      func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,
-     at, time, interval_unit} text: #8d19aa, background: #e6e7fa, bold;
+     time_start, time, interval_unit} text: #8d19aa, background: #e6e7fa, bold;
     {underscore, hat} text: #8d19aa, bold;
 
 Abstract Syntax Tree
@@ -214,7 +214,7 @@ Abstract Syntax Tree
 Productions
     label
         = {none} label_start lpolicy label_end -> New label([lpolicy], Null)
-        | {time} label_start lpolicy at timing label_end -> New label([lpolicy], timing)
+        | {time} label_start lpolicy time_start timing label_end -> New label([lpolicy], timing)
         ;
     
     timing
