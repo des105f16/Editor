@@ -1,5 +1,6 @@
 ﻿using DLM.Compiler.Analysis;
 using System.Collections.Generic;
+using System.Linq;
 using DLM.Compiler.Nodes;
 using DLM.Inference;
 using SablePP.Tools.Error;
@@ -7,27 +8,29 @@ using SablePP.Tools;
 
 namespace DLM.Compiler
 {
-    public class LabelExtractor : DepthFirstAdapter
+    public class LabelDecorator : DepthFirstAdapter
     {
         private ErrorManager errorManager;
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
-        public LabelExtractor(ErrorManager errorManager, Dictionary<string, Principal> principals)
+        private Dictionary<string, PStruct> structTypedefs;
+        private ScopedDictionary<string, PStruct> structDeclarations;
+
+        public LabelDecorator(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             this.errorManager = errorManager;
             this.principals = principals;
             this.namedLabels = new ScopedDictionary<string, Label>();
+
+            this.structTypedefs = new Dictionary<string, PStruct>();
+            this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
         protected override void HandlePRoot(PRoot node)
         {
             Visit(node.Structs);
             Visit(node.Statements);
-
-            // Stop validation if there were errors
-            if (errorManager.Errors.Count > 0)
-                return;
         }
 
         protected override void HandlePStruct(PStruct node)
@@ -39,21 +42,23 @@ namespace DLM.Compiler
                 if (field.Type.DeclaredLabel == null)
                     field.Type.DeclaredLabel = Label.LowerBound;
             }
+
+            structTypedefs.Add(node.Name.Text, node);
+        }
+
+        private AType getType(PType type)
+        {
+            while (type is APointerType)
+                type = (type as APointerType).Type;
+            return type as AType;
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             namedLabels.OpenScope();
+            structDeclarations.OpenScope();
 
-            foreach (var par in node.Parameters)
-            {
-                Visit(par.Type);
-
-                if (par.Type.DeclaredLabel == null)
-                    par.Type.DeclaredLabel = new ConstantLabel(par.Identifier.Text);
-
-                namedLabels.Add(par.Identifier.Text, par.Type.DeclaredLabel);
-            }
+            Visit(node.Parameters);
 
             Visit(node.Type);
             if (node.Type.DeclaredLabel == null)
@@ -68,6 +73,20 @@ namespace DLM.Compiler
             Visit(node.Statements);
 
             namedLabels.CloseScope();
+            structDeclarations.CloseScope();
+        }
+        protected override void HandleAFunctionParameter(AFunctionParameter node)
+        {
+            Visit(node.Type);
+
+            if (node.Type.DeclaredLabel == null)
+                node.Type.DeclaredLabel = new ConstantLabel(node.Identifier.Text);
+
+            namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
@@ -80,6 +99,10 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
@@ -89,6 +112,23 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
+        }
+
+        protected override void HandleAElementExpression(AElementExpression node)
+        {
+            var expr = (node.Expression as AIndexExpression)?.Expression ?? node.Expression;
+
+            if (expr is AIdentifierExpression)
+            {
+                var identExpr = expr as AIdentifierExpression;
+                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
+            }
+            else
+                errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
         }
 
         protected override void HandleAType(AType node)

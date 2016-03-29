@@ -46,14 +46,13 @@
   <ItemGroup>
     <Compile Include="CGenerator.cs" />
     <Compile Include="CompilerExecuter.cs" />
-    <Compile Include="ElementLabelExtractor.cs" />
     <Compile Include="Generated\analysis.cs" />
     <Compile Include="Generated\CompilerExecuter.cs" />
     <Compile Include="Generated\lexer.cs" />
     <Compile Include="Generated\parser.cs" />
     <Compile Include="Generated\prods.cs" />
     <Compile Include="Generated\tokens.cs" />
-    <Compile Include="LabelExtractor.cs" />
+    <Compile Include="LabelDecorator.cs" />
     <Compile Include="LabelInferer.cs" />
     <Compile Include="Nodes\AElementExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />
