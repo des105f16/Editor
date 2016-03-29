@@ -211,18 +211,27 @@ namespace DLM.Compiler
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
-                var hasCallerAuthority = node.Authorities.Count > 0;
+
                 AFunctionDeclarationStatement funcDecl;
                 Label fcLabel;
 
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
+                    fcLabel = funcDecl.Type.DeclaredLabel;
                     checkArgumentLabels(node.Arguments, funcDecl);
-                    fcLabel = getExplicitLabel((dynamic)funcDecl.Type.DeclaredLabel, node.Arguments.Select(x => Visit(x)).ToList(), funcDecl);
+
+                    for (int i = 0; i < funcDecl.Parameters.Count; i++)
+                        if (funcDecl.Parameters[i].Type.DeclaredLabel is ConstantLabel)
+                        {
+                            var constant = funcDecl.Parameters[i].Type.DeclaredLabel as ConstantLabel;
+                            fcLabel = fcLabel.ReplaceConstant(constant, Visit(node.Arguments[i]));
+                        }
+                        else
+                            Visit(node.Arguments[i]);
                 }
                 else
                 {
-                    if (hasCallerAuthority)
+                    if (node.Authorities.Count > 0)
                         errorManager.Register(node, ErrorType.Warning, $"Caller authority has no effect on library function {fcName}.");
 
                     fcLabel = Label.LowerBound;
