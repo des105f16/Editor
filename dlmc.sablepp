@@ -320,7 +320,7 @@ Productions
         | {dec2} declassify_start identifier comma label declassify_end -> New expression.declassify(identifier, label)
         ;
     expressionstmt -> statement
-        = {f} funccall -> New statement.expression(funccall)
+    = {f} funccall semicolon -> New statement.expression(funccall)
         ;
 
     funccall -> expression
