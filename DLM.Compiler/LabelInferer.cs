@@ -273,7 +273,7 @@ namespace DLM.Compiler
                 {
                     var argLabel = Visit(arguments[i]);
                     var paramLabel = functionDeclaration.Parameters[i].Type.DeclaredLabel;
-                    if (!(paramLabel <= argLabel))
+                    if (!(argLabel <= paramLabel))
                         errorManager.Register(arguments[i], $"Argument label is less restrictive than parameter label: {argLabel} \u228f {paramLabel}");
                 }
             }
