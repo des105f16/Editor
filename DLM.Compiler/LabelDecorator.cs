@@ -41,6 +41,8 @@ namespace DLM.Compiler
                 if (field.Type.DeclaredLabel == null)
                     field.Type.DeclaredLabel = Label.LowerBound;
             }
+
+            structTypedefs.Add(node.Name.Text, node);
         }
 
         private AType getType(PType type)
@@ -96,6 +98,10 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
@@ -105,6 +111,10 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
+
+            var type = getType(node.Type);
+            if (structTypedefs.ContainsKey(type.Name.Text))
+                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
 
         protected override void HandleAType(AType node)

@@ -15,29 +15,6 @@ namespace DLM.Compiler
         {
             this.errorManager = errorManager;
         }
-        
-        protected override void HandleADeclarationStatement(ADeclarationStatement node)
-        {
-            var type = getType(node.Type);
-
-            if (node.HasExpression)
-                Visit(node.Expression);
-
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
-        }
-        protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
-        {
-            var type = getType(node.Type);
-
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
-        }
-        
-        protected override void HandlePStruct(PStruct node)
-        {
-            structTypedefs.Add(node.Name.Text, node);
-        }
 
         protected override void HandleAElementExpression(AElementExpression node)
         {
