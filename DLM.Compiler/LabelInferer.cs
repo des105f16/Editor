@@ -18,7 +18,7 @@ namespace DLM.Compiler
         private ScopedDictionary<string, PType> types;
         private Dictionary<string, AFunctionDeclarationStatement> functionLabels;
 
-        private LabelStack authority;
+        private AuthorityLabel authority;
         private LabelStack basicBlock;
         private SafeNameDictionary<VariableLabel> namedLabels;
         private IEnumerable<string> variableNameGenerator(string name)
@@ -49,7 +49,7 @@ namespace DLM.Compiler
             types = new ScopedDictionary<string, PType>();
             functionLabels = new Dictionary<string, AFunctionDeclarationStatement>();
 
-            authority = new LabelStack(true);
+            authority = new AuthorityLabel();
             basicBlock = new LabelStack(true);
             namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
@@ -108,11 +108,8 @@ namespace DLM.Compiler
                 errorManager.Register(node.Claimant, ErrorType.Warning, "'this' keyword not yet implemented.");
 
             foreach (var p in node.Principals)
-            {
-                var label = new PolicyLabel(
-                    new Policy(p.DeclaredPrincipal));
-                authority.Push(label);
-            }
+                authority.Push(p.DeclaredPrincipal);
+
             Visit(node.Statements);
             authority.Pop();
         }
@@ -158,7 +155,7 @@ namespace DLM.Compiler
             private LabelInferer owner;
             private ScopedDictionary<string, PType> types => owner.types;
             private ErrorManager errorManager => owner.errorManager;
-            private Label authority => owner.authority;
+            private AuthorityLabel authority => owner.authority;
 
             private ExpressionLabeler(LabelInferer owner)
             {
