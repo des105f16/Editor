@@ -230,8 +230,11 @@ namespace DLM.Compiler
                         fcLabel += Visit(a);
                 }
 
-                if (hasCallerAuthority)
-                    checkAuthority(node.Authorities);
+                foreach (var p in node.Authorities)
+                {
+                    if (!authority.Contains(p.DeclaredPrincipal))
+                        errorManager.Register(p, $"Principal {p.DeclaredPrincipal.Name} is not in the effective authority.");
+                }
 
                 return fcLabel;
             }
@@ -264,20 +267,6 @@ namespace DLM.Compiler
                     if (paramLabel is PolicyLabel)
                         if (!(paramLabel <= argLabel))
                             errorManager.Register(arguments[i], $"Argument label is less restrictive than parameter label: {argLabel} \u228f {paramLabel}");
-                }
-            }
-
-            private void checkAuthority(Production.NodeList<PPrincipal> authorities)
-            {
-                IEnumerable<Principal> authorityOwners;
-                if (authority is LowerBoundLabel)
-                    authorityOwners = new Principal[0];
-                else
-                    authorityOwners = (authority as PolicyLabel).Owners();
-                foreach (var p in authorities)
-                {
-                    if (!authorityOwners.Contains(p.DeclaredPrincipal))
-                        errorManager.Register(p, $"Principal {p.DeclaredPrincipal.Name} is not in the effective authority.");
                 }
             }
         }
