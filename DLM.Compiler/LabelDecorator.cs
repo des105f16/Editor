@@ -30,10 +30,6 @@ namespace DLM.Compiler
         {
             Visit(node.Structs);
             Visit(node.Statements);
-
-            // Stop validation if there were errors
-            if (errorManager.Errors.Count > 0)
-                return;
         }
 
         protected override void HandlePStruct(PStruct node)
