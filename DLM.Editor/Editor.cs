@@ -99,7 +99,13 @@ namespace DLM.Editor
                 foreach (var v in result.Variables)
                     listBox1.Items.Add(getString(v));
             else
-                listBox1.Items.Add("ERROR");
+            {
+                listBox1.Items.Add("ERROR"); foreach (var v in result.ErrorConstraints)
+                {
+                    listBox1.Items.Add($"{v.Left} \u2291 {v.Right}");
+                    listBox1.Items.Add($"{v.Left.NoVariables.ToString()} \u2291 {v.Right.NoVariables.ToString()}");
+                }
+            }
         }
 
         private string getString(VariableLabel label)
