@@ -267,18 +267,6 @@ namespace DLM.Compiler
                 }
             }
 
-            private Label getExplicitLabel(ConstantLabel label, List<Label> argumentLabels, AFunctionDeclarationStatement functionDeclaration)
-            {
-                int number = functionDeclaration[label.Name].Number;
-                return argumentLabels[number-1];
-            }
-
-            private Label getExplicitLabel(JoinLabel label, List<Label> argumentLabels, AFunctionDeclarationStatement functionDeclaration)
-                => getExplicitLabel((dynamic)label.Label1, argumentLabels, functionDeclaration)
-                   + getExplicitLabel((dynamic)label.Label2, argumentLabels, functionDeclaration);
-
-            private Label getExplicitLabel(Label label, List<Label> argumentLabels, AFunctionDeclarationStatement functionDeclaration) => label;
-
             private void checkAuthority(Production.NodeList<PPrincipal> authorities)
             {
                 IEnumerable<Principal> authorityOwners;
