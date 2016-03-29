@@ -4,18 +4,20 @@ using SablePP.Tools;
 using SablePP.Tools.Nodes;
 using SablePP.Tools.Error;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 using FastColoredTextBoxNS;
 using DLM.Inference;
 using System.Drawing;
+using System;
 
 namespace DLM.Compiler
 {
     public partial class CompilerExecuter
     {
-        private InferenceResult result;
-        public InferenceResult Result => result;
+        private Tuple<InferenceResult, Dictionary<Constraint, Node>> result;
+        public Tuple<InferenceResult, Dictionary<Constraint, Node>> Result => result;
 
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
@@ -124,11 +126,12 @@ namespace DLM.Compiler
                 le.Visit(root);
             }
 
-            public InferenceResult InferLabels()
+            public Tuple<InferenceResult, Dictionary<Constraint, Node>> InferLabels()
             {
                 ConstraintExtractor le = new ConstraintExtractor(errorManager);
                 le.Visit(root);
-                return Inference.ConstraintResolver.Resolve(le.Constraints);
+                var dict = le.Constraints.ToDictionary(x => x.Item1, x => x.Item2);
+                return Tuple.Create(Inference.ConstraintResolver.Resolve(le.Constraints.Select(x => x.Item1)), dict);
             }
         }
 

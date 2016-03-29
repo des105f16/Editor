@@ -12,7 +12,7 @@ namespace DLM.Compiler
 {
     public class ConstraintExtractor : DepthFirstAdapter
     {
-        private List<Constraint> constraints;
+        private List<Tuple<Constraint, Node>> constraints;
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
@@ -43,7 +43,7 @@ namespace DLM.Compiler
 
         public ConstraintExtractor(ErrorManager errorManager)
         {
-            constraints = new List<Constraint>();
+            constraints = new List<Tuple<Constraint, Node>>();
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
@@ -54,11 +54,11 @@ namespace DLM.Compiler
             namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
-        public Constraint[] Constraints => constraints.ToArray();
+        public Tuple<Constraint, Node>[] Constraints => constraints.ToArray();
 
-        private void Add(Label left, Label right)
+        private void Add(Label left, Label right, Node node = null)
         {
-            constraints.Add(new Constraint(left + basicBlock, right));
+            constraints.Add(Tuple.Create(new Constraint(left + basicBlock, right), node));
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
@@ -277,10 +277,10 @@ namespace DLM.Compiler
                 {
                     var argLabel = Visit(arguments[i]);
                     var paramLabel = functionDeclaration.Parameters[i].Type.DeclaredLabel;
-                    
-                    if(paramLabel is PolicyLabel && argLabel is PolicyLabel)
+
+                    if (paramLabel is PolicyLabel && argLabel is PolicyLabel)
                     {
-                        if(!(argLabel<=paramLabel))
+                        if (!(argLabel <= paramLabel))
                             errorManager.Register(arguments[i], $"Parameter label is less restrictive than argument label: {argLabel} \u228f {paramLabel}");
                     }
                     else if (!(paramLabel is ConstantLabel))

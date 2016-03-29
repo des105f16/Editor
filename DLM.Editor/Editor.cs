@@ -95,12 +95,13 @@ namespace DLM.Editor
             if (result == null)
                 return;
 
-            if (result.Succes)
-                foreach (var v in result.Variables)
+            if (result.Item1.Succes)
+                foreach (var v in result.Item1.Variables)
                     listBox1.Items.Add(getString(v));
             else
             {
-                listBox1.Items.Add("ERROR"); foreach (var v in result.ErrorConstraints)
+                listBox1.Items.Add("ERROR");
+                foreach (var v in result.Item1.ErrorConstraints)
                 {
                     listBox1.Items.Add($"{v.Left} \u2291 {v.Right}");
                     listBox1.Items.Add($"{v.Left.NoVariables.ToString()} \u2291 {v.Right.NoVariables.ToString()}");
