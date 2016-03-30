@@ -1,9 +1,12 @@
 ﻿using DLM.Compiler;
 using DLM.Inference;
 using SablePP.Tools.Editor;
+using SablePP.Tools.Nodes;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DLM.Editor
@@ -107,15 +110,23 @@ namespace DLM.Editor
                     listBox1.Items.Add(v);
             else
                 foreach (var v in result.Item1.Constraints)
-                    listBox1.Items.Add(v);
+                {
+                    SablePP.Tools.Nodes.Node node = null;
+                    if (result.Item2.ContainsKey(v))
+                        node = result.Item2[v];
+                    listBox1.Items.Add(Tuple.Create(v, node));
+                }
         }
 
         private void measureItem(object sender, MeasureItemEventArgs e)
         {
             var item = listBox1.Items[e.Index];
 
-            if (item is Constraint)
-                MeasureConstraint(item as Constraint, e);
+            if (item is Tuple<Constraint, SablePP.Tools.Nodes.Node>)
+            {
+                var tuple = item as Tuple<Constraint, SablePP.Tools.Nodes.Node>;
+                MeasureConstraint(tuple.Item1, tuple.Item2, e);
+            }
             if (item is VariableLabel)
                 MeasureVariable(item as VariableLabel, e);
         }
@@ -123,8 +134,11 @@ namespace DLM.Editor
         {
             var item = listBox1.Items[e.Index];
 
-            if (item is Constraint)
-                DrawConstraint(item as Constraint, e.State.HasFlag(DrawItemState.Focus), e);
+            if (item is Tuple<Constraint, SablePP.Tools.Nodes.Node>)
+            {
+                var tuple = item as Tuple<Constraint, SablePP.Tools.Nodes.Node>;
+                DrawConstraint(tuple.Item1, tuple.Item2, e.State.HasFlag(DrawItemState.Focus), e);
+            }
             if (item is VariableLabel)
                 DrawVariable(item as VariableLabel, e.State.HasFlag(DrawItemState.Focus), e);
         }
@@ -134,11 +148,14 @@ namespace DLM.Editor
         private Color error = Color.FromArgb(0xf5cccc + (0xff << 24));
         private Color errorFocus = Color.FromArgb(0xe06666 + (0xff << 24));
 
-        private void MeasureConstraint(Constraint constraint, MeasureItemEventArgs e)
+        private void MeasureConstraint(Constraint constraint, SablePP.Tools.Nodes.Node node, MeasureItemEventArgs e)
         {
             e.ItemHeight = 68;
+
+            if (node != null)
+                e.ItemHeight += 17;
         }
-        private void DrawConstraint(Constraint constraint, bool selected, DrawItemEventArgs e)
+        private void DrawConstraint(Constraint constraint, SablePP.Tools.Nodes.Node node, bool selected, DrawItemEventArgs e)
         {
             var bounds = e.Bounds; bounds.Height -= 2;
 
@@ -153,10 +170,46 @@ namespace DLM.Editor
             e.Graphics.DrawString(valid ? "OK" : "Error", titleStateFont, Brushes.Black, bounds.X + 70, bounds.Y + 3);
 
             var point = new PointF(bounds.X + 14, bounds.Y + 23);
-            
+
             e.Graphics.DrawString($"{constraint.Left} ⊑ {constraint.Right}", infoFont, Brushes.Black, point);
             point.Y += 15;
             e.Graphics.DrawString($"{constraint.Left.NoVariables} ⊑ {constraint.Right.NoVariables}", infoFont, Brushes.Black, point);
+
+            if (node != null)
+            {
+                var first = FirstToken.Find(node);
+                point.Y += 17;
+                e.Graphics.DrawString($"Line: {first.Line}", infoFont, Brushes.Black, point);
+            }
+        }
+
+        private class FirstToken : SablePP.Tools.Analysis.DepthFirstTreeWalker
+        {
+            private Token token = null;
+
+            public static Token Find(Node node)
+            {
+                var finder = new FirstToken();
+                finder.Visit(node);
+                return finder.token;
+            }
+            public static Token Find(IEnumerable<Node> nodes)
+            {
+                return Find(nodes.First());
+            }
+
+            private FirstToken() { }
+
+            public override void Visit(Production production)
+            {
+                if (this.token == null)
+                    base.Visit(production);
+            }
+            public override void Visit(Token token)
+            {
+                if (this.token == null)
+                    this.token = token;
+            }
         }
 
         private Color var = Color.FromArgb(0xcee8ef + (0xff << 24));
@@ -169,7 +222,7 @@ namespace DLM.Editor
         private void DrawVariable(VariableLabel label, bool selected, DrawItemEventArgs e)
         {
             var bounds = e.Bounds; bounds.Height -= 2;
-            
+
             using (var brush = new SolidBrush(selected ? varFocus : var))
                 e.Graphics.FillRectangle(brush, bounds);
 

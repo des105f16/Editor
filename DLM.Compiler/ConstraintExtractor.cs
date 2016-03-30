@@ -56,7 +56,7 @@ namespace DLM.Compiler
 
         public Tuple<Constraint, Node>[] Constraints => constraints.ToArray();
 
-        private void Add(Label left, Label right, Node node = null)
+        private void Add(Label left, Label right, Node node)
         {
             constraints.Add(Tuple.Create(new Constraint(left + basicBlock, right), node));
         }
@@ -84,13 +84,13 @@ namespace DLM.Compiler
                 ExpressionLabeler.GetLabel(node.Expression, this) :
                 Label.LowerBound;
 
-            Add(lbl, node.Type.DeclaredLabel);
+            Add(lbl, node.Type.DeclaredLabel, node);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
 
-            Add(Label.LowerBound, node.Type.DeclaredLabel);
+            Add(Label.LowerBound, node.Type.DeclaredLabel, node);
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
@@ -98,7 +98,7 @@ namespace DLM.Compiler
 
             var type = types[node.Identifier.Text];
 
-            Add(lbl, type.DeclaredLabel);
+            Add(lbl, type.DeclaredLabel, node);
         }
         protected override void HandleAExpressionStatement(AExpressionStatement node)
         {
@@ -120,7 +120,7 @@ namespace DLM.Compiler
         protected override void HandleAIfStatement(AIfStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -129,7 +129,7 @@ namespace DLM.Compiler
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
 
             basicBlock.Push(lbl);
             Visit(node.IfStatements);
@@ -139,7 +139,7 @@ namespace DLM.Compiler
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Label lbl = getVariableLabel("while");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -151,7 +151,7 @@ namespace DLM.Compiler
 
             var type = node.GetFirstParent<AFunctionDeclarationStatement>().Type;
 
-            Add(lbl, type.DeclaredLabel);
+            Add(lbl, type.DeclaredLabel, node.Expression);
         }
 
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
@@ -202,7 +202,7 @@ namespace DLM.Compiler
                     var Ld = owner.getVariableLabel(node.Identifier.Text);
                     var Lvar = types[node.Identifier.Text].DeclaredLabel;
 
-                    owner.Add(Lvar, Ld + authority);
+                    owner.Add(Lvar, Ld + authority, node);
 
                     return Ld;
                 }
@@ -285,7 +285,7 @@ namespace DLM.Compiler
                     }
                     else if (!(paramLabel is ConstantLabel))
                     {
-                        owner.Add(argLabel, paramLabel);
+                        owner.Add(argLabel, paramLabel, arguments[i]);
                     }
                 }
             }
