@@ -1,5 +1,6 @@
 ﻿using DLM.Compiler;
 using DLM.Inference;
+using FastColoredTextBoxNS;
 using SablePP.Tools.Editor;
 using SablePP.Tools.Nodes;
 using System;
@@ -19,6 +20,8 @@ namespace DLM.Editor
 
         private Font infoFont = new Font("Segoe UI Symbol", 10.5f, FontStyle.Regular);
 
+        private SquigglyStyle labelSquiggly = new SquigglyStyle(Pens.Orange);
+
         public Editor()
         {
             InitializeComponent();
@@ -31,6 +34,18 @@ namespace DLM.Editor
 
             codeTextBox1.CompilationCompleted += CodeTextBox_CompilationCompleted;
             codeTextBox1.TextChanged += (s, e) => base.MarkFileAsChanged();
+            codeTextBox1.ToolTipNeeded += CodeTextBox1_ToolTipNeeded;
+        }
+
+        private Dictionary<Range, string> labelTooltips = new Dictionary<Range, string>();
+        private void CodeTextBox1_ToolTipNeeded(object sender, ToolTipNeededEventArgs e)
+        {
+            foreach (var r in labelTooltips.Keys)
+                if (r.Contains(e.Place))
+                {
+                    e.ToolTipText = labelTooltips[r];
+                    break;
+                }
         }
 
         protected override void OnNewFileCreated(EventArgs e)
@@ -100,14 +115,39 @@ namespace DLM.Editor
             var comp = codeTextBox1.Executer as CompilerExecuter;
             var result = comp.Result;
 
+            codeTextBox1.Range.ClearStyle(labelSquiggly);
+            labelTooltips.Clear();
             listBox1.Items.Clear();
 
             if (result == null)
                 return;
 
             if (result.Succes)
+            {
+                foreach (var c in result.OriginalConstraints)
+                {
+                    if (!(c.Right is VariableLabel && c.OriginType == NodeConstraint.OriginTypes.Declaration))
+                        continue;
+
+                    var variable = c.Right as VariableLabel;
+                    
+                    if (c.Origin is Compiler.Nodes.ADeclarationStatement)
+                    {
+                        var id = (c.Origin as Compiler.Nodes.ADeclarationStatement).Identifier;
+                        var range = new Range(codeTextBox1,
+                            id.Position - 1, id.Line - 1, id.Position + id.Text.Length - 1, id.Line - 1);
+
+                        range.SetStyle(labelSquiggly);
+                        labelTooltips.Add(range, variable.CurrentUpperBound.NoVariables.ToString());
+                    }
+                    else
+                        throw new NotImplementedException();
+                }
+
+
                 foreach (var v in result.Variables)
                     listBox1.Items.Add(v);
+            }
 
             foreach (var v in result.ResolveSteps)
                 listBox1.Items.Add(v);

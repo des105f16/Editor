@@ -38,8 +38,11 @@ namespace DLM.Compiler
                 return;
 
             var vars = v.InferLabels();
-            if (v.Errors)
-                return;
+            if (!vars.Succes)
+            {
+                var fail = vars.ResolveSteps.Last();
+                compilationOptions.ErrorManager.Register(fail.Origin, "Failed to validate labels, see details.");
+            }
 
             result = vars;
         }
