@@ -105,16 +105,13 @@ namespace DLM.Editor
             if (result == null)
                 return;
 
-            if (result.Item1.Succes)
-                foreach (var v in result.Item1.Variables)
+            if (result.Succes)
+                foreach (var v in result.Variables)
                     listBox1.Items.Add(v);
             else
-                foreach (var v in result.Item1.Constraints)
+                foreach (var v in result.Constraints)
                 {
-                    SablePP.Tools.Nodes.Node node = null;
-                    if (result.Item2.ContainsKey(v))
-                        node = result.Item2[v];
-                    listBox1.Items.Add(Tuple.Create(v, node));
+                    listBox1.Items.Add(v);
                 }
         }
 
@@ -122,11 +119,8 @@ namespace DLM.Editor
         {
             var item = listBox1.Items[e.Index];
 
-            if (item is Tuple<Constraint, SablePP.Tools.Nodes.Node>)
-            {
-                var tuple = item as Tuple<Constraint, SablePP.Tools.Nodes.Node>;
-                MeasureConstraint(tuple.Item1, tuple.Item2, e);
-            }
+            if (item is NodeConstraint)
+                MeasureConstraint(item as NodeConstraint, e);
             if (item is VariableLabel)
                 MeasureVariable(item as VariableLabel, e);
         }
@@ -134,11 +128,8 @@ namespace DLM.Editor
         {
             var item = listBox1.Items[e.Index];
 
-            if (item is Tuple<Constraint, SablePP.Tools.Nodes.Node>)
-            {
-                var tuple = item as Tuple<Constraint, SablePP.Tools.Nodes.Node>;
-                DrawConstraint(tuple.Item1, tuple.Item2, e.State.HasFlag(DrawItemState.Focus), e);
-            }
+            if (item is NodeConstraint)
+                DrawConstraint(item as NodeConstraint, e.State.HasFlag(DrawItemState.Focus), e);
             if (item is VariableLabel)
                 DrawVariable(item as VariableLabel, e.State.HasFlag(DrawItemState.Focus), e);
         }
@@ -148,14 +139,11 @@ namespace DLM.Editor
         private Color error = Color.FromArgb(0xf5cccc + (0xff << 24));
         private Color errorFocus = Color.FromArgb(0xe06666 + (0xff << 24));
 
-        private void MeasureConstraint(Constraint constraint, SablePP.Tools.Nodes.Node node, MeasureItemEventArgs e)
+        private void MeasureConstraint(NodeConstraint constraint, MeasureItemEventArgs e)
         {
-            e.ItemHeight = 68;
-
-            if (node != null)
-                e.ItemHeight += 17;
+            e.ItemHeight = 68 + 17;
         }
-        private void DrawConstraint(Constraint constraint, SablePP.Tools.Nodes.Node node, bool selected, DrawItemEventArgs e)
+        private void DrawConstraint(NodeConstraint constraint, bool selected, DrawItemEventArgs e)
         {
             var bounds = e.Bounds; bounds.Height -= 2;
 
@@ -175,12 +163,9 @@ namespace DLM.Editor
             point.Y += 15;
             e.Graphics.DrawString($"{constraint.Left.NoVariables} ⊑ {constraint.Right.NoVariables}", infoFont, Brushes.Black, point);
 
-            if (node != null)
-            {
-                var first = FirstToken.Find(node);
-                point.Y += 17;
-                e.Graphics.DrawString($"Line: {first.Line}", infoFont, Brushes.Black, point);
-            }
+            var first = FirstToken.Find(constraint.Origin);
+            point.Y += 17;
+            e.Graphics.DrawString($"Line: {first.Line}", infoFont, Brushes.Black, point);
         }
 
         private class FirstToken : SablePP.Tools.Analysis.DepthFirstTreeWalker

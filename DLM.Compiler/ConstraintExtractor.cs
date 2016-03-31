@@ -12,7 +12,7 @@ namespace DLM.Compiler
 {
     public class ConstraintExtractor : DepthFirstAdapter
     {
-        private List<Tuple<Constraint, Node>> constraints;
+        private List<NodeConstraint> constraints;
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
@@ -43,7 +43,7 @@ namespace DLM.Compiler
 
         public ConstraintExtractor(ErrorManager errorManager)
         {
-            constraints = new List<Tuple<Constraint, Node>>();
+            constraints = new List<NodeConstraint>();
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
@@ -54,11 +54,11 @@ namespace DLM.Compiler
             namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
-        public Tuple<Constraint, Node>[] Constraints => constraints.ToArray();
+        public NodeConstraint[] Constraints => constraints.ToArray();
 
         private void Add(Label left, Label right, Node node)
         {
-            constraints.Add(Tuple.Create(new Constraint(left + basicBlock, right), node));
+            constraints.Add(new NodeConstraint(left + basicBlock, right, node));
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
