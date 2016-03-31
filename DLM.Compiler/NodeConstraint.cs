@@ -10,13 +10,27 @@ namespace DLM.Compiler
 {
     public class NodeConstraint : Constraint
     {
-        private Node origin;
+        public enum OriginTypes
+        {
+            Declaration,
+            Assignment,
+            IfBlock,
+            WhileBlock,
+            Return,
+            Declassify,
+            Argument
+        }
 
-        public NodeConstraint(Label left, Label right, Node origin) : base(left, right)
+        private Node origin;
+        private OriginTypes originType;
+
+        public NodeConstraint(Label left, Label right, Node origin, OriginTypes originType) : base(left, right)
         {
             this.origin = origin;
+            this.originType = originType;
         }
 
         public Node Origin => origin;
+        public OriginTypes OriginType => originType;
     }
 }

@@ -163,9 +163,10 @@ namespace DLM.Editor
             point.Y += 15;
             e.Graphics.DrawString($"{constraint.Left.NoVariables} ⊑ {constraint.Right.NoVariables}", infoFont, Brushes.Black, point);
 
-            var first = FirstToken.Find(constraint.Origin);
             point.Y += 17;
-            e.Graphics.DrawString($"Line: {first.Line}", infoFont, Brushes.Black, point);
+            var first = FirstToken.Find(constraint.Origin);
+            var type = constraint.OriginType.ToString().ToLower();
+            e.Graphics.DrawString($"Line: {first.Line} (from {type})", infoFont, Brushes.Black, point);
         }
 
         private class FirstToken : SablePP.Tools.Analysis.DepthFirstTreeWalker

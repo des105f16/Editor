@@ -130,7 +130,7 @@ namespace DLM.Compiler
             {
                 ConstraintExtractor le = new ConstraintExtractor(errorManager);
                 le.Visit(root);
-                return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.Origin), le.Constraints);
+                return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.Origin, o.OriginType), le.Constraints);
             }
         }
 

@@ -56,9 +56,9 @@ namespace DLM.Compiler
 
         public NodeConstraint[] Constraints => constraints.ToArray();
 
-        private void Add(Label left, Label right, Node node)
+        private void Add(Label left, Label right, Node node, NodeConstraint.OriginTypes originType)
         {
-            constraints.Add(new NodeConstraint(left + basicBlock, right, node));
+            constraints.Add(new NodeConstraint(left + basicBlock, right, node, originType));
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
@@ -84,13 +84,13 @@ namespace DLM.Compiler
                 ExpressionLabeler.GetLabel(node.Expression, this) :
                 Label.LowerBound;
 
-            Add(lbl, node.Type.DeclaredLabel, node);
+            Add(lbl, node.Type.DeclaredLabel, node, NodeConstraint.OriginTypes.Declaration);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
 
-            Add(Label.LowerBound, node.Type.DeclaredLabel, node);
+            Add(Label.LowerBound, node.Type.DeclaredLabel, node, NodeConstraint.OriginTypes.Declaration);
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
@@ -98,7 +98,7 @@ namespace DLM.Compiler
 
             var type = types[node.Identifier.Text];
 
-            Add(lbl, type.DeclaredLabel, node);
+            Add(lbl, type.DeclaredLabel, node, NodeConstraint.OriginTypes.Assignment);
         }
         protected override void HandleAExpressionStatement(AExpressionStatement node)
         {
@@ -120,7 +120,7 @@ namespace DLM.Compiler
         protected override void HandleAIfStatement(AIfStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.IfBlock);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -129,7 +129,7 @@ namespace DLM.Compiler
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.IfBlock);
 
             basicBlock.Push(lbl);
             Visit(node.IfStatements);
@@ -139,7 +139,7 @@ namespace DLM.Compiler
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Label lbl = getVariableLabel("while");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.WhileBlock);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -151,7 +151,7 @@ namespace DLM.Compiler
 
             var type = node.GetFirstParent<AFunctionDeclarationStatement>().Type;
 
-            Add(lbl, type.DeclaredLabel, node.Expression);
+            Add(lbl, type.DeclaredLabel, node.Expression, NodeConstraint.OriginTypes.Return);
         }
 
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
@@ -202,7 +202,7 @@ namespace DLM.Compiler
                     var Ld = owner.getVariableLabel(node.Identifier.Text);
                     var Lvar = types[node.Identifier.Text].DeclaredLabel;
 
-                    owner.Add(Lvar, Ld + authority, node);
+                    owner.Add(Lvar, Ld + authority, node, NodeConstraint.OriginTypes.Declassify);
 
                     return Ld;
                 }
@@ -285,7 +285,7 @@ namespace DLM.Compiler
                     }
                     else if (!(paramLabel is ConstantLabel))
                     {
-                        owner.Add(argLabel, paramLabel, arguments[i]);
+                        owner.Add(argLabel, paramLabel, arguments[i], NodeConstraint.OriginTypes.Argument);
                     }
                 }
             }
