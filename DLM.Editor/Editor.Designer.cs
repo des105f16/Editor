@@ -112,6 +112,7 @@
             // listBox1
             // 
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.listBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.IntegralHeight = false;
@@ -120,6 +121,8 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(229, 258);
             this.listBox1.TabIndex = 0;
+            this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.drawItem);
+            this.listBox1.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.measureItem);
             // 
             // errorView1
             // 

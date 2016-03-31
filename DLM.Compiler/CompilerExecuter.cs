@@ -4,18 +4,20 @@ using SablePP.Tools;
 using SablePP.Tools.Nodes;
 using SablePP.Tools.Error;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 using FastColoredTextBoxNS;
 using DLM.Inference;
 using System.Drawing;
+using System;
 
 namespace DLM.Compiler
 {
     public partial class CompilerExecuter
     {
-        private InferenceResult result;
-        public InferenceResult Result => result;
+        private InferenceResult<NodeConstraint> result;
+        public InferenceResult<NodeConstraint> Result => result;
 
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
@@ -36,8 +38,11 @@ namespace DLM.Compiler
                 return;
 
             var vars = v.InferLabels();
-            if (v.Errors)
-                return;
+            if (!vars.Succes)
+            {
+                var fail = vars.ResolveSteps.Last();
+                compilationOptions.ErrorManager.Register(fail.Origin, "Failed to validate labels, see details.");
+            }
 
             result = vars;
         }
@@ -124,11 +129,11 @@ namespace DLM.Compiler
                 le.Visit(root);
             }
 
-            public InferenceResult InferLabels()
+            public InferenceResult<NodeConstraint> InferLabels()
             {
                 ConstraintExtractor le = new ConstraintExtractor(errorManager);
                 le.Visit(root);
-                return Inference.ConstraintResolver.Resolve(le.Constraints);
+                return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.Origin, o.OriginType), le.Constraints);
             }
         }
 

@@ -12,7 +12,7 @@ namespace DLM.Compiler
 {
     public class ConstraintExtractor : DepthFirstAdapter
     {
-        private List<Constraint> constraints;
+        private List<NodeConstraint> constraints;
 
         private ErrorManager errorManager;
         private ScopedDictionary<string, PType> types;
@@ -43,7 +43,7 @@ namespace DLM.Compiler
 
         public ConstraintExtractor(ErrorManager errorManager)
         {
-            constraints = new List<Constraint>();
+            constraints = new List<NodeConstraint>();
 
             this.errorManager = errorManager;
             types = new ScopedDictionary<string, PType>();
@@ -54,11 +54,11 @@ namespace DLM.Compiler
             namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
-        public Constraint[] Constraints => constraints.ToArray();
+        public NodeConstraint[] Constraints => constraints.ToArray();
 
-        private void Add(Label left, Label right)
+        private void Add(Label left, Label right, Node node, NodeConstraint.OriginTypes originType)
         {
-            constraints.Add(new Constraint(left + basicBlock, right));
+            constraints.Add(new NodeConstraint(left + basicBlock, right, node, originType));
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
@@ -84,13 +84,13 @@ namespace DLM.Compiler
                 ExpressionLabeler.GetLabel(node.Expression, this) :
                 Label.LowerBound;
 
-            Add(lbl, node.Type.DeclaredLabel);
+            Add(lbl, node.Type.DeclaredLabel, node, NodeConstraint.OriginTypes.Declaration);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
 
-            Add(Label.LowerBound, node.Type.DeclaredLabel);
+            Add(Label.LowerBound, node.Type.DeclaredLabel, node, NodeConstraint.OriginTypes.Declaration);
         }
         protected override void HandleAAssignmentStatement(AAssignmentStatement node)
         {
@@ -98,7 +98,7 @@ namespace DLM.Compiler
 
             var type = types[node.Identifier.Text];
 
-            Add(lbl, type.DeclaredLabel);
+            Add(lbl, type.DeclaredLabel, node, NodeConstraint.OriginTypes.Assignment);
         }
         protected override void HandleAExpressionStatement(AExpressionStatement node)
         {
@@ -120,7 +120,7 @@ namespace DLM.Compiler
         protected override void HandleAIfStatement(AIfStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.IfBlock);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -129,7 +129,7 @@ namespace DLM.Compiler
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Label lbl = getVariableLabel("if");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.IfBlock);
 
             basicBlock.Push(lbl);
             Visit(node.IfStatements);
@@ -139,7 +139,7 @@ namespace DLM.Compiler
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Label lbl = getVariableLabel("while");
-            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl);
+            Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.Expression, NodeConstraint.OriginTypes.WhileBlock);
 
             basicBlock.Push(lbl);
             Visit(node.Statements);
@@ -151,7 +151,7 @@ namespace DLM.Compiler
 
             var type = node.GetFirstParent<AFunctionDeclarationStatement>().Type;
 
-            Add(lbl, type.DeclaredLabel);
+            Add(lbl, type.DeclaredLabel, node.Expression, NodeConstraint.OriginTypes.Return);
         }
 
         private class ExpressionLabeler : ReturnAnalysisAdapter<Label>
@@ -202,7 +202,7 @@ namespace DLM.Compiler
                     var Ld = owner.getVariableLabel(node.Identifier.Text);
                     var Lvar = types[node.Identifier.Text].DeclaredLabel;
 
-                    owner.Add(Lvar, Ld + authority);
+                    owner.Add(Lvar, Ld + authority, node, NodeConstraint.OriginTypes.Declassify);
 
                     return Ld;
                 }
@@ -277,15 +277,15 @@ namespace DLM.Compiler
                 {
                     var argLabel = Visit(arguments[i]);
                     var paramLabel = functionDeclaration.Parameters[i].Type.DeclaredLabel;
-                    
-                    if(paramLabel is PolicyLabel && argLabel is PolicyLabel)
+
+                    if (paramLabel is PolicyLabel && argLabel is PolicyLabel)
                     {
-                        if(!(argLabel<=paramLabel))
+                        if (!(argLabel <= paramLabel))
                             errorManager.Register(arguments[i], $"Parameter label is less restrictive than argument label: {argLabel} \u228f {paramLabel}");
                     }
                     else if (!(paramLabel is ConstantLabel))
                     {
-                        owner.Add(argLabel, paramLabel);
+                        owner.Add(argLabel, paramLabel, arguments[i], NodeConstraint.OriginTypes.Argument);
                     }
                 }
             }
