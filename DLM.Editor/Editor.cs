@@ -108,11 +108,9 @@ namespace DLM.Editor
             if (result.Succes)
                 foreach (var v in result.Variables)
                     listBox1.Items.Add(v);
-            else
-                foreach (var v in result.Constraints)
-                {
-                    listBox1.Items.Add(v);
-                }
+
+            foreach (var v in result.ResolveSteps)
+                listBox1.Items.Add(v);
         }
 
         private void measureItem(object sender, MeasureItemEventArgs e)
@@ -148,6 +146,8 @@ namespace DLM.Editor
             var bounds = e.Bounds; bounds.Height -= 2;
 
             var valid = constraint.Left <= constraint.Right;
+            var isVariable = constraint.Left is VariableLabel;
+
             using (var brush = new SolidBrush(valid ? (selected ? okFocus : ok) : (selected ? errorFocus : error)))
                 e.Graphics.FillRectangle(brush, bounds);
 
@@ -155,13 +155,19 @@ namespace DLM.Editor
 
             using (var brush = new SolidBrush(Color.FromArgb(204, Color.Black)))
                 e.Graphics.DrawString("Constraint:", titleFont, brush, bounds.X + 5, bounds.Y + 4);
-            e.Graphics.DrawString(valid ? "OK" : "Error", titleStateFont, Brushes.Black, bounds.X + 70, bounds.Y + 3);
+
+            e.Graphics.DrawString(
+                valid ? "OK" : "Error" + (!isVariable ? " (non-variable)" : "")
+                , titleStateFont, Brushes.Black, bounds.X + 70, bounds.Y + 3);
 
             var point = new PointF(bounds.X + 14, bounds.Y + 23);
 
             e.Graphics.DrawString($"{constraint.Left} ⊑ {constraint.Right}", infoFont, Brushes.Black, point);
             point.Y += 15;
-            e.Graphics.DrawString($"{constraint.Left.NoVariables} ⊑ {constraint.Right.NoVariables}", infoFont, Brushes.Black, point);
+            if (constraint.Left is VariableLabel)
+                e.Graphics.DrawString($"{constraint.Left} = {constraint.Left.NoVariables}", infoFont, Brushes.Black, point);
+            else
+                e.Graphics.DrawString($"{constraint.Left.NoVariables} ⊑ {constraint.Right.NoVariables}", infoFont, Brushes.Black, point);
 
             point.Y += 17;
             var first = FirstToken.Find(constraint.Origin);

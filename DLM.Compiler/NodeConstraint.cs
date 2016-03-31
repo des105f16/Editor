@@ -21,8 +21,8 @@ namespace DLM.Compiler
             Argument
         }
 
-        private Node origin;
-        private OriginTypes originType;
+        private readonly Node origin;
+        private readonly OriginTypes originType;
 
         public NodeConstraint(Label left, Label right, Node origin, OriginTypes originType) : base(left, right)
         {
