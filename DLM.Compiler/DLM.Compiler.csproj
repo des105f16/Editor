@@ -54,6 +54,7 @@
     <Compile Include="Generated\tokens.cs" />
     <Compile Include="LabelDecorator.cs" />
     <Compile Include="ConstraintExtractor.cs" />
+    <Compile Include="NodeConstraint.cs" />
     <Compile Include="Nodes\AElementExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />
     <Compile Include="Nodes\PPrincipal.cs" />
