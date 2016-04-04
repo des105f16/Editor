@@ -146,7 +146,7 @@ namespace DLM.Compiler.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes, PrincipalDeclarations, PrincipalHierarchyDeclarations, Structs, Statements);
+            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyDeclarations.Clone(), Structs.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -263,7 +263,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPrincipalDeclaration Clone()
         {
-            return new APrincipalDeclaration(Principals);
+            return new APrincipalDeclaration(Principals.Clone());
         }
         
         public override string ToString()
@@ -346,7 +346,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPrincipalHierarchyDeclaration Clone()
         {
-            return new APrincipalHierarchyDeclaration(Principal.Clone(), Subordinates);
+            return new APrincipalHierarchyDeclaration(Principal.Clone(), Subordinates.Clone());
         }
         
         public override string ToString()
@@ -455,7 +455,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStruct Clone()
         {
-            return new AStruct(Identifier.Clone(), Fields, Name.Clone());
+            return new AStruct(Identifier.Clone(), Fields.Clone(), Name.Clone());
         }
         
         public override string ToString()
@@ -725,7 +725,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression.Clone());
+            return new ADeclarationStatement(Type.Clone(), Identifier.Clone(), Expression?.Clone());
         }
         
         public override string ToString()
@@ -1008,7 +1008,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfActsForStatement(Claimant.Clone(), Principals, Statements);
+            return new AIfActsForStatement(Claimant.Clone(), Principals.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1084,7 +1084,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfStatement(Expression.Clone(), Statements);
+            return new AIfStatement(Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1183,7 +1183,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfElseStatement(Expression.Clone(), IfStatements, ElseStatements);
+            return new AIfElseStatement(Expression.Clone(), IfStatements.Clone(), ElseStatements.Clone());
         }
         
         public override string ToString()
@@ -1259,7 +1259,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AWhileStatement(Expression.Clone(), Statements);
+            return new AWhileStatement(Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1384,7 +1384,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters, Statements);
+            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters.Clone(), Statements.Clone());
         }
         
         public override string ToString()
@@ -1491,7 +1491,7 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AReturnStatement(Expression.Clone());
+            return new AReturnStatement(Expression?.Clone());
         }
         
         public override string ToString()
@@ -1664,7 +1664,7 @@ namespace DLM.Compiler.Nodes
         
         public override PType Clone()
         {
-            return new AType(Name.Clone(), Label.Clone());
+            return new AType(Name.Clone(), Label?.Clone());
         }
         
         public override string ToString()
@@ -1940,7 +1940,7 @@ namespace DLM.Compiler.Nodes
         
         public override PLabel Clone()
         {
-            return new ALabel(Policys, Timing.Clone());
+            return new ALabel(Policys.Clone(), Timing?.Clone());
         }
         
         public override string ToString()
@@ -2051,7 +2051,7 @@ namespace DLM.Compiler.Nodes
         
         public override PTiming Clone()
         {
-            return new ATiming(Period.Clone(), Interval, Count.Clone());
+            return new ATiming(Period?.Clone(), Interval.Clone(), Count?.Clone());
         }
         
         public override string ToString()
@@ -2359,7 +2359,7 @@ namespace DLM.Compiler.Nodes
         
         public override PPolicy Clone()
         {
-            return new APrincipalPolicy(Owner.Clone(), Readers);
+            return new APrincipalPolicy(Owner.Clone(), Readers.Clone());
         }
         
         public override string ToString()
@@ -3553,7 +3553,7 @@ namespace DLM.Compiler.Nodes
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(Function.Clone(), Authorities, Arguments);
+            return new AFunctionCallExpression(Function.Clone(), Authorities.Clone(), Arguments.Clone());
         }
         
         public override string ToString()
@@ -3616,29 +3616,29 @@ namespace DLM.Compiler.Nodes
     }
     public partial class ADeclassifyExpression : PExpression
     {
-        private TIdentifier _identifier_;
+        private PExpression _expression_;
         private PLabel _label_;
         
-        public ADeclassifyExpression(TIdentifier _identifier_, PLabel _label_)
+        public ADeclassifyExpression(PExpression _expression_, PLabel _label_)
             : base()
         {
-            this.Identifier = _identifier_;
+            this.Expression = _expression_;
             this.Label = _label_;
         }
         
-        public TIdentifier Identifier
+        public PExpression Expression
         {
-            get { return _identifier_; }
+            get { return _expression_; }
             set
             {
                 if (value == null)
-                    throw new ArgumentException("Identifier in ADeclassifyExpression cannot be null.", "value");
+                    throw new ArgumentException("Expression in ADeclassifyExpression cannot be null.", "value");
                 
-                if (_identifier_ != null)
-                    SetParent(_identifier_, null);
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
                 SetParent(value, this);
                 
-                _identifier_ = value;
+                _expression_ = value;
             }
         }
         public PLabel Label
@@ -3661,13 +3661,13 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Identifier == oldChild)
+            if (Expression == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("Identifier in ADeclassifyExpression cannot be null.", "newChild");
-                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Expression in ADeclassifyExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Identifier = newChild as TIdentifier;
+                Expression = newChild as PExpression;
             }
             else if (Label == oldChild)
             {
@@ -3679,19 +3679,19 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
-            yield return Identifier;
+            yield return Expression;
             if (HasLabel)
                 yield return Label;
         }
         
         public override PExpression Clone()
         {
-            return new ADeclassifyExpression(Identifier.Clone(), Label.Clone());
+            return new ADeclassifyExpression(Expression.Clone(), Label?.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Identifier, Label);
+            return string.Format("{0} {1}", Expression, Label);
         }
     }
     public partial class AIdentifierExpression : PExpression

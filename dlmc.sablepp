@@ -266,7 +266,7 @@ Abstract Syntax Tree
         | {function_call} [function]:identifier [authorities]:principal* [arguments]:expression*
         
         | {parenthesis} expression
-        | {declassify} identifier label?
+        | {declassify} expression label?
         | {identifier} identifier
         | {number} number
         | {boolean} bool
@@ -316,8 +316,8 @@ Productions
         | {n} number -> New expression.number(number)
         | {b} bool -> New expression.boolean(bool)
         | {id} identifier -> New expression.identifier(identifier)
-        | {dec} declassify_start identifier declassify_end -> New expression.declassify(identifier, Null)
-        | {dec2} declassify_start identifier comma label declassify_end -> New expression.declassify(identifier, label)
+        | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
+        | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
         ;
     expressionstmt -> statement
     = {f} funccall semicolon -> New statement.expression(funccall)

@@ -1255,10 +1255,10 @@ namespace DLM.Compiler.Parsing
                 case 120:
                     {
                         TDeclassifyEnd tdeclassifyend = Pop<TDeclassifyEnd>();
-                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        PExpression pexpression = Pop<PExpression>();
                         TDeclassifyStart tdeclassifystart = Pop<TDeclassifyStart>();
                         ADeclassifyExpression adeclassifyexpression = new ADeclassifyExpression(
-                            tidentifier,
+                            pexpression,
                             null
                         );
                         Push(29, adeclassifyexpression);
@@ -1269,10 +1269,10 @@ namespace DLM.Compiler.Parsing
                         TDeclassifyEnd tdeclassifyend = Pop<TDeclassifyEnd>();
                         PLabel plabel = Pop<PLabel>();
                         TComma tcomma = Pop<TComma>();
-                        TIdentifier tidentifier = Pop<TIdentifier>();
+                        PExpression pexpression = Pop<PExpression>();
                         TDeclassifyStart tdeclassifystart = Pop<TDeclassifyStart>();
                         ADeclassifyExpression adeclassifyexpression = new ADeclassifyExpression(
-                            tidentifier,
+                            pexpression,
                             plabel
                         );
                         Push(29, adeclassifyexpression);
@@ -1768,7 +1768,13 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 3, 78},
-                new int[] {15, 0, 116},
+                new int[] {4, 0, 75},
+                new int[] {5, 0, 76},
+                new int[] {15, 0, 77},
+                new int[] {18, 0, 78},
+                new int[] {29, 0, 79},
+                new int[] {33, 0, 80},
+                new int[] {43, 0, 81},
             },
             new int[][] {
                 new int[] {-1, 3, 79},
@@ -3023,6 +3029,7 @@ namespace DLM.Compiler.Parsing
             new int[][] {
                 new int[] {-1, 150},
                 new int[] {53, 82},
+                new int[] {78, 116},
                 new int[] {81, 119},
                 new int[] {131, 166},
                 new int[] {169, 202},
@@ -3187,14 +3194,14 @@ namespace DLM.Compiler.Parsing
             "Expecting: TTime or TNumber",
             "Expecting: TIdentifier, '|>' or '*'",
             "Expecting: TIdentifier, ';', '@', '}}' or '⊔'",
-            "Expecting: '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', ')', '[' or ']'",
-            "Expecting: '<<<', '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', '(', ')', '[' or ']'",
+            "Expecting: '|>', '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', ')', '[' or ']'",
+            "Expecting: '|>', '<<<', '->', TCompare, '+', '-', '*', '/', '%', '&&', '||', '.', ',', ';', '(', ')', '[' or ']'",
             "Expecting: TBool, TNumber, TIdentifier, '<|' or '('",
             "Expecting: TBool, TNumber, TIdentifier, '<|', '-' or '('",
-            "Expecting: ',', ';', ')' or ']'",
-            "Expecting: '&&', '||', ',', ';', ')' or ']'",
-            "Expecting: TCompare, '&&', '||', ',', ';', ')' or ']'",
-            "Expecting: TCompare, '+', '-', '&&', '||', ',', ';', ')' or ']'",
+            "Expecting: '|>', ',', ';', ')' or ']'",
+            "Expecting: '|>', '&&', '||', ',', ';', ')' or ']'",
+            "Expecting: '|>', TCompare, '&&', '||', ',', ';', ')' or ']'",
+            "Expecting: '|>', TCompare, '+', '-', '&&', '||', ',', ';', ')' or ']'",
             "Expecting: ')'",
             "Expecting: ']'",
             "Expecting: '-'",
@@ -3227,7 +3234,7 @@ namespace DLM.Compiler.Parsing
             7, 8, 0, 11, 11, 12, 2, 13, 9, 14, 9, 2, 0, 6, 7, 7,
             8, 6, 7, 7, 8, 7, 7, 8, 15, 7, 8, 8, 2, 6, 16, 17,
             18, 18, 18, 19, 20, 21, 8, 22, 23, 12, 7, 7, 8, 7, 8, 8,
-            7, 8, 8, 8, 24, 25, 13, 13, 26, 27, 28, 29, 29, 30, 2, 31,
+            7, 8, 8, 8, 24, 25, 13, 13, 26, 27, 28, 29, 29, 30, 21, 31,
             32, 21, 12, 33, 34, 35, 36, 29, 29, 29, 16, 37, 9, 38, 7, 7,
             8, 8, 8, 8, 2, 25, 9, 25, 19, 19, 39, 40, 41, 42, 43, 43,
             18, 2, 44, 45, 46, 35, 34, 37, 8, 21, 21, 21, 32, 32, 2, 31,

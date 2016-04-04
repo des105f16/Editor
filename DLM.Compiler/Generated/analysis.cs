@@ -1253,7 +1253,7 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
         {
-            Visit(node.Identifier);
+            Visit(node.Expression);
             if (node.HasLabel)
                 Visit(node.Label);
         }
@@ -1533,7 +1533,7 @@ namespace DLM.Compiler.Analysis
         {
             if (node.HasLabel)
                 Visit(node.Label);
-            Visit(node.Identifier);
+            Visit(node.Expression);
         }
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
