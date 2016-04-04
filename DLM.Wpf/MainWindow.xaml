@@ -9,6 +9,28 @@
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None">
     <DockPanel>
+        <Menu x:Name="menu" DockPanel.Dock="Top" FontSize="12">
+            <MenuItem Header="_File" Padding="10,3">
+                <MenuItem Header="_New" Command="ApplicationCommands.New"/>
+                <MenuItem Header="_Open" Command="ApplicationCommands.Open"/>
+                <Separator Height="2" />
+                <MenuItem Header="_Save" Command="ApplicationCommands.Save"/>
+                <MenuItem Header="Save _As" Command="ApplicationCommands.SaveAs"/>
+                <Separator Height="2" />
+                <MenuItem Header="_Close" Command="ApplicationCommands.Close"/>
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit" Padding="10,3">
+                <MenuItem Header="Undo"/>
+                <MenuItem Header="Redo"/>
+                <Separator Height="2" />
+                <MenuItem Header="Cut"/>
+                <MenuItem Header="Copy"/>
+                <MenuItem Header="Paste"/>
+                <Separator Height="2" />
+                <MenuItem Header="Select All"/>
+            </MenuItem>
+        </Menu>
         <Grid Name="bottomBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -33,14 +55,4 @@
         </Grid>
         <Grid Name="codegrid" Margin="15,5,15,3"/>
     </DockPanel>
-    <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
-            <Button Content="Save?"/>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
-    <Controls:MetroWindow.LeftWindowCommands>
-        <Controls:WindowCommands>
-            <Button Content="Save?"/>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.LeftWindowCommands>
 </Controls:MetroWindow>
