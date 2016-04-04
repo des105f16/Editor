@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:DLM.Wpf"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None">
     <DockPanel>
         <Grid Name="bottomBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
