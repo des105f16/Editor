@@ -7,23 +7,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None">
-    <Grid>
-        <Grid Margin="25,30">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Name="errorRow" Height="0"/>
-                <RowDefinition Height="25"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Name="codegrid" Margin="0,0,0,10"/>
-            <Grid Grid.Row="1" Name="hest" Background="LightGreen" Margin="0"/>
-            <Button x:Name="button" HorizontalAlignment="Left" Margin="0" Grid.Row="2" Width="75" MouseEnter="button_MouseEnter">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://siteoforigin:,,,/Resources/error.png" Margin="0,0,5,0" Opacity="0.1"/>
-                    <TextBlock>Errors</TextBlock>
-                </StackPanel>
-            </Button>
-        </Grid>
-        <Grid Name="bottomBar" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
+    <DockPanel>
+        <Grid Name="bottomBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
@@ -35,7 +20,18 @@
                 <Button />
             </StackPanel>
         </Grid>
-    </Grid>
+        <Grid ClipToBounds="True" DockPanel.Dock="Bottom" Height="22">
+            <StackPanel ClipToBounds="True" Orientation="Horizontal" Margin="15,0,0,-3">
+                <Button x:Name="errorButton" HorizontalAlignment="Left" Margin="0" Width="75">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://siteoforigin:,,,/Resources/error.png" Margin="0,0,5,0" Opacity="0.1"/>
+                        <TextBlock>Errors</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Name="codegrid" Margin="15,5,15,3"/>
+    </DockPanel>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Content="Save?"/>

@@ -50,10 +50,5 @@ namespace DLM.Wpf
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
         }
-
-        private void button_MouseEnter(object sender, MouseEventArgs e)
-        {
-            
-        }
     }
 }
