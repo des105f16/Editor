@@ -147,7 +147,7 @@ namespace DLM.Compiler
 
             if (node.HasLabel)
             {
-                var comma = text.SearchForwards(text.TokenEnd(node.Identifier), ",");
+                var comma = text.SearchBackwards(text.TokenStart(FirstToken.Find(node.Label)), ",");
                 text.ReplaceRange(comma, comma, ' ');
                 Visit(node.Label);
             }

@@ -25,12 +25,7 @@ namespace DLM.Compiler
         {
             int i = 1;
 
-            if (name == "while")
-                while (true) yield return $"{{while{i++}}}";
-            else if (name == "if")
-                while (true) yield return $"{{if{i++}}}";
-            else
-                while (true) yield return $"{{d[{name}]{i++}}}";
+            while (true) yield return $"{{{name}{i++}}}";
         }
         private VariableLabel getVariableLabel(string name)
         {
@@ -183,24 +178,21 @@ namespace DLM.Compiler
             {
                 if (node.HasLabel)
                 {
-                    var L1 = types[node.Identifier.Text].DeclaredLabel;
+                    var L1 = Visit(node.Expression);
                     var L2 = node.Label.LabelValue;
 
                     if (L1 <= L2 + authority)
                         return L2;
                     else
                     {
-                        if (L1 is VariableLabel)
-                            errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}. Consider removing the explicit declassification or adding an explicit label to {node.Identifier}.");
-                        else
-                            errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
+                        errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority}.");
                         return Label.LowerBound;
                     }
                 }
                 else
                 {
-                    var Ld = owner.getVariableLabel(node.Identifier.Text);
-                    var Lvar = types[node.Identifier.Text].DeclaredLabel;
+                    var Ld = owner.getVariableLabel("dec");
+                    var Lvar = Visit(node.Expression);
 
                     owner.Add(Lvar, Ld + authority, node, NodeConstraint.OriginTypes.Declassify);
 
