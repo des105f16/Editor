@@ -35,15 +35,15 @@ namespace DLM.Wpf
 
             this.FileExtension = null;
 
-            bindings.Add(new CommandBinding(ApplicationCommands.New, null, enabled));
+            bindings.Add(new CommandBinding(ApplicationCommands.New, (s, e) => NewFile(), enabled));
 
-            bindings.Add(new CommandBinding(ApplicationCommands.Open, null, enabled));
+            bindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OpenFile(), enabled));
             bindings.Add(new CommandBinding(CustomCommands.OpenRecent, null, recentFiles_CanExecute));
 
-            bindings.Add(new CommandBinding(ApplicationCommands.Save, null, fileLoaded_CanExecute));
-            bindings.Add(new CommandBinding(ApplicationCommands.SaveAs, null, fileLoaded_CanExecute));
+            bindings.Add(new CommandBinding(ApplicationCommands.Save, (s, e) => SaveFile(), fileLoaded_CanExecute));
+            bindings.Add(new CommandBinding(ApplicationCommands.SaveAs, (s, e) => SaveFileAs(), fileLoaded_CanExecute));
 
-            bindings.Add(new CommandBinding(ApplicationCommands.Close, null, fileLoaded_CanExecute));
+            bindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => CloseFile(), fileLoaded_CanExecute));
             bindings.Add(new CommandBinding(CustomCommands.Exit, (s, e) => window.Close(), enabled));
 
             window.Closing += (s, e) => windowClosing(e);
@@ -77,6 +77,35 @@ namespace DLM.Wpf
             e.CanExecute = i > 1;
         }
 
+        #region Form Text/Application name
+
+        private string title;
+        /// <summary>
+        /// Gets or sets the title of the form. This is automatically appended with the current filename.
+        /// </summary>
+        /// <returns>The title of the form (not including the current filename).</returns>
+        public string Title
+        {
+            get { return title; }
+            set
+            {
+                this.title = value;
+                updateTitle();
+            }
+        }
+        private void updateTitle()
+        {
+            string fileText = FileIsOpen ? string.Format("{0}{1}", File.Name, (_changed || !_file.Exists) ? "*" : "") : "";
+            if (title == null || title.Length == 0)
+                window.Title = fileText;
+            else if (fileText.Length > 0)
+                window.Title = title + " - " + fileText;
+            else
+                window.Title = title;
+        }
+
+        #endregion
+
         #region File extension
 
         private string extension = null;
@@ -89,8 +118,8 @@ namespace DLM.Wpf
             set
             {
                 extension = value?.TrimStart('.');
-                openFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Text) + "|*." + (extension ?? Settings.Default.DefaultExtension);
-                saveFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Text) + "|*." + (extension ?? Settings.Default.DefaultExtension);
+                openFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension);
+                saveFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension);
             }
         }
 
