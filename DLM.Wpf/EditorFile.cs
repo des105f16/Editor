@@ -17,14 +17,12 @@ namespace DLM.Wpf
     {
         private readonly Window window;
         private readonly MenuItem recentFilesMenuItem;
-        private string filepath;
         private RecentFilesHandler recentFiles;
 
         public EditorFile(Window window, MenuItem recentFilesMenuItem, CommandBindingCollection bindings)
         {
             this.window = window;
             this.recentFilesMenuItem = recentFilesMenuItem;
-            this.filepath = null;
             this.recentFiles = new RecentFilesHandler();
 
             this.FileExtension = null;
@@ -45,7 +43,7 @@ namespace DLM.Wpf
 
         private void enabled(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
         private void disabled(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = false;
-        private void fileLoaded_CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = filepath != null;
+        private void fileLoaded_CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = FileIsOpen;
 
         private void recentFiles_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
