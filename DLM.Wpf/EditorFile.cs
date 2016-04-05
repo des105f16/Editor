@@ -171,10 +171,10 @@ namespace DLM.Wpf
         }
 #pragma warning restore
 
-        public DialogResult NewFile()
+        public MessageBoxResult NewFile()
         {
-            DialogResult res = CloseFile();
-            if (res != System.Windows.Forms.DialogResult.OK)
+            MessageBoxResult res = CloseFile();
+            if (res != MessageBoxResult.OK)
                 return res;
 
             File = new FileInfo(EditorResources.Untitled + "." + (extension ?? EditorResources.DefaultExtension));
@@ -183,39 +183,40 @@ namespace DLM.Wpf
             NewFileCreated?.Invoke(this, EventArgs.Empty);
             changed = false;
 
-            return DialogResult.OK;
+            return MessageBoxResult.OK;
         }
 
         public event EventHandler NewFileCreated;
 
-        public DialogResult OpenFile()
+        public MessageBoxResult OpenFile()
         {
-            DialogResult res;
+            MessageBoxResult res;
             if (FileIsOpen)
             {
                 res = CloseFile();
-                if (res != System.Windows.Forms.DialogResult.OK)
+                if (res != MessageBoxResult.OK)
                     return res;
             }
 
             openFileDialog1.FileName = "";
-            res = openFileDialog1.ShowDialog();
-            if (res != System.Windows.Forms.DialogResult.OK)
+            var open = openFileDialog1.ShowDialog();
+            res = open == true ? MessageBoxResult.OK : MessageBoxResult.Cancel;
+            if (res != MessageBoxResult.OK)
                 return res;
 
             FileOpeningEventArgs fo = new FileOpeningEventArgs(openFileDialog1.FileName, this.FileExtension);
             FileOpening?.Invoke(this, fo);
             if (!fo.AllowFile)
-                return System.Windows.Forms.DialogResult.Abort;
+                return MessageBoxResult.Cancel;
 
             return OpenFile(openFileDialog1.FileName);
         }
-        public DialogResult OpenFile(string filepath)
+        public MessageBoxResult OpenFile(string filepath)
         {
             if (FileIsOpen)
             {
-                DialogResult res = CloseFile();
-                if (res != System.Windows.Forms.DialogResult.OK)
+                MessageBoxResult res = CloseFile();
+                if (res != MessageBoxResult.OK)
                     return res;
             }
 
@@ -231,16 +232,16 @@ namespace DLM.Wpf
 
             recentFiles.AddRecent(filepath);
 
-            return DialogResult.OK;
+            return MessageBoxResult.OK;
         }
 
         public event EventHandler<FileOpeningEventArgs> FileOpening;
         public event EventHandler<FileOpenedEventArgs> FileOpened;
 
-        public DialogResult SaveFile()
+        public MessageBoxResult SaveFile()
         {
             if (!FileIsOpen)
-                return System.Windows.Forms.DialogResult.Cancel;
+                return MessageBoxResult.Cancel;
 
             if (!File.Exists)
                 return SaveFileAs();
@@ -254,16 +255,16 @@ namespace DLM.Wpf
 
             recentFiles.AddRecent(File.FullName);
 
-            return DialogResult.OK;
+            return MessageBoxResult.OK;
         }
-        public DialogResult SaveFileAs()
+        public MessageBoxResult SaveFileAs()
         {
             if (!FileIsOpen)
-                return System.Windows.Forms.DialogResult.Cancel;
+                return MessageBoxResult.Cancel;
 
-            DialogResult res = saveFileDialog1.ShowDialog();
-            if (res != System.Windows.Forms.DialogResult.OK)
-                return res;
+            var res = saveFileDialog1.ShowDialog();
+            if (res != true)
+                return MessageBoxResult.Cancel;
 
             FileInfo f = new FileInfo(saveFileDialog1.FileName);
 
@@ -278,25 +279,25 @@ namespace DLM.Wpf
 
             recentFiles.AddRecent(File.FullName);
 
-            return DialogResult.OK;
+            return MessageBoxResult.OK;
         }
         public event EventHandler<FileSavingEventArgs> FileSaving;
 
-        public DialogResult CloseFile()
+        public MessageBoxResult CloseFile()
         {
             if (!FileIsOpen)
-                return System.Windows.Forms.DialogResult.OK;
+                return MessageBoxResult.OK;
 
             if (changed)
             {
-                DialogResult res = MessageBox.Show(
+                MessageBoxResult res = MessageBox.Show(
                     "It seems you have made changes to your file \"" + File.Name + "\", would you like to save it before closing?",
                     "File changed",
-                    MessageBoxButtons.YesNoCancel);
-                if (res == System.Windows.Forms.DialogResult.Yes)
+                    MessageBoxButton.YesNoCancel);
+                if (res == MessageBoxResult.Yes)
                     res = SaveFile();
 
-                if (res == System.Windows.Forms.DialogResult.Cancel)
+                if (res == MessageBoxResult.Cancel)
                     return res;
             }
 
@@ -304,7 +305,7 @@ namespace DLM.Wpf
             File = null;
 
             FileClosed?.Invoke(this, EventArgs.Empty);
-            return DialogResult.OK;
+            return MessageBoxResult.OK;
         }
         public event EventHandler FileClosed;
 
