@@ -1,8 +1,11 @@
 ﻿using Microsoft.Win32;
 using SablePP.Tools.Editor;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,12 +20,14 @@ namespace DLM.Wpf
         private readonly Window window;
         private readonly MenuItem recentFilesMenuItem;
         private string filepath;
+        private RecentFilesHandler recentFiles;
 
         public EditorFile(Window window, MenuItem recentFilesMenuItem, CommandBindingCollection bindings)
         {
             this.window = window;
             this.recentFilesMenuItem = recentFilesMenuItem;
             this.filepath = null;
+            this.recentFiles = new RecentFilesHandler();
 
             this.openFileDialog1 = new OpenFileDialog();
             this.saveFileDialog1 = new SaveFileDialog();
@@ -52,17 +57,18 @@ namespace DLM.Wpf
                 return;
             }
 
-            string[] files = new string[] { "a", "b" };
-
             source.Items.Clear();
-            foreach (var file in files)
+            int i = 1;
+            foreach (var file in recentFiles.TakeExisting(recentfilesCount))
             {
-                MenuItem newMenuItem2 = new MenuItem();
+                string filepath = file;
+                MenuItem newMenuItem2 = new MenuItem() { Header = $"_{i} {file}" };
+                newMenuItem2.Click += (s, ee) => OpenFile(filepath);
                 source.Items.Add(newMenuItem2);
-                newMenuItem2.Header = file;
+                i++;
             }
 
-            e.CanExecute = files.Length > 0;
+            e.CanExecute = i > 1;
         }
 
         #region File extension
@@ -303,5 +309,99 @@ namespace DLM.Wpf
         public event EventHandler FileClosed;
 
         #endregion
+
+        private int recentfilesCount = 9;
+        public int RecentFilesCount
+        {
+            get { return recentfilesCount; }
+            set
+            {
+                if (value < 0)
+                    value = 0;
+                this.recentfilesCount = value;
+            }
+        }
+
+        private class RecentFilesHandler
+        {
+            /// <summary>
+            /// Defines the maximum number of elements in the list
+            /// </summary>
+            private const int MAXLISTSIZE = 50;
+            private List<string> files;
+
+            public RecentFilesHandler()
+            {
+                this.files = new List<string>(getPropertyFiles());
+            }
+
+            private IEnumerable<string> getPropertyFiles()
+            {
+                if (EditorSettings.Default.RecentFiles == null || EditorSettings.Default.RecentFiles.Length == 0)
+                    yield break;
+
+                foreach (var s in EditorSettings.Default.RecentFiles.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries))
+                    yield return s;
+            }
+
+            public void AddRecent(string filepath)
+            {
+                if (filepath == null)
+                    throw new ArgumentNullException("filepath");
+
+                filepath = Path.GetFullPath(filepath);
+
+                if (filepath.EndsWith("/") || filepath.EndsWith("\\"))
+                    throw new ArgumentException("File path cannot end in / or \\ - it must be the path of a file.", "filepath");
+
+                if (!isValid(filepath))
+                    throw new ArgumentException("File path is not valid.", "filepath");
+
+                files.Insert(0, filepath);
+
+                string filesString = filepath;
+                filepath = filepath.ToLower();
+                foreach (var f in getPropertyFiles().Take(MAXLISTSIZE))
+                    if (f.ToLower() != filepath)
+                        filesString += "?" + f;
+
+                EditorSettings.Default.RecentFiles = filesString;
+                EditorSettings.Default.Save();
+            }
+
+            private bool isValid(string filepath)
+            {
+                string filename = Path.GetFileName(filepath);
+                filepath = filepath.Substring(0, filepath.Length - filename.Length);
+
+                foreach (var c in Path.GetInvalidFileNameChars())
+                    if (filename.Contains(c))
+                        return false;
+
+                foreach (var c in Path.GetInvalidPathChars())
+                    if (filepath.Contains(c))
+                        return false;
+
+                return true;
+            }
+
+            public IEnumerable<string> Take(int count)
+            {
+                return getPropertyFiles().Take(count);
+            }
+
+            public IEnumerable<string> TakeExisting(int count)
+            {
+                int c = 0;
+                foreach (var f in getPropertyFiles())
+                {
+                    if (new FileInfo(f).Exists)
+                        yield return f;
+
+                    if (c++ == count)
+                        break;
+                }
+            }
+        }
     }
 }
