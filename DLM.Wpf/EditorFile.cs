@@ -15,9 +15,6 @@ namespace DLM.Wpf
 {
     public class EditorFile
     {
-        private readonly OpenFileDialog openFileDialog1;
-        private readonly SaveFileDialog saveFileDialog1;
-
         private readonly Window window;
         private readonly MenuItem recentFilesMenuItem;
         private string filepath;
@@ -29,9 +26,6 @@ namespace DLM.Wpf
             this.recentFilesMenuItem = recentFilesMenuItem;
             this.filepath = null;
             this.recentFiles = new RecentFilesHandler();
-
-            this.openFileDialog1 = new OpenFileDialog();
-            this.saveFileDialog1 = new SaveFileDialog();
 
             this.FileExtension = null;
 
@@ -115,12 +109,7 @@ namespace DLM.Wpf
         public string FileExtension
         {
             get { return extension; }
-            set
-            {
-                extension = value?.TrimStart('.');
-                openFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension);
-                saveFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension);
-            }
+            set { extension = value?.TrimStart('.'); }
         }
 
         #endregion
@@ -214,18 +203,21 @@ namespace DLM.Wpf
                     return res;
             }
 
-            openFileDialog1.FileName = "";
-            var open = openFileDialog1.ShowDialog();
+            var openFileDialog = new OpenFileDialog()
+            {
+                Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension)
+            };
+            var open = openFileDialog.ShowDialog();
             res = open == true ? MessageBoxResult.OK : MessageBoxResult.Cancel;
             if (res != MessageBoxResult.OK)
                 return res;
 
-            FileOpeningEventArgs fo = new FileOpeningEventArgs(openFileDialog1.FileName, this.FileExtension);
+            FileOpeningEventArgs fo = new FileOpeningEventArgs(openFileDialog.FileName, this.FileExtension);
             FileOpening?.Invoke(this, fo);
             if (!fo.AllowFile)
                 return MessageBoxResult.Cancel;
 
-            return OpenFile(openFileDialog1.FileName);
+            return OpenFile(openFileDialog.FileName);
         }
         public MessageBoxResult OpenFile(string filepath)
         {
@@ -278,11 +270,16 @@ namespace DLM.Wpf
             if (!FileIsOpen)
                 return MessageBoxResult.Cancel;
 
-            var res = saveFileDialog1.ShowDialog();
+            var saveFileDialog = new SaveFileDialog()
+            {
+                Filter = string.Format(Settings.Default.FileDescription, Title) + "|*." + (extension ?? Settings.Default.DefaultExtension)
+            };
+
+            var res = saveFileDialog.ShowDialog();
             if (res != true)
                 return MessageBoxResult.Cancel;
 
-            FileInfo f = new FileInfo(saveFileDialog1.FileName);
+            FileInfo f = new FileInfo(saveFileDialog.FileName);
 
             FileSavingEventArgs e = new FileSavingEventArgs();
             FileSaving?.Invoke(this, e);
