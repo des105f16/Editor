@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using FastColoredTextBoxNS;
+using MahApps.Metro.Controls;
 using SablePP.Tools.Editor;
 using System;
 using System.IO;
@@ -41,6 +42,8 @@ namespace DLM.Wpf
                 DisabledColor = disabledbackcolor,
                 Enabled = false
             };
+
+            codeTextBox.TextChanged += codeTextBox_TextChanged;
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
 
@@ -96,6 +99,11 @@ namespace DLM.Wpf
         {
             codeTextBox.Enabled = false;
             codeTextBox.Text = "";
+        }
+
+        private void codeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            file.MarkFileAsChanged();
         }
     }
 }

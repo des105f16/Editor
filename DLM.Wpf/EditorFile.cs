@@ -144,24 +144,11 @@ namespace DLM.Wpf
 
                 updateTitle();
 
-                OnFileChanged(EventArgs.Empty);
+                FileChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        /// <summary>
-        /// Occurs when the <see cref="EditorForm.File"/> property changes. Note that this property can be <c>null</c>.
-        /// </summary>
         public event EventHandler FileChanged;
-
-        /// <summary>
-        /// Raises the <see cref="EditorForm.FileChanged" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnFileChanged(EventArgs e)
-        {
-            if (FileChanged != null)
-                FileChanged(this, e);
-        }
 
         /// <summary>
         /// Gets a value indicating whether a file is currently open.
@@ -183,7 +170,7 @@ namespace DLM.Wpf
         /// <summary>
         /// Marks the current file as changed. This will make the <see cref="EditorForm"/> ask if the file should be saved when it is closed.
         /// </summary>
-        protected void MarkFileAsChanged()
+        public void MarkFileAsChanged()
         {
             this.changed = true;
         }
