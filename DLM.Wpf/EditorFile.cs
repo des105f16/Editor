@@ -65,6 +65,94 @@ namespace DLM.Wpf
             e.CanExecute = files.Length > 0;
         }
 
+        #region File extension
+
+        private string extension = null;
+        /// <summary>
+        /// Gets or sets the file extension used by the editor.
+        /// </summary>
+        public string FileExtension
+        {
+            get { return extension; }
+            set
+            {
+                if (value != null && value.TrimStart('.').Length == 0)
+                    value = null;
+                extension = value.TrimStart('.');
+                openFileDialog1.Filter = string.Format(EditorResources.FileDescription, Text) + "|*." + (extension ?? EditorResources.DefaultExtension);
+                saveFileDialog1.Filter = string.Format(EditorResources.FileDescription, Text) + "|*." + (extension ?? EditorResources.DefaultExtension);
+            }
+        }
+
+        #endregion
+
+        #region FileHandle fields
+
+        private Encoding encoding;
+
+        private FileInfo _file = null;
+        /// <summary>
+        /// Gets a <see cref="FileInfo"/> object representing the currently opened file.
+        /// </summary>
+        public FileInfo File
+        {
+            get { return _file; }
+            private set
+            {
+                _file = value;
+                if (_file == null)
+                    _changed = false;
+
+                updateTitle();
+
+                FiletoolsEnabled = _file != null;
+
+                OnFileChanged(EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="EditorForm.File"/> property changes. Note that this property can be <c>null</c>.
+        /// </summary>
+        public event EventHandler FileChanged;
+
+        /// <summary>
+        /// Raises the <see cref="EditorForm.FileChanged" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected virtual void OnFileChanged(EventArgs e)
+        {
+            if (FileChanged != null)
+                FileChanged(this, e);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a file is currently open.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if a file is currently open; otherwise, <c>false</c>.
+        /// </value>
+        public bool FileIsOpen
+        {
+            get { return File != null; }
+        }
+        private bool _changed = false;
+        private bool changed
+        {
+            get { return _changed; }
+            set { _changed = value; updateTitle(); }
+        }
+
+        /// <summary>
+        /// Marks the current file as changed. This will make the <see cref="EditorForm"/> ask if the file should be saved when it is closed.
+        /// </summary>
+        protected void MarkFileAsChanged()
+        {
+            this.changed = true;
+        }
+
+        #endregion
+
         #region FileHandle events and methods
 
 #pragma warning disable 1591
