@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DLM.Wpf.Properties;
+using Microsoft.Win32;
 using SablePP.Tools.Editor;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,8 @@ namespace DLM.Wpf
 
             this.openFileDialog1 = new OpenFileDialog();
             this.saveFileDialog1 = new SaveFileDialog();
+
+            this.FileExtension = null;
 
             bindings.Add(new CommandBinding(ApplicationCommands.New, null, enabled));
 
@@ -82,11 +85,9 @@ namespace DLM.Wpf
             get { return extension; }
             set
             {
-                if (value != null && value.TrimStart('.').Length == 0)
-                    value = null;
-                extension = value.TrimStart('.');
-                openFileDialog1.Filter = string.Format(EditorResources.FileDescription, Text) + "|*." + (extension ?? EditorResources.DefaultExtension);
-                saveFileDialog1.Filter = string.Format(EditorResources.FileDescription, Text) + "|*." + (extension ?? EditorResources.DefaultExtension);
+                extension = value?.TrimStart('.');
+                openFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Text) + "|*." + (extension ?? Settings.Default.DefaultExtension);
+                saveFileDialog1.Filter = string.Format(Settings.Default.FileDescription, Text) + "|*." + (extension ?? Settings.Default.DefaultExtension);
             }
         }
 
@@ -110,8 +111,6 @@ namespace DLM.Wpf
                     _changed = false;
 
                 updateTitle();
-
-                FiletoolsEnabled = _file != null;
 
                 OnFileChanged(EventArgs.Empty);
             }
@@ -177,7 +176,7 @@ namespace DLM.Wpf
             if (res != MessageBoxResult.OK)
                 return res;
 
-            File = new FileInfo(EditorResources.Untitled + "." + (extension ?? EditorResources.DefaultExtension));
+            File = new FileInfo(Settings.Default.Untitled + "." + (extension ?? Settings.Default.DefaultExtension));
 
             encoding = Encoding.UTF8;
             NewFileCreated?.Invoke(this, EventArgs.Empty);
@@ -338,10 +337,10 @@ namespace DLM.Wpf
 
             private IEnumerable<string> getPropertyFiles()
             {
-                if (EditorSettings.Default.RecentFiles == null || EditorSettings.Default.RecentFiles.Length == 0)
+                if (Settings.Default.RecentFiles == null || Settings.Default.RecentFiles.Length == 0)
                     yield break;
 
-                foreach (var s in EditorSettings.Default.RecentFiles.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var s in Settings.Default.RecentFiles.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries))
                     yield return s;
             }
 
@@ -366,8 +365,8 @@ namespace DLM.Wpf
                     if (f.ToLower() != filepath)
                         filesString += "?" + f;
 
-                EditorSettings.Default.RecentFiles = filesString;
-                EditorSettings.Default.Save();
+                Settings.Default.RecentFiles = filesString;
+                Settings.Default.Save();
             }
 
             private bool isValid(string filepath)
