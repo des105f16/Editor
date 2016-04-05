@@ -44,6 +44,9 @@ namespace DLM.Wpf
             bindings.Add(new CommandBinding(ApplicationCommands.SaveAs, null, fileLoaded_CanExecute));
 
             bindings.Add(new CommandBinding(ApplicationCommands.Close, null, fileLoaded_CanExecute));
+            bindings.Add(new CommandBinding(CustomCommands.Exit, (s, e) => window.Close(), enabled));
+
+            window.Closing += (s, e) => windowClosing(e);
         }
 
         private void enabled(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
@@ -160,15 +163,13 @@ namespace DLM.Wpf
 
         #region FileHandle events and methods
 
-#pragma warning disable 1591
-        protected sealed override void OnClosing(CancelEventArgs e)
+        private void windowClosing(CancelEventArgs e)
         {
-            if (CloseFile() != System.Windows.Forms.DialogResult.OK)
+            if (CloseFile() != MessageBoxResult.OK)
                 e.Cancel = true;
             else
                 e.Cancel = false;
         }
-#pragma warning restore
 
         public MessageBoxResult NewFile()
         {
