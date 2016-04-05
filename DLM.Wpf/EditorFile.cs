@@ -77,17 +77,12 @@ namespace DLM.Wpf
             File = new FileInfo(EditorResources.Untitled + "." + (extension ?? EditorResources.DefaultExtension));
 
             encoding = Encoding.UTF8;
-            OnNewFileCreated(EventArgs.Empty);
+            NewFileCreated?.Invoke(this, EventArgs.Empty);
             changed = false;
 
             return DialogResult.OK;
         }
 
-        protected virtual void OnNewFileCreated(EventArgs e)
-        {
-            if (NewFileCreated != null)
-                NewFileCreated(this, e);
-        }
         public event EventHandler NewFileCreated;
 
         public DialogResult OpenFile()
@@ -106,7 +101,7 @@ namespace DLM.Wpf
                 return res;
 
             FileOpeningEventArgs fo = new FileOpeningEventArgs(openFileDialog1.FileName, this.FileExtension);
-            OnFileOpening(fo);
+            FileOpening?.Invoke(this, fo);
             if (!fo.AllowFile)
                 return System.Windows.Forms.DialogResult.Abort;
 
@@ -128,7 +123,7 @@ namespace DLM.Wpf
                 content = reader.ReadToEnd();
                 this.encoding = reader.CurrentEncoding;
             }
-            OnFileOpened(new FileOpenedEventArgs(content));
+            FileOpened?.Invoke(this, new FileOpenedEventArgs(content));
             changed = false;
 
             recentFiles.AddRecent(filepath);
@@ -136,17 +131,7 @@ namespace DLM.Wpf
             return DialogResult.OK;
         }
 
-        protected virtual void OnFileOpening(FileOpeningEventArgs e)
-        {
-            if (FileOpening != null)
-                FileOpening(this, e);
-        }
         public event EventHandler<FileOpeningEventArgs> FileOpening;
-        protected virtual void OnFileOpened(FileOpenedEventArgs e)
-        {
-            if (FileOpened != null)
-                FileOpened(this, e);
-        }
         public event EventHandler<FileOpenedEventArgs> FileOpened;
 
         public DialogResult SaveFile()
@@ -158,7 +143,7 @@ namespace DLM.Wpf
                 return SaveFileAs();
 
             FileSavingEventArgs e = new FileSavingEventArgs();
-            OnFileSaving(e);
+            FileSaving?.Invoke(this, e);
             using (FileStream fs = new FileStream(File.FullName, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(fs, encoding))
                 writer.Write(e.Content);
@@ -180,7 +165,7 @@ namespace DLM.Wpf
             FileInfo f = new FileInfo(saveFileDialog1.FileName);
 
             FileSavingEventArgs e = new FileSavingEventArgs();
-            OnFileSaving(e);
+            FileSaving?.Invoke(this, e);
             using (FileStream fs = new FileStream(f.FullName, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(fs, encoding))
                 writer.Write(e.Content);
@@ -191,11 +176,6 @@ namespace DLM.Wpf
             recentFiles.AddRecent(File.FullName);
 
             return DialogResult.OK;
-        }
-        protected virtual void OnFileSaving(FileSavingEventArgs e)
-        {
-            if (FileSaving != null)
-                FileSaving(this, e);
         }
         public event EventHandler<FileSavingEventArgs> FileSaving;
 
@@ -220,13 +200,8 @@ namespace DLM.Wpf
             encoding = null;
             File = null;
 
-            OnFileClosed(EventArgs.Empty);
+            FileClosed?.Invoke(this, EventArgs.Empty);
             return DialogResult.OK;
-        }
-        protected virtual void OnFileClosed(EventArgs e)
-        {
-            if (FileClosed != null)
-                FileClosed(this, e);
         }
         public event EventHandler FileClosed;
 
