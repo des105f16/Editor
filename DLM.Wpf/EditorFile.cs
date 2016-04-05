@@ -68,10 +68,6 @@ namespace DLM.Wpf
         }
 #pragma warning restore
 
-        /// <summary>
-        /// Creates a new (unsaved) file in the editor.
-        /// </summary>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult NewFile()
         {
             DialogResult res = CloseFile();
@@ -87,24 +83,13 @@ namespace DLM.Wpf
             return DialogResult.OK;
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:NewFileCreated" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected virtual void OnNewFileCreated(EventArgs e)
         {
             if (NewFileCreated != null)
                 NewFileCreated(this, e);
         }
-        /// <summary>
-        /// Occurs when a new file is created in the <see cref="EditorForm"/>.
-        /// </summary>
         public event EventHandler NewFileCreated;
 
-        /// <summary>
-        /// Opens a file from disc using a dialog to select the file.
-        /// </summary>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult OpenFile()
         {
             DialogResult res;
@@ -127,11 +112,6 @@ namespace DLM.Wpf
 
             return OpenFile(openFileDialog1.FileName);
         }
-        /// <summary>
-        /// Opens a file from disc by specifying its path.
-        /// </summary>
-        /// <param name="filepath">The file path of the file to open.</param>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult OpenFile(string filepath)
         {
             if (FileIsOpen)
@@ -156,37 +136,19 @@ namespace DLM.Wpf
             return DialogResult.OK;
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:FileOpening" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="FileOpeningEventArgs"/> instance containing the event data.</param>
         protected virtual void OnFileOpening(FileOpeningEventArgs e)
         {
             if (FileOpening != null)
                 FileOpening(this, e);
         }
-        /// <summary>
-        /// Occurs when a file is being opened.
-        /// </summary>
         public event EventHandler<FileOpeningEventArgs> FileOpening;
-        /// <summary>
-        /// Raises the <see cref="E:FileOpened" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="FileOpenedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnFileOpened(FileOpenedEventArgs e)
         {
             if (FileOpened != null)
                 FileOpened(this, e);
         }
-        /// <summary>
-        /// Occurs when a file is opened in the <see cref="EditorForm"/>.
-        /// </summary>
         public event EventHandler<FileOpenedEventArgs> FileOpened;
 
-        /// <summary>
-        /// Saves the currently open file on disc. If the file does not exist on disc, this is equivalent of calling the <see cref="SaveFileAs"/> method.
-        /// </summary>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult SaveFile()
         {
             if (!FileIsOpen)
@@ -206,10 +168,6 @@ namespace DLM.Wpf
 
             return DialogResult.OK;
         }
-        /// <summary>
-        /// Saves the currently open file on disc by selecting a destination path using a dialog.
-        /// </summary>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult SaveFileAs()
         {
             if (!FileIsOpen)
@@ -234,24 +192,13 @@ namespace DLM.Wpf
 
             return DialogResult.OK;
         }
-        /// <summary>
-        /// Raises the <see cref="E:FileSaving" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="FileSavingEventArgs"/> instance containing the event data.</param>
         protected virtual void OnFileSaving(FileSavingEventArgs e)
         {
             if (FileSaving != null)
                 FileSaving(this, e);
         }
-        /// <summary>
-        /// Occurs when a file is saved by the <see cref="EditorForm"/>.
-        /// </summary>
         public event EventHandler<FileSavingEventArgs> FileSaving;
 
-        /// <summary>
-        /// Closes the file after prompting to save changes to the file.
-        /// </summary>
-        /// <returns>A <see cref="DialogResult"/> describing the succes of the operation. <see cref="DialogResult.OK"/> implies that the operation was successful.</returns>
         public DialogResult CloseFile()
         {
             if (!FileIsOpen)
@@ -276,18 +223,11 @@ namespace DLM.Wpf
             OnFileClosed(EventArgs.Empty);
             return DialogResult.OK;
         }
-        /// <summary>
-        /// Raises the <see cref="E:FileClosed" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected virtual void OnFileClosed(EventArgs e)
         {
             if (FileClosed != null)
                 FileClosed(this, e);
         }
-        /// <summary>
-        /// Occurs when a file is closed by the <see cref="EditorForm"/>.
-        /// </summary>
         public event EventHandler FileClosed;
 
         #endregion
