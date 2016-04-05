@@ -52,7 +52,7 @@ namespace DLM.Wpf
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
 
-            file = new EditorFile(CommandBindings);
+            file = new EditorFile(recentFilesMenuItem, CommandBindings);
         }
     }
 }
