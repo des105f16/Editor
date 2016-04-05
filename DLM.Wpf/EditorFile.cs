@@ -1,4 +1,5 @@
-﻿using SablePP.Tools.Editor;
+﻿using Microsoft.Win32;
+using SablePP.Tools.Editor;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -10,6 +11,9 @@ namespace DLM.Wpf
 {
     public class EditorFile
     {
+        private readonly OpenFileDialog openFileDialog1;
+        private readonly SaveFileDialog saveFileDialog1;
+
         private readonly MenuItem recentFilesMenuItem;
         private string filepath;
 
@@ -17,6 +21,9 @@ namespace DLM.Wpf
         {
             this.recentFilesMenuItem = recentFilesMenuItem;
             this.filepath = null;
+
+            this.openFileDialog1 = new OpenFileDialog();
+            this.saveFileDialog1 = new SaveFileDialog();
 
             bindings.Add(new CommandBinding(ApplicationCommands.New, null, enabled));
 
