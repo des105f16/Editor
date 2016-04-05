@@ -40,7 +40,9 @@ namespace DLM.Wpf
                 CurrentLineColor = currentline,
                 Font = font,
                 DisabledColor = disabledbackcolor,
-                Enabled = false
+                Enabled = false,
+                WordWrap = true,
+                WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
 
             codeTextBox.TextChanged += codeTextBox_TextChanged;
