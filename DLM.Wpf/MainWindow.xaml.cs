@@ -23,6 +23,8 @@ namespace DLM.Wpf
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private EditorFile file;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +51,8 @@ namespace DLM.Wpf
             };
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
+
+            file = new EditorFile(CommandBindings);
         }
     }
 }
