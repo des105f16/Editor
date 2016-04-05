@@ -44,6 +44,7 @@ namespace DLM.Wpf
             };
 
             codeTextBox.TextChanged += codeTextBox_TextChanged;
+            codeTextBox.SelectionChanged += codeTextBox_SelectionChanged;
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
 
@@ -59,7 +60,7 @@ namespace DLM.Wpf
             file.FileSaving += fileSaving;
             file.FileClosed += fileClosed;
         }
-        
+
         private void newFileCreated(object sender, EventArgs e)
         {
             codeTextBox.Enabled = true;
@@ -104,6 +105,11 @@ namespace DLM.Wpf
         private void codeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             file.MarkFileAsChanged();
+        }
+        private void codeTextBox_SelectionChanged(object sender, EventArgs e)
+        {
+            lineBlock.Text = (codeTextBox.Selection.Start.iLine + 1).ToString();
+            charBlock.Text = (codeTextBox.Selection.Start.iChar + 1).ToString();
         }
     }
 }

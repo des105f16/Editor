@@ -41,7 +41,18 @@
                 <!-- <Label Content="Ready" Padding="0" VerticalAlignment="Center" VerticalContentAlignment="Center"/> -->
             </StackPanel>
             <StackPanel Name="bottomBarRight" Orientation="Horizontal" Margin="3,2" FlowDirection="RightToLeft" Grid.Column="1">
-                <Button />
+                <Label Width="60" Padding="0" FlowDirection="LeftToRight" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Char "/>
+                        <TextBlock Name="charBlock" Text="1"/>
+                    </StackPanel>
+                </Label>
+                <Label Width="60" Padding="0" FlowDirection="LeftToRight" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Line "/>
+                        <TextBlock Name="lineBlock" Text="1"/>
+                    </StackPanel>
+                </Label>
             </StackPanel>
         </Grid>
         <Grid ClipToBounds="True" DockPanel.Dock="Bottom" Height="22">
