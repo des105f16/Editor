@@ -77,7 +77,7 @@ namespace DLM.Wpf
         }
         private void fileOpening(object sender, FileOpeningEventArgs e)
         {
-            if (File.Exists(e.Filepath) && Path.GetExtension(e.Filepath) == file.FileExtension)
+            if (File.Exists(e.Filepath) && Path.GetExtension(e.Filepath) == "." + file.FileExtension)
                 e.AllowFile = true;
         }
         private void fileOpened(object sender, FileOpenedEventArgs e)
