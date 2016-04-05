@@ -14,11 +14,13 @@ namespace DLM.Wpf
         private readonly OpenFileDialog openFileDialog1;
         private readonly SaveFileDialog saveFileDialog1;
 
+        private readonly Window window;
         private readonly MenuItem recentFilesMenuItem;
         private string filepath;
 
-        public EditorFile(MenuItem recentFilesMenuItem, CommandBindingCollection bindings)
+        public EditorFile(Window window, MenuItem recentFilesMenuItem, CommandBindingCollection bindings)
         {
+            this.window = window;
             this.recentFilesMenuItem = recentFilesMenuItem;
             this.filepath = null;
 
