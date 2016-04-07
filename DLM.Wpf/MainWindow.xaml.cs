@@ -106,6 +106,11 @@ namespace DLM.Wpf
             {
                 foreach (var c in result.OriginalConstraints)
                 {
+                    if (!(c.OriginType == NodeConstraint.OriginTypes.Declaration ||
+                          c.OriginType == NodeConstraint.OriginTypes.IfBlock ||
+                          c.OriginType == NodeConstraint.OriginTypes.WhileBlock))
+                        continue;
+                    
                     if (!(c.Right is VariableLabel))
                         continue;
 
