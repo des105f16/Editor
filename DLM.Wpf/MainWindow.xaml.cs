@@ -47,6 +47,8 @@ namespace DLM.Wpf
 
             codeTextBox.TextChanged += codeTextBox_TextChanged;
             codeTextBox.SelectionChanged += codeTextBox_SelectionChanged;
+            codeTextBox.ErrorAdded += (s, e) => errorListBox.Items.Add(ErrorViewTypes.Wrap(e.Error));
+            codeTextBox.ErrorsCleared += (s, e) => errorListBox.Items.Clear();
 
             Loaded += (s, e) => codegrid.Children.Add(new WindowsFormsHost() { Child = codeTextBox });
 
