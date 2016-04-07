@@ -68,7 +68,11 @@
                 <RowDefinition Name="splitterRow" Height="2" />
                 <RowDefinition Name="errorRow" Height="100"/>
             </Grid.RowDefinitions>
-            <Grid Name="codegrid" Margin="15,5,15,3"/>
+            <DockPanel>
+                <ListBox Name="constraintList" DockPanel.Dock="Right">
+                </ListBox>
+                <Grid Name="codegrid" Margin="15,5,15,3"/>
+            </DockPanel>
             <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="{StaticResource HighlightBrush}" />
             <ListBox Grid.Row="2" Name="errorListBox" ScrollViewer.CanContentScroll="False">
                 <ListBox.Resources>
