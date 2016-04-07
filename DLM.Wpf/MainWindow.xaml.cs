@@ -1,4 +1,6 @@
-﻿using FastColoredTextBoxNS;
+﻿using DLM.Compiler;
+using DLM.Inference;
+using FastColoredTextBoxNS;
 using MahApps.Metro.Controls;
 using SablePP.Tools.Editor;
 using System;
@@ -14,6 +16,8 @@ namespace DLM.Wpf
     {
         private CodeTextBox codeTextBox;
         private EditorFile file;
+
+        private LabelSquigglyStyle labelSquiggly = new LabelSquigglyStyle();
 
         public MainWindow()
         {
@@ -67,8 +71,12 @@ namespace DLM.Wpf
         }
 
         private System.Windows.GridLength? errorHeight = null;
+
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
         {
+            var comp = codeTextBox.Executer as Compiler.CompilerExecuter;
+            var result = comp.Result;
+
             if (codeTextBox.LastResult.Errors.Length > 0)
             {
                 if (errorHeight.HasValue)
@@ -85,6 +93,36 @@ namespace DLM.Wpf
                     errorHeight = errorRow.Height;
                     errorRow.Height = new System.Windows.GridLength(0);
                     splitterRow.Height = new System.Windows.GridLength(0);
+                }
+            }
+
+            codeTextBox.Range.ClearStyle(labelSquiggly);
+            labelSquiggly.Clear();
+
+            if (result == null)
+                return;
+
+            if (result.Succes)
+            {
+                foreach (var c in result.OriginalConstraints)
+                {
+                    if (!(c.Right is VariableLabel && c.OriginType == NodeConstraint.OriginTypes.Declaration))
+                        continue;
+
+                    var variable = c.Right as VariableLabel;
+
+                    if (c.Origin is Compiler.Nodes.ADeclarationStatement)
+                    {
+                        var id = (c.Origin as Compiler.Nodes.ADeclarationStatement).Identifier;
+                        var range = new Range(codeTextBox,
+                            id.Position - 1, id.Line - 1, id.Position + id.Text.Length - 1, id.Line - 1);
+
+                        range.SetStyle(labelSquiggly);
+                        labelSquiggly.Add(id.Line - 1, variable.CurrentUpperBound);
+                        //labelTooltips.Add(range, variable.CurrentUpperBound.NoVariables.ToString());
+                    }
+                    else
+                        throw new NotImplementedException();
                 }
             }
         }
