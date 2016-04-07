@@ -1,0 +1,133 @@
+﻿<Controls:MetroWindow x:Class="DLM.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLM.Wpf"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="450" Width="825" WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <Menu x:Name="menu" DockPanel.Dock="Top" FontSize="12">
+            <MenuItem Header="_File" Padding="10,3">
+                <MenuItem Header="_New" Command="ApplicationCommands.New"/>
+                <MenuItem Header="_Open" Command="ApplicationCommands.Open"/>
+                <MenuItem Name="recentFilesMenuItem" Header="Open Recent" Command="local:CustomCommands.OpenRecent"/>
+                <Separator Height="2" />
+                <MenuItem Header="_Save" Command="ApplicationCommands.Save"/>
+                <MenuItem Header="Save _As" Command="ApplicationCommands.SaveAs"/>
+                <Separator Height="2" />
+                <MenuItem Header="_Close" Command="ApplicationCommands.Close"/>
+                <MenuItem Header="Exit" Command="local:CustomCommands.Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit" Padding="10,3">
+                <MenuItem Header="Undo" Command="ApplicationCommands.Undo"/>
+                <MenuItem Header="Redo" Command="ApplicationCommands.Redo"/>
+                <Separator Height="2" />
+                <MenuItem Header="Cut" Command="ApplicationCommands.Cut"/>
+                <MenuItem Header="Copy" Command="ApplicationCommands.Copy"/>
+                <MenuItem Header="Paste" Command="ApplicationCommands.Paste"/>
+                <Separator Height="2" />
+                <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
+            </MenuItem>
+        </Menu>
+        <Grid Name="bottomBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Name="bottomBarLeft" Orientation="Horizontal" Margin="3,2" FlowDirection="LeftToRight" Grid.Column="0">
+                <!-- <Label Content="Ready" Padding="0" VerticalAlignment="Center"/> -->
+            </StackPanel>
+            <StackPanel Name="bottomBarRight" Orientation="Horizontal" Margin="3,2" FlowDirection="RightToLeft" Grid.Column="1">
+                <Label Width="60" Padding="0" FlowDirection="LeftToRight" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Char "/>
+                        <TextBlock Name="charBlock" Text="1"/>
+                    </StackPanel>
+                </Label>
+                <Label Width="60" Padding="0" FlowDirection="LeftToRight" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Line "/>
+                        <TextBlock Name="lineBlock" Text="1"/>
+                    </StackPanel>
+                </Label>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Name="splitterRow" Height="2" />
+                <RowDefinition Name="errorRow" Height="100"/>
+            </Grid.RowDefinitions>
+            <Grid Name="codegrid" Margin="15,5,15,3"/>
+            <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="{StaticResource HighlightBrush}" />
+            <ListBox Grid.Row="2" Name="errorListBox" ScrollViewer.CanContentScroll="False">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type local:Error}">
+                        <Grid Margin="0, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFCC0000">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_close}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:Warning}">
+                        <Grid Margin="0, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFCF880C">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_warning}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:Message}">
+                        <Grid Margin="0, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFBFEFF1">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_information_circle}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.Resources>
+            </ListBox>
+        </Grid>
+    </DockPanel>
+</Controls:MetroWindow>

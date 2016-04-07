@@ -29,15 +29,12 @@ namespace DLM.Compiler
                 return style1;
             if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
                 return style2;
-            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit)
+            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit || token is TUnderscore || token is THat)
                 return style3;
-            if (token is TUnderscore || token is THat)
-                return style4;
             return null;
         }
-        private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(51, 153, 51)), null, FontStyle.Italic);
-        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(0, 0, 204)), null, FontStyle.Bold);
-        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(141, 25, 170)), new SolidBrush(Color.FromArgb(230, 231, 250)), FontStyle.Bold);
-        private TextStyle style4 = new TextStyle(new SolidBrush(Color.FromArgb(141, 25, 170)), null, FontStyle.Bold);
+        private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(73, 139, 61)), null, FontStyle.Italic);
+        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(36, 126, 175)), null, FontStyle.Bold);
+        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(141, 25, 170)), null, FontStyle.Bold);
     }
 }
