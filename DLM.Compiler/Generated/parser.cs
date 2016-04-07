@@ -489,6 +489,7 @@ namespace DLM.Compiler.Parsing
                         List<PStatement> pstatementlist2 = new List<PStatement>();
                         pstatementlist2.AddRange(pstatementlist);
                         AIfStatement aifstatement = new AIfStatement(
+                            tif,
                             pexpression,
                             pstatementlist2
                         );
@@ -509,6 +510,7 @@ namespace DLM.Compiler.Parsing
                         List<PStatement> pstatementlist4 = new List<PStatement>();
                         pstatementlist4.AddRange(pstatementlist);
                         AIfElseStatement aifelsestatement = new AIfElseStatement(
+                            tif,
                             pexpression,
                             pstatementlist3,
                             pstatementlist4
@@ -526,6 +528,7 @@ namespace DLM.Compiler.Parsing
                         List<PStatement> pstatementlist2 = new List<PStatement>();
                         pstatementlist2.AddRange(pstatementlist);
                         AWhileStatement awhilestatement = new AWhileStatement(
+                            twhile,
                             pexpression,
                             pstatementlist2
                         );
@@ -570,6 +573,7 @@ namespace DLM.Compiler.Parsing
                         List<PStatement> pstatementlist4 = new List<PStatement>();
                         pstatementlist4.AddRange(pstatementlist);
                         AIfElseStatement aifelsestatement = new AIfElseStatement(
+                            tif,
                             pexpression,
                             pstatementlist3,
                             pstatementlist4
@@ -587,6 +591,7 @@ namespace DLM.Compiler.Parsing
                         List<PStatement> pstatementlist2 = new List<PStatement>();
                         pstatementlist2.AddRange(pstatementlist);
                         AWhileStatement awhilestatement = new AWhileStatement(
+                            twhile,
                             pexpression,
                             pstatementlist2
                         );
@@ -680,6 +685,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = isOn(1, index - 61) ? Pop<PExpression>() : null;
                         TReturn treturn = Pop<TReturn>();
                         AReturnStatement areturnstatement = new AReturnStatement(
+                            treturn,
                             pexpression
                         );
                         Push(10, areturnstatement);

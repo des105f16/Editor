@@ -1083,17 +1083,20 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
+            Visit(node.If);
             Visit(node.Expression);
             Visit(node.Statements);
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
+            Visit(node.If);
             Visit(node.Expression);
             Visit(node.IfStatements);
             Visit(node.ElseStatements);
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
+            Visit(node.While);
             Visit(node.Expression);
             Visit(node.Statements);
         }
@@ -1110,6 +1113,7 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
+            Visit(node.Return);
             if (node.HasExpression)
                 Visit(node.Expression);
         }
@@ -1363,17 +1367,20 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Statements);
             Visit(node.Expression);
+            Visit(node.If);
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Visit(node.ElseStatements);
             Visit(node.IfStatements);
             Visit(node.Expression);
+            Visit(node.If);
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Visit(node.Statements);
             Visit(node.Expression);
+            Visit(node.While);
         }
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
@@ -1390,6 +1397,7 @@ namespace DLM.Compiler.Analysis
         {
             if (node.HasExpression)
                 Visit(node.Expression);
+            Visit(node.Return);
         }
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {

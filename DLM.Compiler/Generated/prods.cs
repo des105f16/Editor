@@ -1018,16 +1018,33 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AIfStatement : PStatement
     {
+        private TIf _if_;
         private PExpression _expression_;
         private NodeList<PStatement> _statements_;
         
-        public AIfStatement(PExpression _expression_, IEnumerable<PStatement> _statements_)
+        public AIfStatement(TIf _if_, PExpression _expression_, IEnumerable<PStatement> _statements_)
             : base()
         {
+            this.If = _if_;
             this.Expression = _expression_;
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
+        public TIf If
+        {
+            get { return _if_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("If in AIfStatement cannot be null.", "value");
+                
+                if (_if_ != null)
+                    SetParent(_if_, null);
+                SetParent(value, this);
+                
+                _if_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -1050,7 +1067,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (If == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("If in AIfStatement cannot be null.", "newChild");
+                if (!(newChild is TIf) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                If = newChild as TIf;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in AIfStatement cannot be null.", "newChild");
@@ -1073,6 +1098,7 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return If;
             yield return Expression;
             {
                 PStatement[] temp = new PStatement[Statements.Count];
@@ -1084,28 +1110,45 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfStatement(Expression.Clone(), Statements.Clone());
+            return new AIfStatement(If.Clone(), Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Expression, Statements);
+            return string.Format("{0} {1} {2}", If, Expression, Statements);
         }
     }
     public partial class AIfElseStatement : PStatement
     {
+        private TIf _if_;
         private PExpression _expression_;
         private NodeList<PStatement> _ifstatements_;
         private NodeList<PStatement> _elsestatements_;
         
-        public AIfElseStatement(PExpression _expression_, IEnumerable<PStatement> _ifstatements_, IEnumerable<PStatement> _elsestatements_)
+        public AIfElseStatement(TIf _if_, PExpression _expression_, IEnumerable<PStatement> _ifstatements_, IEnumerable<PStatement> _elsestatements_)
             : base()
         {
+            this.If = _if_;
             this.Expression = _expression_;
             this._ifstatements_ = new NodeList<PStatement>(this, _ifstatements_, true);
             this._elsestatements_ = new NodeList<PStatement>(this, _elsestatements_, true);
         }
         
+        public TIf If
+        {
+            get { return _if_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("If in AIfElseStatement cannot be null.", "value");
+                
+                if (_if_ != null)
+                    SetParent(_if_, null);
+                SetParent(value, this);
+                
+                _if_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -1132,7 +1175,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (If == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("If in AIfElseStatement cannot be null.", "newChild");
+                if (!(newChild is TIf) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                If = newChild as TIf;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in AIfElseStatement cannot be null.", "newChild");
@@ -1166,6 +1217,7 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return If;
             yield return Expression;
             {
                 PStatement[] temp = new PStatement[IfStatements.Count];
@@ -1183,26 +1235,43 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AIfElseStatement(Expression.Clone(), IfStatements.Clone(), ElseStatements.Clone());
+            return new AIfElseStatement(If.Clone(), Expression.Clone(), IfStatements.Clone(), ElseStatements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Expression, IfStatements, ElseStatements);
+            return string.Format("{0} {1} {2} {3}", If, Expression, IfStatements, ElseStatements);
         }
     }
     public partial class AWhileStatement : PStatement
     {
+        private TWhile _while_;
         private PExpression _expression_;
         private NodeList<PStatement> _statements_;
         
-        public AWhileStatement(PExpression _expression_, IEnumerable<PStatement> _statements_)
+        public AWhileStatement(TWhile _while_, PExpression _expression_, IEnumerable<PStatement> _statements_)
             : base()
         {
+            this.While = _while_;
             this.Expression = _expression_;
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
+        public TWhile While
+        {
+            get { return _while_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("While in AWhileStatement cannot be null.", "value");
+                
+                if (_while_ != null)
+                    SetParent(_while_, null);
+                SetParent(value, this);
+                
+                _while_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -1225,7 +1294,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (While == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("While in AWhileStatement cannot be null.", "newChild");
+                if (!(newChild is TWhile) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                While = newChild as TWhile;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in AWhileStatement cannot be null.", "newChild");
@@ -1248,6 +1325,7 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return While;
             yield return Expression;
             {
                 PStatement[] temp = new PStatement[Statements.Count];
@@ -1259,12 +1337,12 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AWhileStatement(Expression.Clone(), Statements.Clone());
+            return new AWhileStatement(While.Clone(), Expression.Clone(), Statements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Expression, Statements);
+            return string.Format("{0} {1} {2}", While, Expression, Statements);
         }
     }
     public partial class AFunctionDeclarationStatement : PStatement
@@ -1447,14 +1525,31 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AReturnStatement : PStatement
     {
+        private TReturn _return_;
         private PExpression _expression_;
         
-        public AReturnStatement(PExpression _expression_)
+        public AReturnStatement(TReturn _return_, PExpression _expression_)
             : base()
         {
+            this.Return = _return_;
             this.Expression = _expression_;
         }
         
+        public TReturn Return
+        {
+            get { return _return_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Return in AReturnStatement cannot be null.", "value");
+                
+                if (_return_ != null)
+                    SetParent(_return_, null);
+                SetParent(value, this);
+                
+                _return_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -1475,7 +1570,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (Return == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Return in AReturnStatement cannot be null.", "newChild");
+                if (!(newChild is TReturn) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Return = newChild as TReturn;
+            }
+            else if (Expression == oldChild)
             {
                 if (!(newChild is PExpression) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
@@ -1485,18 +1588,19 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return Return;
             if (HasExpression)
                 yield return Expression;
         }
         
         public override PStatement Clone()
         {
-            return new AReturnStatement(Expression?.Clone());
+            return new AReturnStatement(Return.Clone(), Expression?.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Expression);
+            return string.Format("{0} {1}", Return, Expression);
         }
     }
     public abstract partial class PFunctionParameter : Production<PFunctionParameter>
