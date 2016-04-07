@@ -6,11 +6,11 @@ using System;
 
 namespace DLM.Wpf
 {
-    public class LabelSquigglyStyle : SablePP.Tools.Editor.SquigglyStyle
+    public class LabelSquigglyStyle : Style
     {
         private ConcurrentDictionary<int, VariableLabel> labels;
 
-        public LabelSquigglyStyle() : base(System.Drawing.Pens.Orange)
+        public LabelSquigglyStyle()
         {
             this.labels = new ConcurrentDictionary<int, VariableLabel>();
         }
@@ -26,8 +26,6 @@ namespace DLM.Wpf
 
         public override void Draw(Graphics gr, Point position, Range range)
         {
-            base.Draw(gr, position, range);
-
             int iLine = range.Start.iLine;
             var line = range.tb.GetLine(range.Start.iLine);
 
