@@ -62,7 +62,13 @@ namespace DLM.Compiler
 
             Visit(node.Type);
             if (node.Type.DeclaredLabel == null)
-                node.Type.DeclaredLabel = Label.LowerBound;
+            {
+                var funcLabel = Label.LowerBound;
+                foreach (var p in node.Parameters)
+                    funcLabel += p.Type.DeclaredLabel;
+
+                node.Type.DeclaredLabel = funcLabel;
+            }
 
             if (errorManager.Errors.Count > 0)
             {
