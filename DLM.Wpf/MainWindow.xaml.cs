@@ -110,7 +110,7 @@ namespace DLM.Wpf
                           c.OriginType == NodeConstraint.OriginTypes.IfBlock ||
                           c.OriginType == NodeConstraint.OriginTypes.WhileBlock))
                         continue;
-                    
+
                     if (!(c.Right is VariableLabel))
                         continue;
 
@@ -123,7 +123,7 @@ namespace DLM.Wpf
                             id.Position - 1, id.Line - 1, id.Position + id.Text.Length - 1, id.Line - 1);
 
                         range.SetStyle(labelSquiggly);
-                        labelSquiggly.Add(id.Line - 1, variable.CurrentUpperBound);
+                        labelSquiggly.Add(id.Line - 1, variable);
                     }
                 }
             }
