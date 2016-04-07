@@ -30,7 +30,6 @@ namespace DLM.Wpf
 
             this.codeTextBox = new CodeTextBox()
             {
-                Executer = new DLM.Compiler.CompilerExecuter(),
                 BackColor = backcolor,
                 ServiceLinesColor = backcolor,
                 IndentBackColor = backcolor,
@@ -44,6 +43,7 @@ namespace DLM.Wpf
                 WordWrap = true,
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
+            this.codeTextBox.Executer = new DLM.Compiler.CompilerExecuter();
 
             codeTextBox.TextChanged += codeTextBox_TextChanged;
             codeTextBox.SelectionChanged += codeTextBox_SelectionChanged;
