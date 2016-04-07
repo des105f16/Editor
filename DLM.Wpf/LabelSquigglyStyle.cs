@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using FastColoredTextBoxNS;
 using System.Drawing;
 using System;
+using System.Text.RegularExpressions;
 
 namespace DLM.Wpf
 {
@@ -54,7 +55,7 @@ namespace DLM.Wpf
                 this.g = graphics;
                 this.font = new Font(font, FontStyle.Regular);
                 this.underlined = new Font(font, FontStyle.Underline);
-                this.defaultBrush = new SolidBrush(Color.Orange);
+                this.defaultBrush = new SolidBrush(Color.FromArgb(120, 175, 175, 10));
                 this.charSize = charSize;
                 this.position = point;
             }
@@ -67,7 +68,12 @@ namespace DLM.Wpf
 
             public void Draw(VariableLabel label)
             {
-                DrawString(label.Name, font: underlined);
+                var name = label.Name;
+                var m = Regex.Match(name, @"\{([^\d]+)(\d+)}");
+                if (m.Success)
+                    name = m.Groups[1].Value;
+
+                DrawString(name, font: underlined);
                 DrawString(" = ");
 
                 Draw((dynamic)label.NoVariables);
@@ -76,10 +82,10 @@ namespace DLM.Wpf
             public void Draw(JoinLabel label)
             {
                 Draw((dynamic)label.Label1);
-                
+
                 position.X += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                using (var pen = new Pen(Color.DarkOrange))
+                using (var pen = new Pen(defaultBrush))
                 {
                     g.DrawLines(pen, new PointF[]
                     {
