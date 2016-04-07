@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="EditorFile.cs" />
     <Compile Include="ErrorViewTypes.cs" />
+    <Compile Include="LabelSquigglyStyle.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
