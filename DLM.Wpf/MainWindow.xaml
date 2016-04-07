@@ -73,7 +73,7 @@
             <ListBox Grid.Row="2" Name="errorListBox" ScrollViewer.CanContentScroll="False">
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type local:Error}">
-                        <Grid>
+                        <Grid Margin="0, 0, 10, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25"/>
                                 <ColumnDefinition Width="1*"/>
@@ -91,7 +91,7 @@
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type local:Warning}">
-                        <Grid>
+                        <Grid Margin="0, 0, 10, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25"/>
                                 <ColumnDefinition Width="1*"/>
@@ -109,7 +109,7 @@
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type local:Message}">
-                        <Grid>
+                        <Grid Margin="0, 0, 10, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25"/>
                                 <ColumnDefinition Width="1*"/>
