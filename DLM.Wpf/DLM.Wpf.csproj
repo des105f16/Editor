@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo.ttf" />
-    <None Include="Resources\error.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\WindowsIcons-license.txt" />
