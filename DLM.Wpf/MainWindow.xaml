@@ -70,7 +70,63 @@
             </Grid.RowDefinitions>
             <Grid Name="codegrid" Margin="15,5,15,3"/>
             <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="{StaticResource HighlightBrush}" />
-            <ListBox Grid.Row="2" Name="errorListBox">
+            <ListBox Grid.Row="2" Name="errorListBox" ScrollViewer.CanContentScroll="False">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type local:Error}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFCC0000">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_close}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:Warning}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFCF880C">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_warning}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:Message}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="16" Height="16" Fill="#FFBFEFF1">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_information_circle}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <Label Grid.Column="1" Content="{Binding Message, FallbackValue=Message}"/>
+                            <Label Grid.Column="2" FlowDirection="RightToLeft" Content="{Binding Line, FallbackValue=1}"/>
+                            <Label Grid.Column="3" FlowDirection="RightToLeft" Content="{Binding Character, FallbackValue=1}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.Resources>
             </ListBox>
         </Grid>
     </DockPanel>
