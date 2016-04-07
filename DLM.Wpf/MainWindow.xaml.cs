@@ -119,7 +119,6 @@ namespace DLM.Wpf
 
                         range.SetStyle(labelSquiggly);
                         labelSquiggly.Add(id.Line - 1, variable.CurrentUpperBound);
-                        //labelTooltips.Add(range, variable.CurrentUpperBound.NoVariables.ToString());
                     }
                     else
                         throw new NotImplementedException();
