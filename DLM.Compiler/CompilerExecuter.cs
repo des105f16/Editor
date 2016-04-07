@@ -41,7 +41,7 @@ namespace DLM.Compiler
             if (!vars.Succes)
             {
                 var fail = vars.ResolveSteps.Last();
-                compilationOptions.ErrorManager.Register(fail.Origin, "Failed to validate labels, see details.");
+                compilationOptions.ErrorManager.Register(fail.MarkedOrigin ?? fail.Origin, "Failed to validate labels, see details.");
             }
 
             result = vars;
@@ -133,7 +133,7 @@ namespace DLM.Compiler
             {
                 ConstraintExtractor le = new ConstraintExtractor(errorManager);
                 le.Visit(root);
-                return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.Origin, o.OriginType), le.Constraints);
+                return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.MarkedOrigin, o.Origin, o.OriginType), le.Constraints);
             }
         }
 

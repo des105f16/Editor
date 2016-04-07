@@ -21,15 +21,18 @@ namespace DLM.Compiler
             Argument
         }
 
+        private readonly Token markedOrigin;
         private readonly Node origin;
         private readonly OriginTypes originType;
 
-        public NodeConstraint(Label left, Label right, Node origin, OriginTypes originType) : base(left, right)
+        public NodeConstraint(Label left, Label right, Token markedOrigin, Node origin, OriginTypes originType) : base(left, right)
         {
+            this.markedOrigin = markedOrigin;
             this.origin = origin;
             this.originType = originType;
         }
 
+        public Token MarkedOrigin => markedOrigin;
         public Node Origin => origin;
         public OriginTypes OriginType => originType;
     }

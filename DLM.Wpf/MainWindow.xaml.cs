@@ -106,22 +106,20 @@ namespace DLM.Wpf
             {
                 foreach (var c in result.OriginalConstraints)
                 {
-                    if (!(c.Right is VariableLabel && c.OriginType == NodeConstraint.OriginTypes.Declaration))
+                    if (!(c.Right is VariableLabel))
                         continue;
 
                     var variable = c.Right as VariableLabel;
+                    var id = c.MarkedOrigin;
 
-                    if (c.Origin is Compiler.Nodes.ADeclarationStatement)
+                    if (id != null)
                     {
-                        var id = (c.Origin as Compiler.Nodes.ADeclarationStatement).Identifier;
                         var range = new Range(codeTextBox,
                             id.Position - 1, id.Line - 1, id.Position + id.Text.Length - 1, id.Line - 1);
 
                         range.SetStyle(labelSquiggly);
                         labelSquiggly.Add(id.Line - 1, variable.CurrentUpperBound);
                     }
-                    else
-                        throw new NotImplementedException();
                 }
             }
         }
