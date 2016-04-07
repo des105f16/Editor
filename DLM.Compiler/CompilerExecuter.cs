@@ -25,6 +25,8 @@ namespace DLM.Compiler
 
             Validator v = new Validator(root, compilationOptions);
 
+            result = null;
+
             v.CompileWithGCC(compilationOptions.Input);
             if (v.Errors)
                 return;
