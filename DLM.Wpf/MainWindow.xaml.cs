@@ -25,7 +25,7 @@ namespace DLM.Wpf
 
             var forecolor = System.Drawing.Color.FromArgb(220, 220, 220);
             var backcolor = System.Drawing.Color.FromArgb(30, 30, 30);
-            var disabledbackcolor = System.Drawing.Color.FromArgb(12, 12, 12);
+            var disabledbackcolor = System.Drawing.Color.FromArgb(35, 35, 35);
             var linenumbers = System.Drawing.Color.FromArgb(36, 126, 175);
 
             var currentline = System.Drawing.Color.FromArgb(12, 12, 12);
