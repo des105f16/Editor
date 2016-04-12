@@ -161,6 +161,8 @@ namespace DLM.Wpf
         {
             codeTextBox.Enabled = false;
             codeTextBox.Text = "";
+
+            constraintList.Items.Clear();
         }
 
         private void codeTextBox_TextChanged(object sender, TextChangedEventArgs e)
