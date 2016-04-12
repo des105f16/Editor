@@ -49,6 +49,8 @@ namespace DLM.Wpf
             };
             this.codeTextBox.Executer = new DLM.Compiler.CompilerExecuter();
 
+            constraintList.Items.Clear();
+
             codeTextBox.TextChanged += codeTextBox_TextChanged;
             codeTextBox.SelectionChanged += codeTextBox_SelectionChanged;
             codeTextBox.ErrorAdded += (s, e) => errorListBox.Items.Add(ErrorViewTypes.Wrap(e.Error));
@@ -127,6 +129,13 @@ namespace DLM.Wpf
                     }
                 }
             }
+
+            constraintList.Items.Clear();
+            foreach (var c in result.ResolveSteps)
+                if (c.Success)
+                    constraintList.Items.Add(new InferenceStepView(c));
+                else
+                    constraintList.Items.Add(new InferenceStepErrorView(c));
         }
 
         private void newFileCreated(object sender, EventArgs e)

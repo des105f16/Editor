@@ -80,6 +80,8 @@
     </Compile>
     <Compile Include="EditorFile.cs" />
     <Compile Include="ErrorViewTypes.cs" />
+    <Compile Include="InferenceStepErrorView.cs" />
+    <Compile Include="InferenceStepView.cs" />
     <Compile Include="LabelSquigglyStyle.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

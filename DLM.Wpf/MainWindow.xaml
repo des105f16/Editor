@@ -69,7 +69,125 @@
                 <RowDefinition Name="errorRow" Height="100"/>
             </Grid.RowDefinitions>
             <DockPanel>
-                <ListBox Name="constraintList" DockPanel.Dock="Right">
+                <ListBox Name="constraintList" DockPanel.Dock="Right" Padding="0,0,5,0">
+                    <Label>
+                        <StackPanel Orientation="Vertical">
+                            <Label Padding="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="From "/>
+                                    <TextBlock FontFamily="Consolas" Text="return" VerticalAlignment="Bottom" Foreground="Orange"/>
+                                    <TextBlock Text=" on line "/>
+                                    <TextBlock Text="2"/>
+                                </StackPanel>
+                            </Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="dec1" TextDecorations="Underline"/>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text=" = "/>
+                                        <Label Padding="0" Foreground="Orange">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#x22a4;"/>
+                                            </StackPanel>
+                                        </Label>
+                                        <TextBlock Text=" &#x2293; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
+                                        <Label Padding="0" Foreground="DodgerBlue">
+                                            usages &#x2294; prices
+                                        </Label>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text=" = "/>
+                                        <Label Padding="0" Foreground="YellowGreen">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="usages" TextDecorations="Underline"/>
+                                                <TextBlock Text=" &#x2294; " FontSize="14" Margin="2,-2,0,-10"/>
+                                                <TextBlock Text="prices" TextDecorations="Underline"/>
+                                            </StackPanel>
+                                        </Label>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Label>
+                    <Label>
+                        <StackPanel Orientation="Vertical">
+                            <Label Padding="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="From "/>
+                                    <TextBlock FontFamily="Consolas" Text="return" VerticalAlignment="Bottom" Foreground="Orange"/>
+                                    <TextBlock Text=" on line "/>
+                                    <TextBlock Text="2"/>
+                                </StackPanel>
+                            </Label>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="a -> a" Foreground="Orange"/>
+                                    <TextBlock Text=" &#x2291; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
+                                    <TextBlock Text="usages &#x2294; prices" Foreground="DodgerBlue"/>
+                                </StackPanel>
+                                <TextBlock Text="Unresolved constraint." Foreground="Red"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Label>
+                    <ListBox.Resources>
+                        <DataTemplate DataType="{x:Type local:InferenceStepView}">
+                            <Label>
+                                <StackPanel Orientation="Vertical">
+                                    <Label Padding="0,0,0,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="From "/>
+                                            <TextBlock FontFamily="Consolas" Text="{Binding SourceType}" VerticalAlignment="Bottom" Foreground="Orange"/>
+                                            <TextBlock Text=" on line "/>
+                                            <TextBlock Text="{Binding Line}"/>
+                                        </StackPanel>
+                                    </Label>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding VariableName}" TextDecorations="Underline"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text=" = "/>
+                                                <Label Padding="0" Foreground="Orange" Content="{Binding CurrentUpper}"/>
+                                                <TextBlock Text=" &#x2293; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
+                                                <Label Padding="0" Foreground="DodgerBlue" Content="{Binding MeetWith}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text=" = "/>
+                                                <Label Padding="0" Foreground="Orange" Content="{Binding CurrentUpper}"/>
+                                                <TextBlock Text=" &#x2293; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
+                                                <Label Padding="0" Foreground="DodgerBlue" Content="{Binding MeetWithNoVars}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text=" = "/>
+                                                <Label Padding="0" Foreground="YellowGreen" Content="{Binding Result}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type local:InferenceStepErrorView}">
+                            <Label>
+                                <StackPanel Orientation="Vertical">
+                                    <Label Padding="0,0,0,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="From "/>
+                                            <TextBlock FontFamily="Consolas" Text="{Binding SourceType}" VerticalAlignment="Bottom" Foreground="Orange"/>
+                                            <TextBlock Text=" on line "/>
+                                            <TextBlock Text="{Binding Line}"/>
+                                        </StackPanel>
+                                    </Label>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding CurrentUpper}" Foreground="Orange"/>
+                                            <TextBlock Text=" &#x2291; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
+                                            <TextBlock Text="{Binding MeetWith}" Foreground="DodgerBlue"/>
+                                        </StackPanel>
+                                        <TextBlock Text="Unresolved constraint." Foreground="Red"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Label>
+                        </DataTemplate>
+                    </ListBox.Resources>
                 </ListBox>
                 <Grid Name="codegrid" Margin="15,5,15,3"/>
             </DockPanel>
