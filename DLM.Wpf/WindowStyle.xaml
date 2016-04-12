@@ -5,11 +5,11 @@
                     mc:Ignorable="options"
                     xmlns:local="clr-namespace:DLM.Wpf">
     <!--ACCENT COLORS-->
-    <Color x:Key="HighlightColor">#FF9F0055</Color>
+    <Color x:Key="HighlightColor">#08ffffff</Color>
 
     <Color x:Key="AccentColor">#ff2d2d30</Color>
     <Color x:Key="AccentColor2">#99D80073</Color>
-    <Color x:Key="AccentColor3">#66D80073</Color>
+    <Color x:Key="AccentColor3">#33008aff</Color>
     <Color x:Key="AccentColor4">#33D80073</Color>
 
     <!-- re-set brushes too -->
