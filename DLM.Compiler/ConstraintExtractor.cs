@@ -25,7 +25,7 @@ namespace DLM.Compiler
         {
             int i = 1;
 
-            while (true) yield return $"{{{name}{i++}}}";
+            while (true) yield return $"[{name}{i++}]";
         }
         private VariableLabel getVariableLabel(string name)
         {

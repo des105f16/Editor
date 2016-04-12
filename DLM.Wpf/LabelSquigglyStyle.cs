@@ -69,9 +69,6 @@ namespace DLM.Wpf
             public void Draw(VariableLabel label)
             {
                 var name = label.Name;
-                var m = Regex.Match(name, @"\{([^\d]+)(\d+)}");
-                if (m.Success)
-                    name = m.Groups[1].Value;
 
                 DrawString(name, font: underlined);
                 DrawString(" = ");
