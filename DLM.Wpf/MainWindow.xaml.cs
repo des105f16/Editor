@@ -71,32 +71,16 @@ namespace DLM.Wpf
             file.FileSaving += fileSaving;
             file.FileClosed += fileClosed;
         }
-
-        private System.Windows.GridLength? errorHeight = null;
-
+        
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
         {
             var comp = codeTextBox.Executer as Compiler.CompilerExecuter;
             var result = comp.Result;
 
             if (codeTextBox.LastResult.Errors.Length > 0)
-            {
-                if (errorHeight.HasValue)
-                {
-                    errorRow.Height = errorHeight.Value;
-                    splitterRow.Height = new System.Windows.GridLength(2);
-                    errorHeight = null;
-                }
-            }
+                errorListBox.Visibility = System.Windows.Visibility.Visible;
             else
-            {
-                if (!errorHeight.HasValue)
-                {
-                    errorHeight = errorRow.Height;
-                    errorRow.Height = new System.Windows.GridLength(0);
-                    splitterRow.Height = new System.Windows.GridLength(0);
-                }
-            }
+                errorListBox.Visibility = System.Windows.Visibility.Collapsed;
 
             codeTextBox.Range.ClearStyle(labelSquiggly);
             labelSquiggly.Clear();
