@@ -126,6 +126,15 @@ namespace DLM.Wpf
                 }
             }
 
+            public void Draw(UpperBoundLabel label)
+            {
+                DrawString(label.ToString());
+            }
+            public void Draw(LowerBoundLabel label)
+            {
+                DrawString(label.ToString());
+            }
+
             public void Dispose()
             {
                 font.Dispose();
