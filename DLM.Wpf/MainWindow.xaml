@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DLM.Wpf"
+        xmlns:inf="clr-namespace:DLM.Inference;assembly=DLM.Inference"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -13,6 +14,39 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type inf:ConstantLabel}">
+                <Grid>
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding Name}" Opacity="0.8">
+                    <TextBlock.TextDecorations>
+                        <TextDecoration Location="OverLine" PenOffset="5" PenOffsetUnit="Pixel"/>
+                    </TextBlock.TextDecorations>
+                    </TextBlock>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inf:VariableLabel}">
+                <TextBlock Text="{Binding Name}" TextDecorations="Underline"/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inf:UpperBoundLabel}">
+                <TextBlock Text="&#x22a4;" FontWeight="Bold" FontSize="12" Margin="0,-1,0,-2"/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inf:LowerBoundLabel}">
+                <TextBlock Text="&#x22a5;" FontWeight="Bold" FontSize="12" Margin="0,-1,0,-2"/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inf:JoinLabel}">
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{Binding Label1}" Margin="0" Padding="0"/>
+                    <TextBlock Text=" &#x2294; " FontSize="14" Margin="1,-2,0,-10"/>
+                    <ContentControl Content="{Binding Label2}" Margin="0" Padding="0"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inf:MeetLabel}">
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{Binding Label1}" Margin="0" Padding="0"/>
+                    <TextBlock Text=" &#x2293; " FontSize="14" Margin="1,-2,0,-10"/>
+                    <ContentControl Content="{Binding Label2}" Margin="0" Padding="0"/>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
@@ -154,7 +188,7 @@
                                                 <TextBlock Text=" = "/>
                                                 <Label Padding="0" Foreground="Orange" Content="{Binding CurrentUpper}"/>
                                                 <TextBlock Text=" &#x2293; " FontWeight="Bold" FontSize="20" Margin="0,-7,0,-10"/>
-                                                <Label Padding="0" Foreground="DodgerBlue" Content="{Binding MeetWithNoVars}"/>
+                                                <Label Padding="0" Foreground="DodgerBlue" Content="{Binding MeetWith.NoVariables}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text=" = "/>
