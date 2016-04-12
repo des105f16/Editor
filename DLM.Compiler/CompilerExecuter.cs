@@ -43,7 +43,7 @@ namespace DLM.Compiler
             if (!vars.Succes)
             {
                 var fail = vars.ResolveSteps.Last();
-                compilationOptions.ErrorManager.Register(fail.MarkedOrigin ?? fail.Origin, "Failed to validate labels, see details.");
+                compilationOptions.ErrorManager.Register(fail.Constraint.MarkedOrigin ?? fail.Constraint.Origin, "Failed to validate labels, see details.");
             }
 
             result = vars;
