@@ -163,6 +163,14 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(AIfActsForElseStatement node)
+        {
+            HandleAIfActsForElseStatement(node);
+        }
+        protected virtual void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(AIfStatement node)
         {
             HandleAIfStatement(node);
@@ -1081,6 +1089,13 @@ namespace DLM.Compiler.Analysis
             Visit(node.Principals);
             Visit(node.Statements);
         }
+        protected override void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
+        {
+            Visit(node.Claimant);
+            Visit(node.Principals);
+            Visit(node.IfStatements);
+            Visit(node.ElseStatements);
+        }
         protected override void HandleAIfStatement(AIfStatement node)
         {
             Visit(node.If);
@@ -1360,6 +1375,13 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             Visit(node.Statements);
+            Visit(node.Principals);
+            Visit(node.Claimant);
+        }
+        protected override void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
+        {
+            Visit(node.ElseStatements);
+            Visit(node.IfStatements);
             Visit(node.Principals);
             Visit(node.Claimant);
         }
@@ -1718,6 +1740,14 @@ namespace DLM.Compiler.Analysis
             return HandleAIfActsForStatement(node);
         }
         protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(AIfActsForElseStatement node)
+        {
+            return HandleAIfActsForElseStatement(node);
+        }
+        protected virtual Result HandleAIfActsForElseStatement(AIfActsForElseStatement node)
         {
             return HandleDefault(node);
         }
@@ -2710,6 +2740,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(AIfActsForElseStatement node, T1 arg1)
+        {
+            return HandleAIfActsForElseStatement(node, arg1);
+        }
+        protected virtual Result HandleAIfActsForElseStatement(AIfActsForElseStatement node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         private Result dispatch(AIfStatement node, T1 arg1)
         {
             return HandleAIfStatement(node, arg1);
@@ -3699,6 +3737,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(AIfActsForElseStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleAIfActsForElseStatement(node, arg1, arg2);
+        }
+        protected virtual Result HandleAIfActsForElseStatement(AIfActsForElseStatement node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         private Result dispatch(AIfStatement node, T1 arg1, T2 arg2)
         {
             return HandleAIfStatement(node, arg1, arg2);
@@ -4685,6 +4731,14 @@ namespace DLM.Compiler.Analysis
             return HandleAIfActsForStatement(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleAIfActsForStatement(AIfActsForStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AIfActsForElseStatement node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAIfActsForElseStatement(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAIfActsForElseStatement(AIfActsForElseStatement node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

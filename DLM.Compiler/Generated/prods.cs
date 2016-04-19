@@ -1016,6 +1016,128 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0} {1} {2}", Claimant, Principals, Statements);
         }
     }
+    public partial class AIfActsForElseStatement : PStatement
+    {
+        private PClaimant _claimant_;
+        private NodeList<PPrincipal> _principals_;
+        private NodeList<PStatement> _ifstatements_;
+        private NodeList<PStatement> _elsestatements_;
+        
+        public AIfActsForElseStatement(PClaimant _claimant_, IEnumerable<PPrincipal> _principals_, IEnumerable<PStatement> _ifstatements_, IEnumerable<PStatement> _elsestatements_)
+            : base()
+        {
+            this.Claimant = _claimant_;
+            this._principals_ = new NodeList<PPrincipal>(this, _principals_, false);
+            this._ifstatements_ = new NodeList<PStatement>(this, _ifstatements_, true);
+            this._elsestatements_ = new NodeList<PStatement>(this, _elsestatements_, true);
+        }
+        
+        public PClaimant Claimant
+        {
+            get { return _claimant_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Claimant in AIfActsForElseStatement cannot be null.", "value");
+                
+                if (_claimant_ != null)
+                    SetParent(_claimant_, null);
+                SetParent(value, this);
+                
+                _claimant_ = value;
+            }
+        }
+        public NodeList<PPrincipal> Principals
+        {
+            get { return _principals_; }
+        }
+        public NodeList<PStatement> IfStatements
+        {
+            get { return _ifstatements_; }
+        }
+        public NodeList<PStatement> ElseStatements
+        {
+            get { return _elsestatements_; }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Claimant == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Claimant in AIfActsForElseStatement cannot be null.", "newChild");
+                if (!(newChild is PClaimant) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Claimant = newChild as PClaimant;
+            }
+            else if (oldChild is PPrincipal && Principals.Contains(oldChild as PPrincipal))
+            {
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Principals.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Principals.RemoveAt(index);
+                else
+                    Principals[index] = newChild as PPrincipal;
+            }
+            else if (oldChild is PStatement && IfStatements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = IfStatements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    IfStatements.RemoveAt(index);
+                else
+                    IfStatements[index] = newChild as PStatement;
+            }
+            else if (oldChild is PStatement && ElseStatements.Contains(oldChild as PStatement))
+            {
+                if (!(newChild is PStatement) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = ElseStatements.IndexOf(oldChild as PStatement);
+                if (newChild == null)
+                    ElseStatements.RemoveAt(index);
+                else
+                    ElseStatements[index] = newChild as PStatement;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Claimant;
+            {
+                PPrincipal[] temp = new PPrincipal[Principals.Count];
+                Principals.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
+                PStatement[] temp = new PStatement[IfStatements.Count];
+                IfStatements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+            {
+                PStatement[] temp = new PStatement[ElseStatements.Count];
+                ElseStatements.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
+        }
+        
+        public override PStatement Clone()
+        {
+            return new AIfActsForElseStatement(Claimant.Clone(), Principals.Clone(), IfStatements.Clone(), ElseStatements.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2} {3}", Claimant, Principals, IfStatements, ElseStatements);
+        }
+    }
     public partial class AIfStatement : PStatement
     {
         private TIf _if_;
