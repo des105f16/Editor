@@ -102,9 +102,9 @@ namespace DLM.Compiler
         protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             if (node.Claimant is ACallerClaimant)
-                errorManager.Register(node.Claimant, ErrorType.Warning, "'caller' keyword not yet implemented.");
+                errorManager.Register(node.Claimant, ErrorType.Message, "'caller' keyword not yet implemented.");
             else if (node.Claimant is AThisClaimant)
-                errorManager.Register(node.Claimant, ErrorType.Warning, "'this' keyword not yet implemented.");
+                errorManager.Register(node.Claimant, ErrorType.Message, "'this' keyword not yet implemented.");
 
             foreach (var p in node.Principals)
                 authority.Push(p.DeclaredPrincipal);
@@ -117,9 +117,9 @@ namespace DLM.Compiler
         protected override void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
         {
             if (node.Claimant is ACallerClaimant)
-                errorManager.Register(node.Claimant, ErrorType.Warning, "'caller' keyword not yet implemented.");
+                errorManager.Register(node.Claimant, ErrorType.Message, "'caller' keyword not yet implemented.");
             else if (node.Claimant is AThisClaimant)
-                errorManager.Register(node.Claimant, ErrorType.Warning, "'this' keyword not yet implemented.");
+                errorManager.Register(node.Claimant, ErrorType.Message, "'this' keyword not yet implemented.");
 
             foreach (var p in node.Principals)
                 authority.Push(p.DeclaredPrincipal);
