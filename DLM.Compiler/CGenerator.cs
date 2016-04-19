@@ -131,7 +131,31 @@ namespace DLM.Compiler
 
             ClearRange(first, last);
 
+            var start = text.TokenStart(first);
+            start++.Character = 'i';
+            start++.Character = 'f';
+            start++.Character = '(';
+            start++.Character = '0';
+            start++.Character = ')';
+
             Visit(node.Statements);
+        }
+        protected override void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
+        {
+            var first = FirstToken.Find(node);
+            var last = LastToken.Find(node.Principals);
+
+            ClearRange(first, last);
+
+            var start = text.TokenStart(first);
+            start++.Character = 'i';
+            start++.Character = 'f';
+            start++.Character = '(';
+            start++.Character = '0';
+            start++.Character = ')';
+
+            Visit(node.IfStatements);
+            Visit(node.ElseStatements);
         }
 
         protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
