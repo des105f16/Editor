@@ -110,7 +110,25 @@ namespace DLM.Compiler
                 authority.Push(p.DeclaredPrincipal);
 
             Visit(node.Statements);
-            authority.Pop();
+
+            for (int i = 0; i < node.Principals.Count; i++)
+                authority.Pop();
+        }
+        protected override void HandleAIfActsForElseStatement(AIfActsForElseStatement node)
+        {
+            if (node.Claimant is ACallerClaimant)
+                errorManager.Register(node.Claimant, ErrorType.Warning, "'caller' keyword not yet implemented.");
+            else if (node.Claimant is AThisClaimant)
+                errorManager.Register(node.Claimant, ErrorType.Warning, "'this' keyword not yet implemented.");
+
+            foreach (var p in node.Principals)
+                authority.Push(p.DeclaredPrincipal);
+
+            Visit(node.IfStatements);
+            Visit(node.ElseStatements);
+
+            for (int i = 0; i < node.Principals.Count; i++)
+                authority.Pop();
         }
         protected override void HandleAIfStatement(AIfStatement node)
         {
