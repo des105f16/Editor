@@ -1,5 +1,6 @@
 ﻿using DLM.Compiler;
 using DLM.Inference;
+using SablePP.Tools.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,12 @@ namespace DLM.Wpf
         public Label Result => step.Result;
 
         public string SourceType => step.Constraint.OriginType.ToString().ToLowerInvariant();
-        public int Line => step.Constraint.MarkedOrigin.Line;
+        public int Line
+        {
+            get
+            {
+                return step.Constraint.MarkedOrigin.FirstToken().Line;
+            }
+        }
     }
 }

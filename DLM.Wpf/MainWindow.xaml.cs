@@ -105,11 +105,10 @@ namespace DLM.Wpf
 
                     if (id != null)
                     {
-                        var range = new Range(codeTextBox,
-                            id.Position - 1, id.Line - 1, id.Position + id.Text.Length - 1, id.Line - 1);
+                        var range = codeTextBox.RangeFromNode(id);
 
                         range.SetStyle(labelSquiggly);
-                        labelSquiggly.Add(id.Line - 1, variable);
+                        labelSquiggly.Add(id.FirstToken().Line - 1, variable);
                     }
                 }
             }

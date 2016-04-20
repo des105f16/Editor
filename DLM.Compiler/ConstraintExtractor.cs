@@ -51,7 +51,7 @@ namespace DLM.Compiler
 
         public NodeConstraint[] Constraints => constraints.ToArray();
 
-        private void Add(Label left, Label right, Token marked, Node node, NodeConstraint.OriginTypes originType)
+        private void Add(Label left, Label right, Node marked, Node node, NodeConstraint.OriginTypes originType)
         {
             constraints.Add(new NodeConstraint(left + basicBlock, right, marked, node, originType));
         }
@@ -212,7 +212,7 @@ namespace DLM.Compiler
                     var Ld = owner.getVariableLabel("dec");
                     var Lvar = Visit(node.Expression);
 
-                    owner.Add(Lvar, Ld + authority, null, node, NodeConstraint.OriginTypes.Declassify);
+                    owner.Add(Lvar, Ld + authority, node.Expression, node, NodeConstraint.OriginTypes.Declassify);
 
                     return Ld;
                 }
@@ -295,7 +295,7 @@ namespace DLM.Compiler
                     }
                     else if (!(paramLabel is ConstantLabel))
                     {
-                        owner.Add(argLabel, paramLabel, null, arguments[i], NodeConstraint.OriginTypes.Argument);
+                        owner.Add(argLabel, paramLabel, arguments[i], arguments[i], NodeConstraint.OriginTypes.Argument);
                     }
                 }
             }
