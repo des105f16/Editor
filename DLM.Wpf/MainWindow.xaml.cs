@@ -6,6 +6,7 @@ using SablePP.Tools.Editor;
 using System;
 using System.IO;
 using System.Windows.Forms.Integration;
+using System.Drawing;
 
 namespace DLM.Wpf
 {
@@ -28,6 +29,7 @@ namespace DLM.Wpf
             var disabledbackcolor = System.Drawing.Color.FromArgb(35, 35, 35);
             var linenumbers = System.Drawing.Color.FromArgb(36, 126, 175);
 
+            var selectionColor = System.Drawing.Color.FromArgb(50, 0, 142, 183);
             var currentline = System.Drawing.Color.FromArgb(12, 12, 12);
 
             var font = new System.Drawing.Font("Consolas", 10f, System.Drawing.FontStyle.Regular);
@@ -40,7 +42,7 @@ namespace DLM.Wpf
                 LineNumberColor = linenumbers,
                 CaretColor = forecolor,
                 ForeColor = forecolor,
-                CurrentLineColor = currentline,
+                SelectionColor = selectionColor,
                 Font = font,
                 DisabledColor = disabledbackcolor,
                 Enabled = false,
@@ -48,6 +50,7 @@ namespace DLM.Wpf
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
             this.codeTextBox.Executer = new DLM.Compiler.CompilerExecuter();
+            this.codeTextBox.PaintLine += CodeTextBox_PaintLine;
 
             constraintList.Items.Clear();
 
@@ -71,7 +74,31 @@ namespace DLM.Wpf
             file.FileSaving += fileSaving;
             file.FileClosed += fileClosed;
         }
-        
+
+        private void CodeTextBox_PaintLine(object sender, PaintLineEventArgs e)
+        {
+            if (codeTextBox.SelectionLength == 0 && codeTextBox.Selection.Start.iLine == e.LineIndex)
+            {
+                var rect = e.LineRect;
+                rect.X -= 5;
+                rect.Height++;
+
+                var mode = e.Graphics.SmoothingMode;
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 40, 40, 40)))
+                    e.Graphics.FillRectangle(b, rect);
+
+                rect.Inflate(-2, -2);
+
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 15, 15, 15)))
+                    e.Graphics.FillRectangle(b, rect);
+                //e.Graphics.FillRectangle(Brushes.Red, e.LineRect);
+
+                e.Graphics.SmoothingMode = mode;
+            }
+        }
+
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
         {
             var comp = codeTextBox.Executer as Compiler.CompilerExecuter;

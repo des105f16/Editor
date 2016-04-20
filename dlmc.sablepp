@@ -93,7 +93,7 @@ Token Syntax Highlight
     {if, else, while, return, typedef, struct} text: #247eaf, bold;
     {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
      func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,
-     time_start, time, interval_unit, underscore, hat} text: #8d19aa, bold;
+     time_start, time, interval_unit, underscore, hat} text: #b111d9, bold;
 
 Abstract Syntax Tree
     root = P.include* principal_declaration* principal_hierarchy_declaration* P.struct* statement*;

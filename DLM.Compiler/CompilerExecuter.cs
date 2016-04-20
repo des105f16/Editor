@@ -21,7 +21,7 @@ namespace DLM.Compiler
 
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
-            compilationOptions.Highlight(new TypeHighlighter());
+            compilationOptions.Highlight(new TypeHighlighter(this));
 
             Validator v = new Validator(root, compilationOptions);
 
@@ -150,9 +150,16 @@ namespace DLM.Compiler
 
         private class TypeHighlighter : IHighlighter
         {
-            private static Style typestyle = new TextStyle(fromRgb(0x247eaf), null, FontStyle.Bold);
-            private static Style principalstyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold);
-            private static Style varpolicystyle = new TextStyle(fromRgb(0x8d19aa), null, FontStyle.Bold | FontStyle.Underline);
+            private static Style typestyle;
+            private static Style principalstyle;
+            private static Style varpolicystyle;
+
+            public TypeHighlighter(CompilerExecuter executor)
+            {
+                typestyle = executor.style2;
+                principalstyle = executor.style3;
+                varpolicystyle = new TextStyle(executor.style3.ForeBrush, executor.style3.BackgroundBrush, FontStyle.Bold | FontStyle.Underline);
+            }
 
             public Style GetStyle(Token token)
             {

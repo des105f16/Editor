@@ -35,6 +35,6 @@ namespace DLM.Compiler
         }
         private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(73, 139, 61)), null, FontStyle.Italic);
         private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(36, 126, 175)), null, FontStyle.Bold);
-        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(141, 25, 170)), null, FontStyle.Bold);
+        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(177, 17, 217)), null, FontStyle.Bold);
     }
 }
