@@ -8,7 +8,7 @@
     <Color x:Key="HighlightColor">#08ffffff</Color>
 
     <Color x:Key="AccentColor">#ff2d2d30</Color>
-    <Color x:Key="AccentColor2">#99D80073</Color>
+    <Color x:Key="AccentColor2">#4b008aff</Color>
     <Color x:Key="AccentColor3">#33008aff</Color>
     <Color x:Key="AccentColor4">#33D80073</Color>
 
