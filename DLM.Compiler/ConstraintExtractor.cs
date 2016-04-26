@@ -19,7 +19,7 @@ namespace DLM.Compiler
         private Dictionary<string, AFunctionDeclarationStatement> functionLabels;
 
         private AuthorityLabel authority;
-        private LabelStack basicBlock;
+        private Label basicBlock;
         private SafeNameDictionary<VariableLabel> namedLabels;
         private IEnumerable<string> variableNameGenerator(string name)
         {
@@ -45,7 +45,7 @@ namespace DLM.Compiler
             functionLabels = new Dictionary<string, AFunctionDeclarationStatement>();
 
             authority = new AuthorityLabel();
-            basicBlock = new LabelStack(true);
+            basicBlock = Label.LowerBound;
             namedLabels = new SafeNameDictionary<VariableLabel>(variableNameGenerator);
         }
 
@@ -135,28 +135,31 @@ namespace DLM.Compiler
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
 
-            basicBlock.Push(lbl);
+            var old = basicBlock;
+            basicBlock = lbl;
             Visit(node.Statements);
-            basicBlock.Pop();
+            basicBlock = old;
         }
         protected override void HandleAIfElseStatement(AIfElseStatement node)
         {
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
 
-            basicBlock.Push(lbl);
+            var old = basicBlock;
+            basicBlock = lbl;
             Visit(node.IfStatements);
             Visit(node.ElseStatements);
-            basicBlock.Pop();
+            basicBlock = old;
         }
         protected override void HandleAWhileStatement(AWhileStatement node)
         {
             Label lbl = getVariableLabel("while");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.While, node, NodeConstraint.OriginTypes.WhileBlock);
 
-            basicBlock.Push(lbl);
+            var old = basicBlock;
+            basicBlock = lbl;
             Visit(node.Statements);
-            basicBlock.Pop();
+            basicBlock = old;
         }
         protected override void HandleAReturnStatement(AReturnStatement node)
         {
