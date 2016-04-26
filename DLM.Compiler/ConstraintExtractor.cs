@@ -279,6 +279,7 @@ namespace DLM.Compiler
             protected override Label HandleAMultiplyExpression(AMultiplyExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleANegateExpression(ANegateExpression node) => Visit(node.Expression);
             protected override Label HandleANotExpression(ANotExpression node) => Visit(node.Expression);
+            protected override Label HandleANullExpression(ANullExpression node) => Label.LowerBound;
             protected override Label HandleANumberExpression(ANumberExpression node) => Label.LowerBound;
             protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
