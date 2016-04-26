@@ -565,6 +565,14 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ANullExpression node)
+        {
+            HandleANullExpression(node);
+        }
+        protected virtual void HandleANullExpression(ANullExpression node)
+        {
+            HandleDefault(node);
+        }
         
         public void Visit(PElement node)
         {
@@ -708,6 +716,14 @@ namespace DLM.Compiler.Analysis
             HandleTCaller(node);
         }
         protected virtual void HandleTCaller(TCaller node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TNull node)
+        {
+            HandleTNull(node);
+        }
+        protected virtual void HandleTNull(TNull node)
         {
             HandleDefault(node);
         }
@@ -1288,6 +1304,10 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Bool);
         }
+        protected override void HandleANullExpression(ANullExpression node)
+        {
+            Visit(node.Null);
+        }
         protected override void HandleAElement(AElement node)
         {
             Visit(node.Identifier);
@@ -1576,6 +1596,10 @@ namespace DLM.Compiler.Analysis
         protected override void HandleABooleanExpression(ABooleanExpression node)
         {
             Visit(node.Bool);
+        }
+        protected override void HandleANullExpression(ANullExpression node)
+        {
+            Visit(node.Null);
         }
         protected override void HandleAElement(AElement node)
         {
@@ -2145,6 +2169,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
+        private Result dispatch(ANullExpression node)
+        {
+            return HandleANullExpression(node);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node)
+        {
+            return HandleDefault(node);
+        }
         
         public Result Visit(PElement node)
         {
@@ -2288,6 +2320,14 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node);
         }
         protected virtual Result HandleTCaller(TCaller node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TNull node)
+        {
+            return HandleTNull(node);
+        }
+        protected virtual Result HandleTNull(TNull node)
         {
             return HandleDefault(node);
         }
@@ -3142,6 +3182,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(ANullExpression node, T1 arg1)
+        {
+            return HandleANullExpression(node, arg1);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         
         public Result Visit(PElement node, T1 arg1)
         {
@@ -3285,6 +3333,14 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TNull node, T1 arg1)
+        {
+            return HandleTNull(node, arg1);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4139,6 +4195,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(ANullExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleANullExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         
         public Result Visit(PElement node, T1 arg1, T2 arg2)
         {
@@ -4282,6 +4346,14 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1, arg2);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TNull node, T1 arg1, T2 arg2)
+        {
+            return HandleTNull(node, arg1, arg2);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5136,6 +5208,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        private Result dispatch(ANullExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleANullExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         
         public Result Visit(PElement node, T1 arg1, T2 arg2, T3 arg3)
         {
@@ -5279,6 +5359,14 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TNull node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTNull(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

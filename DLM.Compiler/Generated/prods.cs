@@ -4079,6 +4079,59 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0}", Bool);
         }
     }
+    public partial class ANullExpression : PExpression
+    {
+        private TNull _null_;
+        
+        public ANullExpression(TNull _null_)
+            : base()
+        {
+            this.Null = _null_;
+        }
+        
+        public TNull Null
+        {
+            get { return _null_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Null in ANullExpression cannot be null.", "value");
+                
+                if (_null_ != null)
+                    SetParent(_null_, null);
+                SetParent(value, this);
+                
+                _null_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Null == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Null in ANullExpression cannot be null.", "newChild");
+                if (!(newChild is TNull) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Null = newChild as TNull;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Null;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ANullExpression(Null.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Null);
+        }
+    }
     public abstract partial class PElement : Production<PElement>
     {
         private TIdentifier _identifier_;

@@ -325,6 +325,30 @@ namespace DLM.Compiler.Nodes
             return new TCaller(Text, Line, Position);
         }
     }
+    public partial class TNull : Token<TNull>
+    {
+        public TNull()
+            : base(@"NULL")
+        {
+        }
+        public TNull(int line, int pos)
+            : base(@"NULL", line, pos)
+        {
+        }
+        public TNull(string text)
+            : base(text)
+        {
+        }
+        public TNull(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TNull Clone()
+        {
+            return new TNull(Text, Line, Position);
+        }
+    }
     public partial class TIdentifier : Token<TIdentifier>
     {
         public TIdentifier(string text)

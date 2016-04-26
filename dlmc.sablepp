@@ -35,6 +35,7 @@ Tokens
     
     this = 'this';
     caller = 'caller';
+    null = 'NULL';
     
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
@@ -271,6 +272,7 @@ Abstract Syntax Tree
         | {identifier} identifier
         | {number} number
         | {boolean} bool
+        | {null} null
         ;
     element
         = identifier
@@ -316,6 +318,7 @@ Productions
         | {func} funccall -> funccall
         | {n} number -> New expression.number(number)
         | {b} bool -> New expression.boolean(bool)
+        | {null} null -> New expression.null(null)
         | {id} identifier -> New expression.identifier(identifier)
         | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
         | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
