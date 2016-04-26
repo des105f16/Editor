@@ -36,44 +36,46 @@ namespace DLM.Compiler.Lexing
                 case 14: return new TCaller(text, line, position);
                 case 15: return new TNull(text, line, position);
                 case 16: return new TChar(text, line, position);
-                case 17: return new TString(text, line, position);
-                case 18: return new TIdentifier(text, line, position);
-                case 19: return new TActsFor(text, line, position);
-                case 20: return new TIfActsFor(text, line, position);
-                case 21: return new TDeclassifyStart(text, line, position);
-                case 22: return new TDeclassifyEnd(text, line, position);
-                case 23: return new TFuncAuthStart(text, line, position);
-                case 24: return new TFuncAuthEnd(text, line, position);
-                case 25: return new TRArrow(text, line, position);
-                case 26: return new TLArrow(text, line, position);
-                case 27: return new TCompare(text, line, position);
-                case 28: return new TAssign(text, line, position);
-                case 29: return new TUnderscore(text, line, position);
-                case 30: return new THat(text, line, position);
-                case 31: return new TPlus(text, line, position);
-                case 32: return new TMinus(text, line, position);
-                case 33: return new TAsterisk(text, line, position);
-                case 34: return new TSlash(text, line, position);
-                case 35: return new TPercent(text, line, position);
-                case 36: return new TBang(text, line, position);
-                case 37: return new TAnd(text, line, position);
-                case 38: return new TOr(text, line, position);
-                case 39: return new TPeriod(text, line, position);
-                case 40: return new TComma(text, line, position);
-                case 41: return new TColon(text, line, position);
-                case 42: return new TSemicolon(text, line, position);
-                case 43: return new TLabelStart(text, line, position);
-                case 44: return new TTimeStart(text, line, position);
-                case 45: return new TLabelEnd(text, line, position);
-                case 46: return new TLPar(text, line, position);
-                case 47: return new TRPar(text, line, position);
-                case 48: return new TLSqu(text, line, position);
-                case 49: return new TRSqu(text, line, position);
-                case 50: return new TLCur(text, line, position);
-                case 51: return new TRCur(text, line, position);
-                case 52: return new TJoin(text, line, position);
-                case 53: return new TComment(text, line, position);
-                case 54: return new TWhitespace(text, line, position);
+                case 17: return new TCharErr(text, line, position);
+                case 18: return new TString(text, line, position);
+                case 19: return new TStringErr(text, line, position);
+                case 20: return new TIdentifier(text, line, position);
+                case 21: return new TActsFor(text, line, position);
+                case 22: return new TIfActsFor(text, line, position);
+                case 23: return new TDeclassifyStart(text, line, position);
+                case 24: return new TDeclassifyEnd(text, line, position);
+                case 25: return new TFuncAuthStart(text, line, position);
+                case 26: return new TFuncAuthEnd(text, line, position);
+                case 27: return new TRArrow(text, line, position);
+                case 28: return new TLArrow(text, line, position);
+                case 29: return new TCompare(text, line, position);
+                case 30: return new TAssign(text, line, position);
+                case 31: return new TUnderscore(text, line, position);
+                case 32: return new THat(text, line, position);
+                case 33: return new TPlus(text, line, position);
+                case 34: return new TMinus(text, line, position);
+                case 35: return new TAsterisk(text, line, position);
+                case 36: return new TSlash(text, line, position);
+                case 37: return new TPercent(text, line, position);
+                case 38: return new TBang(text, line, position);
+                case 39: return new TAnd(text, line, position);
+                case 40: return new TOr(text, line, position);
+                case 41: return new TPeriod(text, line, position);
+                case 42: return new TComma(text, line, position);
+                case 43: return new TColon(text, line, position);
+                case 44: return new TSemicolon(text, line, position);
+                case 45: return new TLabelStart(text, line, position);
+                case 46: return new TTimeStart(text, line, position);
+                case 47: return new TLabelEnd(text, line, position);
+                case 48: return new TLPar(text, line, position);
+                case 49: return new TRPar(text, line, position);
+                case 50: return new TLSqu(text, line, position);
+                case 51: return new TRSqu(text, line, position);
+                case 52: return new TLCur(text, line, position);
+                case 53: return new TRCur(text, line, position);
+                case 54: return new TJoin(text, line, position);
+                case 55: return new TComment(text, line, position);
+                case 56: return new TWhitespace(text, line, position);
                 default:
                     throw new ArgumentException("Unknown token index.", "tokenIndex");
             }
@@ -94,19 +96,19 @@ namespace DLM.Compiler.Lexing
                         case STATE2: return STATE1;
                         default: return -1;
                     }
-                case 43:
+                case 45:
                     switch (currentState)
                     {
                         case STATE1: return STATE3;
                         default: return -1;
                     }
-                case 44:
+                case 46:
                     switch (currentState)
                     {
                         case STATE3: return STATE4;
                         default: return -1;
                     }
-                case 45:
+                case 47:
                     switch (currentState)
                     {
                         case STATE4: return STATE1;
@@ -192,44 +194,50 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 33, 46},
+                    new int[] {0, 9, 46},
+                    new int[] {11, 12, 46},
+                    new int[] {14, 33, 46},
+                    new int[] {34, 34, 47},
                     new int[] {35, 91, 46},
-                    new int[] {92, 92, 47},
+                    new int[] {92, 92, 48},
                     new int[] {93, 65535, 46},
                 },
                 new int[][] {
-                    new int[] {105, 105, 48},
+                    new int[] {105, 105, 49},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {38, 38, 49},
+                    new int[] {38, 38, 50},
                 },
                 new int[][] {
-                    new int[] {0, 38, 50},
-                    new int[] {40, 91, 50},
-                    new int[] {92, 92, 51},
-                    new int[] {93, 65535, 50},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
+                    new int[] {0, 9, 51},
+                    new int[] {11, 12, 51},
+                    new int[] {14, 38, 51},
+                    new int[] {39, 39, 52},
+                    new int[] {40, 91, 51},
+                    new int[] {92, 92, 53},
+                    new int[] {93, 65535, 51},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 52},
-                    new int[] {62, 62, 53},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {42, 42, 54},
-                    new int[] {47, 47, 55},
+                },
+                new int[][] {
+                    new int[] {45, 45, 54},
+                    new int[] {62, 62, 55},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {42, 42, 56},
+                    new int[] {47, 47, 57},
                 },
                 new int[][] {
                     new int[] {48, 57, 19},
@@ -239,32 +247,32 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 56},
-                    new int[] {60, 60, 57},
-                    new int[] {61, 61, 58},
-                    new int[] {124, 124, 59},
-                },
-                new int[][] {
+                    new int[] {45, 45, 58},
+                    new int[] {60, 60, 59},
                     new int[] {61, 61, 60},
+                    new int[] {124, 124, 61},
                 },
                 new int[][] {
-                    new int[] {61, 61, 61},
-                    new int[] {62, 62, 62},
+                    new int[] {61, 61, 62},
                 },
                 new int[][] {
-                    new int[] {62, 62, 63},
+                    new int[] {61, 61, 63},
+                    new int[] {62, 62, 64},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 90, 65},
-                    new int[] {95, 95, 66},
-                    new int[] {97, 122, 67},
+                    new int[] {62, 62, 65},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 84, 65},
-                    new int[] {85, 85, 68},
-                    new int[] {86, 90, 65},
+                    new int[] {48, 57, 66},
+                    new int[] {65, 90, 67},
+                    new int[] {95, 95, 68},
+                    new int[] {97, 122, 69},
+                },
+                new int[][] {
+                    new int[] {48, 57, 66},
+                    new int[] {65, 84, 67},
+                    new int[] {85, 85, 70},
+                    new int[] {86, 90, 67},
                     new int[] {95, 122, -28},
                 },
                 new int[][] {
@@ -277,117 +285,125 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 97, 69},
-                    new int[] {98, 122, 67},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 107, 67},
-                    new int[] {108, 108, 70},
-                    new int[] {109, 122, 67},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
                     new int[] {97, 97, 71},
-                    new int[] {98, 122, 67},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 101, 67},
-                    new int[] {102, 102, 72},
-                    new int[] {103, 122, 67},
+                    new int[] {97, 107, 69},
+                    new int[] {108, 108, 72},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 113, 67},
-                    new int[] {114, 114, 73},
-                    new int[] {115, 122, 67},
+                    new int[] {97, 97, 73},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 100, 67},
-                    new int[] {101, 101, 74},
-                    new int[] {102, 122, 67},
+                    new int[] {97, 101, 69},
+                    new int[] {102, 102, 74},
+                    new int[] {103, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 115, 67},
-                    new int[] {116, 116, 75},
-                    new int[] {117, 122, 67},
+                    new int[] {97, 113, 69},
+                    new int[] {114, 114, 75},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 103, 67},
-                    new int[] {104, 104, 76},
-                    new int[] {105, 113, 67},
-                    new int[] {114, 114, 77},
-                    new int[] {115, 120, 67},
-                    new int[] {121, 121, 78},
-                    new int[] {122, 122, 67},
+                    new int[] {97, 100, 69},
+                    new int[] {101, 101, 76},
+                    new int[] {102, 122, 69},
+                },
+                new int[][] {
+                    new int[] {48, 95, -28},
+                    new int[] {97, 115, 69},
+                    new int[] {116, 116, 77},
+                    new int[] {117, 122, 69},
+                },
+                new int[][] {
+                    new int[] {48, 95, -28},
+                    new int[] {97, 103, 69},
+                    new int[] {104, 104, 78},
+                    new int[] {105, 113, 69},
+                    new int[] {114, 114, 79},
+                    new int[] {115, 120, 69},
+                    new int[] {121, 121, 80},
+                    new int[] {122, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 103, -42},
-                    new int[] {104, 104, 79},
-                    new int[] {105, 122, 67},
+                    new int[] {104, 104, 81},
+                    new int[] {105, 122, 69},
                 },
                 new int[][] {
-                    new int[] {123, 123, 80},
+                    new int[] {123, 123, 82},
                 },
                 new int[][] {
-                    new int[] {62, 62, 81},
-                    new int[] {124, 124, 82},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 33, 46},
-                    new int[] {34, 34, 83},
-                    new int[] {35, 65535, -8},
-                },
-                new int[][] {
-                    new int[] {0, 33, 84},
-                    new int[] {34, 34, 85},
-                    new int[] {35, 91, 84},
-                    new int[] {92, 92, 86},
-                    new int[] {93, 65535, 84},
-                },
-                new int[][] {
-                    new int[] {110, 110, 87},
+                    new int[] {62, 62, 83},
+                    new int[] {124, 124, 84},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 88},
                 },
                 new int[][] {
-                    new int[] {0, 38, 89},
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 9, 85},
+                    new int[] {11, 12, 85},
+                    new int[] {14, 33, 85},
+                    new int[] {34, 34, 86},
+                    new int[] {35, 91, 85},
+                    new int[] {92, 92, 87},
+                    new int[] {93, 65535, 85},
+                },
+                new int[][] {
+                    new int[] {110, 110, 88},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 65535, -12},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 9, 89},
+                    new int[] {11, 12, 89},
+                    new int[] {14, 38, 89},
                     new int[] {39, 39, 90},
-                    new int[] {40, 65535, 89},
+                    new int[] {40, 91, 89},
+                    new int[] {92, 92, 91},
+                    new int[] {93, 65535, 89},
                 },
                 new int[][] {
-                    new int[] {62, 62, 91},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 41, 92},
-                    new int[] {42, 42, 93},
-                    new int[] {43, 65535, 92},
-                },
-                new int[][] {
-                    new int[] {0, 9, 94},
-                    new int[] {11, 12, 94},
-                    new int[] {14, 65535, 94},
+                    new int[] {62, 62, 92},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {60, 60, 95},
+                    new int[] {0, 41, 93},
+                    new int[] {42, 42, 94},
+                    new int[] {43, 65535, 93},
+                },
+                new int[][] {
+                    new int[] {0, 9, 95},
+                    new int[] {11, 12, 95},
+                    new int[] {14, 65535, 95},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {60, 60, 96},
                 },
                 new int[][] {
                 },
@@ -398,15 +414,9 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 96},
+                    new int[] {62, 62, 97},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                    new int[] {48, 122, -28},
-                },
-                new int[][] {
-                    new int[] {48, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -415,177 +425,180 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 75, 65},
-                    new int[] {76, 76, 97},
-                    new int[] {77, 90, 65},
+                    new int[] {48, 122, -28},
+                },
+                new int[][] {
+                    new int[] {48, 122, -28},
+                },
+                new int[][] {
+                    new int[] {48, 57, 66},
+                    new int[] {65, 75, 67},
+                    new int[] {76, 76, 98},
+                    new int[] {77, 90, 67},
                     new int[] {95, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 98},
-                    new int[] {109, 122, 67},
+                    new int[] {108, 108, 99},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 114, 67},
-                    new int[] {115, 115, 99},
-                    new int[] {116, 122, 67},
+                    new int[] {97, 114, 69},
+                    new int[] {115, 115, 100},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 100},
-                    new int[] {109, 122, 67},
+                    new int[] {108, 108, 101},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 104, 67},
-                    new int[] {105, 105, 101},
-                    new int[] {106, 122, 67},
+                    new int[] {97, 104, 69},
+                    new int[] {105, 105, 102},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 115, -41},
-                    new int[] {116, 116, 102},
-                    new int[] {117, 122, 67},
+                    new int[] {116, 116, 103},
+                    new int[] {117, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
-                    new int[] {114, 114, 103},
-                    new int[] {115, 122, 67},
+                    new int[] {114, 114, 104},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
-                    new int[] {105, 105, 104},
-                    new int[] {106, 122, 67},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 116, 67},
-                    new int[] {117, 117, 105},
-                    new int[] {118, 122, 67},
+                    new int[] {48, 104, -77},
+                    new int[] {105, 105, 105},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 111, 67},
-                    new int[] {112, 112, 106},
-                    new int[] {113, 122, 67},
+                    new int[] {97, 116, 69},
+                    new int[] {117, 117, 106},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
-                    new int[] {105, 105, 107},
-                    new int[] {106, 122, 67},
+                    new int[] {48, 95, -28},
+                    new int[] {97, 111, 69},
+                    new int[] {112, 112, 107},
+                    new int[] {113, 122, 69},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 65535, -48},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -48},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -49},
-                },
-                new int[][] {
-                    new int[] {99, 99, 108},
+                    new int[] {48, 104, -77},
+                    new int[] {105, 105, 108},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 109},
                 },
                 new int[][] {
-                    new int[] {39, 39, 109},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -50},
+                },
+                new int[][] {
+                    new int[] {99, 99, 109},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -12},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -12},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -55},
                 },
                 new int[][] {
                     new int[] {63, 63, 110},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -56},
+                    new int[] {0, 65535, -58},
                 },
                 new int[][] {
                     new int[] {0, 41, 111},
-                    new int[] {42, 42, 93},
+                    new int[] {42, 42, 94},
                     new int[] {43, 46, 111},
                     new int[] {47, 47, 112},
                     new int[] {48, 65535, 111},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -57},
+                    new int[] {0, 65535, -59},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {48, 75, -70},
+                    new int[] {48, 75, -72},
                     new int[] {76, 76, 113},
-                    new int[] {77, 122, -70},
+                    new int[] {77, 122, -72},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 114},
-                    new int[] {109, 122, 67},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 115},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 114, -72},
+                    new int[] {48, 114, -74},
                     new int[] {115, 115, 116},
-                    new int[] {116, 122, 67},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 109, 67},
+                    new int[] {97, 109, 69},
                     new int[] {110, 110, 117},
-                    new int[] {111, 122, 67},
+                    new int[] {111, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 116, -79},
+                    new int[] {48, 116, -81},
                     new int[] {117, 117, 118},
-                    new int[] {118, 122, 67},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 116, -79},
+                    new int[] {48, 116, -81},
                     new int[] {117, 117, 119},
-                    new int[] {118, 122, 67},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 114, -72},
+                    new int[] {48, 114, -74},
                     new int[] {115, 115, 120},
-                    new int[] {116, 122, 67},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 121},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 122},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 123},
-                    new int[] {109, 122, 67},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {108, 108, 124},
-                },
-                new int[][] {
                 },
                 new int[][] {
                 },
@@ -602,7 +615,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 127},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -610,23 +623,23 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 128},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 98, 67},
+                    new int[] {97, 98, 69},
                     new int[] {99, 99, 129},
-                    new int[] {100, 122, 67},
+                    new int[] {100, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
                     new int[] {114, 114, 130},
-                    new int[] {115, 122, 67},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 98, -119},
                     new int[] {99, 99, 131},
-                    new int[] {100, 122, 67},
+                    new int[] {100, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -636,14 +649,14 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 99, 67},
+                    new int[] {97, 99, 69},
                     new int[] {100, 100, 132},
-                    new int[] {101, 122, 67},
+                    new int[] {101, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 133},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {117, 117, 134},
@@ -654,35 +667,35 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {0, 41, 111},
                     new int[] {42, 42, 126},
-                    new int[] {43, 65535, -95},
+                    new int[] {43, 65535, -96},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
                     new int[] {114, 114, 135},
-                    new int[] {115, 122, 67},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
+                    new int[] {48, 104, -77},
                     new int[] {105, 105, 136},
-                    new int[] {106, 122, 67},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 109, -103},
+                    new int[] {48, 109, -104},
                     new int[] {110, 110, 137},
-                    new int[] {111, 122, 67},
+                    new int[] {111, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 115, -41},
                     new int[] {116, 116, 138},
-                    new int[] {117, 122, 67},
+                    new int[] {117, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 139},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -694,9 +707,9 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 111, -80},
+                    new int[] {48, 111, -82},
                     new int[] {112, 112, 141},
-                    new int[] {113, 122, 67},
+                    new int[] {113, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -707,7 +720,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 101, -38},
                     new int[] {102, 102, 142},
-                    new int[] {103, 122, 67},
+                    new int[] {103, 122, 69},
                 },
                 new int[][] {
                     new int[] {101, 101, 143},
@@ -715,7 +728,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 95, -28},
                     new int[] {97, 97, 144},
-                    new int[] {98, 122, 67},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -725,7 +738,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 145},
-                    new int[] {109, 122, 67},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -800,41 +813,47 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 33, 45},
+                    new int[] {0, 9, 45},
+                    new int[] {11, 12, 45},
+                    new int[] {14, 33, 45},
+                    new int[] {34, 34, 46},
                     new int[] {35, 91, 45},
-                    new int[] {92, 92, 46},
+                    new int[] {92, 92, 47},
                     new int[] {93, 65535, 45},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {38, 38, 47},
+                    new int[] {38, 38, 48},
                 },
                 new int[][] {
-                    new int[] {0, 38, 48},
-                    new int[] {40, 91, 48},
-                    new int[] {92, 92, 49},
-                    new int[] {93, 65535, 48},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
+                    new int[] {0, 9, 49},
+                    new int[] {11, 12, 49},
+                    new int[] {14, 38, 49},
+                    new int[] {39, 39, 50},
+                    new int[] {40, 91, 49},
+                    new int[] {92, 92, 51},
+                    new int[] {93, 65535, 49},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 50},
-                    new int[] {62, 62, 51},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {42, 42, 52},
-                    new int[] {47, 47, 53},
+                },
+                new int[][] {
+                    new int[] {45, 45, 52},
+                    new int[] {62, 62, 53},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {42, 42, 54},
+                    new int[] {47, 47, 55},
                 },
                 new int[][] {
                     new int[] {48, 57, 18},
@@ -844,37 +863,37 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 44, 54},
-                    new int[] {45, 45, 55},
-                    new int[] {46, 59, 54},
-                    new int[] {60, 60, 56},
-                    new int[] {61, 61, 57},
-                    new int[] {62, 62, 58},
-                    new int[] {63, 123, 54},
-                    new int[] {124, 124, 59},
-                    new int[] {125, 65535, 54},
+                    new int[] {0, 44, 56},
+                    new int[] {45, 45, 57},
+                    new int[] {46, 59, 56},
+                    new int[] {60, 60, 58},
+                    new int[] {61, 61, 59},
+                    new int[] {62, 62, 60},
+                    new int[] {63, 123, 56},
+                    new int[] {124, 124, 61},
+                    new int[] {125, 65535, 56},
                 },
                 new int[][] {
-                    new int[] {61, 61, 60},
+                    new int[] {61, 61, 62},
                 },
                 new int[][] {
-                    new int[] {61, 61, 61},
-                    new int[] {62, 62, 62},
+                    new int[] {61, 61, 63},
+                    new int[] {62, 62, 64},
                 },
                 new int[][] {
-                    new int[] {62, 62, 63},
+                    new int[] {62, 62, 65},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 90, 65},
-                    new int[] {95, 95, 66},
-                    new int[] {97, 122, 67},
+                    new int[] {48, 57, 66},
+                    new int[] {65, 90, 67},
+                    new int[] {95, 95, 68},
+                    new int[] {97, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 84, 65},
-                    new int[] {85, 85, 68},
-                    new int[] {86, 90, 65},
+                    new int[] {48, 57, 66},
+                    new int[] {65, 84, 67},
+                    new int[] {85, 85, 70},
+                    new int[] {86, 90, 67},
                     new int[] {95, 122, -27},
                 },
                 new int[][] {
@@ -887,145 +906,147 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 97, 69},
-                    new int[] {98, 122, 67},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 107, 67},
-                    new int[] {108, 108, 70},
-                    new int[] {109, 122, 67},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
                     new int[] {97, 97, 71},
-                    new int[] {98, 122, 67},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 101, 67},
-                    new int[] {102, 102, 72},
-                    new int[] {103, 122, 67},
+                    new int[] {97, 107, 69},
+                    new int[] {108, 108, 72},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 113, 67},
-                    new int[] {114, 114, 73},
-                    new int[] {115, 122, 67},
+                    new int[] {97, 97, 73},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 100, 67},
-                    new int[] {101, 101, 74},
-                    new int[] {102, 122, 67},
+                    new int[] {97, 101, 69},
+                    new int[] {102, 102, 74},
+                    new int[] {103, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 115, 67},
-                    new int[] {116, 116, 75},
-                    new int[] {117, 122, 67},
+                    new int[] {97, 113, 69},
+                    new int[] {114, 114, 75},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 103, 67},
-                    new int[] {104, 104, 76},
-                    new int[] {105, 113, 67},
-                    new int[] {114, 114, 77},
-                    new int[] {115, 120, 67},
-                    new int[] {121, 121, 78},
-                    new int[] {122, 122, 67},
+                    new int[] {97, 100, 69},
+                    new int[] {101, 101, 76},
+                    new int[] {102, 122, 69},
+                },
+                new int[][] {
+                    new int[] {48, 95, -27},
+                    new int[] {97, 115, 69},
+                    new int[] {116, 116, 77},
+                    new int[] {117, 122, 69},
+                },
+                new int[][] {
+                    new int[] {48, 95, -27},
+                    new int[] {97, 103, 69},
+                    new int[] {104, 104, 78},
+                    new int[] {105, 113, 69},
+                    new int[] {114, 114, 79},
+                    new int[] {115, 120, 69},
+                    new int[] {121, 121, 80},
+                    new int[] {122, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 103, -41},
-                    new int[] {104, 104, 79},
-                    new int[] {105, 122, 67},
+                    new int[] {104, 104, 81},
+                    new int[] {105, 122, 69},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 80},
-                    new int[] {124, 124, 81},
+                    new int[] {62, 62, 82},
+                    new int[] {124, 124, 83},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 33, 45},
-                    new int[] {34, 34, 82},
-                    new int[] {35, 65535, -8},
-                },
-                new int[][] {
-                    new int[] {0, 33, 83},
-                    new int[] {34, 34, 84},
-                    new int[] {35, 91, 83},
-                    new int[] {92, 92, 85},
-                    new int[] {93, 65535, 83},
+                    new int[] {0, 65535, -8},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 86},
+                    new int[] {0, 9, 84},
+                    new int[] {11, 12, 84},
+                    new int[] {14, 33, 84},
+                    new int[] {34, 34, 85},
+                    new int[] {35, 91, 84},
+                    new int[] {92, 92, 86},
+                    new int[] {93, 65535, 84},
                 },
                 new int[][] {
-                    new int[] {0, 38, 87},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 9, 87},
+                    new int[] {11, 12, 87},
+                    new int[] {14, 38, 87},
                     new int[] {39, 39, 88},
-                    new int[] {40, 65535, 87},
+                    new int[] {40, 91, 87},
+                    new int[] {92, 92, 89},
+                    new int[] {93, 65535, 87},
                 },
                 new int[][] {
-                    new int[] {62, 62, 89},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 41, 90},
-                    new int[] {42, 42, 91},
-                    new int[] {43, 65535, 90},
-                },
-                new int[][] {
-                    new int[] {0, 9, 92},
-                    new int[] {11, 12, 92},
-                    new int[] {14, 65535, 92},
-                },
-                new int[][] {
-                    new int[] {0, 61, 54},
-                    new int[] {62, 62, 58},
-                    new int[] {63, 65535, 54},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -56},
-                },
-                new int[][] {
-                    new int[] {0, 59, 54},
-                    new int[] {60, 60, 93},
-                    new int[] {61, 61, 54},
-                    new int[] {62, 65535, -56},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -56},
+                    new int[] {62, 62, 90},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 65535, -56},
+                    new int[] {0, 41, 91},
+                    new int[] {42, 42, 92},
+                    new int[] {43, 65535, 91},
+                },
+                new int[][] {
+                    new int[] {0, 9, 93},
+                    new int[] {11, 12, 93},
+                    new int[] {14, 65535, 93},
+                },
+                new int[][] {
+                    new int[] {0, 61, 56},
+                    new int[] {62, 62, 60},
+                    new int[] {63, 65535, 56},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -58},
+                },
+                new int[][] {
+                    new int[] {0, 59, 56},
+                    new int[] {60, 60, 94},
+                    new int[] {61, 61, 56},
+                    new int[] {62, 65535, -58},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -58},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 65535, -58},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 94},
+                    new int[] {62, 62, 95},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                    new int[] {48, 122, -27},
-                },
-                new int[][] {
-                    new int[] {48, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1034,170 +1055,173 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 57, 64},
-                    new int[] {65, 75, 65},
-                    new int[] {76, 76, 95},
-                    new int[] {77, 90, 65},
+                    new int[] {48, 122, -27},
+                },
+                new int[][] {
+                    new int[] {48, 122, -27},
+                },
+                new int[][] {
+                    new int[] {48, 57, 66},
+                    new int[] {65, 75, 67},
+                    new int[] {76, 76, 96},
+                    new int[] {77, 90, 67},
                     new int[] {95, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 107, -35},
-                    new int[] {108, 108, 96},
-                    new int[] {109, 122, 67},
+                    new int[] {108, 108, 97},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 114, 67},
-                    new int[] {115, 115, 97},
-                    new int[] {116, 122, 67},
+                    new int[] {97, 114, 69},
+                    new int[] {115, 115, 98},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 107, -35},
-                    new int[] {108, 108, 98},
-                    new int[] {109, 122, 67},
+                    new int[] {108, 108, 99},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 104, 67},
-                    new int[] {105, 105, 99},
-                    new int[] {106, 122, 67},
+                    new int[] {97, 104, 69},
+                    new int[] {105, 105, 100},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 115, -40},
-                    new int[] {116, 116, 100},
-                    new int[] {117, 122, 67},
+                    new int[] {116, 116, 101},
+                    new int[] {117, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 113, -38},
-                    new int[] {114, 114, 101},
-                    new int[] {115, 122, 67},
+                    new int[] {114, 114, 102},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
-                    new int[] {105, 105, 102},
-                    new int[] {106, 122, 67},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 116, 67},
-                    new int[] {117, 117, 103},
-                    new int[] {118, 122, 67},
+                    new int[] {48, 104, -77},
+                    new int[] {105, 105, 103},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 111, 67},
-                    new int[] {112, 112, 104},
-                    new int[] {113, 122, 67},
+                    new int[] {97, 116, 69},
+                    new int[] {117, 117, 104},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
-                    new int[] {105, 105, 105},
-                    new int[] {106, 122, 67},
+                    new int[] {48, 95, -27},
+                    new int[] {97, 111, 69},
+                    new int[] {112, 112, 105},
+                    new int[] {113, 122, 69},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 65535, -47},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -47},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -48},
+                    new int[] {48, 104, -77},
+                    new int[] {105, 105, 106},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 106},
                 },
                 new int[][] {
-                    new int[] {39, 39, 106},
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -49},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -53},
                 },
                 new int[][] {
                     new int[] {63, 63, 107},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -54},
+                    new int[] {0, 65535, -56},
                 },
                 new int[][] {
                     new int[] {0, 41, 108},
-                    new int[] {42, 42, 91},
+                    new int[] {42, 42, 92},
                     new int[] {43, 46, 108},
                     new int[] {47, 47, 109},
                     new int[] {48, 65535, 108},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -55},
+                    new int[] {0, 65535, -57},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -56},
+                    new int[] {0, 65535, -58},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {48, 75, -70},
+                    new int[] {48, 75, -72},
                     new int[] {76, 76, 110},
-                    new int[] {77, 122, -70},
+                    new int[] {77, 122, -72},
                 },
                 new int[][] {
                     new int[] {48, 107, -35},
                     new int[] {108, 108, 111},
-                    new int[] {109, 122, 67},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 112},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 114, -72},
+                    new int[] {48, 114, -74},
                     new int[] {115, 115, 113},
-                    new int[] {116, 122, 67},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 109, 67},
+                    new int[] {97, 109, 69},
                     new int[] {110, 110, 114},
-                    new int[] {111, 122, 67},
+                    new int[] {111, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 116, -79},
+                    new int[] {48, 116, -81},
                     new int[] {117, 117, 115},
-                    new int[] {118, 122, 67},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 116, -79},
+                    new int[] {48, 116, -81},
                     new int[] {117, 117, 116},
-                    new int[] {118, 122, 67},
+                    new int[] {118, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 114, -72},
+                    new int[] {48, 114, -74},
                     new int[] {115, 115, 117},
-                    new int[] {116, 122, 67},
+                    new int[] {116, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 118},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 119},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 107, -35},
                     new int[] {108, 108, 120},
-                    new int[] {109, 122, 67},
-                },
-                new int[][] {
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                 },
@@ -1214,7 +1238,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 123},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1222,23 +1246,23 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 124},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 98, 67},
+                    new int[] {97, 98, 69},
                     new int[] {99, 99, 125},
-                    new int[] {100, 122, 67},
+                    new int[] {100, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 113, -38},
                     new int[] {114, 114, 126},
-                    new int[] {115, 122, 67},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 98, -116},
                     new int[] {99, 99, 127},
-                    new int[] {100, 122, 67},
+                    new int[] {100, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1248,14 +1272,14 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 99, 67},
+                    new int[] {97, 99, 69},
                     new int[] {100, 100, 128},
-                    new int[] {101, 122, 67},
+                    new int[] {101, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 129},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {0, 65535, -110},
@@ -1263,35 +1287,35 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {0, 41, 108},
                     new int[] {42, 42, 122},
-                    new int[] {43, 65535, -93},
+                    new int[] {43, 65535, -94},
                 },
                 new int[][] {
                     new int[] {48, 113, -38},
                     new int[] {114, 114, 130},
-                    new int[] {115, 122, 67},
+                    new int[] {115, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 104, -75},
+                    new int[] {48, 104, -77},
                     new int[] {105, 105, 131},
-                    new int[] {106, 122, 67},
+                    new int[] {106, 122, 69},
                 },
                 new int[][] {
-                    new int[] {48, 109, -101},
+                    new int[] {48, 109, -102},
                     new int[] {110, 110, 132},
-                    new int[] {111, 122, 67},
+                    new int[] {111, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 115, -40},
                     new int[] {116, 116, 133},
-                    new int[] {117, 122, 67},
+                    new int[] {117, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 100, -39},
                     new int[] {101, 101, 134},
-                    new int[] {102, 122, 67},
+                    new int[] {102, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1300,9 +1324,9 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 111, -80},
+                    new int[] {48, 111, -82},
                     new int[] {112, 112, 135},
-                    new int[] {113, 122, 67},
+                    new int[] {113, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1313,12 +1337,12 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 101, -37},
                     new int[] {102, 102, 136},
-                    new int[] {103, 122, 67},
+                    new int[] {103, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
                     new int[] {97, 97, 137},
-                    new int[] {98, 122, 67},
+                    new int[] {98, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1326,7 +1350,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 107, -35},
                     new int[] {108, 108, 138},
-                    new int[] {109, 122, 67},
+                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -1402,41 +1426,47 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 33, 46},
+                    new int[] {0, 9, 46},
+                    new int[] {11, 12, 46},
+                    new int[] {14, 33, 46},
+                    new int[] {34, 34, 47},
                     new int[] {35, 91, 46},
-                    new int[] {92, 92, 47},
+                    new int[] {92, 92, 48},
                     new int[] {93, 65535, 46},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {38, 38, 48},
+                    new int[] {38, 38, 49},
                 },
                 new int[][] {
-                    new int[] {0, 38, 49},
-                    new int[] {40, 91, 49},
-                    new int[] {92, 92, 50},
-                    new int[] {93, 65535, 49},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
+                    new int[] {0, 9, 50},
+                    new int[] {11, 12, 50},
+                    new int[] {14, 38, 50},
+                    new int[] {39, 39, 51},
+                    new int[] {40, 91, 50},
+                    new int[] {92, 92, 52},
+                    new int[] {93, 65535, 50},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 51},
-                    new int[] {62, 62, 52},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {42, 42, 53},
-                    new int[] {47, 47, 54},
+                },
+                new int[][] {
+                    new int[] {45, 45, 53},
+                    new int[] {62, 62, 54},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {42, 42, 55},
+                    new int[] {47, 47, 56},
                 },
                 new int[][] {
                     new int[] {48, 57, 18},
@@ -1446,34 +1476,34 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 55},
-                    new int[] {60, 60, 56},
-                    new int[] {61, 61, 57},
-                    new int[] {124, 124, 58},
-                },
-                new int[][] {
+                    new int[] {45, 45, 57},
+                    new int[] {60, 60, 58},
                     new int[] {61, 61, 59},
+                    new int[] {124, 124, 60},
                 },
                 new int[][] {
-                    new int[] {61, 61, 60},
-                    new int[] {62, 62, 61},
+                    new int[] {61, 61, 61},
                 },
                 new int[][] {
-                    new int[] {62, 62, 62},
+                    new int[] {61, 61, 62},
+                    new int[] {62, 62, 63},
+                },
+                new int[][] {
+                    new int[] {62, 62, 64},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {48, 57, 63},
-                    new int[] {65, 90, 64},
-                    new int[] {95, 95, 65},
-                    new int[] {97, 122, 66},
+                    new int[] {48, 57, 65},
+                    new int[] {65, 90, 66},
+                    new int[] {95, 95, 67},
+                    new int[] {97, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 57, 63},
-                    new int[] {65, 84, 64},
-                    new int[] {85, 85, 67},
-                    new int[] {86, 90, 64},
+                    new int[] {48, 57, 65},
+                    new int[] {65, 84, 66},
+                    new int[] {85, 85, 69},
+                    new int[] {86, 90, 66},
                     new int[] {95, 122, -28},
                 },
                 new int[][] {
@@ -1486,114 +1516,122 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 97, 68},
-                    new int[] {98, 122, 66},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 107, 66},
-                    new int[] {108, 108, 69},
-                    new int[] {109, 122, 66},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
                     new int[] {97, 97, 70},
-                    new int[] {98, 122, 66},
+                    new int[] {98, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 101, 66},
-                    new int[] {102, 102, 71},
-                    new int[] {103, 122, 66},
+                    new int[] {97, 107, 68},
+                    new int[] {108, 108, 71},
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 113, 66},
-                    new int[] {114, 114, 72},
-                    new int[] {115, 122, 66},
+                    new int[] {97, 97, 72},
+                    new int[] {98, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 100, 66},
-                    new int[] {101, 101, 73},
-                    new int[] {102, 122, 66},
+                    new int[] {97, 101, 68},
+                    new int[] {102, 102, 73},
+                    new int[] {103, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 115, 66},
-                    new int[] {116, 116, 74},
-                    new int[] {117, 122, 66},
+                    new int[] {97, 113, 68},
+                    new int[] {114, 114, 74},
+                    new int[] {115, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 103, 66},
-                    new int[] {104, 104, 75},
-                    new int[] {105, 113, 66},
-                    new int[] {114, 114, 76},
-                    new int[] {115, 120, 66},
-                    new int[] {121, 121, 77},
-                    new int[] {122, 122, 66},
+                    new int[] {97, 100, 68},
+                    new int[] {101, 101, 75},
+                    new int[] {102, 122, 68},
+                },
+                new int[][] {
+                    new int[] {48, 95, -28},
+                    new int[] {97, 115, 68},
+                    new int[] {116, 116, 76},
+                    new int[] {117, 122, 68},
+                },
+                new int[][] {
+                    new int[] {48, 95, -28},
+                    new int[] {97, 103, 68},
+                    new int[] {104, 104, 77},
+                    new int[] {105, 113, 68},
+                    new int[] {114, 114, 78},
+                    new int[] {115, 120, 68},
+                    new int[] {121, 121, 79},
+                    new int[] {122, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 103, -42},
-                    new int[] {104, 104, 78},
-                    new int[] {105, 122, 66},
+                    new int[] {104, 104, 80},
+                    new int[] {105, 122, 68},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 79},
-                    new int[] {124, 124, 80},
+                    new int[] {62, 62, 81},
+                    new int[] {124, 124, 82},
                 },
                 new int[][] {
-                    new int[] {125, 125, 81},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 33, 46},
-                    new int[] {34, 34, 82},
-                    new int[] {35, 65535, -8},
-                },
-                new int[][] {
-                    new int[] {0, 33, 83},
-                    new int[] {34, 34, 84},
-                    new int[] {35, 91, 83},
-                    new int[] {92, 92, 85},
-                    new int[] {93, 65535, 83},
+                    new int[] {125, 125, 83},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 86},
+                    new int[] {0, 65535, -8},
                 },
                 new int[][] {
-                    new int[] {0, 38, 87},
+                },
+                new int[][] {
+                    new int[] {0, 9, 84},
+                    new int[] {11, 12, 84},
+                    new int[] {14, 33, 84},
+                    new int[] {34, 34, 85},
+                    new int[] {35, 91, 84},
+                    new int[] {92, 92, 86},
+                    new int[] {93, 65535, 84},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 9, 87},
+                    new int[] {11, 12, 87},
+                    new int[] {14, 38, 87},
                     new int[] {39, 39, 88},
-                    new int[] {40, 65535, 87},
+                    new int[] {40, 91, 87},
+                    new int[] {92, 92, 89},
+                    new int[] {93, 65535, 87},
                 },
                 new int[][] {
-                    new int[] {62, 62, 89},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 41, 90},
-                    new int[] {42, 42, 91},
-                    new int[] {43, 65535, 90},
-                },
-                new int[][] {
-                    new int[] {0, 9, 92},
-                    new int[] {11, 12, 92},
-                    new int[] {14, 65535, 92},
+                    new int[] {62, 62, 90},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {60, 60, 93},
+                    new int[] {0, 41, 91},
+                    new int[] {42, 42, 92},
+                    new int[] {43, 65535, 91},
+                },
+                new int[][] {
+                    new int[] {0, 9, 93},
+                    new int[] {11, 12, 93},
+                    new int[] {14, 65535, 93},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {60, 60, 94},
                 },
                 new int[][] {
                 },
@@ -1604,15 +1642,9 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 94},
+                    new int[] {62, 62, 95},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                    new int[] {48, 122, -28},
-                },
-                new int[][] {
-                    new int[] {48, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1621,171 +1653,174 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 57, 63},
-                    new int[] {65, 75, 64},
-                    new int[] {76, 76, 95},
-                    new int[] {77, 90, 64},
+                    new int[] {48, 122, -28},
+                },
+                new int[][] {
+                    new int[] {48, 122, -28},
+                },
+                new int[][] {
+                    new int[] {48, 57, 65},
+                    new int[] {65, 75, 66},
+                    new int[] {76, 76, 96},
+                    new int[] {77, 90, 66},
                     new int[] {95, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 96},
-                    new int[] {109, 122, 66},
+                    new int[] {108, 108, 97},
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 114, 66},
-                    new int[] {115, 115, 97},
-                    new int[] {116, 122, 66},
+                    new int[] {97, 114, 68},
+                    new int[] {115, 115, 98},
+                    new int[] {116, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 98},
-                    new int[] {109, 122, 66},
+                    new int[] {108, 108, 99},
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 104, 66},
-                    new int[] {105, 105, 99},
-                    new int[] {106, 122, 66},
+                    new int[] {97, 104, 68},
+                    new int[] {105, 105, 100},
+                    new int[] {106, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 115, -41},
-                    new int[] {116, 116, 100},
-                    new int[] {117, 122, 66},
+                    new int[] {116, 116, 101},
+                    new int[] {117, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
-                    new int[] {114, 114, 101},
-                    new int[] {115, 122, 66},
+                    new int[] {114, 114, 102},
+                    new int[] {115, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 104, -74},
-                    new int[] {105, 105, 102},
-                    new int[] {106, 122, 66},
-                },
-                new int[][] {
-                    new int[] {48, 95, -28},
-                    new int[] {97, 116, 66},
-                    new int[] {117, 117, 103},
-                    new int[] {118, 122, 66},
+                    new int[] {48, 104, -76},
+                    new int[] {105, 105, 103},
+                    new int[] {106, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 111, 66},
-                    new int[] {112, 112, 104},
-                    new int[] {113, 122, 66},
+                    new int[] {97, 116, 68},
+                    new int[] {117, 117, 104},
+                    new int[] {118, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 104, -74},
-                    new int[] {105, 105, 105},
-                    new int[] {106, 122, 66},
+                    new int[] {48, 95, -28},
+                    new int[] {97, 111, 68},
+                    new int[] {112, 112, 105},
+                    new int[] {113, 122, 68},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 65535, -48},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -48},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -49},
+                    new int[] {48, 104, -76},
+                    new int[] {105, 105, 106},
+                    new int[] {106, 122, 68},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 106},
                 },
                 new int[][] {
-                    new int[] {39, 39, 106},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -50},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -54},
                 },
                 new int[][] {
                     new int[] {63, 63, 107},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -55},
+                    new int[] {0, 65535, -57},
                 },
                 new int[][] {
                     new int[] {0, 41, 108},
-                    new int[] {42, 42, 91},
+                    new int[] {42, 42, 92},
                     new int[] {43, 46, 108},
                     new int[] {47, 47, 109},
                     new int[] {48, 65535, 108},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -56},
+                    new int[] {0, 65535, -58},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {48, 75, -69},
+                    new int[] {48, 75, -71},
                     new int[] {76, 76, 110},
-                    new int[] {77, 122, -69},
+                    new int[] {77, 122, -71},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 111},
-                    new int[] {109, 122, 66},
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 112},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 114, -71},
+                    new int[] {48, 114, -73},
                     new int[] {115, 115, 113},
-                    new int[] {116, 122, 66},
+                    new int[] {116, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 109, 66},
+                    new int[] {97, 109, 68},
                     new int[] {110, 110, 114},
-                    new int[] {111, 122, 66},
+                    new int[] {111, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 116, -78},
+                    new int[] {48, 116, -80},
                     new int[] {117, 117, 115},
-                    new int[] {118, 122, 66},
+                    new int[] {118, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 116, -78},
+                    new int[] {48, 116, -80},
                     new int[] {117, 117, 116},
-                    new int[] {118, 122, 66},
+                    new int[] {118, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 114, -71},
+                    new int[] {48, 114, -73},
                     new int[] {115, 115, 117},
-                    new int[] {116, 122, 66},
+                    new int[] {116, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 118},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 119},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 120},
-                    new int[] {109, 122, 66},
-                },
-                new int[][] {
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                 },
@@ -1802,7 +1837,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 123},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1810,23 +1845,23 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 124},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 98, 66},
+                    new int[] {97, 98, 68},
                     new int[] {99, 99, 125},
-                    new int[] {100, 122, 66},
+                    new int[] {100, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
                     new int[] {114, 114, 126},
-                    new int[] {115, 122, 66},
+                    new int[] {115, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 98, -116},
                     new int[] {99, 99, 127},
-                    new int[] {100, 122, 66},
+                    new int[] {100, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1836,14 +1871,14 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
-                    new int[] {97, 99, 66},
+                    new int[] {97, 99, 68},
                     new int[] {100, 100, 128},
-                    new int[] {101, 122, 66},
+                    new int[] {101, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 129},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {0, 65535, -110},
@@ -1851,35 +1886,35 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {0, 41, 108},
                     new int[] {42, 42, 122},
-                    new int[] {43, 65535, -93},
+                    new int[] {43, 65535, -94},
                 },
                 new int[][] {
                     new int[] {48, 113, -39},
                     new int[] {114, 114, 130},
-                    new int[] {115, 122, 66},
+                    new int[] {115, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 104, -74},
+                    new int[] {48, 104, -76},
                     new int[] {105, 105, 131},
-                    new int[] {106, 122, 66},
+                    new int[] {106, 122, 68},
                 },
                 new int[][] {
-                    new int[] {48, 109, -101},
+                    new int[] {48, 109, -102},
                     new int[] {110, 110, 132},
-                    new int[] {111, 122, 66},
+                    new int[] {111, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 115, -41},
                     new int[] {116, 116, 133},
-                    new int[] {117, 122, 66},
+                    new int[] {117, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 100, -40},
                     new int[] {101, 101, 134},
-                    new int[] {102, 122, 66},
+                    new int[] {102, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1888,9 +1923,9 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -28},
                 },
                 new int[][] {
-                    new int[] {48, 111, -79},
+                    new int[] {48, 111, -81},
                     new int[] {112, 112, 135},
-                    new int[] {113, 122, 66},
+                    new int[] {113, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1901,12 +1936,12 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 101, -38},
                     new int[] {102, 102, 136},
-                    new int[] {103, 122, 66},
+                    new int[] {103, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 95, -28},
                     new int[] {97, 97, 137},
-                    new int[] {98, 122, 66},
+                    new int[] {98, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1914,7 +1949,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 138},
-                    new int[] {109, 122, 66},
+                    new int[] {109, 122, 68},
                 },
                 new int[][] {
                     new int[] {48, 122, -28},
@@ -1992,77 +2027,83 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {0, 33, 48},
+                    new int[] {0, 9, 48},
+                    new int[] {11, 12, 48},
+                    new int[] {14, 33, 48},
+                    new int[] {34, 34, 49},
                     new int[] {35, 91, 48},
-                    new int[] {92, 92, 49},
+                    new int[] {92, 92, 50},
                     new int[] {93, 65535, 48},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {38, 38, 50},
+                    new int[] {38, 38, 51},
                 },
                 new int[][] {
-                    new int[] {0, 38, 51},
-                    new int[] {40, 91, 51},
-                    new int[] {92, 92, 52},
-                    new int[] {93, 65535, 51},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
+                    new int[] {0, 9, 52},
+                    new int[] {11, 12, 52},
+                    new int[] {14, 38, 52},
+                    new int[] {39, 39, 53},
+                    new int[] {40, 91, 52},
+                    new int[] {92, 92, 54},
+                    new int[] {93, 65535, 52},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 53},
-                    new int[] {62, 62, 54},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {42, 42, 55},
-                    new int[] {47, 47, 56},
+                },
+                new int[][] {
+                    new int[] {45, 45, 55},
+                    new int[] {62, 62, 56},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {42, 42, 57},
+                    new int[] {47, 47, 58},
                 },
                 new int[][] {
                     new int[] {48, 57, 18},
-                    new int[] {58, 58, 57},
+                    new int[] {58, 58, 59},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {45, 45, 58},
-                    new int[] {60, 60, 59},
-                    new int[] {61, 61, 60},
-                    new int[] {124, 124, 61},
-                },
-                new int[][] {
+                    new int[] {45, 45, 60},
+                    new int[] {60, 60, 61},
                     new int[] {61, 61, 62},
+                    new int[] {124, 124, 63},
                 },
                 new int[][] {
-                    new int[] {61, 61, 63},
-                    new int[] {62, 62, 64},
+                    new int[] {61, 61, 64},
                 },
                 new int[][] {
-                    new int[] {62, 62, 65},
+                    new int[] {61, 61, 65},
+                    new int[] {62, 62, 66},
                 },
                 new int[][] {
-                    new int[] {48, 57, 66},
-                    new int[] {65, 90, 67},
-                    new int[] {95, 95, 68},
-                    new int[] {97, 122, 69},
+                    new int[] {62, 62, 67},
                 },
                 new int[][] {
-                    new int[] {48, 57, 66},
-                    new int[] {65, 84, 67},
-                    new int[] {85, 85, 70},
-                    new int[] {86, 90, 67},
+                    new int[] {48, 57, 68},
+                    new int[] {65, 90, 69},
+                    new int[] {95, 95, 70},
+                    new int[] {97, 122, 71},
+                },
+                new int[][] {
+                    new int[] {48, 57, 68},
+                    new int[] {65, 84, 69},
+                    new int[] {85, 85, 72},
+                    new int[] {86, 90, 69},
                     new int[] {95, 122, -27},
                 },
                 new int[][] {
@@ -2075,129 +2116,137 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 97, 71},
-                    new int[] {98, 122, 69},
-                },
-                new int[][] {
-                    new int[] {48, 122, -27},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 107, 69},
-                    new int[] {108, 108, 72},
-                    new int[] {109, 122, 69},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
                     new int[] {97, 97, 73},
-                    new int[] {98, 122, 69},
+                    new int[] {98, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 101, 69},
-                    new int[] {102, 102, 74},
-                    new int[] {103, 122, 69},
+                    new int[] {97, 107, 71},
+                    new int[] {108, 108, 74},
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 114, 69},
-                    new int[] {115, 115, 75},
-                    new int[] {116, 122, 69},
+                    new int[] {97, 97, 75},
+                    new int[] {98, 122, 71},
+                },
+                new int[][] {
+                    new int[] {48, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 113, 69},
-                    new int[] {114, 114, 76},
-                    new int[] {115, 122, 69},
+                    new int[] {97, 101, 71},
+                    new int[] {102, 102, 76},
+                    new int[] {103, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 100, 69},
-                    new int[] {101, 101, 77},
-                    new int[] {102, 122, 69},
+                    new int[] {97, 114, 71},
+                    new int[] {115, 115, 77},
+                    new int[] {116, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 115, 69},
-                    new int[] {116, 116, 78},
-                    new int[] {117, 122, 69},
+                    new int[] {97, 113, 71},
+                    new int[] {114, 114, 78},
+                    new int[] {115, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 103, 69},
-                    new int[] {104, 104, 79},
-                    new int[] {105, 113, 69},
-                    new int[] {114, 114, 80},
-                    new int[] {115, 120, 69},
-                    new int[] {121, 121, 81},
-                    new int[] {122, 122, 69},
+                    new int[] {97, 100, 71},
+                    new int[] {101, 101, 79},
+                    new int[] {102, 122, 71},
+                },
+                new int[][] {
+                    new int[] {48, 95, -27},
+                    new int[] {97, 115, 71},
+                    new int[] {116, 116, 80},
+                    new int[] {117, 122, 71},
+                },
+                new int[][] {
+                    new int[] {48, 95, -27},
+                    new int[] {97, 103, 71},
+                    new int[] {104, 104, 81},
+                    new int[] {105, 113, 71},
+                    new int[] {114, 114, 82},
+                    new int[] {115, 120, 71},
+                    new int[] {121, 121, 83},
+                    new int[] {122, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 103, -44},
-                    new int[] {104, 104, 82},
-                    new int[] {105, 122, 69},
+                    new int[] {104, 104, 84},
+                    new int[] {105, 122, 71},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 83},
-                    new int[] {124, 124, 84},
+                    new int[] {62, 62, 85},
+                    new int[] {124, 124, 86},
                 },
                 new int[][] {
-                    new int[] {125, 125, 85},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 33, 48},
-                    new int[] {34, 34, 86},
-                    new int[] {35, 65535, -8},
-                },
-                new int[][] {
-                    new int[] {0, 33, 87},
-                    new int[] {34, 34, 88},
-                    new int[] {35, 91, 87},
-                    new int[] {92, 92, 89},
-                    new int[] {93, 65535, 87},
+                    new int[] {125, 125, 87},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 90},
+                    new int[] {0, 65535, -8},
                 },
                 new int[][] {
-                    new int[] {0, 38, 91},
+                },
+                new int[][] {
+                    new int[] {0, 9, 88},
+                    new int[] {11, 12, 88},
+                    new int[] {14, 33, 88},
+                    new int[] {34, 34, 89},
+                    new int[] {35, 91, 88},
+                    new int[] {92, 92, 90},
+                    new int[] {93, 65535, 88},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {0, 9, 91},
+                    new int[] {11, 12, 91},
+                    new int[] {14, 38, 91},
                     new int[] {39, 39, 92},
-                    new int[] {40, 65535, 91},
+                    new int[] {40, 91, 91},
+                    new int[] {92, 92, 93},
+                    new int[] {93, 65535, 91},
                 },
                 new int[][] {
-                    new int[] {62, 62, 93},
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 41, 94},
-                    new int[] {42, 42, 95},
-                    new int[] {43, 65535, 94},
-                },
-                new int[][] {
-                    new int[] {0, 9, 96},
-                    new int[] {11, 12, 96},
-                    new int[] {14, 65535, 96},
-                },
-                new int[][] {
-                    new int[] {48, 57, 97},
+                    new int[] {62, 62, 94},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {60, 60, 98},
+                    new int[] {0, 41, 95},
+                    new int[] {42, 42, 96},
+                    new int[] {43, 65535, 95},
+                },
+                new int[][] {
+                    new int[] {0, 9, 97},
+                    new int[] {11, 12, 97},
+                    new int[] {14, 65535, 97},
+                },
+                new int[][] {
+                    new int[] {48, 57, 98},
+                },
+                new int[][] {
+                },
+                new int[][] {
+                    new int[] {60, 60, 99},
                 },
                 new int[][] {
                 },
@@ -2208,15 +2257,9 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {62, 62, 99},
+                    new int[] {62, 62, 100},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                    new int[] {48, 122, -27},
-                },
-                new int[][] {
-                    new int[] {48, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2225,26 +2268,32 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 57, 66},
-                    new int[] {65, 75, 67},
-                    new int[] {76, 76, 100},
-                    new int[] {77, 90, 67},
+                    new int[] {48, 122, -27},
+                },
+                new int[][] {
+                    new int[] {48, 122, -27},
+                },
+                new int[][] {
+                    new int[] {48, 57, 68},
+                    new int[] {65, 75, 69},
+                    new int[] {76, 76, 101},
+                    new int[] {77, 90, 69},
                     new int[] {95, 122, -27},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 101},
-                    new int[] {109, 122, 69},
+                    new int[] {108, 108, 102},
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 114, -40},
-                    new int[] {115, 115, 102},
-                    new int[] {116, 122, 69},
+                    new int[] {115, 115, 103},
+                    new int[] {116, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
-                    new int[] {108, 108, 103},
-                    new int[] {109, 122, 69},
+                    new int[] {108, 108, 104},
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2254,147 +2303,144 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 104, 69},
-                    new int[] {105, 105, 104},
-                    new int[] {106, 122, 69},
+                    new int[] {97, 104, 71},
+                    new int[] {105, 105, 105},
+                    new int[] {106, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 115, -43},
-                    new int[] {116, 116, 105},
-                    new int[] {117, 122, 69},
+                    new int[] {116, 116, 106},
+                    new int[] {117, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 113, -41},
-                    new int[] {114, 114, 106},
-                    new int[] {115, 122, 69},
+                    new int[] {114, 114, 107},
+                    new int[] {115, 122, 71},
                 },
                 new int[][] {
-                    new int[] {48, 104, -78},
-                    new int[] {105, 105, 107},
-                    new int[] {106, 122, 69},
-                },
-                new int[][] {
-                    new int[] {48, 95, -27},
-                    new int[] {97, 116, 69},
-                    new int[] {117, 117, 108},
-                    new int[] {118, 122, 69},
+                    new int[] {48, 104, -80},
+                    new int[] {105, 105, 108},
+                    new int[] {106, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 111, 69},
-                    new int[] {112, 112, 109},
-                    new int[] {113, 122, 69},
+                    new int[] {97, 116, 71},
+                    new int[] {117, 117, 109},
+                    new int[] {118, 122, 71},
                 },
                 new int[][] {
-                    new int[] {48, 104, -78},
-                    new int[] {105, 105, 110},
-                    new int[] {106, 122, 69},
+                    new int[] {48, 95, -27},
+                    new int[] {97, 111, 71},
+                    new int[] {112, 112, 110},
+                    new int[] {113, 122, 71},
                 },
                 new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                },
-                new int[][] {
-                    new int[] {0, 65535, -50},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -50},
-                },
-                new int[][] {
-                    new int[] {0, 65535, -51},
+                    new int[] {48, 104, -80},
+                    new int[] {105, 105, 111},
+                    new int[] {106, 122, 71},
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {39, 39, 111},
                 },
                 new int[][] {
-                    new int[] {39, 39, 111},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -8},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -52},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -11},
+                },
+                new int[][] {
+                    new int[] {0, 65535, -56},
                 },
                 new int[][] {
                     new int[] {63, 63, 112},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -57},
+                    new int[] {0, 65535, -59},
                 },
                 new int[][] {
                     new int[] {0, 41, 113},
-                    new int[] {42, 42, 95},
+                    new int[] {42, 42, 96},
                     new int[] {43, 46, 113},
                     new int[] {47, 47, 114},
                     new int[] {48, 65535, 113},
                 },
                 new int[][] {
-                    new int[] {0, 65535, -58},
+                    new int[] {0, 65535, -60},
                 },
                 new int[][] {
-                    new int[] {48, 57, 97},
+                    new int[] {48, 57, 98},
                 },
                 new int[][] {
                 },
                 new int[][] {
                 },
                 new int[][] {
-                    new int[] {48, 75, -72},
+                    new int[] {48, 75, -74},
                     new int[] {76, 76, 115},
-                    new int[] {77, 122, -72},
+                    new int[] {77, 122, -74},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 116},
-                    new int[] {109, 122, 69},
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 117},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 114, -40},
                     new int[] {115, 115, 118},
-                    new int[] {116, 122, 69},
+                    new int[] {116, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 109, 69},
+                    new int[] {97, 109, 71},
                     new int[] {110, 110, 119},
-                    new int[] {111, 122, 69},
+                    new int[] {111, 122, 71},
                 },
                 new int[][] {
-                    new int[] {48, 116, -82},
+                    new int[] {48, 116, -84},
                     new int[] {117, 117, 120},
-                    new int[] {118, 122, 69},
+                    new int[] {118, 122, 71},
                 },
                 new int[][] {
-                    new int[] {48, 116, -82},
+                    new int[] {48, 116, -84},
                     new int[] {117, 117, 121},
-                    new int[] {118, 122, 69},
+                    new int[] {118, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 114, -40},
                     new int[] {115, 115, 122},
-                    new int[] {116, 122, 69},
+                    new int[] {116, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 123},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 124},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 125},
-                    new int[] {109, 122, 69},
-                },
-                new int[][] {
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                 },
@@ -2411,7 +2457,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 128},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2419,23 +2465,23 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 129},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 98, 69},
+                    new int[] {97, 98, 71},
                     new int[] {99, 99, 130},
-                    new int[] {100, 122, 69},
+                    new int[] {100, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 113, -41},
                     new int[] {114, 114, 131},
-                    new int[] {115, 122, 69},
+                    new int[] {115, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 98, -121},
                     new int[] {99, 99, 132},
-                    new int[] {100, 122, 69},
+                    new int[] {100, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2445,14 +2491,14 @@ namespace DLM.Compiler.Lexing
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
-                    new int[] {97, 99, 69},
+                    new int[] {97, 99, 71},
                     new int[] {100, 100, 133},
-                    new int[] {101, 122, 69},
+                    new int[] {101, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 134},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {0, 65535, -115},
@@ -2460,35 +2506,35 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {0, 41, 113},
                     new int[] {42, 42, 127},
-                    new int[] {43, 65535, -97},
+                    new int[] {43, 65535, -98},
                 },
                 new int[][] {
                     new int[] {48, 113, -41},
                     new int[] {114, 114, 135},
-                    new int[] {115, 122, 69},
+                    new int[] {115, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 104, -78},
+                    new int[] {48, 104, -80},
                     new int[] {105, 105, 136},
-                    new int[] {106, 122, 69},
+                    new int[] {106, 122, 71},
                 },
                 new int[][] {
-                    new int[] {48, 109, -106},
+                    new int[] {48, 109, -107},
                     new int[] {110, 110, 137},
-                    new int[] {111, 122, 69},
+                    new int[] {111, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 115, -43},
                     new int[] {116, 116, 138},
-                    new int[] {117, 122, 69},
+                    new int[] {117, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 100, -42},
                     new int[] {101, 101, 139},
-                    new int[] {102, 122, 69},
+                    new int[] {102, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2497,9 +2543,9 @@ namespace DLM.Compiler.Lexing
                     new int[] {48, 122, -27},
                 },
                 new int[][] {
-                    new int[] {48, 111, -83},
+                    new int[] {48, 111, -85},
                     new int[] {112, 112, 140},
-                    new int[] {113, 122, 69},
+                    new int[] {113, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2510,12 +2556,12 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 101, -39},
                     new int[] {102, 102, 141},
-                    new int[] {103, 122, 69},
+                    new int[] {103, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 95, -27},
                     new int[] {97, 97, 142},
-                    new int[] {98, 122, 69},
+                    new int[] {98, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2523,7 +2569,7 @@ namespace DLM.Compiler.Lexing
                 new int[][] {
                     new int[] {48, 107, -36},
                     new int[] {108, 108, 143},
-                    new int[] {109, 122, 69},
+                    new int[] {109, 122, 71},
                 },
                 new int[][] {
                     new int[] {48, 122, -27},
@@ -2541,49 +2587,49 @@ namespace DLM.Compiler.Lexing
         
         private static int[][] acceptTable = {
             new int[] {
-                -1, 54, 54, 54, 54, 36, -1, -1, 35, -1, -1, 46, 47, 33, 31, 40,
-                32, 39, 34, 5, 41, 42, 27, 28, 27, -1, 18, 18, 48, 49, 30, 29,
-                18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 50, -1, 51, 52, -1, -1,
-                -1, 37, -1, -1, -1, 25, -1, 53, 26, -1, 27, 21, 27, 27, -1, 20,
-                18, 18, 18, 18, 18, 18, 18, 18, 10, 18, 18, 18, 18, 18, 18, 18,
-                43, 22, 38, 17, -1, 17, -1, -1, 16, -1, 16, 19, -1, -1, 53, 23,
-                24, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, -1, 16, 20, -1,
-                53, 15, 18, 11, 18, 18, 18, 18, 13, 4, 18, 18, -1, -1, -1, 18,
-                4, 18, 18, 18, 18, 9, -1, 14, 18, 12, 8, 18, -1, 18, 7, 0,
-                18, 6,
+                -1, 56, 56, 56, 56, 38, 19, -1, 37, -1, 17, 48, 49, 35, 33, 42,
+                34, 41, 36, 5, 43, 44, 29, 30, 29, -1, 20, 20, 50, 51, 32, 31,
+                20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 52, -1, 53, 54, 19, 18,
+                19, -1, 39, 17, 16, 17, -1, 27, -1, 55, 28, -1, 29, 23, 29, 29,
+                -1, 22, 20, 20, 20, 20, 20, 20, 20, 20, 10, 20, 20, 20, 20, 20,
+                20, 20, 45, 24, 40, 19, 18, 19, -1, 17, 16, 17, 21, -1, -1, 55,
+                25, 26, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, -1, 22, -1,
+                55, 15, 20, 11, 20, 20, 20, 20, 13, 4, 20, 20, -1, -1, -1, 20,
+                4, 20, 20, 20, 20, 9, -1, 14, 20, 12, 8, 20, -1, 20, 7, 0,
+                20, 6,
             },
             new int[] {
-                -1, 54, 54, 54, 54, 36, -1, 35, -1, -1, 46, 47, 33, 31, 40, 32,
-                39, 34, 5, 41, 42, 27, 28, 27, -1, 18, 18, 48, 49, 30, 29, 18,
-                18, 18, 18, 18, 18, 18, 18, 18, 18, 50, -1, 51, 52, -1, -1, 37,
-                -1, -1, -1, 25, -1, 53, -1, 26, -1, 27, 1, 21, 27, 27, -1, 20,
-                18, 18, 18, 18, 18, 18, 18, 18, 10, 18, 18, 18, 18, 18, 18, 18,
-                22, 38, 17, -1, 17, -1, 16, -1, 16, 19, -1, -1, 53, 23, 24, 18,
-                18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 20, -1, 53, 15, 18,
-                11, 18, 18, 18, 18, 13, 4, 18, 18, -1, -1, 18, 4, 18, 18, 18,
-                18, 9, 14, 18, 12, 8, 18, 18, 7, 18, 6,
+                -1, 56, 56, 56, 56, 38, 19, 37, -1, 17, 48, 49, 35, 33, 42, 34,
+                41, 36, 5, 43, 44, 29, 30, 29, -1, 20, 20, 50, 51, 32, 31, 20,
+                20, 20, 20, 20, 20, 20, 20, 20, 20, 52, -1, 53, 54, 19, 18, 19,
+                39, 17, 16, 17, -1, 27, -1, 55, -1, 28, -1, 29, 1, 23, 29, 29,
+                -1, 22, 20, 20, 20, 20, 20, 20, 20, 20, 10, 20, 20, 20, 20, 20,
+                20, 20, 24, 40, 19, 18, 19, 17, 16, 17, 21, -1, -1, 55, 25, 26,
+                20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22, -1, 55, 15, 20,
+                11, 20, 20, 20, 20, 13, 4, 20, 20, -1, -1, 20, 4, 20, 20, 20,
+                20, 9, 14, 20, 12, 8, 20, 20, 7, 20, 6,
             },
             new int[] {
-                -1, 54, 54, 54, 54, 36, -1, 35, -1, -1, 46, 47, 33, 31, 40, 32,
-                39, 34, 5, 41, 42, 27, 28, 27, -1, 44, 18, 18, 48, 49, 30, 29,
-                18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 50, -1, 51, 52, -1, -1,
-                37, -1, -1, -1, 25, -1, 53, 26, -1, 27, 21, 27, 27, -1, 20, 18,
-                18, 18, 18, 18, 18, 18, 18, 10, 18, 18, 18, 18, 18, 18, 18, 22,
-                38, 45, 17, -1, 17, -1, 16, -1, 16, 19, -1, -1, 53, 23, 24, 18,
-                18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 20, -1, 53, 15, 18,
-                11, 18, 18, 18, 18, 13, 4, 18, 18, -1, -1, 18, 4, 18, 18, 18,
-                18, 9, 14, 18, 12, 8, 18, 18, 7, 18, 6,
+                -1, 56, 56, 56, 56, 38, 19, 37, -1, 17, 48, 49, 35, 33, 42, 34,
+                41, 36, 5, 43, 44, 29, 30, 29, -1, 46, 20, 20, 50, 51, 32, 31,
+                20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 52, -1, 53, 54, 19, 18,
+                19, 39, 17, 16, 17, -1, 27, -1, 55, 28, -1, 29, 23, 29, 29, -1,
+                22, 20, 20, 20, 20, 20, 20, 20, 20, 10, 20, 20, 20, 20, 20, 20,
+                20, 24, 40, 47, 19, 18, 19, 17, 16, 17, 21, -1, -1, 55, 25, 26,
+                20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22, -1, 55, 15, 20,
+                11, 20, 20, 20, 20, 13, 4, 20, 20, -1, -1, 20, 4, 20, 20, 20,
+                20, 9, 14, 20, 12, 8, 20, 20, 7, 20, 6,
             },
             new int[] {
-                -1, 54, 54, 54, 54, 36, -1, 35, -1, -1, 46, 47, 33, 31, 40, 32,
-                39, 34, 5, 41, 42, 27, 28, 27, -1, 18, 18, 48, 49, 30, 29, 18,
-                18, 3, 18, 18, 3, 18, 3, 18, 18, 3, 18, 18, 50, -1, 51, 52,
-                -1, -1, 37, -1, -1, -1, 25, -1, 53, -1, 26, -1, 27, 21, 27, 27,
-                -1, 20, 18, 18, 18, 18, 18, 18, 18, 18, 10, 3, 18, 18, 18, 18,
-                18, 18, 18, 22, 38, 45, 17, -1, 17, -1, 16, -1, 16, 19, -1, -1,
-                53, 2, 23, 24, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16,
-                20, -1, 53, 15, 18, 11, 18, 18, 18, 18, 13, 4, 18, 18, -1, -1,
-                18, 4, 18, 18, 18, 18, 9, 14, 18, 12, 8, 18, 18, 7, 18, 6,
+                -1, 56, 56, 56, 56, 38, 19, 37, -1, 17, 48, 49, 35, 33, 42, 34,
+                41, 36, 5, 43, 44, 29, 30, 29, -1, 20, 20, 50, 51, 32, 31, 20,
+                20, 3, 20, 20, 3, 20, 3, 20, 20, 3, 20, 20, 52, -1, 53, 54,
+                19, 18, 19, 39, 17, 16, 17, -1, 27, -1, 55, -1, 28, -1, 29, 23,
+                29, 29, -1, 22, 20, 20, 20, 20, 20, 20, 20, 20, 10, 3, 20, 20,
+                20, 20, 20, 20, 20, 24, 40, 47, 19, 18, 19, 17, 16, 17, 21, -1,
+                -1, 55, 2, 25, 26, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+                22, -1, 55, 15, 20, 11, 20, 20, 20, 20, 13, 4, 20, 20, -1, -1,
+                20, 4, 20, 20, 20, 20, 9, 14, 20, 12, 8, 20, 20, 7, 20, 6,
             },
         };
         

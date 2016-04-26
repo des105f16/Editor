@@ -37,8 +37,10 @@ Tokens
     caller = 'caller';
     null = 'NULL';
     
-    char = ''' [all - '''] ''' | ''' '\' all ''';
-    string = '"' ([all - '"'] | '\' all)+ '"';
+    char = ''' ([not_cr_lf - '''] | '\' not_cr_lf)* ''';
+    char_err = ''' ([not_cr_lf - '''] | '\' not_cr_lf)*;
+    string = '"' ([not_cr_lf - '"'] | '\' not_cr_lf)* '"';
+    string_err = '"' ([not_cr_lf - '"'] | '\' not_cr_lf)*;
     
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
@@ -94,6 +96,7 @@ Ignored Tokens
 
 Token Syntax Highlight
     {comment} text: #498b3d, italic;
+    {char, string, char_err, string_err} text:#d64c41;
     {if, else, while, return, typedef, struct} text: #247eaf, bold;
     {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
      func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,

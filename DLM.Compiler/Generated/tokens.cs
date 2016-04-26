@@ -365,6 +365,22 @@ namespace DLM.Compiler.Nodes
             return new TChar(Text, Line, Position);
         }
     }
+    public partial class TCharErr : Token<TCharErr>
+    {
+        public TCharErr(string text)
+            : base(text)
+        {
+        }
+        public TCharErr(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TCharErr Clone()
+        {
+            return new TCharErr(Text, Line, Position);
+        }
+    }
     public partial class TString : Token<TString>
     {
         public TString(string text)
@@ -379,6 +395,22 @@ namespace DLM.Compiler.Nodes
         public override TString Clone()
         {
             return new TString(Text, Line, Position);
+        }
+    }
+    public partial class TStringErr : Token<TStringErr>
+    {
+        public TStringErr(string text)
+            : base(text)
+        {
+        }
+        public TStringErr(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TStringErr Clone()
+        {
+            return new TStringErr(Text, Line, Position);
         }
     }
     public partial class TIdentifier : Token<TIdentifier>
