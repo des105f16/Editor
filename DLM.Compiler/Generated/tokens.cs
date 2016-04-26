@@ -325,6 +325,94 @@ namespace DLM.Compiler.Nodes
             return new TCaller(Text, Line, Position);
         }
     }
+    public partial class TNull : Token<TNull>
+    {
+        public TNull()
+            : base(@"NULL")
+        {
+        }
+        public TNull(int line, int pos)
+            : base(@"NULL", line, pos)
+        {
+        }
+        public TNull(string text)
+            : base(text)
+        {
+        }
+        public TNull(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TNull Clone()
+        {
+            return new TNull(Text, Line, Position);
+        }
+    }
+    public partial class TChar : Token<TChar>
+    {
+        public TChar(string text)
+            : base(text)
+        {
+        }
+        public TChar(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TChar Clone()
+        {
+            return new TChar(Text, Line, Position);
+        }
+    }
+    public partial class TCharErr : Token<TCharErr>
+    {
+        public TCharErr(string text)
+            : base(text)
+        {
+        }
+        public TCharErr(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TCharErr Clone()
+        {
+            return new TCharErr(Text, Line, Position);
+        }
+    }
+    public partial class TString : Token<TString>
+    {
+        public TString(string text)
+            : base(text)
+        {
+        }
+        public TString(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TString Clone()
+        {
+            return new TString(Text, Line, Position);
+        }
+    }
+    public partial class TStringErr : Token<TStringErr>
+    {
+        public TStringErr(string text)
+            : base(text)
+        {
+        }
+        public TStringErr(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TStringErr Clone()
+        {
+            return new TStringErr(Text, Line, Position);
+        }
+    }
     public partial class TIdentifier : Token<TIdentifier>
     {
         public TIdentifier(string text)

@@ -4079,6 +4079,165 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0}", Bool);
         }
     }
+    public partial class ANullExpression : PExpression
+    {
+        private TNull _null_;
+        
+        public ANullExpression(TNull _null_)
+            : base()
+        {
+            this.Null = _null_;
+        }
+        
+        public TNull Null
+        {
+            get { return _null_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Null in ANullExpression cannot be null.", "value");
+                
+                if (_null_ != null)
+                    SetParent(_null_, null);
+                SetParent(value, this);
+                
+                _null_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Null == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Null in ANullExpression cannot be null.", "newChild");
+                if (!(newChild is TNull) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Null = newChild as TNull;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Null;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ANullExpression(Null.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Null);
+        }
+    }
+    public partial class ACharExpression : PExpression
+    {
+        private TChar _char_;
+        
+        public ACharExpression(TChar _char_)
+            : base()
+        {
+            this.Char = _char_;
+        }
+        
+        public TChar Char
+        {
+            get { return _char_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Char in ACharExpression cannot be null.", "value");
+                
+                if (_char_ != null)
+                    SetParent(_char_, null);
+                SetParent(value, this);
+                
+                _char_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Char == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Char in ACharExpression cannot be null.", "newChild");
+                if (!(newChild is TChar) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Char = newChild as TChar;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Char;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ACharExpression(Char.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", Char);
+        }
+    }
+    public partial class AStringExpression : PExpression
+    {
+        private TString _string_;
+        
+        public AStringExpression(TString _string_)
+            : base()
+        {
+            this.String = _string_;
+        }
+        
+        public TString String
+        {
+            get { return _string_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("String in AStringExpression cannot be null.", "value");
+                
+                if (_string_ != null)
+                    SetParent(_string_, null);
+                SetParent(value, this);
+                
+                _string_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (String == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("String in AStringExpression cannot be null.", "newChild");
+                if (!(newChild is TString) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                String = newChild as TString;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return String;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new AStringExpression(String.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0}", String);
+        }
+    }
     public abstract partial class PElement : Production<PElement>
     {
         private TIdentifier _identifier_;

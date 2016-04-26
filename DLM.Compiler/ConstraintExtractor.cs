@@ -194,6 +194,7 @@ namespace DLM.Compiler
 
             protected override Label HandleAAndExpression(AAndExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleABooleanExpression(ABooleanExpression node) => Label.LowerBound;
+            protected override Label HandleACharExpression(ACharExpression node) => Label.LowerBound;
             protected override Label HandleAComparisonExpression(AComparisonExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
             {
@@ -279,10 +280,12 @@ namespace DLM.Compiler
             protected override Label HandleAMultiplyExpression(AMultiplyExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleANegateExpression(ANegateExpression node) => Visit(node.Expression);
             protected override Label HandleANotExpression(ANotExpression node) => Visit(node.Expression);
+            protected override Label HandleANullExpression(ANullExpression node) => Label.LowerBound;
             protected override Label HandleANumberExpression(ANumberExpression node) => Label.LowerBound;
             protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
             protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAStringExpression(AStringExpression node) => Label.LowerBound;
 
             private void checkArgumentLabels(Production.NodeList<PExpression> arguments, AFunctionDeclarationStatement functionDeclaration)
             {

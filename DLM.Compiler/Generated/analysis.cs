@@ -565,6 +565,30 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ANullExpression node)
+        {
+            HandleANullExpression(node);
+        }
+        protected virtual void HandleANullExpression(ANullExpression node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(ACharExpression node)
+        {
+            HandleACharExpression(node);
+        }
+        protected virtual void HandleACharExpression(ACharExpression node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AStringExpression node)
+        {
+            HandleAStringExpression(node);
+        }
+        protected virtual void HandleAStringExpression(AStringExpression node)
+        {
+            HandleDefault(node);
+        }
         
         public void Visit(PElement node)
         {
@@ -708,6 +732,46 @@ namespace DLM.Compiler.Analysis
             HandleTCaller(node);
         }
         protected virtual void HandleTCaller(TCaller node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TNull node)
+        {
+            HandleTNull(node);
+        }
+        protected virtual void HandleTNull(TNull node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TChar node)
+        {
+            HandleTChar(node);
+        }
+        protected virtual void HandleTChar(TChar node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TCharErr node)
+        {
+            HandleTCharErr(node);
+        }
+        protected virtual void HandleTCharErr(TCharErr node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TString node)
+        {
+            HandleTString(node);
+        }
+        protected virtual void HandleTString(TString node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TStringErr node)
+        {
+            HandleTStringErr(node);
+        }
+        protected virtual void HandleTStringErr(TStringErr node)
         {
             HandleDefault(node);
         }
@@ -1288,6 +1352,18 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Bool);
         }
+        protected override void HandleANullExpression(ANullExpression node)
+        {
+            Visit(node.Null);
+        }
+        protected override void HandleACharExpression(ACharExpression node)
+        {
+            Visit(node.Char);
+        }
+        protected override void HandleAStringExpression(AStringExpression node)
+        {
+            Visit(node.String);
+        }
         protected override void HandleAElement(AElement node)
         {
             Visit(node.Identifier);
@@ -1576,6 +1652,18 @@ namespace DLM.Compiler.Analysis
         protected override void HandleABooleanExpression(ABooleanExpression node)
         {
             Visit(node.Bool);
+        }
+        protected override void HandleANullExpression(ANullExpression node)
+        {
+            Visit(node.Null);
+        }
+        protected override void HandleACharExpression(ACharExpression node)
+        {
+            Visit(node.Char);
+        }
+        protected override void HandleAStringExpression(AStringExpression node)
+        {
+            Visit(node.String);
         }
         protected override void HandleAElement(AElement node)
         {
@@ -2145,6 +2233,30 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
+        private Result dispatch(ANullExpression node)
+        {
+            return HandleANullExpression(node);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(ACharExpression node)
+        {
+            return HandleACharExpression(node);
+        }
+        protected virtual Result HandleACharExpression(ACharExpression node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(AStringExpression node)
+        {
+            return HandleAStringExpression(node);
+        }
+        protected virtual Result HandleAStringExpression(AStringExpression node)
+        {
+            return HandleDefault(node);
+        }
         
         public Result Visit(PElement node)
         {
@@ -2288,6 +2400,46 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node);
         }
         protected virtual Result HandleTCaller(TCaller node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TNull node)
+        {
+            return HandleTNull(node);
+        }
+        protected virtual Result HandleTNull(TNull node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TChar node)
+        {
+            return HandleTChar(node);
+        }
+        protected virtual Result HandleTChar(TChar node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TCharErr node)
+        {
+            return HandleTCharErr(node);
+        }
+        protected virtual Result HandleTCharErr(TCharErr node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TString node)
+        {
+            return HandleTString(node);
+        }
+        protected virtual Result HandleTString(TString node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TStringErr node)
+        {
+            return HandleTStringErr(node);
+        }
+        protected virtual Result HandleTStringErr(TStringErr node)
         {
             return HandleDefault(node);
         }
@@ -3142,6 +3294,30 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(ANullExpression node, T1 arg1)
+        {
+            return HandleANullExpression(node, arg1);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(ACharExpression node, T1 arg1)
+        {
+            return HandleACharExpression(node, arg1);
+        }
+        protected virtual Result HandleACharExpression(ACharExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(AStringExpression node, T1 arg1)
+        {
+            return HandleAStringExpression(node, arg1);
+        }
+        protected virtual Result HandleAStringExpression(AStringExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         
         public Result Visit(PElement node, T1 arg1)
         {
@@ -3285,6 +3461,46 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TNull node, T1 arg1)
+        {
+            return HandleTNull(node, arg1);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TChar node, T1 arg1)
+        {
+            return HandleTChar(node, arg1);
+        }
+        protected virtual Result HandleTChar(TChar node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TCharErr node, T1 arg1)
+        {
+            return HandleTCharErr(node, arg1);
+        }
+        protected virtual Result HandleTCharErr(TCharErr node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TString node, T1 arg1)
+        {
+            return HandleTString(node, arg1);
+        }
+        protected virtual Result HandleTString(TString node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TStringErr node, T1 arg1)
+        {
+            return HandleTStringErr(node, arg1);
+        }
+        protected virtual Result HandleTStringErr(TStringErr node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4139,6 +4355,30 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(ANullExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleANullExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(ACharExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleACharExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleACharExpression(ACharExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(AStringExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleAStringExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleAStringExpression(AStringExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         
         public Result Visit(PElement node, T1 arg1, T2 arg2)
         {
@@ -4282,6 +4522,46 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1, arg2);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TNull node, T1 arg1, T2 arg2)
+        {
+            return HandleTNull(node, arg1, arg2);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TChar node, T1 arg1, T2 arg2)
+        {
+            return HandleTChar(node, arg1, arg2);
+        }
+        protected virtual Result HandleTChar(TChar node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TCharErr node, T1 arg1, T2 arg2)
+        {
+            return HandleTCharErr(node, arg1, arg2);
+        }
+        protected virtual Result HandleTCharErr(TCharErr node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TString node, T1 arg1, T2 arg2)
+        {
+            return HandleTString(node, arg1, arg2);
+        }
+        protected virtual Result HandleTString(TString node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TStringErr node, T1 arg1, T2 arg2)
+        {
+            return HandleTStringErr(node, arg1, arg2);
+        }
+        protected virtual Result HandleTStringErr(TStringErr node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5136,6 +5416,30 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        private Result dispatch(ANullExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleANullExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleANullExpression(ANullExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ACharExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleACharExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleACharExpression(ACharExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AStringExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAStringExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAStringExpression(AStringExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         
         public Result Visit(PElement node, T1 arg1, T2 arg2, T3 arg3)
         {
@@ -5279,6 +5583,46 @@ namespace DLM.Compiler.Analysis
             return HandleTCaller(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTCaller(TCaller node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TNull node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTNull(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTNull(TNull node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TChar node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTChar(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTChar(TChar node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TCharErr node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTCharErr(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTCharErr(TCharErr node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TString node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTString(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTString(TString node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TStringErr node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTStringErr(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTStringErr(TStringErr node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

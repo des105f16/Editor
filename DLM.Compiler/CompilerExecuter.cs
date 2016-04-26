@@ -156,9 +156,9 @@ namespace DLM.Compiler
 
             public TypeHighlighter(CompilerExecuter executor)
             {
-                typestyle = executor.style2;
-                principalstyle = executor.style3;
-                varpolicystyle = new TextStyle(executor.style3.ForeBrush, executor.style3.BackgroundBrush, FontStyle.Bold | FontStyle.Underline);
+                typestyle = executor.style3;
+                principalstyle = executor.style4;
+                varpolicystyle = new TextStyle(executor.style4.ForeBrush, executor.style4.BackgroundBrush, FontStyle.Bold | FontStyle.Underline);
             }
 
             public Style GetStyle(Token token)

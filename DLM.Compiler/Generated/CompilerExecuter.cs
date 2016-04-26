@@ -27,14 +27,17 @@ namespace DLM.Compiler
         {
             if (token is TComment)
                 return style1;
-            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
+            if (token is TChar || token is TString || token is TCharErr || token is TStringErr)
                 return style2;
-            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit || token is TUnderscore || token is THat)
+            if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
                 return style3;
+            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit || token is TUnderscore || token is THat)
+                return style4;
             return null;
         }
         private TextStyle style1 = new TextStyle(new SolidBrush(Color.FromArgb(73, 139, 61)), null, FontStyle.Italic);
-        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(36, 126, 175)), null, FontStyle.Bold);
-        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(177, 17, 217)), null, FontStyle.Bold);
+        private TextStyle style2 = new TextStyle(new SolidBrush(Color.FromArgb(214, 76, 65)), null, FontStyle.Regular);
+        private TextStyle style3 = new TextStyle(new SolidBrush(Color.FromArgb(36, 126, 175)), null, FontStyle.Bold);
+        private TextStyle style4 = new TextStyle(new SolidBrush(Color.FromArgb(177, 17, 217)), null, FontStyle.Bold);
     }
 }
