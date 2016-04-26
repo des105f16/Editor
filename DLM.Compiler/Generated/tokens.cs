@@ -349,6 +349,38 @@ namespace DLM.Compiler.Nodes
             return new TNull(Text, Line, Position);
         }
     }
+    public partial class TChar : Token<TChar>
+    {
+        public TChar(string text)
+            : base(text)
+        {
+        }
+        public TChar(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TChar Clone()
+        {
+            return new TChar(Text, Line, Position);
+        }
+    }
+    public partial class TString : Token<TString>
+    {
+        public TString(string text)
+            : base(text)
+        {
+        }
+        public TString(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TString Clone()
+        {
+            return new TString(Text, Line, Position);
+        }
+    }
     public partial class TIdentifier : Token<TIdentifier>
     {
         public TIdentifier(string text)

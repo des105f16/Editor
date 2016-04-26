@@ -37,6 +37,9 @@ Tokens
     caller = 'caller';
     null = 'NULL';
     
+    char = ''' [all - '''] ''' | ''' '\' all ''';
+    string = '"' ([all - '"'] | '\' all)+ '"';
+    
     identifier = (lower | upper) (lower | upper | digit | '_')*;
     
     acts_for = '-->';
@@ -273,6 +276,8 @@ Abstract Syntax Tree
         | {number} number
         | {boolean} bool
         | {null} null
+        | {char} char
+        | {string} string
         ;
     element
         = identifier
@@ -319,6 +324,8 @@ Productions
         | {n} number -> New expression.number(number)
         | {b} bool -> New expression.boolean(bool)
         | {null} null -> New expression.null(null)
+        | {c} char -> New expression.char(char)
+        | {str} string -> New expression.string(string)
         | {id} identifier -> New expression.identifier(identifier)
         | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
         | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
