@@ -12,11 +12,10 @@ Helpers
     long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
 
 States
-    normal, include, label, time;
+    normal, label, time;
 
 Tokens
-    {normal -> include} include = '#include';
-    {include -> normal} file = '<' [all - '>']* '>';
+    directive = '#' not_cr_lf*;
     
     {time} time = digit+ ':' digit+;
     {time} interval_unit = 'd' | 'h' | 'm' | 's' | 'ms';
@@ -103,9 +102,9 @@ Token Syntax Highlight
      time_start, time, interval_unit, underscore, hat} text: #b111d9, bold;
 
 Abstract Syntax Tree
-    root = P.include* principal_declaration* principal_hierarchy_declaration* P.struct* statement*;
+    root = pre_processor* principal_declaration* principal_hierarchy_declaration* P.struct* statement*;
     
-    include = file;
+    pre_processor = directive;
     
     principal_declaration = principal+;
     
@@ -142,9 +141,9 @@ Abstract Syntax Tree
         | {caller} caller
         ;
 Productions
-    root = P.include* principal_declaration* principal_hierarchy_declaration* P.struct* glstmt*;
+    root = pre_processor* principal_declaration* principal_hierarchy_declaration* P.struct* glstmt*;
     
-    include = T.include file -> New include(file);
+    pre_processor = directive;
     
     principal_declaration = principall lprincipal semicolon -> New principal_declaration([lprincipal]);
     
