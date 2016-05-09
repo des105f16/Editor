@@ -2093,41 +2093,22 @@ namespace DLM.Compiler.Nodes
     public abstract partial class PLabel : Production<PLabel>
     {
         private NodeList<PPolicy> _policys_;
-        private PTiming _timing_;
         
-        public PLabel(IEnumerable<PPolicy> _policys_, PTiming _timing_)
+        public PLabel(IEnumerable<PPolicy> _policys_)
         {
             this._policys_ = new NodeList<PPolicy>(this, _policys_, false);
-            this.Timing = _timing_;
         }
         
         public NodeList<PPolicy> Policys
         {
             get { return _policys_; }
         }
-        public PTiming Timing
-        {
-            get { return _timing_; }
-            set
-            {
-                if (_timing_ != null)
-                    SetParent(_timing_, null);
-                if (value != null)
-                    SetParent(value, this);
-                
-                _timing_ = value;
-            }
-        }
-        public bool HasTiming
-        {
-            get { return _timing_ != null; }
-        }
         
     }
     public partial class ALabel : PLabel
     {
-        public ALabel(IEnumerable<PPolicy> _policys_, PTiming _timing_)
-            : base(_policys_, _timing_)
+        public ALabel(IEnumerable<PPolicy> _policys_)
+            : base(_policys_)
         {
         }
         
@@ -2144,12 +2125,6 @@ namespace DLM.Compiler.Nodes
                 else
                     Policys[index] = newChild as PPolicy;
             }
-            else if (Timing == oldChild)
-            {
-                if (!(newChild is PTiming) && newChild != null)
-                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Timing = newChild as PTiming;
-            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
@@ -2160,18 +2135,16 @@ namespace DLM.Compiler.Nodes
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
-            if (HasTiming)
-                yield return Timing;
         }
         
         public override PLabel Clone()
         {
-            return new ALabel(Policys.Clone(), Timing?.Clone());
+            return new ALabel(Policys.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Policys, Timing);
+            return string.Format("{0}", Policys);
         }
     }
     public abstract partial class PTiming : Production<PTiming>
@@ -2702,10 +2675,12 @@ namespace DLM.Compiler.Nodes
     public abstract partial class PPrincipal : Production<PPrincipal>
     {
         private TIdentifier _identifier_;
+        private PTiming _timing_;
         
-        public PPrincipal(TIdentifier _identifier_)
+        public PPrincipal(TIdentifier _identifier_, PTiming _timing_)
         {
             this.Identifier = _identifier_;
+            this.Timing = _timing_;
         }
         
         public TIdentifier Identifier
@@ -2723,12 +2698,29 @@ namespace DLM.Compiler.Nodes
                 _identifier_ = value;
             }
         }
+        public PTiming Timing
+        {
+            get { return _timing_; }
+            set
+            {
+                if (_timing_ != null)
+                    SetParent(_timing_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _timing_ = value;
+            }
+        }
+        public bool HasTiming
+        {
+            get { return _timing_ != null; }
+        }
         
     }
     public partial class APrincipal : PPrincipal
     {
-        public APrincipal(TIdentifier _identifier_)
-            : base(_identifier_)
+        public APrincipal(TIdentifier _identifier_, PTiming _timing_)
+            : base(_identifier_, _timing_)
         {
         }
         
@@ -2742,21 +2734,29 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Identifier = newChild as TIdentifier;
             }
+            else if (Timing == oldChild)
+            {
+                if (!(newChild is PTiming) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Timing = newChild as PTiming;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Identifier;
+            if (HasTiming)
+                yield return Timing;
         }
         
         public override PPrincipal Clone()
         {
-            return new APrincipal(Identifier.Clone());
+            return new APrincipal(Identifier.Clone(), Timing?.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Identifier);
+            return string.Format("{0} {1}", Identifier, Timing);
         }
     }
     public abstract partial class PExpression : Production<PExpression>
