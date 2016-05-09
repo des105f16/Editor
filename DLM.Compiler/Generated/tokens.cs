@@ -5,44 +5,20 @@ using DLM.Compiler.Analysis;
 
 namespace DLM.Compiler.Nodes
 {
-    public partial class TInclude : Token<TInclude>
+    public partial class TDirective : Token<TDirective>
     {
-        public TInclude()
-            : base(@"#include")
-        {
-        }
-        public TInclude(int line, int pos)
-            : base(@"#include", line, pos)
-        {
-        }
-        public TInclude(string text)
+        public TDirective(string text)
             : base(text)
         {
         }
-        public TInclude(string text, int line, int pos)
+        public TDirective(string text, int line, int pos)
             : base(text, line, pos)
         {
         }
         
-        public override TInclude Clone()
+        public override TDirective Clone()
         {
-            return new TInclude(Text, Line, Position);
-        }
-    }
-    public partial class TFile : Token<TFile>
-    {
-        public TFile(string text)
-            : base(text)
-        {
-        }
-        public TFile(string text, int line, int pos)
-            : base(text, line, pos)
-        {
-        }
-        
-        public override TFile Clone()
-        {
-            return new TFile(Text, Line, Position);
+            return new TDirective(Text, Line, Position);
         }
     }
     public partial class TTime : Token<TTime>

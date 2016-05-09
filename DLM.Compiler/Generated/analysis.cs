@@ -30,19 +30,19 @@ namespace DLM.Compiler.Analysis
             HandleDefault(node);
         }
         
-        public void Visit(PInclude node)
+        public void Visit(PPreProcessor node)
         {
-            HandlePInclude(node);
+            HandlePPreProcessor(node);
         }
-        protected virtual void HandlePInclude(PInclude node)
+        protected virtual void HandlePPreProcessor(PPreProcessor node)
         {
             dispatch((dynamic)node);
         }
-        private void dispatch(AInclude node)
+        private void dispatch(APreProcessor node)
         {
-            HandleAInclude(node);
+            HandleAPreProcessor(node);
         }
-        protected virtual void HandleAInclude(AInclude node)
+        protected virtual void HandleAPreProcessor(APreProcessor node)
         {
             HandleDefault(node);
         }
@@ -615,19 +615,11 @@ namespace DLM.Compiler.Analysis
             HandleDefault(node);
         }
         
-        public void Visit(TInclude node)
+        public void Visit(TDirective node)
         {
-            HandleTInclude(node);
+            HandleTDirective(node);
         }
-        protected virtual void HandleTInclude(TInclude node)
-        {
-            HandleDefault(node);
-        }
-        public void Visit(TFile node)
-        {
-            HandleTFile(node);
-        }
-        protected virtual void HandleTFile(TFile node)
+        protected virtual void HandleTDirective(TDirective node)
         {
             HandleDefault(node);
         }
@@ -1093,15 +1085,15 @@ namespace DLM.Compiler.Analysis
         
         protected override void HandleARoot(ARoot node)
         {
-            Visit(node.Includes);
+            Visit(node.PreProcessors);
             Visit(node.PrincipalDeclarations);
             Visit(node.PrincipalHierarchyDeclarations);
             Visit(node.Structs);
             Visit(node.Statements);
         }
-        protected override void HandleAInclude(AInclude node)
+        protected override void HandleAPreProcessor(APreProcessor node)
         {
-            Visit(node.File);
+            Visit(node.Directive);
         }
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
@@ -1398,11 +1390,11 @@ namespace DLM.Compiler.Analysis
             Visit(node.Structs);
             Visit(node.PrincipalHierarchyDeclarations);
             Visit(node.PrincipalDeclarations);
-            Visit(node.Includes);
+            Visit(node.PreProcessors);
         }
-        protected override void HandleAInclude(AInclude node)
+        protected override void HandleAPreProcessor(APreProcessor node)
         {
-            Visit(node.File);
+            Visit(node.Directive);
         }
         protected override void HandleAPrincipalDeclaration(APrincipalDeclaration node)
         {
@@ -1698,19 +1690,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node);
         }
         
-        public Result Visit(PInclude node)
+        public Result Visit(PPreProcessor node)
         {
-            return HandlePInclude(node);
+            return HandlePPreProcessor(node);
         }
-        protected virtual Result HandlePInclude(PInclude node)
+        protected virtual Result HandlePPreProcessor(PPreProcessor node)
         {
             return dispatch((dynamic)node);
         }
-        private Result dispatch(AInclude node)
+        private Result dispatch(APreProcessor node)
         {
-            return HandleAInclude(node);
+            return HandleAPreProcessor(node);
         }
-        protected virtual Result HandleAInclude(AInclude node)
+        protected virtual Result HandleAPreProcessor(APreProcessor node)
         {
             return HandleDefault(node);
         }
@@ -2283,19 +2275,11 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node);
         }
         
-        public Result Visit(TInclude node)
+        public Result Visit(TDirective node)
         {
-            return HandleTInclude(node);
+            return HandleTDirective(node);
         }
-        protected virtual Result HandleTInclude(TInclude node)
-        {
-            return HandleDefault(node);
-        }
-        public Result Visit(TFile node)
-        {
-            return HandleTFile(node);
-        }
-        protected virtual Result HandleTFile(TFile node)
+        protected virtual Result HandleTDirective(TDirective node)
         {
             return HandleDefault(node);
         }
@@ -2759,19 +2743,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1);
         }
         
-        public Result Visit(PInclude node, T1 arg1)
+        public Result Visit(PPreProcessor node, T1 arg1)
         {
-            return HandlePInclude(node, arg1);
+            return HandlePPreProcessor(node, arg1);
         }
-        protected virtual Result HandlePInclude(PInclude node, T1 arg1)
+        protected virtual Result HandlePPreProcessor(PPreProcessor node, T1 arg1)
         {
             return dispatch((dynamic)node, arg1);
         }
-        private Result dispatch(AInclude node, T1 arg1)
+        private Result dispatch(APreProcessor node, T1 arg1)
         {
-            return HandleAInclude(node, arg1);
+            return HandleAPreProcessor(node, arg1);
         }
-        protected virtual Result HandleAInclude(AInclude node, T1 arg1)
+        protected virtual Result HandleAPreProcessor(APreProcessor node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3344,19 +3328,11 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1);
         }
         
-        public Result Visit(TInclude node, T1 arg1)
+        public Result Visit(TDirective node, T1 arg1)
         {
-            return HandleTInclude(node, arg1);
+            return HandleTDirective(node, arg1);
         }
-        protected virtual Result HandleTInclude(TInclude node, T1 arg1)
-        {
-            return HandleDefault(node, arg1);
-        }
-        public Result Visit(TFile node, T1 arg1)
-        {
-            return HandleTFile(node, arg1);
-        }
-        protected virtual Result HandleTFile(TFile node, T1 arg1)
+        protected virtual Result HandleTDirective(TDirective node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3820,19 +3796,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
-        public Result Visit(PInclude node, T1 arg1, T2 arg2)
+        public Result Visit(PPreProcessor node, T1 arg1, T2 arg2)
         {
-            return HandlePInclude(node, arg1, arg2);
+            return HandlePPreProcessor(node, arg1, arg2);
         }
-        protected virtual Result HandlePInclude(PInclude node, T1 arg1, T2 arg2)
+        protected virtual Result HandlePPreProcessor(PPreProcessor node, T1 arg1, T2 arg2)
         {
             return dispatch((dynamic)node, arg1, arg2);
         }
-        private Result dispatch(AInclude node, T1 arg1, T2 arg2)
+        private Result dispatch(APreProcessor node, T1 arg1, T2 arg2)
         {
-            return HandleAInclude(node, arg1, arg2);
+            return HandleAPreProcessor(node, arg1, arg2);
         }
-        protected virtual Result HandleAInclude(AInclude node, T1 arg1, T2 arg2)
+        protected virtual Result HandleAPreProcessor(APreProcessor node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4405,19 +4381,11 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
-        public Result Visit(TInclude node, T1 arg1, T2 arg2)
+        public Result Visit(TDirective node, T1 arg1, T2 arg2)
         {
-            return HandleTInclude(node, arg1, arg2);
+            return HandleTDirective(node, arg1, arg2);
         }
-        protected virtual Result HandleTInclude(TInclude node, T1 arg1, T2 arg2)
-        {
-            return HandleDefault(node, arg1, arg2);
-        }
-        public Result Visit(TFile node, T1 arg1, T2 arg2)
-        {
-            return HandleTFile(node, arg1, arg2);
-        }
-        protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2)
+        protected virtual Result HandleTDirective(TDirective node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4881,19 +4849,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
-        public Result Visit(PInclude node, T1 arg1, T2 arg2, T3 arg3)
+        public Result Visit(PPreProcessor node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandlePInclude(node, arg1, arg2, arg3);
+            return HandlePPreProcessor(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandlePInclude(PInclude node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandlePPreProcessor(PPreProcessor node, T1 arg1, T2 arg2, T3 arg3)
         {
             return dispatch((dynamic)node, arg1, arg2, arg3);
         }
-        private Result dispatch(AInclude node, T1 arg1, T2 arg2, T3 arg3)
+        private Result dispatch(APreProcessor node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandleAInclude(node, arg1, arg2, arg3);
+            return HandleAPreProcessor(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandleAInclude(AInclude node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandleAPreProcessor(APreProcessor node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
@@ -5466,19 +5434,11 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
-        public Result Visit(TInclude node, T1 arg1, T2 arg2, T3 arg3)
+        public Result Visit(TDirective node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandleTInclude(node, arg1, arg2, arg3);
+            return HandleTDirective(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandleTInclude(TInclude node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleDefault(node, arg1, arg2, arg3);
-        }
-        public Result Visit(TFile node, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return HandleTFile(node, arg1, arg2, arg3);
-        }
-        protected virtual Result HandleTFile(TFile node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandleTDirective(TDirective node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

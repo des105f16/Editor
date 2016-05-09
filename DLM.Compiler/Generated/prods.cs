@@ -7,24 +7,24 @@ namespace DLM.Compiler.Nodes
 {
     public abstract partial class PRoot : Production<PRoot>
     {
-        private NodeList<PInclude> _includes_;
+        private NodeList<PPreProcessor> _preprocessors_;
         private NodeList<PPrincipalDeclaration> _principaldeclarations_;
         private NodeList<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_;
         private NodeList<PStruct> _structs_;
         private NodeList<PStatement> _statements_;
         
-        public PRoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+        public PRoot(IEnumerable<PPreProcessor> _preprocessors_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
         {
-            this._includes_ = new NodeList<PInclude>(this, _includes_, true);
+            this._preprocessors_ = new NodeList<PPreProcessor>(this, _preprocessors_, true);
             this._principaldeclarations_ = new NodeList<PPrincipalDeclaration>(this, _principaldeclarations_, true);
             this._principalhierarchydeclarations_ = new NodeList<PPrincipalHierarchyDeclaration>(this, _principalhierarchydeclarations_, true);
             this._structs_ = new NodeList<PStruct>(this, _structs_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
-        public NodeList<PInclude> Includes
+        public NodeList<PPreProcessor> PreProcessors
         {
-            get { return _includes_; }
+            get { return _preprocessors_; }
         }
         public NodeList<PPrincipalDeclaration> PrincipalDeclarations
         {
@@ -46,23 +46,23 @@ namespace DLM.Compiler.Nodes
     }
     public partial class ARoot : PRoot
     {
-        public ARoot(IEnumerable<PInclude> _includes_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
-            : base(_includes_, _principaldeclarations_, _principalhierarchydeclarations_, _structs_, _statements_)
+        public ARoot(IEnumerable<PPreProcessor> _preprocessors_, IEnumerable<PPrincipalDeclaration> _principaldeclarations_, IEnumerable<PPrincipalHierarchyDeclaration> _principalhierarchydeclarations_, IEnumerable<PStruct> _structs_, IEnumerable<PStatement> _statements_)
+            : base(_preprocessors_, _principaldeclarations_, _principalhierarchydeclarations_, _structs_, _statements_)
         {
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (oldChild is PInclude && Includes.Contains(oldChild as PInclude))
+            if (oldChild is PPreProcessor && PreProcessors.Contains(oldChild as PPreProcessor))
             {
-                if (!(newChild is PInclude) && newChild != null)
+                if (!(newChild is PPreProcessor) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 
-                int index = Includes.IndexOf(oldChild as PInclude);
+                int index = PreProcessors.IndexOf(oldChild as PPreProcessor);
                 if (newChild == null)
-                    Includes.RemoveAt(index);
+                    PreProcessors.RemoveAt(index);
                 else
-                    Includes[index] = newChild as PInclude;
+                    PreProcessors[index] = newChild as PPreProcessor;
             }
             else if (oldChild is PPrincipalDeclaration && PrincipalDeclarations.Contains(oldChild as PPrincipalDeclaration))
             {
@@ -113,8 +113,8 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             {
-                PInclude[] temp = new PInclude[Includes.Count];
-                Includes.CopyTo(temp, 0);
+                PPreProcessor[] temp = new PPreProcessor[PreProcessors.Count];
+                PreProcessors.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
@@ -146,72 +146,72 @@ namespace DLM.Compiler.Nodes
         
         public override PRoot Clone()
         {
-            return new ARoot(Includes.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyDeclarations.Clone(), Structs.Clone(), Statements.Clone());
+            return new ARoot(PreProcessors.Clone(), PrincipalDeclarations.Clone(), PrincipalHierarchyDeclarations.Clone(), Structs.Clone(), Statements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4}", Includes, PrincipalDeclarations, PrincipalHierarchyDeclarations, Structs, Statements);
+            return string.Format("{0} {1} {2} {3} {4}", PreProcessors, PrincipalDeclarations, PrincipalHierarchyDeclarations, Structs, Statements);
         }
     }
-    public abstract partial class PInclude : Production<PInclude>
+    public abstract partial class PPreProcessor : Production<PPreProcessor>
     {
-        private TFile _file_;
+        private TDirective _directive_;
         
-        public PInclude(TFile _file_)
+        public PPreProcessor(TDirective _directive_)
         {
-            this.File = _file_;
+            this.Directive = _directive_;
         }
         
-        public TFile File
+        public TDirective Directive
         {
-            get { return _file_; }
+            get { return _directive_; }
             set
             {
                 if (value == null)
-                    throw new ArgumentException("File in PInclude cannot be null.", "value");
+                    throw new ArgumentException("Directive in PPreProcessor cannot be null.", "value");
                 
-                if (_file_ != null)
-                    SetParent(_file_, null);
+                if (_directive_ != null)
+                    SetParent(_directive_, null);
                 SetParent(value, this);
                 
-                _file_ = value;
+                _directive_ = value;
             }
         }
         
     }
-    public partial class AInclude : PInclude
+    public partial class APreProcessor : PPreProcessor
     {
-        public AInclude(TFile _file_)
-            : base(_file_)
+        public APreProcessor(TDirective _directive_)
+            : base(_directive_)
         {
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (File == oldChild)
+            if (Directive == oldChild)
             {
                 if (newChild == null)
-                    throw new ArgumentException("File in AInclude cannot be null.", "newChild");
-                if (!(newChild is TFile) && newChild != null)
+                    throw new ArgumentException("Directive in APreProcessor cannot be null.", "newChild");
+                if (!(newChild is TDirective) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                File = newChild as TFile;
+                Directive = newChild as TDirective;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
-            yield return File;
+            yield return Directive;
         }
         
-        public override PInclude Clone()
+        public override PPreProcessor Clone()
         {
-            return new AInclude(File.Clone());
+            return new APreProcessor(Directive.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", File);
+            return string.Format("{0}", Directive);
         }
     }
     public abstract partial class PPrincipalDeclaration : Production<PPrincipalDeclaration>
