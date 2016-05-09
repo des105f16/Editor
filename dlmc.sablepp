@@ -205,7 +205,7 @@ Productions
         ;
 
 Abstract Syntax Tree
-    label = policy+ timing?;
+    label = policy+;
     
     timing = [period]:timing_period? [interval]:timing_interval* [count]:number?;
     timing_period = [from]:time [to]:time;
@@ -217,20 +217,18 @@ Abstract Syntax Tree
         | {lower} underscore
         | {upper} hat
         ;
-    principal = identifier;
+    
+    principal = identifier timing?;
 Productions
-    label
-        = {none} label_start lpolicy label_end -> New label([lpolicy], Null)
-        | {time} label_start lpolicy time_start timing label_end -> New label([lpolicy], timing)
-        ;
+    label = label_start lpolicy label_end -> New label([lpolicy]);
     
     timing
         = {p} [p]:timing_period -> New timing(p, [], Null)
         | {pc} [p]:timing_period asterisk [c]:number -> New timing(p, [], c)
         | {i} [i]:timing_interval+ -> New timing(Null, i, Null)
         | {ic} [i]:timing_interval+ asterisk [c]:number-> New timing(Null, i, c)
-        | {pi} [p]:timing_period comma [i]:timing_interval+ -> New timing(p, i, Null)
-        | {pic} [p]:timing_period comma [i]:timing_interval+ asterisk [c]:number -> New timing(p, i, c)
+        | {pi} [p]:timing_period [i]:timing_interval+ -> New timing(p, i, Null)
+        | {pic} [p]:timing_period [i]:timing_interval+ asterisk [c]:number -> New timing(p, i, c)
         ;
     timing_period = [f]:time minus [t]:time -> New timing_period(f, t);
     timing_interval = number [unit]:interval_unit;
@@ -247,7 +245,10 @@ Productions
         | {tail} policy semicolon lpolicy -> [policy, lpolicy]
         | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
-    principal = identifier;
+    principal
+        = {none} identifier -> New principal(identifier, Null)
+        | {time} identifier time_start timing -> New principal(identifier, timing)
+        ;
     lprincipal -> principal+
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]
