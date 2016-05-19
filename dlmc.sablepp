@@ -78,6 +78,9 @@ Tokens
     {label -> time} time_start = '@';
     {time -> normal, label -> normal} label_end = '}}';
     
+    {normal} time_call = '@';
+    {normal} time_check = '@?';
+    
     l_par = '(';
     r_par = ')';
     l_squ = '[';
@@ -99,7 +102,7 @@ Token Syntax Highlight
     {if, else, while, return, typedef, struct} text: #247eaf, bold;
     {label_start, label_end, acts_for, if_acts_for, declassify_start, declassify_end,
      func_auth_start, func_auth_end, r_arrow, join, principall, this, caller,
-     time_start, time, interval_unit, underscore, hat} text: #b111d9, bold;
+     time_start, time, interval_unit, underscore, hat, time_call, time_check} text: #b111d9, bold;
 
 Abstract Syntax Tree
     root = pre_processor* principal_declaration* principal_hierarchy_declaration* P.struct* statement*;
@@ -272,11 +275,12 @@ Abstract Syntax Tree
         | {modulo} [left]:expression [right]:expression
         | {negate} expression
         
-        | {function_call} [function]:identifier [authorities]:principal* [arguments]:expression*
+        | {function_call} time_call? [function]:identifier [authorities]:principal* [arguments]:expression*
         
         | {parenthesis} expression
         | {declassify} expression label?
         | {identifier} identifier
+        | {time_check} time_check [function]:identifier
         | {number} number
         | {boolean} bool
         | {null} null
@@ -331,15 +335,16 @@ Productions
         | {c} char -> New expression.char(char)
         | {str} string -> New expression.string(string)
         | {id} identifier -> New expression.identifier(identifier)
+        | {check} time_check identifier -> New expression.time_check(time_check, identifier)
         | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
         | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
         ;
     expressionstmt -> statement
-    = {f} funccall semicolon -> New statement.expression(funccall)
+        = {f} funccall semicolon -> New statement.expression(funccall)
         ;
 
     funccall -> expression
-        = identifier funcauths? l_par funccallargs? r_par -> New expression.function_call(identifier, [funcauths], [funccallargs])
+        = time_call? identifier funcauths? l_par funccallargs? r_par -> New expression.function_call(time_call, identifier, [funcauths], [funccallargs])
         ;
     funcauths -> principal+
         = func_auth_start lprincipal func_auth_end -> [lprincipal];

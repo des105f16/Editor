@@ -549,6 +549,14 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ATimeCheckExpression node)
+        {
+            HandleATimeCheckExpression(node);
+        }
+        protected virtual void HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(ANumberExpression node)
         {
             HandleANumberExpression(node);
@@ -991,6 +999,22 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TTimeCall node)
+        {
+            HandleTTimeCall(node);
+        }
+        protected virtual void HandleTTimeCall(TTimeCall node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TTimeCheck node)
+        {
+            HandleTTimeCheck(node);
+        }
+        protected virtual void HandleTTimeCheck(TTimeCheck node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TLPar node)
         {
             HandleTLPar(node);
@@ -1319,6 +1343,8 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
+            if (node.HasTimeCall)
+                Visit(node.TimeCall);
             Visit(node.Function);
             Visit(node.Authorities);
             Visit(node.Arguments);
@@ -1336,6 +1362,11 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
             Visit(node.Identifier);
+        }
+        protected override void HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            Visit(node.TimeCheck);
+            Visit(node.Function);
         }
         protected override void HandleANumberExpression(ANumberExpression node)
         {
@@ -1624,6 +1655,8 @@ namespace DLM.Compiler.Analysis
             Visit(node.Arguments);
             Visit(node.Authorities);
             Visit(node.Function);
+            if (node.HasTimeCall)
+                Visit(node.TimeCall);
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
@@ -1638,6 +1671,11 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
             Visit(node.Identifier);
+        }
+        protected override void HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            Visit(node.Function);
+            Visit(node.TimeCheck);
         }
         protected override void HandleANumberExpression(ANumberExpression node)
         {
@@ -2211,6 +2249,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
+        private Result dispatch(ATimeCheckExpression node)
+        {
+            return HandleATimeCheckExpression(node);
+        }
+        protected virtual Result HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            return HandleDefault(node);
+        }
         private Result dispatch(ANumberExpression node)
         {
             return HandleANumberExpression(node);
@@ -2650,6 +2696,22 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelEnd(node);
         }
         protected virtual Result HandleTLabelEnd(TLabelEnd node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TTimeCall node)
+        {
+            return HandleTTimeCall(node);
+        }
+        protected virtual Result HandleTTimeCall(TTimeCall node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TTimeCheck node)
+        {
+            return HandleTTimeCheck(node);
+        }
+        protected virtual Result HandleTTimeCheck(TTimeCheck node)
         {
             return HandleDefault(node);
         }
@@ -3264,6 +3326,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(ATimeCheckExpression node, T1 arg1)
+        {
+            return HandleATimeCheckExpression(node, arg1);
+        }
+        protected virtual Result HandleATimeCheckExpression(ATimeCheckExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         private Result dispatch(ANumberExpression node, T1 arg1)
         {
             return HandleANumberExpression(node, arg1);
@@ -3703,6 +3773,22 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelEnd(node, arg1);
         }
         protected virtual Result HandleTLabelEnd(TLabelEnd node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TTimeCall node, T1 arg1)
+        {
+            return HandleTTimeCall(node, arg1);
+        }
+        protected virtual Result HandleTTimeCall(TTimeCall node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TTimeCheck node, T1 arg1)
+        {
+            return HandleTTimeCheck(node, arg1);
+        }
+        protected virtual Result HandleTTimeCheck(TTimeCheck node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4317,6 +4403,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(ATimeCheckExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleATimeCheckExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleATimeCheckExpression(ATimeCheckExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         private Result dispatch(ANumberExpression node, T1 arg1, T2 arg2)
         {
             return HandleANumberExpression(node, arg1, arg2);
@@ -4756,6 +4850,22 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelEnd(node, arg1, arg2);
         }
         protected virtual Result HandleTLabelEnd(TLabelEnd node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TTimeCall node, T1 arg1, T2 arg2)
+        {
+            return HandleTTimeCall(node, arg1, arg2);
+        }
+        protected virtual Result HandleTTimeCall(TTimeCall node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TTimeCheck node, T1 arg1, T2 arg2)
+        {
+            return HandleTTimeCheck(node, arg1, arg2);
+        }
+        protected virtual Result HandleTTimeCheck(TTimeCheck node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5370,6 +5480,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        private Result dispatch(ATimeCheckExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleATimeCheckExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleATimeCheckExpression(ATimeCheckExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         private Result dispatch(ANumberExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleANumberExpression(node, arg1, arg2, arg3);
@@ -5809,6 +5927,22 @@ namespace DLM.Compiler.Analysis
             return HandleTLabelEnd(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTLabelEnd(TLabelEnd node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TTimeCall node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTTimeCall(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTTimeCall(TTimeCall node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TTimeCheck node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTTimeCheck(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTTimeCheck(TTimeCheck node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
