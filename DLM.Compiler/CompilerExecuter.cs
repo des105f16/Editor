@@ -154,11 +154,19 @@ namespace DLM.Compiler
             private static Style principalstyle;
             private static Style varpolicystyle;
 
+            private static TextStyle fromStyle(TextStyle style, Brush foreground = null, Brush background = null, FontStyle? fontstyle = null)
+            {
+                return new TextStyle(
+                    foreground ?? style.ForeBrush,
+                    background ?? style.BackgroundBrush,
+                    fontstyle ?? style.FontStyle);
+            }
+
             public TypeHighlighter(CompilerExecuter executor)
             {
-                typestyle = executor.style3;
-                principalstyle = executor.style4;
-                varpolicystyle = new TextStyle(executor.style4.ForeBrush, executor.style4.BackgroundBrush, FontStyle.Bold | FontStyle.Underline);
+                typestyle = fromStyle(executor.style3);
+                principalstyle = fromStyle(executor.style4);
+                varpolicystyle = fromStyle(executor.style4, fontstyle: FontStyle.Bold | FontStyle.Underline);
             }
 
             public Style GetStyle(Token token)
