@@ -1469,20 +1469,26 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AFunctionDeclarationStatement : PStatement
     {
+        private NodeList<PPrincipal> _readers_;
         private PType _type_;
         private TIdentifier _identifier_;
         private NodeList<PFunctionParameter> _parameters_;
         private NodeList<PStatement> _statements_;
         
-        public AFunctionDeclarationStatement(PType _type_, TIdentifier _identifier_, IEnumerable<PFunctionParameter> _parameters_, IEnumerable<PStatement> _statements_)
+        public AFunctionDeclarationStatement(IEnumerable<PPrincipal> _readers_, PType _type_, TIdentifier _identifier_, IEnumerable<PFunctionParameter> _parameters_, IEnumerable<PStatement> _statements_)
             : base()
         {
+            this._readers_ = new NodeList<PPrincipal>(this, _readers_, true);
             this.Type = _type_;
             this.Identifier = _identifier_;
             this._parameters_ = new NodeList<PFunctionParameter>(this, _parameters_, true);
             this._statements_ = new NodeList<PStatement>(this, _statements_, true);
         }
         
+        public NodeList<PPrincipal> Readers
+        {
+            get { return _readers_; }
+        }
         public PType Type
         {
             get { return _type_; }
@@ -1524,7 +1530,18 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Type == oldChild)
+            if (oldChild is PPrincipal && Readers.Contains(oldChild as PPrincipal))
+            {
+                if (!(newChild is PPrincipal) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                
+                int index = Readers.IndexOf(oldChild as PPrincipal);
+                if (newChild == null)
+                    Readers.RemoveAt(index);
+                else
+                    Readers[index] = newChild as PPrincipal;
+            }
+            else if (Type == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Type in AFunctionDeclarationStatement cannot be null.", "newChild");
@@ -1566,6 +1583,12 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            {
+                PPrincipal[] temp = new PPrincipal[Readers.Count];
+                Readers.CopyTo(temp, 0);
+                for (int i = 0; i < temp.Length; i++)
+                    yield return temp[i];
+            }
             yield return Type;
             yield return Identifier;
             {
@@ -1584,12 +1607,12 @@ namespace DLM.Compiler.Nodes
         
         public override PStatement Clone()
         {
-            return new AFunctionDeclarationStatement(Type.Clone(), Identifier.Clone(), Parameters.Clone(), Statements.Clone());
+            return new AFunctionDeclarationStatement(Readers.Clone(), Type.Clone(), Identifier.Clone(), Parameters.Clone(), Statements.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}", Type, Identifier, Parameters, Statements);
+            return string.Format("{0} {1} {2} {3} {4}", Readers, Type, Identifier, Parameters, Statements);
         }
     }
     public partial class AExpressionStatement : PStatement

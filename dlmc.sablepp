@@ -125,7 +125,7 @@ Abstract Syntax Tree
         | {if} if expression statement*
         | {if_else} if expression [if_statements]:statement* [else_statements]:statement*
         | {while} while expression statement*
-        | {function_declaration} type identifier [parameters]:function_parameter* statement*
+        | {function_declaration} [readers]:principal* type identifier [parameters]:function_parameter* statement*
         | {expression} expression
         | {return} return expression?
         ;
@@ -159,8 +159,9 @@ Productions
         = {decl} type identifier semicolon -> New statement.declaration(type, identifier, Null)
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
         | {arr} type identifier l_squ number r_squ semicolon -> New statement.array_declaration(type, identifier, number)
-        | {func} type identifier l_par fparams? r_par l_cur stmt* r_cur -> New statement.function_declaration(type, identifier, [fparams], [stmt])
+        | {func} readers? type identifier l_par fparams? r_par l_cur stmt* r_cur -> New statement.function_declaration([readers], type, identifier, [fparams], [stmt])
         ;
+    readers -> principal+ = lprincipal l_arrow -> [lprincipal];
     fparams -> function_parameter*
         = type identifier -> [New function_parameter(type, identifier)]
         | {tail} [t1]:type [i1]:identifier comma fparams -> [New function_parameter(t1, i1), fparams]

@@ -1173,6 +1173,7 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
+            Visit(node.Readers);
             Visit(node.Type);
             Visit(node.Identifier);
             Visit(node.Parameters);
@@ -1478,6 +1479,7 @@ namespace DLM.Compiler.Analysis
             Visit(node.Parameters);
             Visit(node.Identifier);
             Visit(node.Type);
+            Visit(node.Readers);
         }
         protected override void HandleAExpressionStatement(AExpressionStatement node)
         {
