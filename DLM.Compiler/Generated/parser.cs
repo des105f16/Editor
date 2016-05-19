@@ -853,12 +853,12 @@ namespace DLM.Compiler.Parsing
                     {
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
                         List<PTimingInterval> ptimingintervallist = new List<PTimingInterval>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             ptimingperiod,
                             ptimingintervallist,
                             null
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 83:
@@ -867,23 +867,23 @@ namespace DLM.Compiler.Parsing
                         TAsterisk tasterisk = Pop<TAsterisk>();
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
                         List<PTimingInterval> ptimingintervallist = new List<PTimingInterval>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             ptimingperiod,
                             ptimingintervallist,
                             tnumber
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 84:
                     {
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             null,
                             ptimingintervallist,
                             null
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 85:
@@ -891,24 +891,24 @@ namespace DLM.Compiler.Parsing
                         TNumber tnumber = Pop<TNumber>();
                         TAsterisk tasterisk = Pop<TAsterisk>();
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             null,
                             ptimingintervallist,
                             tnumber
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 86:
                     {
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             ptimingperiod,
                             ptimingintervallist,
                             null
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 87:
@@ -917,12 +917,12 @@ namespace DLM.Compiler.Parsing
                         TAsterisk tasterisk = Pop<TAsterisk>();
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
-                        ATiming atiming = new ATiming(
+                        ATimePolicy atimepolicy = new ATimePolicy(
                             ptimingperiod,
                             ptimingintervallist,
                             tnumber
                         );
-                        Push(17, atiming);
+                        Push(17, atimepolicy);
                     }
                     break;
                 case 88:
@@ -1043,12 +1043,12 @@ namespace DLM.Compiler.Parsing
                     break;
                 case 99:
                     {
-                        PTiming ptiming = Pop<PTiming>();
+                        PTimePolicy ptimepolicy = Pop<PTimePolicy>();
                         TTimeStart ttimestart = Pop<TTimeStart>();
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         APrincipal aprincipal = new APrincipal(
                             tidentifier,
-                            ptiming
+                            ptimepolicy
                         );
                         Push(22, aprincipal);
                     }

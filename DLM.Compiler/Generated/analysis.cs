@@ -304,19 +304,19 @@ namespace DLM.Compiler.Analysis
             HandleDefault(node);
         }
         
-        public void Visit(PTiming node)
+        public void Visit(PTimePolicy node)
         {
-            HandlePTiming(node);
+            HandlePTimePolicy(node);
         }
-        protected virtual void HandlePTiming(PTiming node)
+        protected virtual void HandlePTimePolicy(PTimePolicy node)
         {
             dispatch((dynamic)node);
         }
-        private void dispatch(ATiming node)
+        private void dispatch(ATimePolicy node)
         {
-            HandleATiming(node);
+            HandleATimePolicy(node);
         }
-        protected virtual void HandleATiming(ATiming node)
+        protected virtual void HandleATimePolicy(ATimePolicy node)
         {
             HandleDefault(node);
         }
@@ -1217,7 +1217,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Policys);
         }
-        protected override void HandleATiming(ATiming node)
+        protected override void HandleATimePolicy(ATimePolicy node)
         {
             if (node.HasPeriod)
                 Visit(node.Period);
@@ -1255,8 +1255,8 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAPrincipal(APrincipal node)
         {
             Visit(node.Identifier);
-            if (node.HasTiming)
-                Visit(node.Timing);
+            if (node.HasTimePolicy)
+                Visit(node.TimePolicy);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1519,7 +1519,7 @@ namespace DLM.Compiler.Analysis
         {
             Visit(node.Policys);
         }
-        protected override void HandleATiming(ATiming node)
+        protected override void HandleATimePolicy(ATimePolicy node)
         {
             if (node.HasCount)
                 Visit(node.Count);
@@ -1556,8 +1556,8 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAPrincipal(APrincipal node)
         {
-            if (node.HasTiming)
-                Visit(node.Timing);
+            if (node.HasTimePolicy)
+                Visit(node.TimePolicy);
             Visit(node.Identifier);
         }
         protected override void HandleAAndExpression(AAndExpression node)
@@ -1966,19 +1966,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node);
         }
         
-        public Result Visit(PTiming node)
+        public Result Visit(PTimePolicy node)
         {
-            return HandlePTiming(node);
+            return HandlePTimePolicy(node);
         }
-        protected virtual Result HandlePTiming(PTiming node)
+        protected virtual Result HandlePTimePolicy(PTimePolicy node)
         {
             return dispatch((dynamic)node);
         }
-        private Result dispatch(ATiming node)
+        private Result dispatch(ATimePolicy node)
         {
-            return HandleATiming(node);
+            return HandleATimePolicy(node);
         }
-        protected virtual Result HandleATiming(ATiming node)
+        protected virtual Result HandleATimePolicy(ATimePolicy node)
         {
             return HandleDefault(node);
         }
@@ -3019,19 +3019,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1);
         }
         
-        public Result Visit(PTiming node, T1 arg1)
+        public Result Visit(PTimePolicy node, T1 arg1)
         {
-            return HandlePTiming(node, arg1);
+            return HandlePTimePolicy(node, arg1);
         }
-        protected virtual Result HandlePTiming(PTiming node, T1 arg1)
+        protected virtual Result HandlePTimePolicy(PTimePolicy node, T1 arg1)
         {
             return dispatch((dynamic)node, arg1);
         }
-        private Result dispatch(ATiming node, T1 arg1)
+        private Result dispatch(ATimePolicy node, T1 arg1)
         {
-            return HandleATiming(node, arg1);
+            return HandleATimePolicy(node, arg1);
         }
-        protected virtual Result HandleATiming(ATiming node, T1 arg1)
+        protected virtual Result HandleATimePolicy(ATimePolicy node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4072,19 +4072,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2);
         }
         
-        public Result Visit(PTiming node, T1 arg1, T2 arg2)
+        public Result Visit(PTimePolicy node, T1 arg1, T2 arg2)
         {
-            return HandlePTiming(node, arg1, arg2);
+            return HandlePTimePolicy(node, arg1, arg2);
         }
-        protected virtual Result HandlePTiming(PTiming node, T1 arg1, T2 arg2)
+        protected virtual Result HandlePTimePolicy(PTimePolicy node, T1 arg1, T2 arg2)
         {
             return dispatch((dynamic)node, arg1, arg2);
         }
-        private Result dispatch(ATiming node, T1 arg1, T2 arg2)
+        private Result dispatch(ATimePolicy node, T1 arg1, T2 arg2)
         {
-            return HandleATiming(node, arg1, arg2);
+            return HandleATimePolicy(node, arg1, arg2);
         }
-        protected virtual Result HandleATiming(ATiming node, T1 arg1, T2 arg2)
+        protected virtual Result HandleATimePolicy(ATimePolicy node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5125,19 +5125,19 @@ namespace DLM.Compiler.Analysis
             return HandleDefault(node, arg1, arg2, arg3);
         }
         
-        public Result Visit(PTiming node, T1 arg1, T2 arg2, T3 arg3)
+        public Result Visit(PTimePolicy node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandlePTiming(node, arg1, arg2, arg3);
+            return HandlePTimePolicy(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandlePTiming(PTiming node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandlePTimePolicy(PTimePolicy node, T1 arg1, T2 arg2, T3 arg3)
         {
             return dispatch((dynamic)node, arg1, arg2, arg3);
         }
-        private Result dispatch(ATiming node, T1 arg1, T2 arg2, T3 arg3)
+        private Result dispatch(ATimePolicy node, T1 arg1, T2 arg2, T3 arg3)
         {
-            return HandleATiming(node, arg1, arg2, arg3);
+            return HandleATimePolicy(node, arg1, arg2, arg3);
         }
-        protected virtual Result HandleATiming(ATiming node, T1 arg1, T2 arg2, T3 arg3)
+        protected virtual Result HandleATimePolicy(ATimePolicy node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
