@@ -15,6 +15,8 @@ namespace DLM.Compiler
         private List<NodeConstraint> constraints;
 
         private ErrorManager errorManager;
+        private Dictionary<string, Principal> principals;
+
         private ScopedDictionary<string, PType> types;
         private Dictionary<string, AFunctionDeclarationStatement> functionLabels;
 
@@ -36,11 +38,13 @@ namespace DLM.Compiler
             return Ld;
         }
 
-        public ConstraintExtractor(ErrorManager errorManager)
+        public ConstraintExtractor(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             constraints = new List<NodeConstraint>();
 
             this.errorManager = errorManager;
+            this.principals = principals;
+
             types = new ScopedDictionary<string, PType>();
             functionLabels = new Dictionary<string, AFunctionDeclarationStatement>();
 
@@ -233,6 +237,7 @@ namespace DLM.Compiler
                 if (owner.functionLabels.TryGetValue(fcName, out funcDecl))
                 {
                     fcLabel = funcDecl.Type.DeclaredLabel;
+                    var isOutput = funcDecl.Readers.Count > 0;
                     checkArgumentLabels(node.Arguments, funcDecl);
 
                     for (int i = 0; i < funcDecl.Parameters.Count; i++)
@@ -243,6 +248,24 @@ namespace DLM.Compiler
                         }
                         else
                             Visit(node.Arguments[i]);
+
+                    if (isOutput)
+                    {
+                        foreach (var arg in node.Arguments)
+                        {
+                            var argLabel = arg.LabelValue;
+                            if (!containsConstant(argLabel))
+                            {
+                                var readers = funcDecl.Readers.Select(p => p.DeclaredPrincipal);
+                                var outputPolicies = owner.principals.Select(p => new Policy(p.Value, readers));
+                                owner.Add(argLabel, new PolicyLabel(outputPolicies), arg, arg, NodeConstraint.OriginTypes.Argument);
+                            }
+                            else
+                            {
+                                errorManager.Register(arg, ErrorType.Message, "Currently not handling constant-labeled values.");
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -285,6 +308,18 @@ namespace DLM.Compiler
             {
                 node.LabelValue = label;
                 return label;
+            }
+
+            private bool containsConstant(Label l)
+            {
+                if (l is ConstantLabel)
+                    return true;
+                else if (l is JoinLabel)
+                    return containsConstant((l as JoinLabel).Label1) || containsConstant((l as JoinLabel).Label2);
+                else if (l is MeetLabel)
+                    return containsConstant((l as MeetLabel).Label1) || containsConstant((l as MeetLabel).Label2);
+                else
+                    return false;
             }
 
             private void checkArgumentLabels(Production.NodeList<PExpression> arguments, AFunctionDeclarationStatement functionDeclaration)

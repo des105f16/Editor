@@ -124,6 +124,16 @@ namespace DLM.Compiler
             ClearRange(node, "{{", "}}");
         }
 
+        protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
+        {
+            if (node.Readers.Count > 0)
+                ClearRange(node, after: "<-");
+
+            Visit(node.Type);
+            Visit(node.Parameters);
+            Visit(node.Statements);
+        }
+
         protected override void HandleAIfActsForStatement(AIfActsForStatement node)
         {
             var first = FirstToken.Find(node);

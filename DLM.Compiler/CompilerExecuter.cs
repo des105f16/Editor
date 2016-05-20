@@ -133,7 +133,7 @@ namespace DLM.Compiler
 
             public InferenceResult<NodeConstraint> InferLabels()
             {
-                ConstraintExtractor le = new ConstraintExtractor(errorManager);
+                ConstraintExtractor le = new ConstraintExtractor(errorManager, principals);
                 le.Visit(root);
                 return Inference.ConstraintResolver<NodeConstraint>.Resolve((o, l, r) => new NodeConstraint(l, r, o.MarkedOrigin, o.Origin, o.OriginType), le.Constraints);
             }
