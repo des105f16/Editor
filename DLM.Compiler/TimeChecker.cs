@@ -15,18 +15,28 @@ namespace DLM.Compiler
         private ErrorManager errorManager;
 
         private ScopedDictionary<string, Dictionary<string, PTimePolicy>> time;
+        private ScopedDictionary<string, bool> safe;
 
         public TimeChecker(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
 
             this.time = new ScopedDictionary<string, Dictionary<string, PTimePolicy>>();
+            this.safe = new ScopedDictionary<string, bool>();
         }
 
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             Visit(node.Type);
-            Visit(node.Statements);
+
+            if (errorManager.Errors.Count == 0)
+            {
+                safe.OpenScope();
+                foreach (var n in time.Keys)
+                    safe.Add(n, false);
+                Visit(node.Statements);
+                safe.CloseScope();
+            }
         }
 
         protected override void HandlePLabel(PLabel node)
@@ -73,6 +83,69 @@ namespace DLM.Compiler
 
             if (dict.Count > 0)
                 time.Add(name, dict);
+        }
+
+        protected override void HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            string name = node.Function.Text;
+
+            if (!safe.ContainsKey(name, false))
+                errorManager.Register(node, ErrorType.Message, $"{name} does not have time policies.");
+            else if (safe[name])
+                errorManager.Register(node, ErrorType.Message, $"{name} has already been checked. This check is redundant.");
+            else
+                safe[node.Function.Text] = true;
+        }
+        protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
+        {
+            string name = node.Function.Text;
+
+            if (node.HasTimeCall)
+            {
+                if (!safe.ContainsKey(name, false))
+                    errorManager.Register(node, ErrorType.Message, $"{name} does not have time policies.");
+                else if (safe[name])
+                    errorManager.Register(node, ErrorType.Message, $"Calling {name} with @ prefix will consume the last \"@?{name}\" check.");
+
+                safe[name] = false;
+            }
+            else if (safe.ContainsKey(name, false))
+            {
+                if (!safe[name])
+                    errorManager.Register(node, ErrorType.Error, $"Calling the {name} function, which has time policies, must be preceded with a \"@?{name}\" check or using the wait construct @{name}(...).");
+
+                safe[name] = false;
+            }
+        }
+
+        protected override void HandleAAndExpression(AAndExpression node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+        }
+        protected override void HandleAOrExpression(AOrExpression node)
+        {
+            safe.OpenScope();
+            Visit(node.Left);
+            var k1 = safe.Keys.ToArray().Where(x => safe.Keys.Contains(x, true) && safe[x]).ToArray();
+            safe.CloseScope();
+
+            safe.OpenScope();
+            Visit(node.Right);
+            var k2 = safe.Keys.ToArray().Where(x => safe.Keys.Contains(x, true) && safe[x]).ToArray();
+            safe.CloseScope();
+
+            var keys = k1.Intersect(k2).ToArray();
+            foreach (var k in keys)
+                safe[k] = true;
+        }
+
+        protected override void HandleAIfStatement(AIfStatement node)
+        {
+            safe.OpenScope();
+            Visit(node.Expression);
+            Visit(node.Statements);
+            safe.CloseScope();
         }
     }
 }
