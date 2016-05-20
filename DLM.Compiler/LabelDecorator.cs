@@ -58,6 +58,9 @@ namespace DLM.Compiler
             namedLabels.OpenScope();
             structDeclarations.OpenScope();
 
+            foreach (var r in node.Readers)
+                Visit(r);
+
             Visit(node.Parameters);
 
             Visit(node.Type);
