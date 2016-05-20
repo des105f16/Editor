@@ -192,10 +192,10 @@ namespace DLM.Compiler
                 throw new System.NotImplementedException();
             }
 
-            protected override Label HandleAAndExpression(AAndExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleABooleanExpression(ABooleanExpression node) => Label.LowerBound;
-            protected override Label HandleACharExpression(ACharExpression node) => Label.LowerBound;
-            protected override Label HandleAComparisonExpression(AComparisonExpression node) => Visit(node.Left) + Visit(node.Right);
+            protected override Label HandleAAndExpression(AAndExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleABooleanExpression(ABooleanExpression node) => decorate(node, Label.LowerBound);
+            protected override Label HandleACharExpression(ACharExpression node) => decorate(node, Label.LowerBound);
+            protected override Label HandleAComparisonExpression(AComparisonExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
             {
                 if (node.HasLabel)
@@ -204,11 +204,11 @@ namespace DLM.Compiler
                     var L2 = node.Label.LabelValue;
 
                     if (L1 <= L2 + authority)
-                        return L2;
+                        return decorate(node, L2);
                     else
                     {
                         errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority.Label}.");
-                        return Label.LowerBound;
+                        return decorate(node, Label.LowerBound);
                     }
                 }
                 else
@@ -218,14 +218,11 @@ namespace DLM.Compiler
 
                     owner.Add(Lvar, Ld + authority, node.Expression, node, NodeConstraint.OriginTypes.Declassify);
 
-                    return Ld;
+                    return decorate(node, Ld);
                 }
             }
-            protected override Label HandleADivideExpression(ADivideExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleAElementExpression(AElementExpression node)
-            {
-                return Visit(node.Expression) + node.FieldTypeDecl.Type.DeclaredLabel;
-            }
+            protected override Label HandleADivideExpression(ADivideExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleAElementExpression(AElementExpression node) => decorate(node, Visit(node.Expression) + node.FieldTypeDecl.Type.DeclaredLabel);
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;
@@ -263,29 +260,32 @@ namespace DLM.Compiler
                         errorManager.Register(p, $"Principal {p.DeclaredPrincipal.Name} is not in the effective authority.");
                 }
 
-                return fcLabel;
+                return decorate(node, fcLabel);
             }
             protected override Label HandleAIdentifierExpression(AIdentifierExpression node)
             {
                 var type = types[node.Identifier.Text];
 
-                return type.DeclaredLabel;
+                return decorate(node, type.DeclaredLabel);
             }
-            protected override Label HandleAIndexExpression(AIndexExpression node)
+            protected override Label HandleAIndexExpression(AIndexExpression node) => decorate(node, Visit(node.Expression) + Visit(node.Index));
+            protected override Label HandleAMinusExpression(AMinusExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleAModuloExpression(AModuloExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleAMultiplyExpression(AMultiplyExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleANegateExpression(ANegateExpression node) => decorate(node, Visit(node.Expression));
+            protected override Label HandleANotExpression(ANotExpression node) => decorate(node, Visit(node.Expression));
+            protected override Label HandleANullExpression(ANullExpression node) => decorate(node, Label.LowerBound);
+            protected override Label HandleANumberExpression(ANumberExpression node) => decorate(node, Label.LowerBound);
+            protected override Label HandleAOrExpression(AOrExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => decorate(node, Visit(node.Expression));
+            protected override Label HandleAPlusExpression(APlusExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
+            protected override Label HandleAStringExpression(AStringExpression node) => decorate(node, Label.LowerBound);
+
+            private Label decorate(PExpression node, Label label)
             {
-                return Visit(node.Expression) + Visit(node.Index);
+                node.LabelValue = label;
+                return label;
             }
-            protected override Label HandleAMinusExpression(AMinusExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleAModuloExpression(AModuloExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleAMultiplyExpression(AMultiplyExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleANegateExpression(ANegateExpression node) => Visit(node.Expression);
-            protected override Label HandleANotExpression(ANotExpression node) => Visit(node.Expression);
-            protected override Label HandleANullExpression(ANullExpression node) => Label.LowerBound;
-            protected override Label HandleANumberExpression(ANumberExpression node) => Label.LowerBound;
-            protected override Label HandleAOrExpression(AOrExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => Visit(node.Expression);
-            protected override Label HandleAPlusExpression(APlusExpression node) => Visit(node.Left) + Visit(node.Right);
-            protected override Label HandleAStringExpression(AStringExpression node) => Label.LowerBound;
 
             private void checkArgumentLabels(Production.NodeList<PExpression> arguments, AFunctionDeclarationStatement functionDeclaration)
             {
