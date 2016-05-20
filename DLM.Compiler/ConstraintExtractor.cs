@@ -321,6 +321,7 @@ namespace DLM.Compiler
                 else
                     return false;
             }
+            protected override Label HandleATimeCheckExpression(ATimeCheckExpression node) => Label.LowerBound;
 
             private void checkArgumentLabels(Production.NodeList<PExpression> arguments, AFunctionDeclarationStatement functionDeclaration)
             {
