@@ -22,12 +22,6 @@ namespace DLM.Compiler
 
         protected override void HandlePRoot(PRoot node)
         {
-            foreach (var f in node.Statements.OfType<AFunctionDeclarationStatement>())
-            {
-                string name = f.Identifier.Text;
-                principals.Add(name, new FunctionPrincipal(name));
-            }
-
             foreach (var pd in node.PrincipalDeclarations)
             {
                 foreach (var p in pd.Principals)
