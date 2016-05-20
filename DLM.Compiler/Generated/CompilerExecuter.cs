@@ -31,7 +31,7 @@ namespace DLM.Compiler
                 return style2;
             if (token is TIf || token is TElse || token is TWhile || token is TReturn || token is TTypedef || token is TStruct)
                 return style3;
-            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit || token is TUnderscore || token is THat)
+            if (token is TLabelStart || token is TLabelEnd || token is TActsFor || token is TIfActsFor || token is TDeclassifyStart || token is TDeclassifyEnd || token is TFuncAuthStart || token is TFuncAuthEnd || token is TRArrow || token is TJoin || token is TPrincipall || token is TThis || token is TCaller || token is TTimeStart || token is TTime || token is TIntervalUnit || token is TUnderscore || token is THat || token is TTimeCall || token is TTimeCheck)
                 return style4;
             return null;
         }

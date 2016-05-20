@@ -47,6 +47,10 @@ namespace DLM.Compiler
             }
 
             result = vars;
+
+            v.CheckTimings();
+            if (v.Errors)
+                return;
         }
 
         private class Validator
@@ -129,6 +133,12 @@ namespace DLM.Compiler
             {
                 LabelDecorator le = new LabelDecorator(errorManager, principals);
                 le.Visit(root);
+            }
+
+            public void CheckTimings()
+            {
+                TimeChecker tc = new TimeChecker(errorManager);
+                tc.Visit(root);
             }
 
             public InferenceResult<NodeConstraint> InferLabels()

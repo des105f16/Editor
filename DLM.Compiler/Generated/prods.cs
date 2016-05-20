@@ -2170,13 +2170,13 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0}", Policys);
         }
     }
-    public abstract partial class PTiming : Production<PTiming>
+    public abstract partial class PTimePolicy : Production<PTimePolicy>
     {
         private PTimingPeriod _period_;
         private NodeList<PTimingInterval> _interval_;
         private TNumber _count_;
         
-        public PTiming(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
+        public PTimePolicy(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
         {
             this.Period = _period_;
             this._interval_ = new NodeList<PTimingInterval>(this, _interval_, true);
@@ -2223,9 +2223,9 @@ namespace DLM.Compiler.Nodes
         }
         
     }
-    public partial class ATiming : PTiming
+    public partial class ATimePolicy : PTimePolicy
     {
-        public ATiming(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
+        public ATimePolicy(PTimingPeriod _period_, IEnumerable<PTimingInterval> _interval_, TNumber _count_)
             : base(_period_, _interval_, _count_)
         {
         }
@@ -2271,9 +2271,9 @@ namespace DLM.Compiler.Nodes
                 yield return Count;
         }
         
-        public override PTiming Clone()
+        public override PTimePolicy Clone()
         {
-            return new ATiming(Period?.Clone(), Interval.Clone(), Count?.Clone());
+            return new ATimePolicy(Period?.Clone(), Interval.Clone(), Count?.Clone());
         }
         
         public override string ToString()
@@ -2698,12 +2698,12 @@ namespace DLM.Compiler.Nodes
     public abstract partial class PPrincipal : Production<PPrincipal>
     {
         private TIdentifier _identifier_;
-        private PTiming _timing_;
+        private PTimePolicy _timepolicy_;
         
-        public PPrincipal(TIdentifier _identifier_, PTiming _timing_)
+        public PPrincipal(TIdentifier _identifier_, PTimePolicy _timepolicy_)
         {
             this.Identifier = _identifier_;
-            this.Timing = _timing_;
+            this.TimePolicy = _timepolicy_;
         }
         
         public TIdentifier Identifier
@@ -2721,29 +2721,29 @@ namespace DLM.Compiler.Nodes
                 _identifier_ = value;
             }
         }
-        public PTiming Timing
+        public PTimePolicy TimePolicy
         {
-            get { return _timing_; }
+            get { return _timepolicy_; }
             set
             {
-                if (_timing_ != null)
-                    SetParent(_timing_, null);
+                if (_timepolicy_ != null)
+                    SetParent(_timepolicy_, null);
                 if (value != null)
                     SetParent(value, this);
                 
-                _timing_ = value;
+                _timepolicy_ = value;
             }
         }
-        public bool HasTiming
+        public bool HasTimePolicy
         {
-            get { return _timing_ != null; }
+            get { return _timepolicy_ != null; }
         }
         
     }
     public partial class APrincipal : PPrincipal
     {
-        public APrincipal(TIdentifier _identifier_, PTiming _timing_)
-            : base(_identifier_, _timing_)
+        public APrincipal(TIdentifier _identifier_, PTimePolicy _timepolicy_)
+            : base(_identifier_, _timepolicy_)
         {
         }
         
@@ -2757,29 +2757,29 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Identifier = newChild as TIdentifier;
             }
-            else if (Timing == oldChild)
+            else if (TimePolicy == oldChild)
             {
-                if (!(newChild is PTiming) && newChild != null)
+                if (!(newChild is PTimePolicy) && newChild != null)
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
-                Timing = newChild as PTiming;
+                TimePolicy = newChild as PTimePolicy;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Identifier;
-            if (HasTiming)
-                yield return Timing;
+            if (HasTimePolicy)
+                yield return TimePolicy;
         }
         
         public override PPrincipal Clone()
         {
-            return new APrincipal(Identifier.Clone(), Timing?.Clone());
+            return new APrincipal(Identifier.Clone(), TimePolicy?.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Identifier, Timing);
+            return string.Format("{0} {1}", Identifier, TimePolicy);
         }
     }
     public abstract partial class PExpression : Production<PExpression>
@@ -3713,18 +3713,37 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AFunctionCallExpression : PExpression
     {
+        private TTimeCall _timecall_;
         private TIdentifier _function_;
         private NodeList<PPrincipal> _authorities_;
         private NodeList<PExpression> _arguments_;
         
-        public AFunctionCallExpression(TIdentifier _function_, IEnumerable<PPrincipal> _authorities_, IEnumerable<PExpression> _arguments_)
+        public AFunctionCallExpression(TTimeCall _timecall_, TIdentifier _function_, IEnumerable<PPrincipal> _authorities_, IEnumerable<PExpression> _arguments_)
             : base()
         {
+            this.TimeCall = _timecall_;
             this.Function = _function_;
             this._authorities_ = new NodeList<PPrincipal>(this, _authorities_, true);
             this._arguments_ = new NodeList<PExpression>(this, _arguments_, true);
         }
         
+        public TTimeCall TimeCall
+        {
+            get { return _timecall_; }
+            set
+            {
+                if (_timecall_ != null)
+                    SetParent(_timecall_, null);
+                if (value != null)
+                    SetParent(value, this);
+                
+                _timecall_ = value;
+            }
+        }
+        public bool HasTimeCall
+        {
+            get { return _timecall_ != null; }
+        }
         public TIdentifier Function
         {
             get { return _function_; }
@@ -3751,7 +3770,13 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Function == oldChild)
+            if (TimeCall == oldChild)
+            {
+                if (!(newChild is TTimeCall) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                TimeCall = newChild as TTimeCall;
+            }
+            else if (Function == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Function in AFunctionCallExpression cannot be null.", "newChild");
@@ -3785,6 +3810,8 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            if (HasTimeCall)
+                yield return TimeCall;
             yield return Function;
             {
                 PPrincipal[] temp = new PPrincipal[Authorities.Count];
@@ -3802,12 +3829,12 @@ namespace DLM.Compiler.Nodes
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(Function.Clone(), Authorities.Clone(), Arguments.Clone());
+            return new AFunctionCallExpression(TimeCall?.Clone(), Function.Clone(), Authorities.Clone(), Arguments.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Function, Authorities, Arguments);
+            return string.Format("{0} {1} {2} {3}", TimeCall, Function, Authorities, Arguments);
         }
     }
     public partial class AParenthesisExpression : PExpression
@@ -3994,6 +4021,85 @@ namespace DLM.Compiler.Nodes
         public override string ToString()
         {
             return string.Format("{0}", Identifier);
+        }
+    }
+    public partial class ATimeCheckExpression : PExpression
+    {
+        private TTimeCheck _timecheck_;
+        private TIdentifier _function_;
+        
+        public ATimeCheckExpression(TTimeCheck _timecheck_, TIdentifier _function_)
+            : base()
+        {
+            this.TimeCheck = _timecheck_;
+            this.Function = _function_;
+        }
+        
+        public TTimeCheck TimeCheck
+        {
+            get { return _timecheck_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("TimeCheck in ATimeCheckExpression cannot be null.", "value");
+                
+                if (_timecheck_ != null)
+                    SetParent(_timecheck_, null);
+                SetParent(value, this);
+                
+                _timecheck_ = value;
+            }
+        }
+        public TIdentifier Function
+        {
+            get { return _function_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Function in ATimeCheckExpression cannot be null.", "value");
+                
+                if (_function_ != null)
+                    SetParent(_function_, null);
+                SetParent(value, this);
+                
+                _function_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (TimeCheck == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("TimeCheck in ATimeCheckExpression cannot be null.", "newChild");
+                if (!(newChild is TTimeCheck) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                TimeCheck = newChild as TTimeCheck;
+            }
+            else if (Function == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Function in ATimeCheckExpression cannot be null.", "newChild");
+                if (!(newChild is TIdentifier) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Function = newChild as TIdentifier;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return TimeCheck;
+            yield return Function;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ATimeCheckExpression(TimeCheck.Clone(), Function.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", TimeCheck, Function);
         }
     }
     public partial class ANumberExpression : PExpression

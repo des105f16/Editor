@@ -187,8 +187,19 @@ namespace DLM.Compiler
             }
         }
 
+        protected override void HandleATimeCheckExpression(ATimeCheckExpression node)
+        {
+            var first = text.TokenStart(node.TimeCheck);
+            var last = text.TokenEnd(node.Function);
+            text.ReplaceRange(first, last, ' ');
+            first.Character = '1';
+        }
+
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
+            if (node.HasTimeCall)
+                text.ReplaceRange(text.TokenStart(node.TimeCall), text.TokenEnd(node.TimeCall), ' ');
+
             if (node.Authorities.Count > 0)
             {
                 var first = text.TokenStart(FirstToken.Find(node.Authorities));
@@ -201,5 +212,6 @@ namespace DLM.Compiler
             }
             Visit(node.Arguments);
         }
+
     }
 }

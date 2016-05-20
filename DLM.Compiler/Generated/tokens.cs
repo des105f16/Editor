@@ -1037,6 +1037,54 @@ namespace DLM.Compiler.Nodes
             return new TLabelEnd(Text, Line, Position);
         }
     }
+    public partial class TTimeCall : Token<TTimeCall>
+    {
+        public TTimeCall()
+            : base(@"@")
+        {
+        }
+        public TTimeCall(int line, int pos)
+            : base(@"@", line, pos)
+        {
+        }
+        public TTimeCall(string text)
+            : base(text)
+        {
+        }
+        public TTimeCall(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TTimeCall Clone()
+        {
+            return new TTimeCall(Text, Line, Position);
+        }
+    }
+    public partial class TTimeCheck : Token<TTimeCheck>
+    {
+        public TTimeCheck()
+            : base(@"@?")
+        {
+        }
+        public TTimeCheck(int line, int pos)
+            : base(@"@?", line, pos)
+        {
+        }
+        public TTimeCheck(string text)
+            : base(text)
+        {
+        }
+        public TTimeCheck(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TTimeCheck Clone()
+        {
+            return new TTimeCheck(Text, Line, Position);
+        }
+    }
     public partial class TLPar : Token<TLPar>
     {
         public TLPar()
