@@ -70,6 +70,7 @@ Tokens
     and = '&&';
     or = '||';
     
+    question = '?';
     period = '.';
     comma = ',';
     colon = ':';
@@ -278,6 +279,7 @@ Abstract Syntax Tree
         | {negate} expression
         
         | {function_call} time_call? [function]:identifier [authorities]:principal* [arguments]:expression*
+        | {ternary} [condition]:expression question [true]:expression colon [false]:expression
         
         | {parenthesis} expression
         | {declassify} expression label?
@@ -298,7 +300,8 @@ Abstract Syntax Tree
 
 Productions
     expr -> expression
-        = logicexpr -> logicexpr
+        = {ter} logicexpr question [e1]:expr colon [e2]:expr -> New expression.ternary(logicexpr, question, e1, colon, e2)
+        | logicexpr -> logicexpr
         ;
     
     logicexpr -> expression
