@@ -3837,6 +3837,163 @@ namespace DLM.Compiler.Nodes
             return string.Format("{0} {1} {2} {3}", TimeCall, Function, Authorities, Arguments);
         }
     }
+    public partial class ATernaryExpression : PExpression
+    {
+        private PExpression _condition_;
+        private TQuestion _question_;
+        private PExpression _true_;
+        private TColon _colon_;
+        private PExpression _false_;
+        
+        public ATernaryExpression(PExpression _condition_, TQuestion _question_, PExpression _true_, TColon _colon_, PExpression _false_)
+            : base()
+        {
+            this.Condition = _condition_;
+            this.Question = _question_;
+            this.True = _true_;
+            this.Colon = _colon_;
+            this.False = _false_;
+        }
+        
+        public PExpression Condition
+        {
+            get { return _condition_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Condition in ATernaryExpression cannot be null.", "value");
+                
+                if (_condition_ != null)
+                    SetParent(_condition_, null);
+                SetParent(value, this);
+                
+                _condition_ = value;
+            }
+        }
+        public TQuestion Question
+        {
+            get { return _question_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Question in ATernaryExpression cannot be null.", "value");
+                
+                if (_question_ != null)
+                    SetParent(_question_, null);
+                SetParent(value, this);
+                
+                _question_ = value;
+            }
+        }
+        public PExpression True
+        {
+            get { return _true_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("True in ATernaryExpression cannot be null.", "value");
+                
+                if (_true_ != null)
+                    SetParent(_true_, null);
+                SetParent(value, this);
+                
+                _true_ = value;
+            }
+        }
+        public TColon Colon
+        {
+            get { return _colon_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Colon in ATernaryExpression cannot be null.", "value");
+                
+                if (_colon_ != null)
+                    SetParent(_colon_, null);
+                SetParent(value, this);
+                
+                _colon_ = value;
+            }
+        }
+        public PExpression False
+        {
+            get { return _false_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("False in ATernaryExpression cannot be null.", "value");
+                
+                if (_false_ != null)
+                    SetParent(_false_, null);
+                SetParent(value, this);
+                
+                _false_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Condition == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Condition in ATernaryExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Condition = newChild as PExpression;
+            }
+            else if (Question == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Question in ATernaryExpression cannot be null.", "newChild");
+                if (!(newChild is TQuestion) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Question = newChild as TQuestion;
+            }
+            else if (True == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("True in ATernaryExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                True = newChild as PExpression;
+            }
+            else if (Colon == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Colon in ATernaryExpression cannot be null.", "newChild");
+                if (!(newChild is TColon) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Colon = newChild as TColon;
+            }
+            else if (False == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("False in ATernaryExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                False = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Condition;
+            yield return Question;
+            yield return True;
+            yield return Colon;
+            yield return False;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ATernaryExpression(Condition.Clone(), Question.Clone(), True.Clone(), Colon.Clone(), False.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2} {3} {4}", Condition, Question, True, Colon, False);
+        }
+    }
     public partial class AParenthesisExpression : PExpression
     {
         private PExpression _expression_;
@@ -3968,6 +4125,164 @@ namespace DLM.Compiler.Nodes
         public override string ToString()
         {
             return string.Format("{0} {1}", Expression, Label);
+        }
+    }
+    public partial class ADereferenceExpression : PExpression
+    {
+        private TAsterisk _asterisk_;
+        private PExpression _expression_;
+        
+        public ADereferenceExpression(TAsterisk _asterisk_, PExpression _expression_)
+            : base()
+        {
+            this.Asterisk = _asterisk_;
+            this.Expression = _expression_;
+        }
+        
+        public TAsterisk Asterisk
+        {
+            get { return _asterisk_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Asterisk in ADereferenceExpression cannot be null.", "value");
+                
+                if (_asterisk_ != null)
+                    SetParent(_asterisk_, null);
+                SetParent(value, this);
+                
+                _asterisk_ = value;
+            }
+        }
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in ADereferenceExpression cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Asterisk == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Asterisk in ADereferenceExpression cannot be null.", "newChild");
+                if (!(newChild is TAsterisk) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Asterisk = newChild as TAsterisk;
+            }
+            else if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in ADereferenceExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Asterisk;
+            yield return Expression;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new ADereferenceExpression(Asterisk.Clone(), Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Asterisk, Expression);
+        }
+    }
+    public partial class AAddressExpression : PExpression
+    {
+        private TAmpersand _ampersand_;
+        private PExpression _expression_;
+        
+        public AAddressExpression(TAmpersand _ampersand_, PExpression _expression_)
+            : base()
+        {
+            this.Ampersand = _ampersand_;
+            this.Expression = _expression_;
+        }
+        
+        public TAmpersand Ampersand
+        {
+            get { return _ampersand_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Ampersand in AAddressExpression cannot be null.", "value");
+                
+                if (_ampersand_ != null)
+                    SetParent(_ampersand_, null);
+                SetParent(value, this);
+                
+                _ampersand_ = value;
+            }
+        }
+        public PExpression Expression
+        {
+            get { return _expression_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Expression in AAddressExpression cannot be null.", "value");
+                
+                if (_expression_ != null)
+                    SetParent(_expression_, null);
+                SetParent(value, this);
+                
+                _expression_ = value;
+            }
+        }
+        
+        public override void ReplaceChild(Node oldChild, Node newChild)
+        {
+            if (Ampersand == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Ampersand in AAddressExpression cannot be null.", "newChild");
+                if (!(newChild is TAmpersand) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Ampersand = newChild as TAmpersand;
+            }
+            else if (Expression == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Expression in AAddressExpression cannot be null.", "newChild");
+                if (!(newChild is PExpression) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Expression = newChild as PExpression;
+            }
+            else throw new ArgumentException("Node to be replaced is not a child in this production.");
+        }
+        protected override IEnumerable<Node> GetChildren()
+        {
+            yield return Ampersand;
+            yield return Expression;
+        }
+        
+        public override PExpression Clone()
+        {
+            return new AAddressExpression(Ampersand.Clone(), Expression.Clone());
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Ampersand, Expression);
         }
     }
     public partial class AIdentifierExpression : PExpression

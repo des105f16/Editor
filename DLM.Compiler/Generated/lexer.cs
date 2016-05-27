@@ -55,27 +55,29 @@ namespace DLM.Compiler.Lexing
                 case 34: return new TAsterisk(text, line, position);
                 case 35: return new TSlash(text, line, position);
                 case 36: return new TPercent(text, line, position);
-                case 37: return new TBang(text, line, position);
-                case 38: return new TAnd(text, line, position);
-                case 39: return new TOr(text, line, position);
-                case 40: return new TPeriod(text, line, position);
-                case 41: return new TComma(text, line, position);
-                case 42: return new TColon(text, line, position);
-                case 43: return new TSemicolon(text, line, position);
-                case 44: return new TLabelStart(text, line, position);
-                case 45: return new TTimeStart(text, line, position);
-                case 46: return new TLabelEnd(text, line, position);
-                case 47: return new TTimeCall(text, line, position);
-                case 48: return new TTimeCheck(text, line, position);
-                case 49: return new TLPar(text, line, position);
-                case 50: return new TRPar(text, line, position);
-                case 51: return new TLSqu(text, line, position);
-                case 52: return new TRSqu(text, line, position);
-                case 53: return new TLCur(text, line, position);
-                case 54: return new TRCur(text, line, position);
-                case 55: return new TJoin(text, line, position);
-                case 56: return new TComment(text, line, position);
-                case 57: return new TWhitespace(text, line, position);
+                case 37: return new TAmpersand(text, line, position);
+                case 38: return new TBang(text, line, position);
+                case 39: return new TAnd(text, line, position);
+                case 40: return new TOr(text, line, position);
+                case 41: return new TQuestion(text, line, position);
+                case 42: return new TPeriod(text, line, position);
+                case 43: return new TComma(text, line, position);
+                case 44: return new TColon(text, line, position);
+                case 45: return new TSemicolon(text, line, position);
+                case 46: return new TLabelStart(text, line, position);
+                case 47: return new TTimeStart(text, line, position);
+                case 48: return new TLabelEnd(text, line, position);
+                case 49: return new TTimeCall(text, line, position);
+                case 50: return new TTimeCheck(text, line, position);
+                case 51: return new TLPar(text, line, position);
+                case 52: return new TRPar(text, line, position);
+                case 53: return new TLSqu(text, line, position);
+                case 54: return new TRSqu(text, line, position);
+                case 55: return new TLCur(text, line, position);
+                case 56: return new TRCur(text, line, position);
+                case 57: return new TJoin(text, line, position);
+                case 58: return new TComment(text, line, position);
+                case 59: return new TWhitespace(text, line, position);
                 default:
                     throw new ArgumentException("Unknown token index.", "tokenIndex");
             }
@@ -84,19 +86,19 @@ namespace DLM.Compiler.Lexing
         {
             switch (tokenIndex)
             {
-                case 44:
+                case 46:
                     switch (currentState)
                     {
                         case STATE1: return STATE2;
                         default: return -1;
                     }
-                case 45:
+                case 47:
                     switch (currentState)
                     {
                         case STATE2: return STATE3;
                         default: return -1;
                     }
-                case 46:
+                case 48:
                     switch (currentState)
                     {
                         case STATE3: return STATE1;
@@ -1972,36 +1974,36 @@ namespace DLM.Compiler.Lexing
         
         private static int[][] acceptTable = {
             new int[] {
-                -1, 57, 57, 57, 57, 37, 18, 0, 36, -1, 16, 49, 50, 34, 32, 41,
-                33, 40, 35, 4, 42, 43, 28, 29, 28, -1, 47, 19, 19, 51, 52, 31,
-                30, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 53, -1, 54, 55, 18,
-                17, 18, 0, 38, 16, 15, 16, -1, 26, -1, 56, 27, -1, 28, 22, 28,
-                28, -1, 21, 48, 19, 19, 19, 19, 19, 19, 19, 19, 9, 19, 19, 19,
-                19, 19, 19, 19, 44, 23, 39, 18, 17, 18, 16, 15, 16, 20, -1, -1,
-                56, 24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 21, -1,
-                56, 14, 19, 10, 19, 19, 19, 19, 12, 3, 19, 19, -1, -1, 19, 3,
+                -1, 59, 59, 59, 59, 38, 18, 0, 36, 37, 16, 51, 52, 34, 32, 43,
+                33, 42, 35, 4, 44, 45, 28, 29, 28, 41, 49, 19, 19, 53, 54, 31,
+                30, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 55, -1, 56, 57, 18,
+                17, 18, 0, 39, 16, 15, 16, -1, 26, -1, 58, 27, -1, 28, 22, 28,
+                28, -1, 21, 50, 19, 19, 19, 19, 19, 19, 19, 19, 9, 19, 19, 19,
+                19, 19, 19, 19, 46, 23, 40, 18, 17, 18, 16, 15, 16, 20, -1, -1,
+                58, 24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 21, -1,
+                58, 14, 19, 10, 19, 19, 19, 19, 12, 3, 19, 19, -1, -1, 19, 3,
                 19, 19, 19, 19, 8, 13, 19, 11, 7, 19, 19, 6, 19, 5,
             },
             new int[] {
-                -1, 57, 57, 57, 57, 37, 18, 0, 36, -1, 16, 49, 50, 34, 32, 41,
-                33, 40, 35, 4, 42, 43, 28, 29, 28, -1, 45, 19, 19, 51, 52, 31,
-                30, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 53, -1, 54, 55, 18,
-                17, 18, 0, 38, 16, 15, 16, -1, 26, -1, 56, 27, -1, 28, 22, 28,
+                -1, 59, 59, 59, 59, 38, 18, 0, 36, 37, 16, 51, 52, 34, 32, 43,
+                33, 42, 35, 4, 44, 45, 28, 29, 28, 41, 47, 19, 19, 53, 54, 31,
+                30, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 55, -1, 56, 57, 18,
+                17, 18, 0, 39, 16, 15, 16, -1, 26, -1, 58, 27, -1, 28, 22, 28,
                 28, -1, 21, 19, 19, 19, 19, 19, 19, 19, 19, 9, 19, 19, 19, 19,
-                19, 19, 19, 23, 39, 46, 18, 17, 18, 16, 15, 16, 20, -1, -1, 56,
-                24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 21, -1, 56,
+                19, 19, 19, 23, 40, 48, 18, 17, 18, 16, 15, 16, 20, -1, -1, 58,
+                24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 21, -1, 58,
                 14, 19, 10, 19, 19, 19, 19, 12, 3, 19, 19, -1, -1, 19, 3, 19,
                 19, 19, 19, 8, 13, 19, 11, 7, 19, 19, 6, 19, 5,
             },
             new int[] {
-                -1, 57, 57, 57, 57, 37, 18, 0, 36, -1, 16, 49, 50, 34, 32, 41,
-                33, 40, 35, 4, 42, 43, 28, 29, 28, -1, 19, 19, 51, 52, 31, 30,
-                19, 19, 2, 19, 19, 2, 19, 2, 19, 19, 2, 19, 19, 53, -1, 54,
-                55, 18, 17, 18, 0, 38, 16, 15, 16, -1, 26, -1, 56, -1, 27, -1,
+                -1, 59, 59, 59, 59, 38, 18, 0, 36, 37, 16, 51, 52, 34, 32, 43,
+                33, 42, 35, 4, 44, 45, 28, 29, 28, 41, 19, 19, 53, 54, 31, 30,
+                19, 19, 2, 19, 19, 2, 19, 2, 19, 19, 2, 19, 19, 55, -1, 56,
+                57, 18, 17, 18, 0, 39, 16, 15, 16, -1, 26, -1, 58, -1, 27, -1,
                 28, 22, 28, 28, -1, 21, 19, 19, 19, 19, 19, 19, 19, 19, 9, 2,
-                19, 19, 19, 19, 19, 19, 19, 23, 39, 46, 18, 17, 18, 16, 15, 16,
-                20, -1, -1, 56, 1, 24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19,
-                19, 19, 21, -1, 56, 14, 19, 10, 19, 19, 19, 19, 12, 3, 19, 19,
+                19, 19, 19, 19, 19, 19, 19, 23, 40, 48, 18, 17, 18, 16, 15, 16,
+                20, -1, -1, 58, 1, 24, 25, 19, 19, 19, 19, 19, 19, 19, 19, 19,
+                19, 19, 21, -1, 58, 14, 19, 10, 19, 19, 19, 19, 12, 3, 19, 19,
                 -1, -1, 19, 3, 19, 19, 19, 19, 8, 13, 19, 11, 7, 19, 19, 6,
                 19, 5,
             },
