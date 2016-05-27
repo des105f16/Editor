@@ -64,6 +64,7 @@ Tokens
     asterisk = '*';
     slash = '/';
     percent = '%';
+    ampersand = '&';
     
     bang = '!';
     and = '&&';
@@ -280,6 +281,8 @@ Abstract Syntax Tree
         
         | {parenthesis} expression
         | {declassify} expression label?
+        | {dereference} asterisk expression
+        | {address} ampersand expression
         | {identifier} identifier
         | {time_check} time_check [function]:identifier
         | {number} number
@@ -339,6 +342,8 @@ Productions
         | {check} time_check identifier -> New expression.time_check(time_check, identifier)
         | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
         | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
+        | {deref} asterisk aritelem -> New expression.dereference(asterisk, aritelem)
+        | {adr} ampersand aritelem -> New expression.address(ampersand, aritelem)
         ;
     expressionstmt -> statement
         = {f} funccall semicolon -> New statement.expression(funccall)
