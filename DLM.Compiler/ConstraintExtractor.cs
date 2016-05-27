@@ -196,6 +196,7 @@ namespace DLM.Compiler
                 throw new System.NotImplementedException();
             }
 
+            protected override Label HandleAAddressExpression(AAddressExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleAAndExpression(AAndExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleABooleanExpression(ABooleanExpression node) => decorate(node, Label.LowerBound);
             protected override Label HandleACharExpression(ACharExpression node) => decorate(node, Label.LowerBound);
@@ -225,6 +226,7 @@ namespace DLM.Compiler
                     return decorate(node, Ld);
                 }
             }
+            protected override Label HandleADereferenceExpression(ADereferenceExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleADivideExpression(ADivideExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleAElementExpression(AElementExpression node) => decorate(node, Visit(node.Expression) + node.FieldTypeDecl.Type.DeclaredLabel);
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
@@ -303,6 +305,7 @@ namespace DLM.Compiler
             protected override Label HandleAParenthesisExpression(AParenthesisExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleAPlusExpression(APlusExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleAStringExpression(AStringExpression node) => decorate(node, Label.LowerBound);
+            protected override Label HandleATernaryExpression(ATernaryExpression node) => decorate(node, Visit(node.Condition) + Visit(node.True) + Visit(node.False));
 
             private Label decorate(PExpression node, Label label)
             {

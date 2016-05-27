@@ -525,6 +525,14 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        private void dispatch(ATernaryExpression node)
+        {
+            HandleATernaryExpression(node);
+        }
+        protected virtual void HandleATernaryExpression(ATernaryExpression node)
+        {
+            HandleDefault(node);
+        }
         private void dispatch(AParenthesisExpression node)
         {
             HandleAParenthesisExpression(node);
@@ -538,6 +546,22 @@ namespace DLM.Compiler.Analysis
             HandleADeclassifyExpression(node);
         }
         protected virtual void HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(ADereferenceExpression node)
+        {
+            HandleADereferenceExpression(node);
+        }
+        protected virtual void HandleADereferenceExpression(ADereferenceExpression node)
+        {
+            HandleDefault(node);
+        }
+        private void dispatch(AAddressExpression node)
+        {
+            HandleAAddressExpression(node);
+        }
+        protected virtual void HandleAAddressExpression(AAddressExpression node)
         {
             HandleDefault(node);
         }
@@ -919,6 +943,14 @@ namespace DLM.Compiler.Analysis
         {
             HandleDefault(node);
         }
+        public void Visit(TAmpersand node)
+        {
+            HandleTAmpersand(node);
+        }
+        protected virtual void HandleTAmpersand(TAmpersand node)
+        {
+            HandleDefault(node);
+        }
         public void Visit(TBang node)
         {
             HandleTBang(node);
@@ -940,6 +972,14 @@ namespace DLM.Compiler.Analysis
             HandleTOr(node);
         }
         protected virtual void HandleTOr(TOr node)
+        {
+            HandleDefault(node);
+        }
+        public void Visit(TQuestion node)
+        {
+            HandleTQuestion(node);
+        }
+        protected virtual void HandleTQuestion(TQuestion node)
         {
             HandleDefault(node);
         }
@@ -1349,6 +1389,14 @@ namespace DLM.Compiler.Analysis
             Visit(node.Authorities);
             Visit(node.Arguments);
         }
+        protected override void HandleATernaryExpression(ATernaryExpression node)
+        {
+            Visit(node.Condition);
+            Visit(node.Question);
+            Visit(node.True);
+            Visit(node.Colon);
+            Visit(node.False);
+        }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
             Visit(node.Expression);
@@ -1358,6 +1406,16 @@ namespace DLM.Compiler.Analysis
             Visit(node.Expression);
             if (node.HasLabel)
                 Visit(node.Label);
+        }
+        protected override void HandleADereferenceExpression(ADereferenceExpression node)
+        {
+            Visit(node.Asterisk);
+            Visit(node.Expression);
+        }
+        protected override void HandleAAddressExpression(AAddressExpression node)
+        {
+            Visit(node.Ampersand);
+            Visit(node.Expression);
         }
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
@@ -1658,6 +1716,14 @@ namespace DLM.Compiler.Analysis
             if (node.HasTimeCall)
                 Visit(node.TimeCall);
         }
+        protected override void HandleATernaryExpression(ATernaryExpression node)
+        {
+            Visit(node.False);
+            Visit(node.Colon);
+            Visit(node.True);
+            Visit(node.Question);
+            Visit(node.Condition);
+        }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
             Visit(node.Expression);
@@ -1667,6 +1733,16 @@ namespace DLM.Compiler.Analysis
             if (node.HasLabel)
                 Visit(node.Label);
             Visit(node.Expression);
+        }
+        protected override void HandleADereferenceExpression(ADereferenceExpression node)
+        {
+            Visit(node.Expression);
+            Visit(node.Asterisk);
+        }
+        protected override void HandleAAddressExpression(AAddressExpression node)
+        {
+            Visit(node.Expression);
+            Visit(node.Ampersand);
         }
         protected override void HandleAIdentifierExpression(AIdentifierExpression node)
         {
@@ -2225,6 +2301,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
+        private Result dispatch(ATernaryExpression node)
+        {
+            return HandleATernaryExpression(node);
+        }
+        protected virtual Result HandleATernaryExpression(ATernaryExpression node)
+        {
+            return HandleDefault(node);
+        }
         private Result dispatch(AParenthesisExpression node)
         {
             return HandleAParenthesisExpression(node);
@@ -2238,6 +2322,22 @@ namespace DLM.Compiler.Analysis
             return HandleADeclassifyExpression(node);
         }
         protected virtual Result HandleADeclassifyExpression(ADeclassifyExpression node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(ADereferenceExpression node)
+        {
+            return HandleADereferenceExpression(node);
+        }
+        protected virtual Result HandleADereferenceExpression(ADereferenceExpression node)
+        {
+            return HandleDefault(node);
+        }
+        private Result dispatch(AAddressExpression node)
+        {
+            return HandleAAddressExpression(node);
+        }
+        protected virtual Result HandleAAddressExpression(AAddressExpression node)
         {
             return HandleDefault(node);
         }
@@ -2619,6 +2719,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node);
         }
+        public Result Visit(TAmpersand node)
+        {
+            return HandleTAmpersand(node);
+        }
+        protected virtual Result HandleTAmpersand(TAmpersand node)
+        {
+            return HandleDefault(node);
+        }
         public Result Visit(TBang node)
         {
             return HandleTBang(node);
@@ -2640,6 +2748,14 @@ namespace DLM.Compiler.Analysis
             return HandleTOr(node);
         }
         protected virtual Result HandleTOr(TOr node)
+        {
+            return HandleDefault(node);
+        }
+        public Result Visit(TQuestion node)
+        {
+            return HandleTQuestion(node);
+        }
+        protected virtual Result HandleTQuestion(TQuestion node)
         {
             return HandleDefault(node);
         }
@@ -3302,6 +3418,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        private Result dispatch(ATernaryExpression node, T1 arg1)
+        {
+            return HandleATernaryExpression(node, arg1);
+        }
+        protected virtual Result HandleATernaryExpression(ATernaryExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         private Result dispatch(AParenthesisExpression node, T1 arg1)
         {
             return HandleAParenthesisExpression(node, arg1);
@@ -3315,6 +3439,22 @@ namespace DLM.Compiler.Analysis
             return HandleADeclassifyExpression(node, arg1);
         }
         protected virtual Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(ADereferenceExpression node, T1 arg1)
+        {
+            return HandleADereferenceExpression(node, arg1);
+        }
+        protected virtual Result HandleADereferenceExpression(ADereferenceExpression node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        private Result dispatch(AAddressExpression node, T1 arg1)
+        {
+            return HandleAAddressExpression(node, arg1);
+        }
+        protected virtual Result HandleAAddressExpression(AAddressExpression node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -3696,6 +3836,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1);
         }
+        public Result Visit(TAmpersand node, T1 arg1)
+        {
+            return HandleTAmpersand(node, arg1);
+        }
+        protected virtual Result HandleTAmpersand(TAmpersand node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
         public Result Visit(TBang node, T1 arg1)
         {
             return HandleTBang(node, arg1);
@@ -3717,6 +3865,14 @@ namespace DLM.Compiler.Analysis
             return HandleTOr(node, arg1);
         }
         protected virtual Result HandleTOr(TOr node, T1 arg1)
+        {
+            return HandleDefault(node, arg1);
+        }
+        public Result Visit(TQuestion node, T1 arg1)
+        {
+            return HandleTQuestion(node, arg1);
+        }
+        protected virtual Result HandleTQuestion(TQuestion node, T1 arg1)
         {
             return HandleDefault(node, arg1);
         }
@@ -4379,6 +4535,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        private Result dispatch(ATernaryExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleATernaryExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleATernaryExpression(ATernaryExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         private Result dispatch(AParenthesisExpression node, T1 arg1, T2 arg2)
         {
             return HandleAParenthesisExpression(node, arg1, arg2);
@@ -4392,6 +4556,22 @@ namespace DLM.Compiler.Analysis
             return HandleADeclassifyExpression(node, arg1, arg2);
         }
         protected virtual Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(ADereferenceExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleADereferenceExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleADereferenceExpression(ADereferenceExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        private Result dispatch(AAddressExpression node, T1 arg1, T2 arg2)
+        {
+            return HandleAAddressExpression(node, arg1, arg2);
+        }
+        protected virtual Result HandleAAddressExpression(AAddressExpression node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -4773,6 +4953,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2);
         }
+        public Result Visit(TAmpersand node, T1 arg1, T2 arg2)
+        {
+            return HandleTAmpersand(node, arg1, arg2);
+        }
+        protected virtual Result HandleTAmpersand(TAmpersand node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
         public Result Visit(TBang node, T1 arg1, T2 arg2)
         {
             return HandleTBang(node, arg1, arg2);
@@ -4794,6 +4982,14 @@ namespace DLM.Compiler.Analysis
             return HandleTOr(node, arg1, arg2);
         }
         protected virtual Result HandleTOr(TOr node, T1 arg1, T2 arg2)
+        {
+            return HandleDefault(node, arg1, arg2);
+        }
+        public Result Visit(TQuestion node, T1 arg1, T2 arg2)
+        {
+            return HandleTQuestion(node, arg1, arg2);
+        }
+        protected virtual Result HandleTQuestion(TQuestion node, T1 arg1, T2 arg2)
         {
             return HandleDefault(node, arg1, arg2);
         }
@@ -5456,6 +5652,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        private Result dispatch(ATernaryExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleATernaryExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleATernaryExpression(ATernaryExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         private Result dispatch(AParenthesisExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleAParenthesisExpression(node, arg1, arg2, arg3);
@@ -5469,6 +5673,22 @@ namespace DLM.Compiler.Analysis
             return HandleADeclassifyExpression(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleADeclassifyExpression(ADeclassifyExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(ADereferenceExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleADereferenceExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleADereferenceExpression(ADereferenceExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        private Result dispatch(AAddressExpression node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleAAddressExpression(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleAAddressExpression(AAddressExpression node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
@@ -5850,6 +6070,14 @@ namespace DLM.Compiler.Analysis
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }
+        public Result Visit(TAmpersand node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTAmpersand(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTAmpersand(TAmpersand node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
         public Result Visit(TBang node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleTBang(node, arg1, arg2, arg3);
@@ -5871,6 +6099,14 @@ namespace DLM.Compiler.Analysis
             return HandleTOr(node, arg1, arg2, arg3);
         }
         protected virtual Result HandleTOr(TOr node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleDefault(node, arg1, arg2, arg3);
+        }
+        public Result Visit(TQuestion node, T1 arg1, T2 arg2, T3 arg3)
+        {
+            return HandleTQuestion(node, arg1, arg2, arg3);
+        }
+        protected virtual Result HandleTQuestion(TQuestion node, T1 arg1, T2 arg2, T3 arg3)
         {
             return HandleDefault(node, arg1, arg2, arg3);
         }

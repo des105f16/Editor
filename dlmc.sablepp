@@ -64,11 +64,13 @@ Tokens
     asterisk = '*';
     slash = '/';
     percent = '%';
+    ampersand = '&';
     
     bang = '!';
     and = '&&';
     or = '||';
     
+    question = '?';
     period = '.';
     comma = ',';
     colon = ':';
@@ -163,6 +165,7 @@ Productions
         | {declval} type identifier assign expr semicolon -> New statement.declaration(type, identifier, expr)
         | {arr} type identifier l_squ number r_squ semicolon -> New statement.array_declaration(type, identifier, number)
         | {func} readers? type identifier l_par fparams? r_par l_cur stmt* r_cur -> New statement.function_declaration([readers], type, identifier, [fparams], [stmt])
+        | {f_empty} readers? type identifier l_par fparams? r_par semicolon -> New statement.function_declaration([readers], type, identifier, [fparams], [])
         ;
     readers -> principal+ = lprincipal l_arrow -> [lprincipal];
     fparams -> function_parameter*
@@ -276,9 +279,12 @@ Abstract Syntax Tree
         | {negate} expression
         
         | {function_call} time_call? [function]:identifier [authorities]:principal* [arguments]:expression*
+        | {ternary} [condition]:expression question [true]:expression colon [false]:expression
         
         | {parenthesis} expression
         | {declassify} expression label?
+        | {dereference} asterisk expression
+        | {address} ampersand expression
         | {identifier} identifier
         | {time_check} time_check [function]:identifier
         | {number} number
@@ -294,7 +300,8 @@ Abstract Syntax Tree
 
 Productions
     expr -> expression
-        = logicexpr -> logicexpr
+        = {ter} logicexpr question [e1]:expr colon [e2]:expr -> New expression.ternary(logicexpr, question, e1, colon, e2)
+        | logicexpr -> logicexpr
         ;
     
     logicexpr -> expression
@@ -338,6 +345,8 @@ Productions
         | {check} time_check identifier -> New expression.time_check(time_check, identifier)
         | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
         | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
+        | {deref} asterisk aritelem -> New expression.dereference(asterisk, aritelem)
+        | {adr} ampersand aritelem -> New expression.address(ampersand, aritelem)
         ;
     expressionstmt -> statement
         = {f} funccall semicolon -> New statement.expression(funccall)

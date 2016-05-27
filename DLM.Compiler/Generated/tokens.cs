@@ -797,6 +797,30 @@ namespace DLM.Compiler.Nodes
             return new TPercent(Text, Line, Position);
         }
     }
+    public partial class TAmpersand : Token<TAmpersand>
+    {
+        public TAmpersand()
+            : base(@"&")
+        {
+        }
+        public TAmpersand(int line, int pos)
+            : base(@"&", line, pos)
+        {
+        }
+        public TAmpersand(string text)
+            : base(text)
+        {
+        }
+        public TAmpersand(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TAmpersand Clone()
+        {
+            return new TAmpersand(Text, Line, Position);
+        }
+    }
     public partial class TBang : Token<TBang>
     {
         public TBang()
@@ -867,6 +891,30 @@ namespace DLM.Compiler.Nodes
         public override TOr Clone()
         {
             return new TOr(Text, Line, Position);
+        }
+    }
+    public partial class TQuestion : Token<TQuestion>
+    {
+        public TQuestion()
+            : base(@"?")
+        {
+        }
+        public TQuestion(int line, int pos)
+            : base(@"?", line, pos)
+        {
+        }
+        public TQuestion(string text)
+            : base(text)
+        {
+        }
+        public TQuestion(string text, int line, int pos)
+            : base(text, line, pos)
+        {
+        }
+        
+        public override TQuestion Clone()
+        {
+            return new TQuestion(Text, Line, Position);
         }
     }
     public partial class TPeriod : Token<TPeriod>
