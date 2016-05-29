@@ -212,9 +212,10 @@ Productions
         ;
 
 Abstract Syntax Tree
-    label = policy+;
+    label = policy+ [time_policies]:time_policy*;
     
-    time_policy = [period]:timing_period? [interval]:timing_interval* [count]:number?;
+    time_policy = principal? [period]:timing_period? [interval]:timing_interval* [count]:number?;
+    
     timing_period = [from]:time [to]:time;
     timing_interval = number [unit]:interval_unit;
     
@@ -225,20 +226,23 @@ Abstract Syntax Tree
         | {upper} hat
         ;
     
-    principal = identifier time_policy?;
+    principal = identifier;
 Productions
-    label = label_start lpolicy label_end -> New label([lpolicy]);
-    
-    time_policy
-        = {p} [p]:timing_period -> New time_policy(p, [], Null)
-        | {pc} [p]:timing_period asterisk [c]:number -> New time_policy(p, [], c)
-        | {i} [i]:timing_interval+ -> New time_policy(Null, i, Null)
-        | {ic} [i]:timing_interval+ asterisk [c]:number-> New time_policy(Null, i, c)
-        | {pi} [p]:timing_period [i]:timing_interval+ -> New time_policy(p, i, Null)
-        | {pic} [p]:timing_period [i]:timing_interval+ asterisk [c]:number -> New time_policy(p, i, c)
+    label
+        = label_start lpolicy label_end -> New label([lpolicy], [])
+        | {time} label_start lpolicy time_start time_list label_end -> New label([lpolicy], [time_list])
         ;
+    
+    time_list -> time_policy+ = time_policy semicolon time_list -> [time_policy, time_list];
+    time_policy
+        = {p} principal? [p]:timing_period [c]:timing_count? -> New time_policy(principal, p, [], c)
+        | {ic} principal? [i]:timing_interval+ [c]:timing_count?-> New time_policy(principal, Null, i, c)
+        | {pic} principal? [p]:timing_period [i]:timing_interval+ [c]:timing_count? -> New time_policy(principal, p, i, c)
+        ;
+    
     timing_period = [f]:time minus [t]:time -> New timing_period(f, t);
     timing_interval = number [unit]:interval_unit;
+    timing_count -> number = asterisk [c]:number -> c;
     
     policy
         = {id} identifier -> New policy.variable(identifier)
@@ -252,10 +256,7 @@ Productions
         | {tail} policy semicolon lpolicy -> [policy, lpolicy]
         | {tail2} policy join lpolicy -> [policy, lpolicy]
         ;
-    principal
-        = {none} identifier -> New principal(identifier, Null)
-        | {time} identifier time_start time_policy -> New principal(identifier, time_policy)
-        ;
+    principal = identifier;
     lprincipal -> principal+
         = principal -> [principal]
         | {tail} principal comma lprincipal -> [principal, lprincipal]

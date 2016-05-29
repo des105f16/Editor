@@ -1280,9 +1280,12 @@ namespace DLM.Compiler.Analysis
         protected override void HandleALabel(ALabel node)
         {
             Visit(node.Policys);
+            Visit(node.TimePolicies);
         }
         protected override void HandleATimePolicy(ATimePolicy node)
         {
+            if (node.HasPrincipal)
+                Visit(node.Principal);
             if (node.HasPeriod)
                 Visit(node.Period);
             Visit(node.Interval);
@@ -1319,8 +1322,6 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAPrincipal(APrincipal node)
         {
             Visit(node.Identifier);
-            if (node.HasTimePolicy)
-                Visit(node.TimePolicy);
         }
         protected override void HandleAAndExpression(AAndExpression node)
         {
@@ -1606,6 +1607,7 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleALabel(ALabel node)
         {
+            Visit(node.TimePolicies);
             Visit(node.Policys);
         }
         protected override void HandleATimePolicy(ATimePolicy node)
@@ -1615,6 +1617,8 @@ namespace DLM.Compiler.Analysis
             Visit(node.Interval);
             if (node.HasPeriod)
                 Visit(node.Period);
+            if (node.HasPrincipal)
+                Visit(node.Principal);
         }
         protected override void HandleATimingPeriod(ATimingPeriod node)
         {
@@ -1645,8 +1649,6 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAPrincipal(APrincipal node)
         {
-            if (node.HasTimePolicy)
-                Visit(node.TimePolicy);
             Visit(node.Identifier);
         }
         protected override void HandleAAndExpression(AAndExpression node)
