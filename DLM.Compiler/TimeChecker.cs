@@ -14,14 +14,14 @@ namespace DLM.Compiler
     {
         private ErrorManager errorManager;
 
-        private ScopedDictionary<string, Dictionary<string, PTimePolicy>> time;
+        private List<string> timedFunctions;
         private ScopedDictionary<string, bool> safe;
 
         public TimeChecker(ErrorManager errorManager)
         {
             this.errorManager = errorManager;
 
-            this.time = new ScopedDictionary<string, Dictionary<string, PTimePolicy>>();
+            this.timedFunctions = new List<string>();
             this.safe = new ScopedDictionary<string, bool>();
         }
 
@@ -32,7 +32,7 @@ namespace DLM.Compiler
             if (errorManager.Errors.Count == 0)
             {
                 safe.OpenScope();
-                foreach (var n in time.Keys)
+                foreach (var n in timedFunctions)
                     safe.Add(n, false);
                 Visit(node.Statements);
                 safe.CloseScope();
@@ -43,46 +43,20 @@ namespace DLM.Compiler
         {
             base.HandlePLabel(node);
 
-            var function = node.GetFirstParent<AFunctionDeclarationStatement>();
+            bool hasTime = node.TimePolicies.Count > 0;
 
-            Dictionary<string, PTimePolicy> dict = new Dictionary<string, PTimePolicy>();
+            if (hasTime)
+            {
+                var param = node.GetFirstParent<PFunctionParameter>();
+                var stmt = node.GetFirstParent<PStatement>();
 
-            foreach (var o in node.Policys.OfType<APrincipalPolicy>())
-                foreach (var r in o.Readers)
-                {
-                    var pol = r.TimePolicy ?? o.Owner.TimePolicy;
+                bool isFunction = param != null && stmt != null && stmt is AFunctionDeclarationStatement;
 
-                    if (pol != null)
-                    {
-                        if (function != null)
-                            dict.Add(r.Identifier.Text, pol);
-                        else
-                            errorManager.Register(pol, "Time policies can only be specified for functions.");
-                    }
-                }
-
-            if (dict.Count > 0 && function != null)
-                time.Add(function.Identifier.Text, dict);
-        }
-        private void AddTime(string name, PLabel node)
-        {
-            if (node == null)
-                return;
-
-            Dictionary<string, PTimePolicy> dict = new Dictionary<string, PTimePolicy>();
-
-            foreach (var o in node.Policys.OfType<APrincipalPolicy>())
-                if (o.Owner.HasTimePolicy)
-                    foreach (var r in o.Readers)
-                    {
-                        var pol = r.TimePolicy ?? o.Owner.TimePolicy;
-
-                        if (pol != null)
-                            dict.Add(r.Identifier.Text, pol);
-                    }
-
-            if (dict.Count > 0)
-                time.Add(name, dict);
+                if (isFunction)
+                    timedFunctions.Add((stmt as AFunctionDeclarationStatement).Identifier.Text);
+                else
+                    errorManager.Register(node.TimePolicies.First(), "Time policies can only be specified for functions.");
+            }
         }
 
         protected override void HandleATimeCheckExpression(ATimeCheckExpression node)
