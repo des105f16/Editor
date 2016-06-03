@@ -914,6 +914,14 @@ namespace DLM.Compiler.Parsing
                     break;
                 case 87:
                     {
+                        PTimePolicy ptimepolicy = Pop<PTimePolicy>();
+                        List<PTimePolicy> ptimepolicylist = new List<PTimePolicy>();
+                        ptimepolicylist.Add(ptimepolicy);
+                        Push(17, ptimepolicylist);
+                    }
+                    break;
+                case 88:
+                    {
                         List<PTimePolicy> ptimepolicylist = Pop<List<PTimePolicy>>();
                         TSemicolon tsemicolon = Pop<TSemicolon>();
                         PTimePolicy ptimepolicy = Pop<PTimePolicy>();
@@ -923,14 +931,14 @@ namespace DLM.Compiler.Parsing
                         Push(17, ptimepolicylist2);
                     }
                     break;
-                case 88:
                 case 89:
                 case 90:
                 case 91:
+                case 92:
                     {
-                        TNumber tnumber = isOn(2, index - 88) ? Pop<TNumber>() : null;
+                        TNumber tnumber = isOn(2, index - 89) ? Pop<TNumber>() : null;
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
-                        PPrincipal pprincipal = isOn(1, index - 88) ? Pop<PPrincipal>() : null;
+                        PPrincipal pprincipal = isOn(1, index - 89) ? Pop<PPrincipal>() : null;
                         List<PTimingInterval> ptimingintervallist = new List<PTimingInterval>();
                         ATimePolicy atimepolicy = new ATimePolicy(
                             pprincipal,
@@ -941,14 +949,14 @@ namespace DLM.Compiler.Parsing
                         Push(18, atimepolicy);
                     }
                     break;
-                case 92:
                 case 93:
                 case 94:
                 case 95:
+                case 96:
                     {
-                        TNumber tnumber = isOn(2, index - 92) ? Pop<TNumber>() : null;
+                        TNumber tnumber = isOn(2, index - 93) ? Pop<TNumber>() : null;
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
-                        PPrincipal pprincipal = isOn(1, index - 92) ? Pop<PPrincipal>() : null;
+                        PPrincipal pprincipal = isOn(1, index - 93) ? Pop<PPrincipal>() : null;
                         ATimePolicy atimepolicy = new ATimePolicy(
                             pprincipal,
                             null,
@@ -958,15 +966,15 @@ namespace DLM.Compiler.Parsing
                         Push(18, atimepolicy);
                     }
                     break;
-                case 96:
                 case 97:
                 case 98:
                 case 99:
+                case 100:
                     {
-                        TNumber tnumber = isOn(2, index - 96) ? Pop<TNumber>() : null;
+                        TNumber tnumber = isOn(2, index - 97) ? Pop<TNumber>() : null;
                         List<PTimingInterval> ptimingintervallist = Pop<List<PTimingInterval>>();
                         PTimingPeriod ptimingperiod = Pop<PTimingPeriod>();
-                        PPrincipal pprincipal = isOn(1, index - 96) ? Pop<PPrincipal>() : null;
+                        PPrincipal pprincipal = isOn(1, index - 97) ? Pop<PPrincipal>() : null;
                         ATimePolicy atimepolicy = new ATimePolicy(
                             pprincipal,
                             ptimingperiod,
@@ -976,7 +984,7 @@ namespace DLM.Compiler.Parsing
                         Push(18, atimepolicy);
                     }
                     break;
-                case 100:
+                case 101:
                     {
                         TTime ttime = Pop<TTime>();
                         TMinus tminus = Pop<TMinus>();
@@ -988,7 +996,7 @@ namespace DLM.Compiler.Parsing
                         Push(19, atimingperiod);
                     }
                     break;
-                case 101:
+                case 102:
                     {
                         TIntervalUnit tintervalunit = Pop<TIntervalUnit>();
                         TNumber tnumber = Pop<TNumber>();
@@ -999,14 +1007,14 @@ namespace DLM.Compiler.Parsing
                         Push(20, atiminginterval);
                     }
                     break;
-                case 102:
+                case 103:
                     {
                         TNumber tnumber = Pop<TNumber>();
                         TAsterisk tasterisk = Pop<TAsterisk>();
                         Push(21, tnumber);
                     }
                     break;
-                case 103:
+                case 104:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         AVariablePolicy avariablepolicy = new AVariablePolicy(
@@ -1015,7 +1023,7 @@ namespace DLM.Compiler.Parsing
                         Push(22, avariablepolicy);
                     }
                     break;
-                case 104:
+                case 105:
                     {
                         List<PPrincipal> pprincipallist = Pop<List<PPrincipal>>();
                         TRArrow trarrow = Pop<TRArrow>();
@@ -1029,7 +1037,7 @@ namespace DLM.Compiler.Parsing
                         Push(22, aprincipalpolicy);
                     }
                     break;
-                case 105:
+                case 106:
                     {
                         TRArrow trarrow = Pop<TRArrow>();
                         PPrincipal pprincipal = Pop<PPrincipal>();
@@ -1041,7 +1049,7 @@ namespace DLM.Compiler.Parsing
                         Push(22, aprincipalpolicy);
                     }
                     break;
-                case 106:
+                case 107:
                     {
                         TUnderscore tunderscore = Pop<TUnderscore>();
                         ALowerPolicy alowerpolicy = new ALowerPolicy(
@@ -1050,7 +1058,7 @@ namespace DLM.Compiler.Parsing
                         Push(22, alowerpolicy);
                     }
                     break;
-                case 107:
+                case 108:
                     {
                         THat that = Pop<THat>();
                         AUpperPolicy aupperpolicy = new AUpperPolicy(
@@ -1059,7 +1067,7 @@ namespace DLM.Compiler.Parsing
                         Push(22, aupperpolicy);
                     }
                     break;
-                case 108:
+                case 109:
                     {
                         PPolicy ppolicy = Pop<PPolicy>();
                         List<PPolicy> ppolicylist = new List<PPolicy>();
@@ -1067,7 +1075,7 @@ namespace DLM.Compiler.Parsing
                         Push(23, ppolicylist);
                     }
                     break;
-                case 109:
+                case 110:
                     {
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TSemicolon tsemicolon = Pop<TSemicolon>();
@@ -1078,7 +1086,7 @@ namespace DLM.Compiler.Parsing
                         Push(23, ppolicylist2);
                     }
                     break;
-                case 110:
+                case 111:
                     {
                         List<PPolicy> ppolicylist = Pop<List<PPolicy>>();
                         TJoin tjoin = Pop<TJoin>();
@@ -1089,7 +1097,7 @@ namespace DLM.Compiler.Parsing
                         Push(23, ppolicylist2);
                     }
                     break;
-                case 111:
+                case 112:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         APrincipal aprincipal = new APrincipal(
@@ -1098,7 +1106,7 @@ namespace DLM.Compiler.Parsing
                         Push(24, aprincipal);
                     }
                     break;
-                case 112:
+                case 113:
                     {
                         PPrincipal pprincipal = Pop<PPrincipal>();
                         List<PPrincipal> pprincipallist = new List<PPrincipal>();
@@ -1106,7 +1114,7 @@ namespace DLM.Compiler.Parsing
                         Push(25, pprincipallist);
                     }
                     break;
-                case 113:
+                case 114:
                     {
                         List<PPrincipal> pprincipallist = Pop<List<PPrincipal>>();
                         TComma tcomma = Pop<TComma>();
@@ -1117,7 +1125,7 @@ namespace DLM.Compiler.Parsing
                         Push(25, pprincipallist2);
                     }
                     break;
-                case 114:
+                case 115:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TColon tcolon = Pop<TColon>();
@@ -1134,13 +1142,13 @@ namespace DLM.Compiler.Parsing
                         Push(26, aternaryexpression);
                     }
                     break;
-                case 115:
+                case 116:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(26, pexpression);
                     }
                     break;
-                case 116:
+                case 117:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAnd tand = Pop<TAnd>();
@@ -1152,7 +1160,7 @@ namespace DLM.Compiler.Parsing
                         Push(27, aandexpression);
                     }
                     break;
-                case 117:
+                case 118:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TOr tor = Pop<TOr>();
@@ -1164,13 +1172,13 @@ namespace DLM.Compiler.Parsing
                         Push(27, aorexpression);
                     }
                     break;
-                case 118:
+                case 119:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(27, pexpression);
                     }
                     break;
-                case 119:
+                case 120:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TCompare tcompare = Pop<TCompare>();
@@ -1183,7 +1191,7 @@ namespace DLM.Compiler.Parsing
                         Push(28, acomparisonexpression);
                     }
                     break;
-                case 120:
+                case 121:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TBang tbang = Pop<TBang>();
@@ -1193,13 +1201,13 @@ namespace DLM.Compiler.Parsing
                         Push(28, anotexpression);
                     }
                     break;
-                case 121:
+                case 122:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(28, pexpression);
                     }
                     break;
-                case 122:
+                case 123:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TPlus tplus = Pop<TPlus>();
@@ -1211,7 +1219,7 @@ namespace DLM.Compiler.Parsing
                         Push(29, aplusexpression);
                     }
                     break;
-                case 123:
+                case 124:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TMinus tminus = Pop<TMinus>();
@@ -1223,7 +1231,7 @@ namespace DLM.Compiler.Parsing
                         Push(29, aminusexpression);
                     }
                     break;
-                case 124:
+                case 125:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TMinus tminus = Pop<TMinus>();
@@ -1233,13 +1241,13 @@ namespace DLM.Compiler.Parsing
                         Push(29, anegateexpression);
                     }
                     break;
-                case 125:
+                case 126:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(29, pexpression);
                     }
                     break;
-                case 126:
+                case 127:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAsterisk tasterisk = Pop<TAsterisk>();
@@ -1251,7 +1259,7 @@ namespace DLM.Compiler.Parsing
                         Push(30, amultiplyexpression);
                     }
                     break;
-                case 127:
+                case 128:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TSlash tslash = Pop<TSlash>();
@@ -1263,7 +1271,7 @@ namespace DLM.Compiler.Parsing
                         Push(30, adivideexpression);
                     }
                     break;
-                case 128:
+                case 129:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TPercent tpercent = Pop<TPercent>();
@@ -1275,13 +1283,13 @@ namespace DLM.Compiler.Parsing
                         Push(30, amoduloexpression);
                     }
                     break;
-                case 129:
+                case 130:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(30, pexpression);
                     }
                     break;
-                case 130:
+                case 131:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         TPeriod tperiod = Pop<TPeriod>();
@@ -1296,7 +1304,7 @@ namespace DLM.Compiler.Parsing
                         Push(31, aelementexpression);
                     }
                     break;
-                case 131:
+                case 132:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         TRArrow trarrow = Pop<TRArrow>();
@@ -1311,7 +1319,7 @@ namespace DLM.Compiler.Parsing
                         Push(31, aelementexpression);
                     }
                     break;
-                case 132:
+                case 133:
                     {
                         TRSqu trsqu = Pop<TRSqu>();
                         PExpression pexpression = Pop<PExpression>();
@@ -1324,13 +1332,13 @@ namespace DLM.Compiler.Parsing
                         Push(31, aindexexpression);
                     }
                     break;
-                case 133:
+                case 134:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(31, pexpression);
                     }
                     break;
-                case 134:
+                case 135:
                     {
                         TRPar trpar = Pop<TRPar>();
                         PExpression pexpression = Pop<PExpression>();
@@ -1341,13 +1349,13 @@ namespace DLM.Compiler.Parsing
                         Push(32, aparenthesisexpression);
                     }
                     break;
-                case 135:
+                case 136:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         Push(32, pexpression);
                     }
                     break;
-                case 136:
+                case 137:
                     {
                         TNumber tnumber = Pop<TNumber>();
                         ANumberExpression anumberexpression = new ANumberExpression(
@@ -1356,7 +1364,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, anumberexpression);
                     }
                     break;
-                case 137:
+                case 138:
                     {
                         TBool tbool = Pop<TBool>();
                         ABooleanExpression abooleanexpression = new ABooleanExpression(
@@ -1365,7 +1373,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, abooleanexpression);
                     }
                     break;
-                case 138:
+                case 139:
                     {
                         TNull tnull = Pop<TNull>();
                         ANullExpression anullexpression = new ANullExpression(
@@ -1374,7 +1382,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, anullexpression);
                     }
                     break;
-                case 139:
+                case 140:
                     {
                         TChar tchar = Pop<TChar>();
                         ACharExpression acharexpression = new ACharExpression(
@@ -1383,7 +1391,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, acharexpression);
                     }
                     break;
-                case 140:
+                case 141:
                     {
                         TString tstring = Pop<TString>();
                         AStringExpression astringexpression = new AStringExpression(
@@ -1392,7 +1400,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, astringexpression);
                     }
                     break;
-                case 141:
+                case 142:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         AIdentifierExpression aidentifierexpression = new AIdentifierExpression(
@@ -1401,7 +1409,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, aidentifierexpression);
                     }
                     break;
-                case 142:
+                case 143:
                     {
                         TIdentifier tidentifier = Pop<TIdentifier>();
                         TTimeCheck ttimecheck = Pop<TTimeCheck>();
@@ -1412,7 +1420,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, atimecheckexpression);
                     }
                     break;
-                case 143:
+                case 144:
                     {
                         TDeclassifyEnd tdeclassifyend = Pop<TDeclassifyEnd>();
                         PExpression pexpression = Pop<PExpression>();
@@ -1424,7 +1432,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, adeclassifyexpression);
                     }
                     break;
-                case 144:
+                case 145:
                     {
                         TDeclassifyEnd tdeclassifyend = Pop<TDeclassifyEnd>();
                         PLabel plabel = Pop<PLabel>();
@@ -1438,7 +1446,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, adeclassifyexpression);
                     }
                     break;
-                case 145:
+                case 146:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAsterisk tasterisk = Pop<TAsterisk>();
@@ -1449,7 +1457,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, adereferenceexpression);
                     }
                     break;
-                case 146:
+                case 147:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         TAmpersand tampersand = Pop<TAmpersand>();
@@ -1460,7 +1468,7 @@ namespace DLM.Compiler.Parsing
                         Push(32, aaddressexpression);
                     }
                     break;
-                case 147:
+                case 148:
                     {
                         TSemicolon tsemicolon = Pop<TSemicolon>();
                         PExpression pexpression = Pop<PExpression>();
@@ -1470,7 +1478,6 @@ namespace DLM.Compiler.Parsing
                         Push(33, aexpressionstatement);
                     }
                     break;
-                case 148:
                 case 149:
                 case 150:
                 case 151:
@@ -1478,13 +1485,14 @@ namespace DLM.Compiler.Parsing
                 case 153:
                 case 154:
                 case 155:
+                case 156:
                     {
                         TRPar trpar = Pop<TRPar>();
-                        List<PExpression> pexpressionlist = isOn(4, index - 148) ? Pop<List<PExpression>>() : new List<PExpression>();
+                        List<PExpression> pexpressionlist = isOn(4, index - 149) ? Pop<List<PExpression>>() : new List<PExpression>();
                         TLPar tlpar = Pop<TLPar>();
-                        List<PPrincipal> pprincipallist = isOn(2, index - 148) ? Pop<List<PPrincipal>>() : new List<PPrincipal>();
+                        List<PPrincipal> pprincipallist = isOn(2, index - 149) ? Pop<List<PPrincipal>>() : new List<PPrincipal>();
                         TIdentifier tidentifier = Pop<TIdentifier>();
-                        TTimeCall ttimecall = isOn(1, index - 148) ? Pop<TTimeCall>() : null;
+                        TTimeCall ttimecall = isOn(1, index - 149) ? Pop<TTimeCall>() : null;
                         List<PPrincipal> pprincipallist2 = new List<PPrincipal>();
                         pprincipallist2.AddRange(pprincipallist);
                         List<PExpression> pexpressionlist2 = new List<PExpression>();
@@ -1498,7 +1506,7 @@ namespace DLM.Compiler.Parsing
                         Push(34, afunctioncallexpression);
                     }
                     break;
-                case 156:
+                case 157:
                     {
                         TFuncAuthEnd tfuncauthend = Pop<TFuncAuthEnd>();
                         List<PPrincipal> pprincipallist = Pop<List<PPrincipal>>();
@@ -1508,7 +1516,7 @@ namespace DLM.Compiler.Parsing
                         Push(35, pprincipallist2);
                     }
                     break;
-                case 157:
+                case 158:
                     {
                         PExpression pexpression = Pop<PExpression>();
                         List<PExpression> pexpressionlist = new List<PExpression>();
@@ -1516,7 +1524,7 @@ namespace DLM.Compiler.Parsing
                         Push(36, pexpressionlist);
                     }
                     break;
-                case 158:
+                case 159:
                     {
                         List<PExpression> pexpressionlist = Pop<List<PExpression>>();
                         TComma tcomma = Pop<TComma>();
@@ -1527,10 +1535,10 @@ namespace DLM.Compiler.Parsing
                         Push(36, pexpressionlist2);
                     }
                     break;
-                case 159:
+                case 160:
                     Push(37, new List<PPreProcessor>() { Pop<PPreProcessor>() });
                     break;
-                case 160:
+                case 161:
                     {
                         PPreProcessor item = Pop<PPreProcessor>();
                         List<PPreProcessor> list = Pop<List<PPreProcessor>>();
@@ -1538,10 +1546,10 @@ namespace DLM.Compiler.Parsing
                         Push(37, list);
                     }
                     break;
-                case 161:
+                case 162:
                     Push(38, new List<PPrincipalDeclaration>() { Pop<PPrincipalDeclaration>() });
                     break;
-                case 162:
+                case 163:
                     {
                         PPrincipalDeclaration item = Pop<PPrincipalDeclaration>();
                         List<PPrincipalDeclaration> list = Pop<List<PPrincipalDeclaration>>();
@@ -1549,10 +1557,10 @@ namespace DLM.Compiler.Parsing
                         Push(38, list);
                     }
                     break;
-                case 163:
+                case 164:
                     Push(39, new List<PPrincipalHierarchyDeclaration>() { Pop<PPrincipalHierarchyDeclaration>() });
                     break;
-                case 164:
+                case 165:
                     {
                         PPrincipalHierarchyDeclaration item = Pop<PPrincipalHierarchyDeclaration>();
                         List<PPrincipalHierarchyDeclaration> list = Pop<List<PPrincipalHierarchyDeclaration>>();
@@ -1560,10 +1568,10 @@ namespace DLM.Compiler.Parsing
                         Push(39, list);
                     }
                     break;
-                case 165:
+                case 166:
                     Push(40, new List<PStruct>() { Pop<PStruct>() });
                     break;
-                case 166:
+                case 167:
                     {
                         PStruct item = Pop<PStruct>();
                         List<PStruct> list = Pop<List<PStruct>>();
@@ -1571,10 +1579,10 @@ namespace DLM.Compiler.Parsing
                         Push(40, list);
                     }
                     break;
-                case 167:
+                case 168:
                     Push(41, new List<PStatement>() { Pop<PStatement>() });
                     break;
-                case 168:
+                case 169:
                     {
                         PStatement item = Pop<PStatement>();
                         List<PStatement> list = Pop<List<PStatement>>();
@@ -1582,10 +1590,10 @@ namespace DLM.Compiler.Parsing
                         Push(41, list);
                     }
                     break;
-                case 169:
+                case 170:
                     Push(42, new List<PField>() { Pop<PField>() });
                     break;
-                case 170:
+                case 171:
                     {
                         PField item = Pop<PField>();
                         List<PField> list = Pop<List<PField>>();
@@ -1593,10 +1601,10 @@ namespace DLM.Compiler.Parsing
                         Push(42, list);
                     }
                     break;
-                case 171:
+                case 172:
                     Push(43, new List<PStatement>() { Pop<PStatement>() });
                     break;
-                case 172:
+                case 173:
                     {
                         PStatement item = Pop<PStatement>();
                         List<PStatement> list = Pop<List<PStatement>>();
@@ -1604,10 +1612,10 @@ namespace DLM.Compiler.Parsing
                         Push(43, list);
                     }
                     break;
-                case 173:
+                case 174:
                     Push(44, new List<PTimingInterval>() { Pop<PTimingInterval>() });
                     break;
-                case 174:
+                case 175:
                     {
                         PTimingInterval item = Pop<PTimingInterval>();
                         List<PTimingInterval> list = Pop<List<PTimingInterval>>();
@@ -1639,7 +1647,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {7, 0, 23},
             },
             new int[][] {
-                new int[] {-1, 1, 111},
+                new int[] {-1, 1, 112},
                 new int[] {19, 1, 74},
                 new int[] {34, 1, 74},
                 new int[] {46, 0, 24},
@@ -1649,19 +1657,19 @@ namespace DLM.Compiler.Parsing
                 new int[] {58, 2, -1},
             },
             new int[][] {
-                new int[] {-1, 1, 159},
+                new int[] {-1, 1, 160},
             },
             new int[][] {
-                new int[] {-1, 1, 161},
+                new int[] {-1, 1, 162},
             },
             new int[][] {
-                new int[] {-1, 1, 163},
+                new int[] {-1, 1, 164},
             },
             new int[][] {
-                new int[] {-1, 1, 165},
+                new int[] {-1, 1, 166},
             },
             new int[][] {
-                new int[] {-1, 1, 167},
+                new int[] {-1, 1, 168},
             },
             new int[][] {
                 new int[] {-1, 3, 11},
@@ -1673,7 +1681,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {34, 0, 29},
             },
             new int[][] {
-                new int[] {-1, 1, 112},
+                new int[] {-1, 1, 113},
                 new int[] {20, 0, 30},
                 new int[] {43, 0, 31},
             },
@@ -1709,10 +1717,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 111},
+                new int[] {-1, 1, 112},
             },
             new int[][] {
-                new int[] {-1, 1, 112},
+                new int[] {-1, 1, 113},
                 new int[] {43, 0, 31},
             },
             new int[][] {
@@ -1763,7 +1771,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 54},
             },
             new int[][] {
-                new int[] {-1, 1, 160},
+                new int[] {-1, 1, 161},
             },
             new int[][] {
                 new int[] {-1, 1, 3},
@@ -1786,7 +1794,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 162},
+                new int[] {-1, 1, 163},
             },
             new int[][] {
                 new int[] {-1, 1, 6},
@@ -1803,7 +1811,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 164},
+                new int[] {-1, 1, 165},
             },
             new int[][] {
                 new int[] {-1, 1, 12},
@@ -1815,14 +1823,14 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 166},
+                new int[] {-1, 1, 167},
             },
             new int[][] {
                 new int[] {-1, 1, 24},
                 new int[] {19, 0, 4},
             },
             new int[][] {
-                new int[] {-1, 1, 168},
+                new int[] {-1, 1, 169},
             },
             new int[][] {
                 new int[] {-1, 1, 33},
@@ -1832,17 +1840,17 @@ namespace DLM.Compiler.Parsing
                 new int[] {55, 0, 73},
             },
             new int[][] {
-                new int[] {-1, 1, 103},
-                new int[] {26, 1, 111},
-            },
-            new int[][] {
-                new int[] {-1, 1, 106},
+                new int[] {-1, 1, 104},
+                new int[] {26, 1, 112},
             },
             new int[][] {
                 new int[] {-1, 1, 107},
             },
             new int[][] {
                 new int[] {-1, 1, 108},
+            },
+            new int[][] {
+                new int[] {-1, 1, 109},
                 new int[] {45, 0, 74},
                 new int[] {57, 0, 75},
             },
@@ -1893,7 +1901,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {45, 0, 106},
             },
             new int[][] {
-                new int[] {-1, 1, 113},
+                new int[] {-1, 1, 114},
             },
             new int[][] {
                 new int[] {-1, 1, 7},
@@ -1966,7 +1974,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 85},
             },
             new int[][] {
-                new int[] {-1, 1, 105},
+                new int[] {-1, 1, 106},
                 new int[] {19, 0, 20},
             },
             new int[][] {
@@ -1975,13 +1983,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {52, 0, 127},
             },
             new int[][] {
-                new int[] {-1, 1, 137},
-            },
-            new int[][] {
-                new int[] {-1, 1, 136},
-            },
-            new int[][] {
                 new int[] {-1, 1, 138},
+            },
+            new int[][] {
+                new int[] {-1, 1, 137},
             },
             new int[][] {
                 new int[] {-1, 1, 139},
@@ -1991,6 +1996,9 @@ namespace DLM.Compiler.Parsing
             },
             new int[][] {
                 new int[] {-1, 1, 141},
+            },
+            new int[][] {
+                new int[] {-1, 1, 142},
                 new int[] {24, 0, 129},
                 new int[] {51, 0, 130},
             },
@@ -2102,25 +2110,25 @@ namespace DLM.Compiler.Parsing
                 new int[] {45, 0, 140},
             },
             new int[][] {
-                new int[] {-1, 1, 115},
+                new int[] {-1, 1, 116},
                 new int[] {41, 0, 141},
             },
             new int[][] {
-                new int[] {-1, 1, 118},
+                new int[] {-1, 1, 119},
                 new int[] {39, 0, 142},
                 new int[] {40, 0, 143},
             },
             new int[][] {
-                new int[] {-1, 1, 121},
+                new int[] {-1, 1, 122},
                 new int[] {28, 0, 144},
             },
             new int[][] {
-                new int[] {-1, 1, 125},
+                new int[] {-1, 1, 126},
                 new int[] {32, 0, 145},
                 new int[] {33, 0, 146},
             },
             new int[][] {
-                new int[] {-1, 1, 129},
+                new int[] {-1, 1, 130},
                 new int[] {26, 0, 147},
                 new int[] {34, 0, 148},
                 new int[] {35, 0, 149},
@@ -2129,10 +2137,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {53, 0, 152},
             },
             new int[][] {
-                new int[] {-1, 1, 133},
+                new int[] {-1, 1, 134},
             },
             new int[][] {
-                new int[] {-1, 1, 135},
+                new int[] {-1, 1, 136},
             },
             new int[][] {
                 new int[] {-1, 3, 102},
@@ -2181,7 +2189,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 159},
             },
             new int[][] {
-                new int[] {-1, 1, 169},
+                new int[] {-1, 1, 170},
             },
             new int[][] {
                 new int[] {-1, 3, 114},
@@ -2194,10 +2202,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {56, 0, 161},
             },
             new int[][] {
-                new int[] {-1, 1, 109},
+                new int[] {-1, 1, 110},
             },
             new int[][] {
-                new int[] {-1, 1, 110},
+                new int[] {-1, 1, 111},
             },
             new int[][] {
                 new int[] {-1, 3, 118},
@@ -2212,16 +2220,16 @@ namespace DLM.Compiler.Parsing
                 new int[] {48, 0, 165},
             },
             new int[][] {
-                new int[] {-1, 3, 121},
+                new int[] {-1, 1, 87},
                 new int[] {45, 0, 166},
             },
             new int[][] {
-                new int[] {-1, 1, 88},
+                new int[] {-1, 1, 89},
                 new int[] {4, 0, 119},
                 new int[] {34, 0, 167},
             },
             new int[][] {
-                new int[] {-1, 1, 173},
+                new int[] {-1, 1, 174},
             },
             new int[][] {
                 new int[] {-1, 3, 124},
@@ -2229,12 +2237,12 @@ namespace DLM.Compiler.Parsing
                 new int[] {4, 0, 119},
             },
             new int[][] {
-                new int[] {-1, 1, 92},
+                new int[] {-1, 1, 93},
                 new int[] {4, 0, 119},
                 new int[] {34, 0, 167},
             },
             new int[][] {
-                new int[] {-1, 1, 104},
+                new int[] {-1, 1, 105},
             },
             new int[][] {
                 new int[] {-1, 3, 127},
@@ -2277,16 +2285,16 @@ namespace DLM.Compiler.Parsing
                 new int[] {43, 0, 183},
             },
             new int[][] {
-                new int[] {-1, 1, 124},
-            },
-            new int[][] {
-                new int[] {-1, 1, 145},
+                new int[] {-1, 1, 125},
             },
             new int[][] {
                 new int[] {-1, 1, 146},
             },
             new int[][] {
-                new int[] {-1, 1, 120},
+                new int[] {-1, 1, 147},
+            },
+            new int[][] {
+                new int[] {-1, 1, 121},
             },
             new int[][] {
                 new int[] {-1, 3, 137},
@@ -2294,7 +2302,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {51, 0, 184},
             },
             new int[][] {
-                new int[] {-1, 1, 142},
+                new int[] {-1, 1, 143},
             },
             new int[][] {
                 new int[] {-1, 3, 139},
@@ -2518,14 +2526,14 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 220},
             },
             new int[][] {
-                new int[] {-1, 1, 170},
+                new int[] {-1, 1, 171},
             },
             new int[][] {
                 new int[] {-1, 3, 163},
                 new int[] {1, 0, 221},
             },
             new int[][] {
-                new int[] {-1, 1, 101},
+                new int[] {-1, 1, 102},
             },
             new int[][] {
                 new int[] {-1, 1, 86},
@@ -2541,28 +2549,28 @@ namespace DLM.Compiler.Parsing
                 new int[] {4, 0, 223},
             },
             new int[][] {
+                new int[] {-1, 1, 91},
+            },
+            new int[][] {
+                new int[] {-1, 1, 97},
+                new int[] {4, 0, 119},
+                new int[] {34, 0, 167},
+            },
+            new int[][] {
                 new int[] {-1, 1, 90},
-            },
-            new int[][] {
-                new int[] {-1, 1, 96},
                 new int[] {4, 0, 119},
                 new int[] {34, 0, 167},
-            },
-            new int[][] {
-                new int[] {-1, 1, 89},
-                new int[] {4, 0, 119},
-                new int[] {34, 0, 167},
-            },
-            new int[][] {
-                new int[] {-1, 1, 93},
-                new int[] {4, 0, 119},
-                new int[] {34, 0, 167},
-            },
-            new int[][] {
-                new int[] {-1, 1, 174},
             },
             new int[][] {
                 new int[] {-1, 1, 94},
+                new int[] {4, 0, 119},
+                new int[] {34, 0, 167},
+            },
+            new int[][] {
+                new int[] {-1, 1, 175},
+            },
+            new int[][] {
+                new int[] {-1, 1, 95},
             },
             new int[][] {
                 new int[] {-1, 1, 51},
@@ -2588,10 +2596,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {25, 0, 232},
             },
             new int[][] {
-                new int[] {-1, 1, 148},
+                new int[] {-1, 1, 149},
             },
             new int[][] {
-                new int[] {-1, 1, 157},
+                new int[] {-1, 1, 158},
                 new int[] {43, 0, 233},
             },
             new int[][] {
@@ -2617,7 +2625,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {52, 0, 235},
             },
             new int[][] {
-                new int[] {-1, 1, 143},
+                new int[] {-1, 1, 144},
             },
             new int[][] {
                 new int[] {-1, 3, 183},
@@ -2646,32 +2654,29 @@ namespace DLM.Compiler.Parsing
                 new int[] {51, 0, 240},
             },
             new int[][] {
-                new int[] {-1, 1, 134},
+                new int[] {-1, 1, 135},
             },
             new int[][] {
                 new int[] {-1, 3, 187},
                 new int[] {44, 0, 241},
             },
             new int[][] {
-                new int[] {-1, 1, 116},
-            },
-            new int[][] {
                 new int[] {-1, 1, 117},
             },
             new int[][] {
-                new int[] {-1, 1, 119},
+                new int[] {-1, 1, 118},
             },
             new int[][] {
-                new int[] {-1, 1, 122},
+                new int[] {-1, 1, 120},
             },
             new int[][] {
                 new int[] {-1, 1, 123},
             },
             new int[][] {
-                new int[] {-1, 1, 131},
+                new int[] {-1, 1, 124},
             },
             new int[][] {
-                new int[] {-1, 1, 126},
+                new int[] {-1, 1, 132},
             },
             new int[][] {
                 new int[] {-1, 1, 127},
@@ -2680,7 +2685,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 128},
             },
             new int[][] {
-                new int[] {-1, 1, 130},
+                new int[] {-1, 1, 129},
+            },
+            new int[][] {
+                new int[] {-1, 1, 131},
             },
             new int[][] {
                 new int[] {-1, 3, 198},
@@ -2729,7 +2737,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 42},
             },
             new int[][] {
-                new int[] {-1, 1, 171},
+                new int[] {-1, 1, 172},
             },
             new int[][] {
                 new int[] {-1, 1, 62},
@@ -2797,27 +2805,27 @@ namespace DLM.Compiler.Parsing
                 new int[] {45, 0, 257},
             },
             new int[][] {
-                new int[] {-1, 1, 100},
+                new int[] {-1, 1, 101},
             },
             new int[][] {
-                new int[] {-1, 1, 87},
+                new int[] {-1, 1, 88},
             },
             new int[][] {
-                new int[] {-1, 1, 102},
+                new int[] {-1, 1, 103},
+            },
+            new int[][] {
+                new int[] {-1, 1, 99},
+            },
+            new int[][] {
+                new int[] {-1, 1, 92},
             },
             new int[][] {
                 new int[] {-1, 1, 98},
-            },
-            new int[][] {
-                new int[] {-1, 1, 91},
-            },
-            new int[][] {
-                new int[] {-1, 1, 97},
                 new int[] {4, 0, 119},
                 new int[] {34, 0, 167},
             },
             new int[][] {
-                new int[] {-1, 1, 95},
+                new int[] {-1, 1, 96},
             },
             new int[][] {
                 new int[] {-1, 1, 43},
@@ -2848,7 +2856,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {56, 0, 260},
             },
             new int[][] {
-                new int[] {-1, 1, 156},
+                new int[] {-1, 1, 157},
             },
             new int[][] {
                 new int[] {-1, 3, 233},
@@ -2868,10 +2876,10 @@ namespace DLM.Compiler.Parsing
                 new int[] {51, 0, 93},
             },
             new int[][] {
-                new int[] {-1, 1, 152},
+                new int[] {-1, 1, 153},
             },
             new int[][] {
-                new int[] {-1, 1, 150},
+                new int[] {-1, 1, 151},
             },
             new int[][] {
                 new int[] {-1, 3, 236},
@@ -2882,7 +2890,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {23, 0, 264},
             },
             new int[][] {
-                new int[] {-1, 1, 149},
+                new int[] {-1, 1, 150},
             },
             new int[][] {
                 new int[] {-1, 3, 239},
@@ -2924,7 +2932,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {51, 0, 93},
             },
             new int[][] {
-                new int[] {-1, 1, 132},
+                new int[] {-1, 1, 133},
             },
             new int[][] {
                 new int[] {-1, 3, 243},
@@ -2995,13 +3003,13 @@ namespace DLM.Compiler.Parsing
                 new int[] {19, 0, 20},
             },
             new int[][] {
-                new int[] {-1, 1, 147},
+                new int[] {-1, 1, 148},
             },
             new int[][] {
                 new int[] {-1, 1, 46},
             },
             new int[][] {
-                new int[] {-1, 1, 172},
+                new int[] {-1, 1, 173},
             },
             new int[][] {
                 new int[] {-1, 1, 44},
@@ -3028,7 +3036,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 36},
             },
             new int[][] {
-                new int[] {-1, 1, 99},
+                new int[] {-1, 1, 100},
             },
             new int[][] {
                 new int[] {-1, 1, 47},
@@ -3048,26 +3056,26 @@ namespace DLM.Compiler.Parsing
                 new int[] {56, 0, 279},
             },
             new int[][] {
-                new int[] {-1, 1, 158},
+                new int[] {-1, 1, 159},
+            },
+            new int[][] {
+                new int[] {-1, 1, 155},
+            },
+            new int[][] {
+                new int[] {-1, 1, 145},
             },
             new int[][] {
                 new int[] {-1, 1, 154},
             },
             new int[][] {
-                new int[] {-1, 1, 144},
-            },
-            new int[][] {
-                new int[] {-1, 1, 153},
-            },
-            new int[][] {
-                new int[] {-1, 1, 151},
+                new int[] {-1, 1, 152},
             },
             new int[][] {
                 new int[] {-1, 3, 267},
                 new int[] {52, 0, 280},
             },
             new int[][] {
-                new int[] {-1, 1, 114},
+                new int[] {-1, 1, 115},
             },
             new int[][] {
                 new int[] {-1, 3, 269},
@@ -3130,7 +3138,7 @@ namespace DLM.Compiler.Parsing
                 new int[] {-1, 1, 49},
             },
             new int[][] {
-                new int[] {-1, 1, 155},
+                new int[] {-1, 1, 156},
             },
             new int[][] {
                 new int[] {-1, 3, 281},
@@ -4022,7 +4030,8 @@ namespace DLM.Compiler.Parsing
             "Expecting: '-'",
             "Expecting: TIntervalUnit",
             "Expecting: '}}'",
-            "Expecting: TNumber, '*' or ';'",
+            "Expecting: ';' or '}}'",
+            "Expecting: TNumber, '*', ';' or '}}'",
             "Expecting: TTime or TNumber",
             "Expecting: TBool, TNumber, 'NULL', TChar, TString, TIdentifier, '<|', '-', '*', '&', '!', '@', '@?', '(' or ')'",
             "Expecting: '|>' or ','",
@@ -4054,21 +4063,21 @@ namespace DLM.Compiler.Parsing
             6, 7, 6, 7, 7, 6, 7, 7, 7, 27, 14, 14, 28, 29, 30, 24,
             31, 31, 31, 31, 31, 32, 23, 33, 33, 33, 34, 1, 1, 23, 13, 35,
             36, 37, 38, 31, 31, 31, 39, 40, 8, 41, 6, 6, 7, 7, 7, 7,
-            1, 27, 8, 27, 20, 20, 42, 43, 44, 13, 45, 45, 46, 45, 19, 39,
-            40, 1, 47, 22, 48, 37, 31, 31, 36, 49, 31, 40, 7, 23, 23, 23,
-            23, 34, 34, 1, 33, 33, 33, 1, 23, 7, 50, 39, 51, 13, 7, 13,
-            52, 1, 27, 53, 45, 29, 28, 25, 13, 45, 45, 45, 45, 13, 7, 50,
-            39, 54, 31, 51, 40, 47, 31, 55, 47, 22, 31, 56, 35, 35, 36, 37,
-            37, 31, 38, 38, 38, 31, 41, 22, 22, 57, 58, 58, 59, 7, 50, 50,
-            8, 58, 60, 13, 50, 7, 50, 1, 7, 6, 27, 25, 13, 45, 44, 13,
-            13, 13, 45, 13, 7, 50, 7, 50, 22, 23, 31, 31, 40, 61, 31, 40,
-            47, 23, 31, 23, 23, 60, 13, 23, 62, 1, 60, 7, 50, 7, 50, 40,
-            41, 6, 13, 7, 7, 50, 40, 31, 31, 31, 31, 40, 63, 40, 40, 60,
-            13, 23, 60, 25, 64, 7, 13, 7, 31, 64, 64, 60, 13, 41, 22, 22,
-            50, 50, 60, 60, 50, 65, 58, 27, 50, 50, 50, 65, 60, 60, 23, 23,
-            60, 50, 64, 1, 50, 50, 64, 40, 40, 60, 22, 22, 50, 60, 50, 58,
-            64, 50, 50, 64, 64, 23, 23, 60, 50, 1, 65, 60, 65, 40, 40, 60,
-            64, 64, 64, 64, 64, 65, 60, 60, 65, 64, 64, 60, 60,
+            1, 27, 8, 27, 20, 20, 42, 43, 44, 45, 46, 46, 47, 46, 19, 39,
+            40, 1, 48, 22, 49, 37, 31, 31, 36, 50, 31, 40, 7, 23, 23, 23,
+            23, 34, 34, 1, 33, 33, 33, 1, 23, 7, 51, 39, 52, 13, 7, 13,
+            53, 1, 27, 54, 46, 29, 28, 25, 45, 46, 46, 46, 46, 45, 7, 51,
+            39, 55, 31, 52, 40, 48, 31, 56, 48, 22, 31, 57, 35, 35, 36, 37,
+            37, 31, 38, 38, 38, 31, 41, 22, 22, 58, 59, 59, 60, 7, 51, 51,
+            8, 59, 61, 13, 51, 7, 51, 1, 7, 6, 27, 25, 13, 46, 44, 45,
+            45, 45, 46, 45, 7, 51, 7, 51, 22, 23, 31, 31, 40, 62, 31, 40,
+            48, 23, 31, 23, 23, 61, 13, 23, 63, 1, 61, 7, 51, 7, 51, 40,
+            41, 6, 45, 7, 7, 51, 40, 31, 31, 31, 31, 40, 64, 40, 40, 61,
+            13, 23, 61, 25, 65, 7, 13, 7, 31, 65, 65, 61, 13, 41, 22, 22,
+            51, 51, 61, 61, 51, 66, 59, 27, 51, 51, 51, 66, 61, 61, 23, 23,
+            61, 51, 65, 1, 51, 51, 65, 40, 40, 61, 22, 22, 51, 61, 51, 59,
+            65, 51, 51, 65, 65, 23, 23, 61, 51, 1, 66, 61, 66, 40, 40, 61,
+            65, 65, 65, 65, 65, 66, 61, 61, 66, 65, 65, 61, 61,
         };
         #endregion
     }

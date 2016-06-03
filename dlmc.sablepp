@@ -233,7 +233,10 @@ Productions
         | {time} label_start lpolicy time_start time_list label_end -> New label([lpolicy], [time_list])
         ;
     
-    time_list -> time_policy+ = time_policy semicolon time_list -> [time_policy, time_list];
+    time_list -> time_policy+
+        = {one} time_policy -> [time_policy]
+        | time_policy semicolon time_list -> [time_policy, time_list]
+        ;
     time_policy
         = {p} principal? [p]:timing_period [c]:timing_count? -> New time_policy(principal, p, [], c)
         | {ic} principal? [i]:timing_interval+ [c]:timing_count?-> New time_policy(principal, Null, i, c)
