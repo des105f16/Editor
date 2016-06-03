@@ -250,16 +250,10 @@ namespace DLM.Compiler
                         foreach (var arg in node.Arguments)
                         {
                             var argLabel = arg.LabelValue;
-                            if (!containsConstant(argLabel))
-                            {
-                                var readers = funcDecl.Readers.Select(p => p.DeclaredPrincipal);
-                                var outputPolicies = owner.principals.Select(p => new Policy(p.Value, readers));
-                                owner.Add(argLabel, new PolicyLabel(outputPolicies), arg, arg, NodeConstraint.OriginTypes.Argument);
-                            }
-                            else
-                            {
-                                errorManager.Register(arg, ErrorType.Message, "Currently not handling constant-labeled values.");
-                            }
+
+                            var readers = funcDecl.Readers.Select(p => p.DeclaredPrincipal);
+                            var outputPolicies = owner.principals.Select(p => new Policy(p.Value, readers));
+                            owner.Add(argLabel, new PolicyLabel(outputPolicies), arg, arg, NodeConstraint.OriginTypes.Argument);
                         }
                     }
                 }
