@@ -321,12 +321,7 @@ namespace DLM.Compiler
                     var argLabel = Visit(arguments[i]);
                     var paramLabel = functionDeclaration.Parameters[i].Type.DeclaredLabel;
 
-                    if (paramLabel is PolicyLabel && argLabel is PolicyLabel)
-                    {
-                        if (!(argLabel <= paramLabel))
-                            errorManager.Register(arguments[i], $"Parameter label is less restrictive than argument label: {argLabel} \u228f {paramLabel}");
-                    }
-                    else if (!(paramLabel is ConstantLabel))
+                    if (!(paramLabel is ConstantLabel))
                     {
                         owner.Add(argLabel, paramLabel, arguments[i], arguments[i], NodeConstraint.OriginTypes.Argument);
                     }
