@@ -28,15 +28,13 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             Visit(node.Type);
+            Visit(node.Parameters);
 
-            if (errorManager.Errors.Count == 0)
-            {
-                safe.OpenScope();
-                foreach (var n in timedFunctions)
-                    safe.Add(n, false);
-                Visit(node.Statements);
-                safe.CloseScope();
-            }
+            safe.OpenScope();
+            foreach (var n in timedFunctions)
+                safe.Add(n, false);
+            Visit(node.Statements);
+            safe.CloseScope();
         }
 
         protected override void HandlePLabel(PLabel node)
@@ -50,7 +48,7 @@ namespace DLM.Compiler
                 var param = node.GetFirstParent<PFunctionParameter>();
                 var stmt = node.GetFirstParent<PStatement>();
 
-                bool isFunction = param != null && stmt != null && stmt is AFunctionDeclarationStatement;
+                bool isFunction = param == null && stmt != null && stmt is AFunctionDeclarationStatement;
 
                 if (isFunction)
                     timedFunctions.Add((stmt as AFunctionDeclarationStatement).Identifier.Text);
@@ -92,6 +90,19 @@ namespace DLM.Compiler
             }
         }
 
+        protected override void HandleANotExpression(ANotExpression node)
+        {
+            safe.OpenScope();
+            Visit(node.Expression);
+            var tempSafe = safe
+                .Where(x => safe.Keys.Contains(x.Key, true))
+                .ToList();
+            safe.CloseScope();
+
+            foreach (var kvp in tempSafe)
+                safe.Add(kvp.Key, !kvp.Value);
+        }
+
         protected override void HandleAAndExpression(AAndExpression node)
         {
             Visit(node.Left);
@@ -101,17 +112,33 @@ namespace DLM.Compiler
         {
             safe.OpenScope();
             Visit(node.Left);
-            var k1 = safe.Keys.ToArray().Where(x => safe.Keys.Contains(x, true) && safe[x]).ToArray();
             safe.CloseScope();
 
             safe.OpenScope();
             Visit(node.Right);
-            var k2 = safe.Keys.ToArray().Where(x => safe.Keys.Contains(x, true) && safe[x]).ToArray();
             safe.CloseScope();
+        }
 
-            var keys = k1.Intersect(k2).ToArray();
-            foreach (var k in keys)
-                safe[k] = true;
+        protected override void HandleATernaryExpression(ATernaryExpression node)
+        {
+            safe.OpenScope();
+
+            Visit(node.Condition);
+            var tempSafe = safe
+                .Where(x => safe.Keys.Contains(x.Key, true))
+                .ToList();
+
+            Visit(node.True);
+
+            safe.CloseScope();
+            safe.OpenScope();
+
+            foreach (var kvp in tempSafe)
+                safe.Add(kvp.Key, !kvp.Value);
+
+            Visit(node.False);
+
+            safe.CloseScope();
         }
 
         protected override void HandleAIfStatement(AIfStatement node)
@@ -119,6 +146,36 @@ namespace DLM.Compiler
             safe.OpenScope();
             Visit(node.Expression);
             Visit(node.Statements);
+            safe.CloseScope();
+        }
+        protected override void HandleAIfElseStatement(AIfElseStatement node)
+        {
+            safe.OpenScope();
+
+            Visit(node.Expression);
+            var tempSafe = safe
+                .Where(x => safe.Keys.Contains(x.Key, true))
+                .ToList();
+
+            Visit(node.IfStatements);
+
+            safe.CloseScope();
+            safe.OpenScope();
+
+            foreach (var kvp in tempSafe)
+                safe.Add(kvp.Key, !kvp.Value);
+
+            Visit(node.ElseStatements);
+
+            safe.CloseScope();
+        }
+        protected override void HandleAWhileStatement(AWhileStatement node)
+        {
+            safe.OpenScope();
+
+            Visit(node.Expression);
+            Visit(node.Statements);
+
             safe.CloseScope();
         }
     }
