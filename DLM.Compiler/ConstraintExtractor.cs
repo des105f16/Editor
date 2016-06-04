@@ -203,28 +203,22 @@ namespace DLM.Compiler
             protected override Label HandleAComparisonExpression(AComparisonExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleADeclassifyExpression(ADeclassifyExpression node)
             {
+                Label expr, declass;
+
                 if (node.HasLabel)
                 {
-                    var L1 = Visit(node.Expression);
-                    var L2 = node.Label.LabelValue;
-
-                    if (L1 <= L2 + authority)
-                        return decorate(node, L2);
-                    else
-                    {
-                        errorManager.Register(node, $"Unable to declassify, as {L1} \u2290 {L2} \u2294 {authority.Label}.");
-                        return decorate(node, Label.LowerBound);
-                    }
+                    expr = Visit(node.Expression);
+                    declass = node.Label.LabelValue;
                 }
                 else
                 {
-                    var Ld = owner.getVariableLabel("dec");
-                    var Lvar = Visit(node.Expression);
-
-                    owner.Add(Lvar, Ld + authority, node.Expression, node, NodeConstraint.OriginTypes.Declassify);
-
-                    return decorate(node, Ld);
+                    declass = owner.getVariableLabel("dec");
+                    expr = Visit(node.Expression);
                 }
+
+                owner.Add(expr, declass + authority, node.Expression, node, NodeConstraint.OriginTypes.Declassify);
+
+                return decorate(node, declass);
             }
             protected override Label HandleADereferenceExpression(ADereferenceExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleADivideExpression(ADivideExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
@@ -256,16 +250,10 @@ namespace DLM.Compiler
                         foreach (var arg in node.Arguments)
                         {
                             var argLabel = arg.LabelValue;
-                            if (!containsConstant(argLabel))
-                            {
-                                var readers = funcDecl.Readers.Select(p => p.DeclaredPrincipal);
-                                var outputPolicies = owner.principals.Select(p => new Policy(p.Value, readers));
-                                owner.Add(argLabel, new PolicyLabel(outputPolicies), arg, arg, NodeConstraint.OriginTypes.Argument);
-                            }
-                            else
-                            {
-                                errorManager.Register(arg, ErrorType.Message, "Currently not handling constant-labeled values.");
-                            }
+
+                            var readers = funcDecl.Readers.Select(p => p.DeclaredPrincipal);
+                            var outputPolicies = owner.principals.Select(p => new Policy(p.Value, readers));
+                            owner.Add(argLabel, new PolicyLabel(outputPolicies), arg, arg, NodeConstraint.OriginTypes.Argument);
                         }
                     }
                 }
@@ -333,12 +321,7 @@ namespace DLM.Compiler
                     var argLabel = Visit(arguments[i]);
                     var paramLabel = functionDeclaration.Parameters[i].Type.DeclaredLabel;
 
-                    if (paramLabel is PolicyLabel && argLabel is PolicyLabel)
-                    {
-                        if (!(argLabel <= paramLabel))
-                            errorManager.Register(arguments[i], $"Parameter label is less restrictive than argument label: {argLabel} \u228f {paramLabel}");
-                    }
-                    else if (!(paramLabel is ConstantLabel))
+                    if (!(paramLabel is ConstantLabel))
                     {
                         owner.Add(argLabel, paramLabel, arguments[i], arguments[i], NodeConstraint.OriginTypes.Argument);
                     }
