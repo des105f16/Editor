@@ -222,7 +222,7 @@ namespace DLM.Compiler
             }
             protected override Label HandleADereferenceExpression(ADereferenceExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleADivideExpression(ADivideExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
-            protected override Label HandleAElementExpression(AElementExpression node) => decorate(node, Visit(node.Expression) + node.FieldTypeDecl.Type.DeclaredLabel);
+            protected override Label HandleAElementExpression(AElementExpression node) => decorate(node, Visit(node.Expression));
             protected override Label HandleAFunctionCallExpression(AFunctionCallExpression node)
             {
                 var fcName = node.Function.Text;

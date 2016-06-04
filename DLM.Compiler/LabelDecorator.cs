@@ -14,17 +14,11 @@ namespace DLM.Compiler
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
-        private Dictionary<string, PStruct> structTypedefs;
-        private ScopedDictionary<string, PStruct> structDeclarations;
-
         public LabelDecorator(ErrorManager errorManager, Dictionary<string, Principal> principals)
         {
             this.errorManager = errorManager;
             this.principals = principals;
             this.namedLabels = new ScopedDictionary<string, Label>();
-
-            this.structTypedefs = new Dictionary<string, PStruct>();
-            this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
         protected override void HandlePRoot(PRoot node)
@@ -37,13 +31,11 @@ namespace DLM.Compiler
         {
             foreach (var field in node.Fields)
             {
-                Visit(field.Type);
+                var type = getType(field.Type);
 
-                if (field.Type.DeclaredLabel == null)
-                    field.Type.DeclaredLabel = Label.LowerBound;
+                if (type.HasLabel)
+                    errorManager.Register(type, ErrorType.Error, "A struct field cannot specify a label.");
             }
-
-            structTypedefs.Add(node.Name.Text, node);
         }
 
         private AType getType(PType type)
@@ -56,7 +48,6 @@ namespace DLM.Compiler
         protected override void HandleAFunctionDeclarationStatement(AFunctionDeclarationStatement node)
         {
             namedLabels.OpenScope();
-            structDeclarations.OpenScope();
 
             foreach (var r in node.Readers)
                 Visit(r);
@@ -82,7 +73,6 @@ namespace DLM.Compiler
             Visit(node.Statements);
 
             namedLabels.CloseScope();
-            structDeclarations.CloseScope();
         }
         protected override void HandleAFunctionParameter(AFunctionParameter node)
         {
@@ -92,10 +82,6 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new ConstantLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
-
-            var type = getType(node.Type);
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
@@ -108,10 +94,6 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
-
-            var type = getType(node.Type);
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
         }
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
@@ -121,23 +103,6 @@ namespace DLM.Compiler
                 node.Type.DeclaredLabel = new VariableLabel(node.Identifier.Text);
 
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
-
-            var type = getType(node.Type);
-            if (structTypedefs.ContainsKey(type.Name.Text))
-                structDeclarations.Add(node.Identifier.Text, structTypedefs[type.Name.Text]);
-        }
-
-        protected override void HandleAElementExpression(AElementExpression node)
-        {
-            var expr = (node.Expression as AIndexExpression)?.Expression ?? node.Expression;
-
-            if (expr is AIdentifierExpression)
-            {
-                var identExpr = expr as AIdentifierExpression;
-                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
-            }
-            else
-                errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
         }
 
         protected override void HandleAType(AType node)
