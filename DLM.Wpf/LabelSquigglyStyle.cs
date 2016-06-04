@@ -110,6 +110,7 @@ namespace DLM.Wpf
             }
             public void Draw(PolicyLabel label)
             {
+                DrawString("{ ");
                 for (int i = 0; i < label.Count; i++)
                 {
                     var p = label[i];
@@ -127,6 +128,7 @@ namespace DLM.Wpf
                     if (i < label.Count - 1)
                         DrawString("; ");
                 }
+                DrawString(" }");
             }
 
             public void Draw(UpperBoundLabel label)
