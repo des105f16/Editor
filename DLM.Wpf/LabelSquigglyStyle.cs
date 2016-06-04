@@ -104,12 +104,42 @@ namespace DLM.Wpf
 
                 Draw((dynamic)label.Label2);
             }
+            public void Draw(MeetLabel label)
+            {
+                Draw((dynamic)label.Label1);
+
+                position.X += 6;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                using (var pen = new Pen(defaultBrush))
+                {
+                    g.DrawLines(pen, new PointF[]
+                    {
+                        new PointF(position.X, position.Y + charSize.Height - 2),
+                        new PointF(position.X, position.Y + 2),
+                        new PointF(position.X + charSize.Width, position.Y + 2 ),
+                        new PointF(position.X + charSize.Width, position.Y + charSize.Height - 2)
+                    });
+                    g.DrawLines(pen, new PointF[]
+                    {
+                        new PointF(position.X + 1, position.Y + charSize.Height - 3),
+                        new PointF(position.X + 1, position.Y + 2),
+                        new PointF(position.X + charSize.Width - 1, position.Y + 2),
+                        new PointF(position.X + charSize.Width - 1, position.Y + charSize.Height - 3)
+                    });
+                }
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                position.X += 14;
+
+                Draw((dynamic)label.Label2);
+            }
+
             public void Draw(ConstantLabel label)
             {
                 DrawString(label.Name, font: underlined);
             }
             public void Draw(PolicyLabel label)
             {
+                DrawString("{ ");
                 for (int i = 0; i < label.Count; i++)
                 {
                     var p = label[i];
@@ -123,7 +153,11 @@ namespace DLM.Wpf
                     }
                     else
                         DrawString("Ø");
+
+                    if (i < label.Count - 1)
+                        DrawString("; ");
                 }
+                DrawString(" }");
             }
 
             public void Draw(UpperBoundLabel label)
