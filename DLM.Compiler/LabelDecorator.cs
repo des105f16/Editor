@@ -14,7 +14,6 @@ namespace DLM.Compiler
         private Dictionary<string, Principal> principals;
         private ScopedDictionary<string, Label> namedLabels;
 
-        private Dictionary<string, PStruct> structTypedefs;
         private ScopedDictionary<string, PStruct> structDeclarations;
 
         public LabelDecorator(ErrorManager errorManager, Dictionary<string, Principal> principals)
@@ -23,7 +22,6 @@ namespace DLM.Compiler
             this.principals = principals;
             this.namedLabels = new ScopedDictionary<string, Label>();
 
-            this.structTypedefs = new Dictionary<string, PStruct>();
             this.structDeclarations = new ScopedDictionary<string, PStruct>();
         }
 
@@ -37,13 +35,11 @@ namespace DLM.Compiler
         {
             foreach (var field in node.Fields)
             {
-                Visit(field.Type);
+                var type = getType(field.Type);
 
-                if (field.Type.DeclaredLabel == null)
-                    field.Type.DeclaredLabel = Label.LowerBound;
+                if (type.HasLabel)
+                    errorManager.Register(type, ErrorType.Error, "A struct field cannot specify a label.");
             }
-
-            structTypedefs.Add(node.Name.Text, node);
         }
 
         private AType getType(PType type)
