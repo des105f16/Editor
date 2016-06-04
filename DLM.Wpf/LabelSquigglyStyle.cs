@@ -123,6 +123,9 @@ namespace DLM.Wpf
                     }
                     else
                         DrawString("Ø");
+
+                    if (i < label.Count - 1)
+                        DrawString("; ");
                 }
             }
 
