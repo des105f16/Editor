@@ -105,19 +105,6 @@ namespace DLM.Compiler
             namedLabels.Add(node.Identifier.Text, node.Type.DeclaredLabel);
         }
 
-        protected override void HandleAElementExpression(AElementExpression node)
-        {
-            var expr = (node.Expression as AIndexExpression)?.Expression ?? node.Expression;
-
-            if (expr is AIdentifierExpression)
-            {
-                var identExpr = expr as AIdentifierExpression;
-                node.FieldTypeDecl = structDeclarations[identExpr.Identifier.Text].Fields.First(x => x.Identifier.Text == node.Element.Identifier.Text);
-            }
-            else
-                errorManager.Register(node.Expression, "Struct field access must be of form id.id or id[exp].id.");
-        }
-
         protected override void HandleAType(AType node)
         {
             if (node.HasLabel)
