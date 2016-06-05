@@ -19,9 +19,13 @@ namespace DLM.Compiler
         private InferenceResult<NodeConstraint> result;
         public InferenceResult<NodeConstraint> Result => result;
 
+        private IHighlighter typeHightlighter;
+
         public override void Validate(Start<PRoot> root, CompilationOptions compilationOptions)
         {
-            compilationOptions.Highlight(new TypeHighlighter(this));
+            if (typeHightlighter == null)
+                typeHightlighter = new TypeHighlighter(this);
+            compilationOptions.Highlight(typeHightlighter);
 
             Validator v = new Validator(root, compilationOptions);
 
