@@ -15,7 +15,7 @@ namespace DLM.Wpf
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private CodeTextBox codeTextBox;
+        private DLMCodeTextBox codeTextBox;
         private EditorFile file;
 
         private LabelSquigglyStyle labelSquiggly = new LabelSquigglyStyle();
@@ -34,7 +34,7 @@ namespace DLM.Wpf
 
             var font = new System.Drawing.Font("Consolas", 10f, System.Drawing.FontStyle.Regular);
 
-            this.codeTextBox = new CodeTextBox()
+            this.codeTextBox = new DLMCodeTextBox()
             {
                 BackColor = backcolor,
                 ServiceLinesColor = backcolor,
@@ -49,7 +49,7 @@ namespace DLM.Wpf
                 WordWrap = true,
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
-            this.codeTextBox.Executer = new DLM.Compiler.CompilerExecuter();
+            this.codeTextBox.Executer = new CompilerExecuter();
             this.codeTextBox.PaintLine += CodeTextBox_PaintLine;
 
             constraintList.Items.Clear();

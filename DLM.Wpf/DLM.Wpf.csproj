@@ -78,6 +78,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DLMCodeTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DockPanelSplitter.cs" />
     <Compile Include="EditorFile.cs" />
     <Compile Include="ErrorViewTypes.cs" />
