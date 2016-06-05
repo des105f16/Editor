@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using FastColoredTextBoxNS;
+using System.Windows.Forms;
+using SablePP.Tools.Nodes;
+using DLMLabel = DLM.Inference.Label;
 
 namespace DLM.Wpf
 {
@@ -32,6 +30,74 @@ namespace DLM.Wpf
             SelectionColor = selectionColor;
             Font = font;
             DisabledColor = disabledbackcolor;
+        }
+
+        private class LabelState
+        {
+            private readonly DLMCodeTextBox o;
+
+            private Token token;
+            private Node node;
+            private DLMLabel label;
+
+            public LabelState(DLMCodeTextBox owner)
+            {
+                this.o = owner;
+            }
+
+            private Node getLabelNode(Token token)
+            {
+                return null;
+            }
+            private DLMLabel getLabel(Node node)
+            {
+                return null;
+            }
+
+            public Token Token
+            {
+                get { return token; }
+                set
+                {
+                    if (value == token)
+                        return;
+
+                    token = value;
+
+                    if (value == null)
+                        Node = null;
+                    else
+                        Node = getLabelNode(value);
+                }
+            }
+            public Node Node
+            {
+                get { return node; }
+                private set
+                {
+                    if (value == node)
+                        return;
+
+                    node = value;
+
+                    if (value == null)
+                        Label = null;
+                    else
+                        Label = getLabel(value)?.NoVariables;
+
+                    o.Invalidate();
+                }
+            }
+            public DLMLabel Label
+            {
+                get { return label; }
+                private set
+                {
+                    label = value;
+
+                    o.Invalidate();
+                }
+            }
         }
 
         protected override void OnPaintLine(PaintLineEventArgs e)
