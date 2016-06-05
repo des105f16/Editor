@@ -24,27 +24,8 @@ namespace DLM.Wpf
         {
             InitializeComponent();
 
-            var forecolor = System.Drawing.Color.FromArgb(220, 220, 220);
-            var backcolor = System.Drawing.Color.FromArgb(30, 30, 30);
-            var disabledbackcolor = System.Drawing.Color.FromArgb(35, 35, 35);
-            var linenumbers = System.Drawing.Color.FromArgb(36, 126, 175);
-
-            var selectionColor = System.Drawing.Color.FromArgb(50, 0, 142, 183);
-            var currentline = System.Drawing.Color.FromArgb(12, 12, 12);
-
-            var font = new System.Drawing.Font("Consolas", 10f, System.Drawing.FontStyle.Regular);
-
             this.codeTextBox = new DLMCodeTextBox()
             {
-                BackColor = backcolor,
-                ServiceLinesColor = backcolor,
-                IndentBackColor = backcolor,
-                LineNumberColor = linenumbers,
-                CaretColor = forecolor,
-                ForeColor = forecolor,
-                SelectionColor = selectionColor,
-                Font = font,
-                DisabledColor = disabledbackcolor,
                 Enabled = false,
                 WordWrap = true,
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
