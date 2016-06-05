@@ -18,6 +18,8 @@ namespace DLM.Wpf
 
         private readonly Font font = new Font("Consolas", 10f, FontStyle.Regular);
 
+        private readonly LabelState state;
+
         public DLMCodeTextBox()
             : base()
         {
@@ -30,6 +32,8 @@ namespace DLM.Wpf
             SelectionColor = selectionColor;
             Font = font;
             DisabledColor = disabledbackcolor;
+
+            state = new LabelState(this);
         }
 
         private class LabelState
@@ -98,6 +102,16 @@ namespace DLM.Wpf
                     o.Invalidate();
                 }
             }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            var place = PointToPlace(e.Location);
+            var token = TokenFromPlace(place);
+
+            state.Token = token;
+
+            base.OnMouseMove(e);
         }
 
         protected override void OnPaintLine(PaintLineEventArgs e)
