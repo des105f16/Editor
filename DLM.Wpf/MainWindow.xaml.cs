@@ -31,7 +31,6 @@ namespace DLM.Wpf
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
             this.codeTextBox.Executer = new CompilerExecuter();
-            this.codeTextBox.PaintLine += CodeTextBox_PaintLine;
 
             constraintList.Items.Clear();
 
@@ -54,30 +53,6 @@ namespace DLM.Wpf
             file.FileOpened += fileOpened;
             file.FileSaving += fileSaving;
             file.FileClosed += fileClosed;
-        }
-
-        private void CodeTextBox_PaintLine(object sender, PaintLineEventArgs e)
-        {
-            if (codeTextBox.SelectionLength == 0 && codeTextBox.Selection.Start.iLine == e.LineIndex)
-            {
-                var rect = e.LineRect;
-                rect.X -= 5;
-                rect.Height++;
-
-                var mode = e.Graphics.SmoothingMode;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 40, 40, 40)))
-                    e.Graphics.FillRectangle(b, rect);
-
-                rect.Inflate(-2, -2);
-
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 15, 15, 15)))
-                    e.Graphics.FillRectangle(b, rect);
-                //e.Graphics.FillRectangle(Brushes.Red, e.LineRect);
-
-                e.Graphics.SmoothingMode = mode;
-            }
         }
 
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
