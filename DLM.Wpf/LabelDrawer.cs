@@ -48,16 +48,6 @@ namespace DLM.Wpf
                 x += charSize.Width * str.Length;
             }
 
-            public void Draw(VariableLabel label)
-            {
-                var name = label.Name;
-
-                DrawString(name, font: underlined);
-                DrawString(" = ");
-
-                Draw((dynamic)label.NoVariables);
-            }
-
             public void Draw(JoinLabel label)
             {
                 Draw((dynamic)label.Label1);
@@ -115,10 +105,20 @@ namespace DLM.Wpf
                 Draw((dynamic)label.Label2);
             }
 
+            public void Draw(VariableLabel label)
+            {
+                var name = label.Name;
+
+                DrawString(name, font: underlined);
+                DrawString(" = ");
+
+                Draw((dynamic)label.NoVariables);
+            }
             public void Draw(ConstantLabel label)
             {
                 DrawString(label.Name, font: underlined);
             }
+
             public void Draw(PolicyLabel label)
             {
                 DrawString("{ ");
