@@ -18,6 +18,63 @@ namespace DLM.Wpf
             this.charSize = charSize;
         }
 
+        public float GetWidth(Label label)
+        {
+            return getWidth((dynamic)label);
+        }
+
+        private float getWidth(string s) => (s?.Length ?? 0) * charSize.Width;
+
+        private float getWidth(JoinLabel label)
+        {
+            float w = charSize.Width + 20;
+
+            w += getWidth((dynamic)label.Label1);
+            w += getWidth((dynamic)label.Label2);
+
+            return w;
+        }
+        private float getWidth(MeetLabel label)
+        {
+            float w = charSize.Width + 20;
+
+            w += getWidth((dynamic)label.Label1);
+            w += getWidth((dynamic)label.Label2);
+
+            return w;
+        }
+
+        private float getWidth(VariableLabel label) => getWidth(label.Name);
+        private float getWidth(ConstantLabel label) => getWidth(label.Name);
+
+        private float getWidth(PolicyLabel label)
+        {
+            int count = 2;
+            for (int i = 0; i < label.Count; i++)
+            {
+                var p = label[i];
+                count += p.Owner.Name.Length + 2;
+
+                if (p.ReaderCount > 0)
+                {
+                    count += p[0].Name.Length;
+                    for (int j = 1; j < label[i].ReaderCount; j++)
+                        count += p[j].Name.Length + 1;
+                }
+                else
+                    count++;
+
+                if (i < label.Count - 1)
+                    count += 2;
+            }
+            count += 2;
+
+            return count * charSize.Width;
+        }
+
+        private float getWidth(UpperBoundLabel label) => 1;
+        private float getWidth(LowerBoundLabel label) => 1;
+
         private class Context
         {
             private readonly Font font;
