@@ -267,26 +267,26 @@ Productions
 
 Abstract Syntax Tree
     expression
-        = {and} [left]:expression [right]:expression
-        | {or} [left]:expression [right]:expression
-        | {not} expression
+        = {and} [left]:expression and [right]:expression
+        | {or} [left]:expression or [right]:expression
+        | {not} bang expression
         | {comparison} [left]:expression compare [right]:expression
         
         | {element} expression element
-        | {index} expression [index]:expression
+        | {index} expression [left_par]:l_squ [index]:expression [right_par]:r_squ
         
-        | {plus} [left]:expression [right]:expression
-        | {minus} [left]:expression [right]:expression
-        | {multiply} [left]:expression [right]:expression
-        | {divide} [left]:expression [right]:expression
-        | {modulo} [left]:expression [right]:expression
-        | {negate} expression
+        | {plus} [left]:expression plus [right]:expression
+        | {minus} [left]:expression minus [right]:expression
+        | {multiply} [left]:expression asterisk [right]:expression
+        | {divide} [left]:expression slash [right]:expression
+        | {modulo} [left]:expression percent [right]:expression
+        | {negate} minus expression
         
-        | {function_call} time_call? [function]:identifier [authorities]:principal* [arguments]:expression*
+        | {function_call} time_call? [function]:identifier [authorities]:principal* [left_par]:l_par [arguments]:expression* [right_par]:r_par
         | {ternary} [condition]:expression question [true]:expression colon [false]:expression
         
-        | {parenthesis} expression
-        | {declassify} expression label?
+        | {parenthesis} [left_par]:l_par expression [right_par]:r_par
+        | {declassify} declassify_start expression label? declassify_end
         | {dereference} asterisk expression
         | {address} ampersand expression
         | {identifier} identifier
@@ -298,8 +298,8 @@ Abstract Syntax Tree
         | {string} string
         ;
     element
-        = identifier
-        | {pointer} identifier
+        = period identifier
+        | {pointer} [arrow]:r_arrow identifier
         ;
 
 Productions
@@ -309,36 +309,36 @@ Productions
         ;
     
     logicexpr -> expression
-        = {and} logicterm and logicexpr -> New expression.and(logicterm, logicexpr)
-        | {or} logicterm or logicexpr -> New expression.or(logicterm, logicexpr)
+        = {and} logicterm and logicexpr -> New expression.and(logicterm, and, logicexpr)
+        | {or} logicterm or logicexpr -> New expression.or(logicterm, or, logicexpr)
         | logicterm -> logicterm
         ;
     logicterm -> expression
         = {cmp} aritexpr compare logicterm -> New expression.comparison(aritexpr, compare, logicterm)
-        | {not} bang aritexpr -> New expression.not(aritexpr)
+        | {not} bang aritexpr -> New expression.not(bang, aritexpr)
         | aritexpr -> aritexpr
         ;
     
     aritexpr -> expression
-        = {p} aritterm plus aritexpr -> New expression.plus(aritterm, aritexpr)
-        | {m} aritterm minus aritexpr -> New expression.minus(aritterm, aritexpr)
-        | {n} minus aritterm -> New expression.negate(aritterm)
+        = {p} aritterm plus aritexpr -> New expression.plus(aritterm, plus, aritexpr)
+        | {m} aritterm minus aritexpr -> New expression.minus(aritterm, minus, aritexpr)
+        | {n} minus aritterm -> New expression.negate(minus, aritterm)
         | aritterm -> aritterm
         ;
     aritterm -> expression
-        = {m} aritfactor asterisk aritterm -> New expression.multiply(aritfactor, aritterm)
-        | {d} aritfactor slash aritterm -> New expression.divide(aritfactor, aritterm)
-        | {mod} aritfactor percent aritterm -> New expression.modulo(aritfactor, aritterm)
+        = {m} aritfactor asterisk aritterm -> New expression.multiply(aritfactor, asterisk, aritterm)
+        | {d} aritfactor slash aritterm -> New expression.divide(aritfactor, slash, aritterm)
+        | {mod} aritfactor percent aritterm -> New expression.modulo(aritfactor, percent, aritterm)
         | aritfactor -> aritfactor
         ;
     aritfactor -> expression
-        = {e} aritfactor period identifier -> New expression.element(aritfactor, New element(identifier))
-        | {p} aritfactor r_arrow identifier -> New expression.element(aritfactor, New element.pointer(identifier))
-        | {i} aritfactor l_squ expr r_squ -> New expression.index(aritfactor, expr)
+        = {e} aritfactor period identifier -> New expression.element(aritfactor, New element(period, identifier))
+        | {p} aritfactor r_arrow identifier -> New expression.element(aritfactor, New element.pointer(r_arrow, identifier))
+        | {i} aritfactor l_squ expr r_squ -> New expression.index(aritfactor, l_squ, expr, r_squ)
         | aritelem -> aritelem
         ;
     aritelem -> expression
-        = {par} l_par expr r_par -> New expression.parenthesis(expr)
+        = {par} l_par expr r_par -> New expression.parenthesis(l_par, expr, r_par)
         | {func} funccall -> funccall
         | {n} number -> New expression.number(number)
         | {b} bool -> New expression.boolean(bool)
@@ -347,8 +347,8 @@ Productions
         | {str} string -> New expression.string(string)
         | {id} identifier -> New expression.identifier(identifier)
         | {check} time_check identifier -> New expression.time_check(time_check, identifier)
-        | {dec} declassify_start expr declassify_end -> New expression.declassify(expr, Null)
-        | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(expr, label)
+        | {dec} declassify_start expr declassify_end -> New expression.declassify(declassify_start, expr, Null, declassify_end)
+        | {dec2} declassify_start expr comma label declassify_end -> New expression.declassify(declassify_start, expr, label, declassify_end)
         | {deref} asterisk aritelem -> New expression.dereference(asterisk, aritelem)
         | {adr} ampersand aritelem -> New expression.address(ampersand, aritelem)
         ;
@@ -357,7 +357,7 @@ Productions
         ;
 
     funccall -> expression
-        = time_call? identifier funcauths? l_par funccallargs? r_par -> New expression.function_call(time_call, identifier, [funcauths], [funccallargs])
+        = time_call? identifier funcauths? l_par funccallargs? r_par -> New expression.function_call(time_call, identifier, [funcauths], l_par, [funccallargs], r_par)
         ;
     funcauths -> principal+
         = func_auth_start lprincipal func_auth_end -> [lprincipal];
