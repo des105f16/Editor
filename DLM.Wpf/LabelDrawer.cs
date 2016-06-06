@@ -26,7 +26,9 @@ namespace DLM.Wpf
             private readonly Size charSize;
 
             private readonly Graphics g;
-            private PointF position;
+            private float x;
+            private readonly float y;
+            private PointF position => new PointF(x, y);
 
             public Context(LabelDrawer drawer, Graphics graphics, PointF point)
             {
@@ -36,13 +38,14 @@ namespace DLM.Wpf
                 charSize = drawer.charSize;
 
                 g = graphics;
-                position = point;
+                x = point.X;
+                y = point.Y;
             }
 
             public void DrawString(string str, Brush brush = null, Font font = null)
             {
                 g.DrawString(str, font ?? this.font, brush ?? defaultBrush, position);
-                position.X += charSize.Width * str.Length;
+                x += charSize.Width * str.Length;
             }
 
             public void Draw(VariableLabel label)
@@ -59,7 +62,7 @@ namespace DLM.Wpf
             {
                 Draw((dynamic)label.Label1);
 
-                position.X += 6;
+                x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
                 using (var pen = new Pen(defaultBrush))
                 {
@@ -79,7 +82,7 @@ namespace DLM.Wpf
                     });
                 }
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                position.X += 14;
+                x += 14;
 
                 Draw((dynamic)label.Label2);
             }
@@ -87,7 +90,7 @@ namespace DLM.Wpf
             {
                 Draw((dynamic)label.Label1);
 
-                position.X += 6;
+                x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
                 using (var pen = new Pen(defaultBrush))
                 {
@@ -107,7 +110,7 @@ namespace DLM.Wpf
                     });
                 }
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                position.X += 14;
+                x += 14;
 
                 Draw((dynamic)label.Label2);
             }
