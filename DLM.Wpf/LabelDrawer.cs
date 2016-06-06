@@ -27,7 +27,7 @@ namespace DLM.Wpf
 
         private float getWidth(JoinLabel label)
         {
-            float w = charSize.Width + 20;
+            float w = charSize.Width + 12;
 
             w += getWidth((dynamic)label.Label1);
             w += getWidth((dynamic)label.Label2);
@@ -36,7 +36,7 @@ namespace DLM.Wpf
         }
         private float getWidth(MeetLabel label)
         {
-            float w = charSize.Width + 20;
+            float w = charSize.Width + 12;
 
             w += getWidth((dynamic)label.Label1);
             w += getWidth((dynamic)label.Label2);
@@ -72,8 +72,8 @@ namespace DLM.Wpf
             return count * charSize.Width;
         }
 
-        private float getWidth(UpperBoundLabel label) => 1;
-        private float getWidth(LowerBoundLabel label) => 1;
+        private float getWidth(UpperBoundLabel label) => 1 * charSize.Width;
+        private float getWidth(LowerBoundLabel label) => 1 * charSize.Width;
 
         private class Context
         {
@@ -99,9 +99,13 @@ namespace DLM.Wpf
                 y = point.Y;
             }
 
-            public void DrawString(string str, Brush brush = null, Font font = null)
+            public void DrawString(string str, Brush brush = null, Font font = null, Size? offset = null)
             {
-                g.DrawString(str, font ?? this.font, brush ?? defaultBrush, position);
+                var p = position;
+                if (offset.HasValue)
+                    p += offset.Value;
+
+                g.DrawString(str, font ?? this.font, brush ?? defaultBrush, p);
                 x += charSize.Width * str.Length;
             }
 
@@ -201,11 +205,11 @@ namespace DLM.Wpf
 
             public void Draw(UpperBoundLabel label)
             {
-                DrawString(label.ToString());
+                DrawString(label.ToString(), offset: new Size(-3, 2));
             }
             public void Draw(LowerBoundLabel label)
             {
-                DrawString(label.ToString());
+                DrawString(label.ToString(), offset: new Size(-3, 2));
             }
         }
     }
