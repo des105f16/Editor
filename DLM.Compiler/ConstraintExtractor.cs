@@ -138,6 +138,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;
@@ -148,6 +149,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;
@@ -159,6 +161,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("while");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.While, node, NodeConstraint.OriginTypes.WhileBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;

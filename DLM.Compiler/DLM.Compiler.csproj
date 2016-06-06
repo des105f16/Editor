@@ -56,6 +56,7 @@
     <Compile Include="ConstraintExtractor.cs" />
     <Compile Include="NodeConstraint.cs" />
     <Compile Include="NodeExtension.cs" />
+    <Compile Include="Nodes\ControlStructures.cs" />
     <Compile Include="Nodes\ILabelValue.cs" />
     <Compile Include="Nodes\PExpression.cs" />
     <Compile Include="Nodes\PLabel.cs" />

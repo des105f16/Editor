@@ -78,6 +78,9 @@ namespace DLM.Wpf
                 if (expr != null)
                     return expr;
 
+                if (token is TIf || token is TWhile)
+                    return token;
+
                 return null;
             }
 
