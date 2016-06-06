@@ -74,9 +74,16 @@ namespace DLM.Wpf
 
             private Node getLabelNode(Token token)
             {
+                var parent = token.GetParent();
+
                 var expr = token.GetFirstParent<PExpression>();
                 if (expr != null)
                     return expr;
+
+                if (parent is ADeclarationStatement ||
+                    parent is AArrayDeclarationStatement ||
+                    parent is AAssignmentStatement)
+                    return token;
 
                 if (token is TIf || token is TWhile)
                     return token;

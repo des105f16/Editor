@@ -78,6 +78,7 @@ namespace DLM.Compiler
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
+            node.LabelValue = node.Type.DeclaredLabel;
 
             Label lbl = node.HasExpression ?
                 ExpressionLabeler.GetLabel(node.Expression, this) :
@@ -88,6 +89,7 @@ namespace DLM.Compiler
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
+            node.LabelValue = node.Type.DeclaredLabel;
 
             Add(Label.LowerBound, node.Type.DeclaredLabel, node.Identifier, node, NodeConstraint.OriginTypes.Declaration);
         }
@@ -96,6 +98,7 @@ namespace DLM.Compiler
             Label lbl = ExpressionLabeler.GetLabel(node.Expression, this);
 
             var type = types[node.Identifier.Text];
+            node.LabelValue = type.DeclaredLabel;
 
             Add(lbl, type.DeclaredLabel, node.Identifier, node, NodeConstraint.OriginTypes.Assignment);
         }
