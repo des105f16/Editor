@@ -34,6 +34,26 @@ namespace DLM.Wpf
             DisabledColor = disabledbackcolor;
 
             state = new LabelState(this);
+
+            this.Paint += DLMCodeTextBox_Paint;
+        }
+
+        private void DLMCodeTextBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (state.Label != null)
+            {
+                var pos = Cursor.Position + new Size(5, -30);
+                pos = PointToClient(pos);
+
+                var str = state.Label.ToString();
+
+                var size = e.Graphics.MeasureString(str, font);
+                Rectangle box = new Rectangle(pos.X, pos.Y, (int)size.Width, (int)size.Height);
+                box.Inflate(10, 3);
+
+                drawBox(e.Graphics, box);
+                e.Graphics.DrawString(str, font, Brushes.White, pos);
+            }
         }
 
         private class LabelState
