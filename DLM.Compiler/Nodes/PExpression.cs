@@ -1,13 +1,8 @@
 ﻿using DLM.Inference;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLM.Compiler.Nodes
 {
-    public partial class PExpression
+    public partial class PExpression : ILabelValue
     {
         private Label labelValue;
 

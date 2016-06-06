@@ -75,10 +75,6 @@ namespace DLM.Wpf
             {
                 return null;
             }
-            private DLMLabel getLabel(Node node)
-            {
-                return null;
-            }
 
             public Token Token
             {
@@ -114,7 +110,7 @@ namespace DLM.Wpf
                     if (value == null)
                         Label = null;
                     else
-                        Label = getLabel(value)?.NoVariables;
+                        Label = value.GetFirstLabelValue().NoVariables;
 
                     o.Invalidate();
                 }
