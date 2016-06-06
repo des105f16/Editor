@@ -1155,6 +1155,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AAndExpression aandexpression = new AAndExpression(
                             pexpression2,
+                            tand,
                             pexpression
                         );
                         Push(27, aandexpression);
@@ -1167,6 +1168,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AOrExpression aorexpression = new AOrExpression(
                             pexpression2,
+                            tor,
                             pexpression
                         );
                         Push(27, aorexpression);
@@ -1196,6 +1198,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = Pop<PExpression>();
                         TBang tbang = Pop<TBang>();
                         ANotExpression anotexpression = new ANotExpression(
+                            tbang,
                             pexpression
                         );
                         Push(28, anotexpression);
@@ -1214,6 +1217,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         APlusExpression aplusexpression = new APlusExpression(
                             pexpression2,
+                            tplus,
                             pexpression
                         );
                         Push(29, aplusexpression);
@@ -1226,6 +1230,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AMinusExpression aminusexpression = new AMinusExpression(
                             pexpression2,
+                            tminus,
                             pexpression
                         );
                         Push(29, aminusexpression);
@@ -1236,6 +1241,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = Pop<PExpression>();
                         TMinus tminus = Pop<TMinus>();
                         ANegateExpression anegateexpression = new ANegateExpression(
+                            tminus,
                             pexpression
                         );
                         Push(29, anegateexpression);
@@ -1254,6 +1260,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AMultiplyExpression amultiplyexpression = new AMultiplyExpression(
                             pexpression2,
+                            tasterisk,
                             pexpression
                         );
                         Push(30, amultiplyexpression);
@@ -1266,6 +1273,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         ADivideExpression adivideexpression = new ADivideExpression(
                             pexpression2,
+                            tslash,
                             pexpression
                         );
                         Push(30, adivideexpression);
@@ -1278,6 +1286,7 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AModuloExpression amoduloexpression = new AModuloExpression(
                             pexpression2,
+                            tpercent,
                             pexpression
                         );
                         Push(30, amoduloexpression);
@@ -1295,6 +1304,7 @@ namespace DLM.Compiler.Parsing
                         TPeriod tperiod = Pop<TPeriod>();
                         PExpression pexpression = Pop<PExpression>();
                         AElement aelement = new AElement(
+                            tperiod,
                             tidentifier
                         );
                         AElementExpression aelementexpression = new AElementExpression(
@@ -1310,6 +1320,7 @@ namespace DLM.Compiler.Parsing
                         TRArrow trarrow = Pop<TRArrow>();
                         PExpression pexpression = Pop<PExpression>();
                         APointerElement apointerelement = new APointerElement(
+                            trarrow,
                             tidentifier
                         );
                         AElementExpression aelementexpression = new AElementExpression(
@@ -1327,7 +1338,9 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression2 = Pop<PExpression>();
                         AIndexExpression aindexexpression = new AIndexExpression(
                             pexpression2,
-                            pexpression
+                            tlsqu,
+                            pexpression,
+                            trsqu
                         );
                         Push(31, aindexexpression);
                     }
@@ -1344,7 +1357,9 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = Pop<PExpression>();
                         TLPar tlpar = Pop<TLPar>();
                         AParenthesisExpression aparenthesisexpression = new AParenthesisExpression(
-                            pexpression
+                            tlpar,
+                            pexpression,
+                            trpar
                         );
                         Push(32, aparenthesisexpression);
                     }
@@ -1426,8 +1441,10 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = Pop<PExpression>();
                         TDeclassifyStart tdeclassifystart = Pop<TDeclassifyStart>();
                         ADeclassifyExpression adeclassifyexpression = new ADeclassifyExpression(
+                            tdeclassifystart,
                             pexpression,
-                            null
+                            null,
+                            tdeclassifyend
                         );
                         Push(32, adeclassifyexpression);
                     }
@@ -1440,8 +1457,10 @@ namespace DLM.Compiler.Parsing
                         PExpression pexpression = Pop<PExpression>();
                         TDeclassifyStart tdeclassifystart = Pop<TDeclassifyStart>();
                         ADeclassifyExpression adeclassifyexpression = new ADeclassifyExpression(
+                            tdeclassifystart,
                             pexpression,
-                            plabel
+                            plabel,
+                            tdeclassifyend
                         );
                         Push(32, adeclassifyexpression);
                     }
@@ -1501,7 +1520,9 @@ namespace DLM.Compiler.Parsing
                             ttimecall,
                             tidentifier,
                             pprincipallist2,
-                            pexpressionlist2
+                            tlpar,
+                            pexpressionlist2,
+                            trpar
                         );
                         Push(34, afunctioncallexpression);
                     }

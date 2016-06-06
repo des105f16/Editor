@@ -78,11 +78,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DLMCodeTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DockPanelSplitter.cs" />
     <Compile Include="EditorFile.cs" />
     <Compile Include="ErrorViewTypes.cs" />
     <Compile Include="InferenceStepErrorView.cs" />
     <Compile Include="InferenceStepView.cs" />
+    <Compile Include="LabelDrawer.cs" />
     <Compile Include="LabelSquigglyStyle.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -148,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\labeltooltip.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

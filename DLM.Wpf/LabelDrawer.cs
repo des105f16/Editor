@@ -1,91 +1,121 @@
 ﻿using DLM.Inference;
-using System.Collections.Concurrent;
-using FastColoredTextBoxNS;
 using System.Drawing;
-using System;
-using System.Text.RegularExpressions;
 
 namespace DLM.Wpf
 {
-    public class LabelSquigglyStyle : Style
+    public class LabelDrawer
     {
-        private ConcurrentDictionary<int, VariableLabel> labels;
+        private readonly Font font;
+        private readonly Size charSize;
 
-        public LabelSquigglyStyle()
+        public LabelDrawer(Font font, Size charSize)
         {
-            this.labels = new ConcurrentDictionary<int, VariableLabel>();
+            this.font = new Font(font, FontStyle.Regular);
+            this.charSize = charSize;
         }
 
-        public void Add(int line, VariableLabel label)
+        public void DrawLabel(Graphics graphics, Brush brush, Label label, PointF location)
         {
-            this.labels.TryAdd(line, label);
-        }
-        public void Clear()
-        {
-            labels.Clear();
+            Context ct = new Context(this, brush, graphics, location);
+            ct.Draw((dynamic)label);
         }
 
-        public override void Draw(Graphics gr, Point position, Range range)
+        public float GetWidth(Label label)
         {
-            if (!Properties.Settings.Default.InlineLabels)
-                return;
+            return getWidth((dynamic)label);
+        }
 
-            int iLine = range.Start.iLine;
-            var line = range.tb.GetLine(range.Start.iLine);
+        private float getWidth(string s) => (s?.Length ?? 0) * charSize.Width;
 
-            position.X += (line.End.iChar - range.Start.iChar + 1) * range.tb.CharWidth;
+        private float getWidth(JoinLabel label)
+        {
+            float w = charSize.Width + 12;
 
-            VariableLabel label;
-            if (labels.TryGetValue(iLine, out label))
+            w += getWidth((dynamic)label.Label1);
+            w += getWidth((dynamic)label.Label2);
+
+            return w;
+        }
+        private float getWidth(MeetLabel label)
+        {
+            float w = charSize.Width + 12;
+
+            w += getWidth((dynamic)label.Label1);
+            w += getWidth((dynamic)label.Label2);
+
+            return w;
+        }
+
+        private float getWidth(VariableLabel label) => getWidth(label.Name);
+        private float getWidth(ConstantLabel label) => getWidth(label.Name);
+
+        private float getWidth(PolicyLabel label)
+        {
+            int count = 2;
+            for (int i = 0; i < label.Count; i++)
             {
-                using (var dc = new DrawContext(gr, range.tb.Font, new Size(range.tb.CharWidth, range.tb.CharHeight), position))
-                    dc.Draw(label);
-                return;
+                var p = label[i];
+                count += p.Owner.Name.Length + 2;
+
+                if (p.ReaderCount > 0)
+                {
+                    count += p[0].Name.Length;
+                    for (int j = 1; j < label[i].ReaderCount; j++)
+                        count += p[j].Name.Length + 1;
+                }
+                else
+                    count++;
+
+                if (i < label.Count - 1)
+                    count += 2;
             }
+            count += 2;
+
+            return count * charSize.Width;
         }
 
-        public class DrawContext : IDisposable
+        private float getWidth(UpperBoundLabel label) => 1 * charSize.Width;
+        private float getWidth(LowerBoundLabel label) => 1 * charSize.Width;
+
+        private class Context
         {
-            private readonly Graphics g;
             private readonly Font font;
-            private readonly Font underlined;
-            private readonly Brush defaultBrush;
+            private readonly Brush brush;
             private readonly Size charSize;
-            private PointF position;
 
-            public DrawContext(Graphics graphics, Font font, Size charSize, Point point)
+            private readonly Graphics g;
+            private float x;
+            private readonly float y;
+            private PointF position => new PointF(x, y);
+
+            public Context(LabelDrawer drawer, Brush brush, Graphics graphics, PointF point)
             {
-                this.g = graphics;
-                this.font = new Font(font, FontStyle.Regular);
-                this.underlined = new Font(font, FontStyle.Underline);
-                this.defaultBrush = new SolidBrush(Color.FromArgb(120, 175, 175, 10));
-                this.charSize = charSize;
-                this.position = point;
+                font = drawer.font;
+                this.brush = brush;
+                charSize = drawer.charSize;
+
+                g = graphics;
+                x = point.X;
+                y = point.Y;
             }
 
-            public void DrawString(string str, Brush brush = null, Font font = null)
+            public void DrawString(string str, Brush brush = null, Font font = null, Size? offset = null)
             {
-                g.DrawString(str, font ?? this.font, brush ?? defaultBrush, position);
-                position.X += charSize.Width * str.Length;
-            }
+                var p = position;
+                if (offset.HasValue)
+                    p += offset.Value;
 
-            public void Draw(VariableLabel label)
-            {
-                var name = label.Name;
-
-                DrawString(name, font: underlined);
-                DrawString(" = ");
-
-                Draw((dynamic)label.NoVariables);
+                g.DrawString(str, font ?? this.font, brush ?? this.brush, p);
+                x += charSize.Width * str.Length;
             }
 
             public void Draw(JoinLabel label)
             {
                 Draw((dynamic)label.Label1);
 
-                position.X += 6;
+                x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                using (var pen = new Pen(defaultBrush))
+                using (var pen = new Pen(brush))
                 {
                     g.DrawLines(pen, new PointF[]
                     {
@@ -103,7 +133,7 @@ namespace DLM.Wpf
                     });
                 }
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                position.X += 14;
+                x += 14;
 
                 Draw((dynamic)label.Label2);
             }
@@ -111,9 +141,9 @@ namespace DLM.Wpf
             {
                 Draw((dynamic)label.Label1);
 
-                position.X += 6;
+                x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                using (var pen = new Pen(defaultBrush))
+                using (var pen = new Pen(brush))
                 {
                     g.DrawLines(pen, new PointF[]
                     {
@@ -131,15 +161,26 @@ namespace DLM.Wpf
                     });
                 }
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                position.X += 14;
+                x += 14;
 
                 Draw((dynamic)label.Label2);
             }
 
+            public void Draw(VariableLabel label)
+            {
+                using (Pen pen = new Pen(brush))
+                    g.DrawLine(pen, x, y + charSize.Height - 1, x + label.Name.Length * charSize.Width, y + charSize.Height - 1);
+
+                DrawString(label.Name);
+            }
             public void Draw(ConstantLabel label)
             {
-                DrawString(label.Name, font: underlined);
+                using (Pen pen = new Pen(brush))
+                    g.DrawLine(pen, x, y + 3, x + label.Name.Length * charSize.Width, y + 3);
+
+                DrawString(label.Name);
             }
+
             public void Draw(PolicyLabel label)
             {
                 DrawString("{ ");
@@ -165,17 +206,11 @@ namespace DLM.Wpf
 
             public void Draw(UpperBoundLabel label)
             {
-                DrawString(label.ToString());
+                DrawString(label.ToString(), offset: new Size(-3, 2));
             }
             public void Draw(LowerBoundLabel label)
             {
-                DrawString(label.ToString());
-            }
-
-            public void Dispose()
-            {
-                font.Dispose();
-                underlined.Dispose();
+                DrawString(label.ToString(), offset: new Size(-3, 2));
             }
         }
     }

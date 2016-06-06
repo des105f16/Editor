@@ -170,12 +170,9 @@ namespace DLM.Compiler
 
         protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
         {
-            var first = text.TokenStart(FirstToken.Find(node));
-            var last = text.TokenEnd(LastToken.Find(node));
-
-            first = text.SearchBackwards(first, "<|");
-            last = text.SearchForwards(last, "|>");
-
+            var first = text.TokenStart(node.DeclassifyStart);
+            var last = text.TokenStart(node.DeclassifyEnd);
+            
             text.ReplaceRange(first, first + 1, ' ');
             text.ReplaceRange(last, last + 1, ' ');
 

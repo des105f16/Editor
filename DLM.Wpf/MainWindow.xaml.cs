@@ -15,7 +15,7 @@ namespace DLM.Wpf
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private CodeTextBox codeTextBox;
+        private DLMCodeTextBox codeTextBox;
         private EditorFile file;
 
         private LabelSquigglyStyle labelSquiggly = new LabelSquigglyStyle();
@@ -24,33 +24,13 @@ namespace DLM.Wpf
         {
             InitializeComponent();
 
-            var forecolor = System.Drawing.Color.FromArgb(220, 220, 220);
-            var backcolor = System.Drawing.Color.FromArgb(30, 30, 30);
-            var disabledbackcolor = System.Drawing.Color.FromArgb(35, 35, 35);
-            var linenumbers = System.Drawing.Color.FromArgb(36, 126, 175);
-
-            var selectionColor = System.Drawing.Color.FromArgb(50, 0, 142, 183);
-            var currentline = System.Drawing.Color.FromArgb(12, 12, 12);
-
-            var font = new System.Drawing.Font("Consolas", 10f, System.Drawing.FontStyle.Regular);
-
-            this.codeTextBox = new CodeTextBox()
+            this.codeTextBox = new DLMCodeTextBox()
             {
-                BackColor = backcolor,
-                ServiceLinesColor = backcolor,
-                IndentBackColor = backcolor,
-                LineNumberColor = linenumbers,
-                CaretColor = forecolor,
-                ForeColor = forecolor,
-                SelectionColor = selectionColor,
-                Font = font,
-                DisabledColor = disabledbackcolor,
                 Enabled = false,
                 WordWrap = true,
                 WordWrapMode = WordWrapMode.WordWrapControlWidth
             };
-            this.codeTextBox.Executer = new DLM.Compiler.CompilerExecuter();
-            this.codeTextBox.PaintLine += CodeTextBox_PaintLine;
+            this.codeTextBox.Executer = new CompilerExecuter();
 
             constraintList.Items.Clear();
 
@@ -73,30 +53,6 @@ namespace DLM.Wpf
             file.FileOpened += fileOpened;
             file.FileSaving += fileSaving;
             file.FileClosed += fileClosed;
-        }
-
-        private void CodeTextBox_PaintLine(object sender, PaintLineEventArgs e)
-        {
-            if (codeTextBox.SelectionLength == 0 && codeTextBox.Selection.Start.iLine == e.LineIndex)
-            {
-                var rect = e.LineRect;
-                rect.X -= 5;
-                rect.Height++;
-
-                var mode = e.Graphics.SmoothingMode;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 40, 40, 40)))
-                    e.Graphics.FillRectangle(b, rect);
-
-                rect.Inflate(-2, -2);
-
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(255, 15, 15, 15)))
-                    e.Graphics.FillRectangle(b, rect);
-                //e.Graphics.FillRectangle(Brushes.Red, e.LineRect);
-
-                e.Graphics.SmoothingMode = mode;
-            }
         }
 
         private void CodeTextBox_CompilationCompleted(object sender, EventArgs e)
@@ -199,6 +155,19 @@ namespace DLM.Wpf
         {
             lineBlock.Text = (codeTextBox.Selection.Start.iLine + 1).ToString();
             charBlock.Text = (codeTextBox.Selection.Start.iChar + 1).ToString();
+        }
+
+        private void MenuItem_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var item = sender as System.Windows.Controls.MenuItem;
+            if (item == null)
+                return;
+
+            if (Properties.Settings.Default.InlineLabels != item.IsChecked)
+            {
+                Properties.Settings.Default.InlineLabels = item.IsChecked;
+                codeTextBox.Invalidate();
+            }
         }
     }
 }

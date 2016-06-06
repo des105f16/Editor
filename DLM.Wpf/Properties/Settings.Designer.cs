@@ -70,5 +70,17 @@ namespace DLM.Wpf.Properties {
                 this["FileDescription"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool InlineLabels {
+            get {
+                return ((bool)(this["InlineLabels"]));
+            }
+            set {
+                this["InlineLabels"] = value;
+            }
+        }
     }
 }

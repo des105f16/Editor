@@ -1326,15 +1326,18 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAAndExpression(AAndExpression node)
         {
             Visit(node.Left);
+            Visit(node.And);
             Visit(node.Right);
         }
         protected override void HandleAOrExpression(AOrExpression node)
         {
             Visit(node.Left);
+            Visit(node.Or);
             Visit(node.Right);
         }
         protected override void HandleANotExpression(ANotExpression node)
         {
+            Visit(node.Bang);
             Visit(node.Expression);
         }
         protected override void HandleAComparisonExpression(AComparisonExpression node)
@@ -1351,35 +1354,43 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAIndexExpression(AIndexExpression node)
         {
             Visit(node.Expression);
+            Visit(node.LeftPar);
             Visit(node.Index);
+            Visit(node.RightPar);
         }
         protected override void HandleAPlusExpression(APlusExpression node)
         {
             Visit(node.Left);
+            Visit(node.Plus);
             Visit(node.Right);
         }
         protected override void HandleAMinusExpression(AMinusExpression node)
         {
             Visit(node.Left);
+            Visit(node.Minus);
             Visit(node.Right);
         }
         protected override void HandleAMultiplyExpression(AMultiplyExpression node)
         {
             Visit(node.Left);
+            Visit(node.Asterisk);
             Visit(node.Right);
         }
         protected override void HandleADivideExpression(ADivideExpression node)
         {
             Visit(node.Left);
+            Visit(node.Slash);
             Visit(node.Right);
         }
         protected override void HandleAModuloExpression(AModuloExpression node)
         {
             Visit(node.Left);
+            Visit(node.Percent);
             Visit(node.Right);
         }
         protected override void HandleANegateExpression(ANegateExpression node)
         {
+            Visit(node.Minus);
             Visit(node.Expression);
         }
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
@@ -1388,7 +1399,9 @@ namespace DLM.Compiler.Analysis
                 Visit(node.TimeCall);
             Visit(node.Function);
             Visit(node.Authorities);
+            Visit(node.LeftPar);
             Visit(node.Arguments);
+            Visit(node.RightPar);
         }
         protected override void HandleATernaryExpression(ATernaryExpression node)
         {
@@ -1400,13 +1413,17 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
+            Visit(node.LeftPar);
             Visit(node.Expression);
+            Visit(node.RightPar);
         }
         protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
         {
+            Visit(node.DeclassifyStart);
             Visit(node.Expression);
             if (node.HasLabel)
                 Visit(node.Label);
+            Visit(node.DeclassifyEnd);
         }
         protected override void HandleADereferenceExpression(ADereferenceExpression node)
         {
@@ -1449,10 +1466,12 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAElement(AElement node)
         {
+            Visit(node.Period);
             Visit(node.Identifier);
         }
         protected override void HandleAPointerElement(APointerElement node)
         {
+            Visit(node.Arrow);
             Visit(node.Identifier);
         }
     }
@@ -1654,16 +1673,19 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAAndExpression(AAndExpression node)
         {
             Visit(node.Right);
+            Visit(node.And);
             Visit(node.Left);
         }
         protected override void HandleAOrExpression(AOrExpression node)
         {
             Visit(node.Right);
+            Visit(node.Or);
             Visit(node.Left);
         }
         protected override void HandleANotExpression(ANotExpression node)
         {
             Visit(node.Expression);
+            Visit(node.Bang);
         }
         protected override void HandleAComparisonExpression(AComparisonExpression node)
         {
@@ -1678,41 +1700,51 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAIndexExpression(AIndexExpression node)
         {
+            Visit(node.RightPar);
             Visit(node.Index);
+            Visit(node.LeftPar);
             Visit(node.Expression);
         }
         protected override void HandleAPlusExpression(APlusExpression node)
         {
             Visit(node.Right);
+            Visit(node.Plus);
             Visit(node.Left);
         }
         protected override void HandleAMinusExpression(AMinusExpression node)
         {
             Visit(node.Right);
+            Visit(node.Minus);
             Visit(node.Left);
         }
         protected override void HandleAMultiplyExpression(AMultiplyExpression node)
         {
             Visit(node.Right);
+            Visit(node.Asterisk);
             Visit(node.Left);
         }
         protected override void HandleADivideExpression(ADivideExpression node)
         {
             Visit(node.Right);
+            Visit(node.Slash);
             Visit(node.Left);
         }
         protected override void HandleAModuloExpression(AModuloExpression node)
         {
             Visit(node.Right);
+            Visit(node.Percent);
             Visit(node.Left);
         }
         protected override void HandleANegateExpression(ANegateExpression node)
         {
             Visit(node.Expression);
+            Visit(node.Minus);
         }
         protected override void HandleAFunctionCallExpression(AFunctionCallExpression node)
         {
+            Visit(node.RightPar);
             Visit(node.Arguments);
+            Visit(node.LeftPar);
             Visit(node.Authorities);
             Visit(node.Function);
             if (node.HasTimeCall)
@@ -1728,13 +1760,17 @@ namespace DLM.Compiler.Analysis
         }
         protected override void HandleAParenthesisExpression(AParenthesisExpression node)
         {
+            Visit(node.RightPar);
             Visit(node.Expression);
+            Visit(node.LeftPar);
         }
         protected override void HandleADeclassifyExpression(ADeclassifyExpression node)
         {
+            Visit(node.DeclassifyEnd);
             if (node.HasLabel)
                 Visit(node.Label);
             Visit(node.Expression);
+            Visit(node.DeclassifyStart);
         }
         protected override void HandleADereferenceExpression(ADereferenceExpression node)
         {
@@ -1778,10 +1814,12 @@ namespace DLM.Compiler.Analysis
         protected override void HandleAElement(AElement node)
         {
             Visit(node.Identifier);
+            Visit(node.Period);
         }
         protected override void HandleAPointerElement(APointerElement node)
         {
             Visit(node.Identifier);
+            Visit(node.Arrow);
         }
     }
     

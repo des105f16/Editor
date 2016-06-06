@@ -78,6 +78,7 @@ namespace DLM.Compiler
         protected override void HandleADeclarationStatement(ADeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
+            node.LabelValue = node.Type.DeclaredLabel;
 
             Label lbl = node.HasExpression ?
                 ExpressionLabeler.GetLabel(node.Expression, this) :
@@ -88,6 +89,7 @@ namespace DLM.Compiler
         protected override void HandleAArrayDeclarationStatement(AArrayDeclarationStatement node)
         {
             types.Add(node.Identifier.Text, node.Type);
+            node.LabelValue = node.Type.DeclaredLabel;
 
             Add(Label.LowerBound, node.Type.DeclaredLabel, node.Identifier, node, NodeConstraint.OriginTypes.Declaration);
         }
@@ -96,6 +98,7 @@ namespace DLM.Compiler
             Label lbl = ExpressionLabeler.GetLabel(node.Expression, this);
 
             var type = types[node.Identifier.Text];
+            node.LabelValue = type.DeclaredLabel;
 
             Add(lbl, type.DeclaredLabel, node.Identifier, node, NodeConstraint.OriginTypes.Assignment);
         }
@@ -138,6 +141,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;
@@ -148,6 +152,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("if");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.If, node, NodeConstraint.OriginTypes.IfBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;
@@ -159,6 +164,7 @@ namespace DLM.Compiler
         {
             Label lbl = getVariableLabel("while");
             Add(ExpressionLabeler.GetLabel(node.Expression, this), lbl, node.While, node, NodeConstraint.OriginTypes.WhileBlock);
+            node.LabelValue = lbl;
 
             var old = basicBlock;
             basicBlock = lbl;
@@ -294,6 +300,7 @@ namespace DLM.Compiler
             protected override Label HandleAPlusExpression(APlusExpression node) => decorate(node, Visit(node.Left) + Visit(node.Right));
             protected override Label HandleAStringExpression(AStringExpression node) => decorate(node, Label.LowerBound);
             protected override Label HandleATernaryExpression(ATernaryExpression node) => decorate(node, Visit(node.Condition) + Visit(node.True) + Visit(node.False));
+            protected override Label HandleATimeCheckExpression(ATimeCheckExpression node) => decorate(node, Label.LowerBound);
 
             private Label decorate(PExpression node, Label label)
             {
@@ -312,7 +319,6 @@ namespace DLM.Compiler
                 else
                     return false;
             }
-            protected override Label HandleATimeCheckExpression(ATimeCheckExpression node) => Label.LowerBound;
 
             private void checkArgumentLabels(Production.NodeList<PExpression> arguments, AFunctionDeclarationStatement functionDeclaration)
             {

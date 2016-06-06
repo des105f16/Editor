@@ -2815,12 +2815,14 @@ namespace DLM.Compiler.Nodes
     public partial class AAndExpression : PExpression
     {
         private PExpression _left_;
+        private TAnd _and_;
         private PExpression _right_;
         
-        public AAndExpression(PExpression _left_, PExpression _right_)
+        public AAndExpression(PExpression _left_, TAnd _and_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.And = _and_;
             this.Right = _right_;
         }
         
@@ -2837,6 +2839,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TAnd And
+        {
+            get { return _and_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("And in AAndExpression cannot be null.", "value");
+                
+                if (_and_ != null)
+                    SetParent(_and_, null);
+                SetParent(value, this);
+                
+                _and_ = value;
             }
         }
         public PExpression Right
@@ -2865,6 +2882,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (And == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("And in AAndExpression cannot be null.", "newChild");
+                if (!(newChild is TAnd) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                And = newChild as TAnd;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -2878,28 +2903,31 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return And;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new AAndExpression(Left.Clone(), Right.Clone());
+            return new AAndExpression(Left.Clone(), And.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, And, Right);
         }
     }
     public partial class AOrExpression : PExpression
     {
         private PExpression _left_;
+        private TOr _or_;
         private PExpression _right_;
         
-        public AOrExpression(PExpression _left_, PExpression _right_)
+        public AOrExpression(PExpression _left_, TOr _or_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Or = _or_;
             this.Right = _right_;
         }
         
@@ -2916,6 +2944,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TOr Or
+        {
+            get { return _or_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Or in AOrExpression cannot be null.", "value");
+                
+                if (_or_ != null)
+                    SetParent(_or_, null);
+                SetParent(value, this);
+                
+                _or_ = value;
             }
         }
         public PExpression Right
@@ -2944,6 +2987,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Or == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Or in AOrExpression cannot be null.", "newChild");
+                if (!(newChild is TOr) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Or = newChild as TOr;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -2957,29 +3008,47 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Or;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new AOrExpression(Left.Clone(), Right.Clone());
+            return new AOrExpression(Left.Clone(), Or.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Or, Right);
         }
     }
     public partial class ANotExpression : PExpression
     {
+        private TBang _bang_;
         private PExpression _expression_;
         
-        public ANotExpression(PExpression _expression_)
+        public ANotExpression(TBang _bang_, PExpression _expression_)
             : base()
         {
+            this.Bang = _bang_;
             this.Expression = _expression_;
         }
         
+        public TBang Bang
+        {
+            get { return _bang_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Bang in ANotExpression cannot be null.", "value");
+                
+                if (_bang_ != null)
+                    SetParent(_bang_, null);
+                SetParent(value, this);
+                
+                _bang_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -2998,7 +3067,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (Bang == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Bang in ANotExpression cannot be null.", "newChild");
+                if (!(newChild is TBang) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Bang = newChild as TBang;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in ANotExpression cannot be null.", "newChild");
@@ -3010,17 +3087,18 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return Bang;
             yield return Expression;
         }
         
         public override PExpression Clone()
         {
-            return new ANotExpression(Expression.Clone());
+            return new ANotExpression(Bang.Clone(), Expression.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Expression);
+            return string.Format("{0} {1}", Bang, Expression);
         }
     }
     public partial class AComparisonExpression : PExpression
@@ -3210,13 +3288,17 @@ namespace DLM.Compiler.Nodes
     public partial class AIndexExpression : PExpression
     {
         private PExpression _expression_;
+        private TLSqu _leftpar_;
         private PExpression _index_;
+        private TRSqu _rightpar_;
         
-        public AIndexExpression(PExpression _expression_, PExpression _index_)
+        public AIndexExpression(PExpression _expression_, TLSqu _leftpar_, PExpression _index_, TRSqu _rightpar_)
             : base()
         {
             this.Expression = _expression_;
+            this.LeftPar = _leftpar_;
             this.Index = _index_;
+            this.RightPar = _rightpar_;
         }
         
         public PExpression Expression
@@ -3234,6 +3316,21 @@ namespace DLM.Compiler.Nodes
                 _expression_ = value;
             }
         }
+        public TLSqu LeftPar
+        {
+            get { return _leftpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("LeftPar in AIndexExpression cannot be null.", "value");
+                
+                if (_leftpar_ != null)
+                    SetParent(_leftpar_, null);
+                SetParent(value, this);
+                
+                _leftpar_ = value;
+            }
+        }
         public PExpression Index
         {
             get { return _index_; }
@@ -3249,6 +3346,21 @@ namespace DLM.Compiler.Nodes
                 _index_ = value;
             }
         }
+        public TRSqu RightPar
+        {
+            get { return _rightpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("RightPar in AIndexExpression cannot be null.", "value");
+                
+                if (_rightpar_ != null)
+                    SetParent(_rightpar_, null);
+                SetParent(value, this);
+                
+                _rightpar_ = value;
+            }
+        }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
@@ -3260,6 +3372,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Expression = newChild as PExpression;
             }
+            else if (LeftPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("LeftPar in AIndexExpression cannot be null.", "newChild");
+                if (!(newChild is TLSqu) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                LeftPar = newChild as TLSqu;
+            }
             else if (Index == oldChild)
             {
                 if (newChild == null)
@@ -3268,33 +3388,45 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Index = newChild as PExpression;
             }
+            else if (RightPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("RightPar in AIndexExpression cannot be null.", "newChild");
+                if (!(newChild is TRSqu) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                RightPar = newChild as TRSqu;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Expression;
+            yield return LeftPar;
             yield return Index;
+            yield return RightPar;
         }
         
         public override PExpression Clone()
         {
-            return new AIndexExpression(Expression.Clone(), Index.Clone());
+            return new AIndexExpression(Expression.Clone(), LeftPar.Clone(), Index.Clone(), RightPar.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Expression, Index);
+            return string.Format("{0} {1} {2} {3}", Expression, LeftPar, Index, RightPar);
         }
     }
     public partial class APlusExpression : PExpression
     {
         private PExpression _left_;
+        private TPlus _plus_;
         private PExpression _right_;
         
-        public APlusExpression(PExpression _left_, PExpression _right_)
+        public APlusExpression(PExpression _left_, TPlus _plus_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Plus = _plus_;
             this.Right = _right_;
         }
         
@@ -3311,6 +3443,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TPlus Plus
+        {
+            get { return _plus_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Plus in APlusExpression cannot be null.", "value");
+                
+                if (_plus_ != null)
+                    SetParent(_plus_, null);
+                SetParent(value, this);
+                
+                _plus_ = value;
             }
         }
         public PExpression Right
@@ -3339,6 +3486,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Plus == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Plus in APlusExpression cannot be null.", "newChild");
+                if (!(newChild is TPlus) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Plus = newChild as TPlus;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -3352,28 +3507,31 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Plus;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new APlusExpression(Left.Clone(), Right.Clone());
+            return new APlusExpression(Left.Clone(), Plus.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Plus, Right);
         }
     }
     public partial class AMinusExpression : PExpression
     {
         private PExpression _left_;
+        private TMinus _minus_;
         private PExpression _right_;
         
-        public AMinusExpression(PExpression _left_, PExpression _right_)
+        public AMinusExpression(PExpression _left_, TMinus _minus_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Minus = _minus_;
             this.Right = _right_;
         }
         
@@ -3390,6 +3548,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TMinus Minus
+        {
+            get { return _minus_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Minus in AMinusExpression cannot be null.", "value");
+                
+                if (_minus_ != null)
+                    SetParent(_minus_, null);
+                SetParent(value, this);
+                
+                _minus_ = value;
             }
         }
         public PExpression Right
@@ -3418,6 +3591,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Minus == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Minus in AMinusExpression cannot be null.", "newChild");
+                if (!(newChild is TMinus) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Minus = newChild as TMinus;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -3431,28 +3612,31 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Minus;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new AMinusExpression(Left.Clone(), Right.Clone());
+            return new AMinusExpression(Left.Clone(), Minus.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Minus, Right);
         }
     }
     public partial class AMultiplyExpression : PExpression
     {
         private PExpression _left_;
+        private TAsterisk _asterisk_;
         private PExpression _right_;
         
-        public AMultiplyExpression(PExpression _left_, PExpression _right_)
+        public AMultiplyExpression(PExpression _left_, TAsterisk _asterisk_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Asterisk = _asterisk_;
             this.Right = _right_;
         }
         
@@ -3469,6 +3653,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TAsterisk Asterisk
+        {
+            get { return _asterisk_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Asterisk in AMultiplyExpression cannot be null.", "value");
+                
+                if (_asterisk_ != null)
+                    SetParent(_asterisk_, null);
+                SetParent(value, this);
+                
+                _asterisk_ = value;
             }
         }
         public PExpression Right
@@ -3497,6 +3696,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Asterisk == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Asterisk in AMultiplyExpression cannot be null.", "newChild");
+                if (!(newChild is TAsterisk) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Asterisk = newChild as TAsterisk;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -3510,28 +3717,31 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Asterisk;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new AMultiplyExpression(Left.Clone(), Right.Clone());
+            return new AMultiplyExpression(Left.Clone(), Asterisk.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Asterisk, Right);
         }
     }
     public partial class ADivideExpression : PExpression
     {
         private PExpression _left_;
+        private TSlash _slash_;
         private PExpression _right_;
         
-        public ADivideExpression(PExpression _left_, PExpression _right_)
+        public ADivideExpression(PExpression _left_, TSlash _slash_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Slash = _slash_;
             this.Right = _right_;
         }
         
@@ -3548,6 +3758,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TSlash Slash
+        {
+            get { return _slash_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Slash in ADivideExpression cannot be null.", "value");
+                
+                if (_slash_ != null)
+                    SetParent(_slash_, null);
+                SetParent(value, this);
+                
+                _slash_ = value;
             }
         }
         public PExpression Right
@@ -3576,6 +3801,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Slash == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Slash in ADivideExpression cannot be null.", "newChild");
+                if (!(newChild is TSlash) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Slash = newChild as TSlash;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -3589,28 +3822,31 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Slash;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new ADivideExpression(Left.Clone(), Right.Clone());
+            return new ADivideExpression(Left.Clone(), Slash.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Slash, Right);
         }
     }
     public partial class AModuloExpression : PExpression
     {
         private PExpression _left_;
+        private TPercent _percent_;
         private PExpression _right_;
         
-        public AModuloExpression(PExpression _left_, PExpression _right_)
+        public AModuloExpression(PExpression _left_, TPercent _percent_, PExpression _right_)
             : base()
         {
             this.Left = _left_;
+            this.Percent = _percent_;
             this.Right = _right_;
         }
         
@@ -3627,6 +3863,21 @@ namespace DLM.Compiler.Nodes
                 SetParent(value, this);
                 
                 _left_ = value;
+            }
+        }
+        public TPercent Percent
+        {
+            get { return _percent_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Percent in AModuloExpression cannot be null.", "value");
+                
+                if (_percent_ != null)
+                    SetParent(_percent_, null);
+                SetParent(value, this);
+                
+                _percent_ = value;
             }
         }
         public PExpression Right
@@ -3655,6 +3906,14 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Left = newChild as PExpression;
             }
+            else if (Percent == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Percent in AModuloExpression cannot be null.", "newChild");
+                if (!(newChild is TPercent) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Percent = newChild as TPercent;
+            }
             else if (Right == oldChild)
             {
                 if (newChild == null)
@@ -3668,29 +3927,47 @@ namespace DLM.Compiler.Nodes
         protected override IEnumerable<Node> GetChildren()
         {
             yield return Left;
+            yield return Percent;
             yield return Right;
         }
         
         public override PExpression Clone()
         {
-            return new AModuloExpression(Left.Clone(), Right.Clone());
+            return new AModuloExpression(Left.Clone(), Percent.Clone(), Right.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Left, Right);
+            return string.Format("{0} {1} {2}", Left, Percent, Right);
         }
     }
     public partial class ANegateExpression : PExpression
     {
+        private TMinus _minus_;
         private PExpression _expression_;
         
-        public ANegateExpression(PExpression _expression_)
+        public ANegateExpression(TMinus _minus_, PExpression _expression_)
             : base()
         {
+            this.Minus = _minus_;
             this.Expression = _expression_;
         }
         
+        public TMinus Minus
+        {
+            get { return _minus_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Minus in ANegateExpression cannot be null.", "value");
+                
+                if (_minus_ != null)
+                    SetParent(_minus_, null);
+                SetParent(value, this);
+                
+                _minus_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -3709,7 +3986,15 @@ namespace DLM.Compiler.Nodes
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (Minus == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Minus in ANegateExpression cannot be null.", "newChild");
+                if (!(newChild is TMinus) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Minus = newChild as TMinus;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in ANegateExpression cannot be null.", "newChild");
@@ -3721,17 +4006,18 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return Minus;
             yield return Expression;
         }
         
         public override PExpression Clone()
         {
-            return new ANegateExpression(Expression.Clone());
+            return new ANegateExpression(Minus.Clone(), Expression.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Expression);
+            return string.Format("{0} {1}", Minus, Expression);
         }
     }
     public partial class AFunctionCallExpression : PExpression
@@ -3739,15 +4025,19 @@ namespace DLM.Compiler.Nodes
         private TTimeCall _timecall_;
         private TIdentifier _function_;
         private NodeList<PPrincipal> _authorities_;
+        private TLPar _leftpar_;
         private NodeList<PExpression> _arguments_;
+        private TRPar _rightpar_;
         
-        public AFunctionCallExpression(TTimeCall _timecall_, TIdentifier _function_, IEnumerable<PPrincipal> _authorities_, IEnumerable<PExpression> _arguments_)
+        public AFunctionCallExpression(TTimeCall _timecall_, TIdentifier _function_, IEnumerable<PPrincipal> _authorities_, TLPar _leftpar_, IEnumerable<PExpression> _arguments_, TRPar _rightpar_)
             : base()
         {
             this.TimeCall = _timecall_;
             this.Function = _function_;
             this._authorities_ = new NodeList<PPrincipal>(this, _authorities_, true);
+            this.LeftPar = _leftpar_;
             this._arguments_ = new NodeList<PExpression>(this, _arguments_, true);
+            this.RightPar = _rightpar_;
         }
         
         public TTimeCall TimeCall
@@ -3786,9 +4076,39 @@ namespace DLM.Compiler.Nodes
         {
             get { return _authorities_; }
         }
+        public TLPar LeftPar
+        {
+            get { return _leftpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("LeftPar in AFunctionCallExpression cannot be null.", "value");
+                
+                if (_leftpar_ != null)
+                    SetParent(_leftpar_, null);
+                SetParent(value, this);
+                
+                _leftpar_ = value;
+            }
+        }
         public NodeList<PExpression> Arguments
         {
             get { return _arguments_; }
+        }
+        public TRPar RightPar
+        {
+            get { return _rightpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("RightPar in AFunctionCallExpression cannot be null.", "value");
+                
+                if (_rightpar_ != null)
+                    SetParent(_rightpar_, null);
+                SetParent(value, this);
+                
+                _rightpar_ = value;
+            }
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
@@ -3818,6 +4138,14 @@ namespace DLM.Compiler.Nodes
                 else
                     Authorities[index] = newChild as PPrincipal;
             }
+            else if (LeftPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("LeftPar in AFunctionCallExpression cannot be null.", "newChild");
+                if (!(newChild is TLPar) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                LeftPar = newChild as TLPar;
+            }
             else if (oldChild is PExpression && Arguments.Contains(oldChild as PExpression))
             {
                 if (!(newChild is PExpression) && newChild != null)
@@ -3828,6 +4156,14 @@ namespace DLM.Compiler.Nodes
                     Arguments.RemoveAt(index);
                 else
                     Arguments[index] = newChild as PExpression;
+            }
+            else if (RightPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("RightPar in AFunctionCallExpression cannot be null.", "newChild");
+                if (!(newChild is TRPar) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                RightPar = newChild as TRPar;
             }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
@@ -3842,22 +4178,24 @@ namespace DLM.Compiler.Nodes
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
+            yield return LeftPar;
             {
                 PExpression[] temp = new PExpression[Arguments.Count];
                 Arguments.CopyTo(temp, 0);
                 for (int i = 0; i < temp.Length; i++)
                     yield return temp[i];
             }
+            yield return RightPar;
         }
         
         public override PExpression Clone()
         {
-            return new AFunctionCallExpression(TimeCall?.Clone(), Function.Clone(), Authorities.Clone(), Arguments.Clone());
+            return new AFunctionCallExpression(TimeCall?.Clone(), Function.Clone(), Authorities.Clone(), LeftPar.Clone(), Arguments.Clone(), RightPar.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}", TimeCall, Function, Authorities, Arguments);
+            return string.Format("{0} {1} {2} {3} {4} {5}", TimeCall, Function, Authorities, LeftPar, Arguments, RightPar);
         }
     }
     public partial class ATernaryExpression : PExpression
@@ -4019,14 +4357,33 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AParenthesisExpression : PExpression
     {
+        private TLPar _leftpar_;
         private PExpression _expression_;
+        private TRPar _rightpar_;
         
-        public AParenthesisExpression(PExpression _expression_)
+        public AParenthesisExpression(TLPar _leftpar_, PExpression _expression_, TRPar _rightpar_)
             : base()
         {
+            this.LeftPar = _leftpar_;
             this.Expression = _expression_;
+            this.RightPar = _rightpar_;
         }
         
+        public TLPar LeftPar
+        {
+            get { return _leftpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("LeftPar in AParenthesisExpression cannot be null.", "value");
+                
+                if (_leftpar_ != null)
+                    SetParent(_leftpar_, null);
+                SetParent(value, this);
+                
+                _leftpar_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -4042,10 +4399,33 @@ namespace DLM.Compiler.Nodes
                 _expression_ = value;
             }
         }
+        public TRPar RightPar
+        {
+            get { return _rightpar_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("RightPar in AParenthesisExpression cannot be null.", "value");
+                
+                if (_rightpar_ != null)
+                    SetParent(_rightpar_, null);
+                SetParent(value, this);
+                
+                _rightpar_ = value;
+            }
+        }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (LeftPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("LeftPar in AParenthesisExpression cannot be null.", "newChild");
+                if (!(newChild is TLPar) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                LeftPar = newChild as TLPar;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in AParenthesisExpression cannot be null.", "newChild");
@@ -4053,35 +4433,64 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Expression = newChild as PExpression;
             }
+            else if (RightPar == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("RightPar in AParenthesisExpression cannot be null.", "newChild");
+                if (!(newChild is TRPar) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                RightPar = newChild as TRPar;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return LeftPar;
             yield return Expression;
+            yield return RightPar;
         }
         
         public override PExpression Clone()
         {
-            return new AParenthesisExpression(Expression.Clone());
+            return new AParenthesisExpression(LeftPar.Clone(), Expression.Clone(), RightPar.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Expression);
+            return string.Format("{0} {1} {2}", LeftPar, Expression, RightPar);
         }
     }
     public partial class ADeclassifyExpression : PExpression
     {
+        private TDeclassifyStart _declassifystart_;
         private PExpression _expression_;
         private PLabel _label_;
+        private TDeclassifyEnd _declassifyend_;
         
-        public ADeclassifyExpression(PExpression _expression_, PLabel _label_)
+        public ADeclassifyExpression(TDeclassifyStart _declassifystart_, PExpression _expression_, PLabel _label_, TDeclassifyEnd _declassifyend_)
             : base()
         {
+            this.DeclassifyStart = _declassifystart_;
             this.Expression = _expression_;
             this.Label = _label_;
+            this.DeclassifyEnd = _declassifyend_;
         }
         
+        public TDeclassifyStart DeclassifyStart
+        {
+            get { return _declassifystart_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("DeclassifyStart in ADeclassifyExpression cannot be null.", "value");
+                
+                if (_declassifystart_ != null)
+                    SetParent(_declassifystart_, null);
+                SetParent(value, this);
+                
+                _declassifystart_ = value;
+            }
+        }
         public PExpression Expression
         {
             get { return _expression_; }
@@ -4114,10 +4523,33 @@ namespace DLM.Compiler.Nodes
         {
             get { return _label_ != null; }
         }
+        public TDeclassifyEnd DeclassifyEnd
+        {
+            get { return _declassifyend_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("DeclassifyEnd in ADeclassifyExpression cannot be null.", "value");
+                
+                if (_declassifyend_ != null)
+                    SetParent(_declassifyend_, null);
+                SetParent(value, this);
+                
+                _declassifyend_ = value;
+            }
+        }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Expression == oldChild)
+            if (DeclassifyStart == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("DeclassifyStart in ADeclassifyExpression cannot be null.", "newChild");
+                if (!(newChild is TDeclassifyStart) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                DeclassifyStart = newChild as TDeclassifyStart;
+            }
+            else if (Expression == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Expression in ADeclassifyExpression cannot be null.", "newChild");
@@ -4131,23 +4563,33 @@ namespace DLM.Compiler.Nodes
                     throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
                 Label = newChild as PLabel;
             }
+            else if (DeclassifyEnd == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("DeclassifyEnd in ADeclassifyExpression cannot be null.", "newChild");
+                if (!(newChild is TDeclassifyEnd) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                DeclassifyEnd = newChild as TDeclassifyEnd;
+            }
             else throw new ArgumentException("Node to be replaced is not a child in this production.");
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return DeclassifyStart;
             yield return Expression;
             if (HasLabel)
                 yield return Label;
+            yield return DeclassifyEnd;
         }
         
         public override PExpression Clone()
         {
-            return new ADeclassifyExpression(Expression.Clone(), Label?.Clone());
+            return new ADeclassifyExpression(DeclassifyStart.Clone(), Expression.Clone(), Label?.Clone(), DeclassifyEnd.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0} {1}", Expression, Label);
+            return string.Format("{0} {1} {2} {3}", DeclassifyStart, Expression, Label, DeclassifyEnd);
         }
     }
     public partial class ADereferenceExpression : PExpression
@@ -4733,14 +5175,41 @@ namespace DLM.Compiler.Nodes
     }
     public partial class AElement : PElement
     {
-        public AElement(TIdentifier _identifier_)
+        private TPeriod _period_;
+        
+        public AElement(TPeriod _period_, TIdentifier _identifier_)
             : base(_identifier_)
         {
+            this.Period = _period_;
+        }
+        
+        public TPeriod Period
+        {
+            get { return _period_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Period in AElement cannot be null.", "value");
+                
+                if (_period_ != null)
+                    SetParent(_period_, null);
+                SetParent(value, this);
+                
+                _period_ = value;
+            }
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Identifier == oldChild)
+            if (Period == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Period in AElement cannot be null.", "newChild");
+                if (!(newChild is TPeriod) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Period = newChild as TPeriod;
+            }
+            else if (Identifier == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Identifier in AElement cannot be null.", "newChild");
@@ -4752,29 +5221,57 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return Period;
             yield return Identifier;
         }
         
         public override PElement Clone()
         {
-            return new AElement(Identifier.Clone());
+            return new AElement(Period.Clone(), Identifier.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Identifier);
+            return string.Format("{0} {1}", Period, Identifier);
         }
     }
     public partial class APointerElement : PElement
     {
-        public APointerElement(TIdentifier _identifier_)
+        private TRArrow _arrow_;
+        
+        public APointerElement(TRArrow _arrow_, TIdentifier _identifier_)
             : base(_identifier_)
         {
+            this.Arrow = _arrow_;
+        }
+        
+        public TRArrow Arrow
+        {
+            get { return _arrow_; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Arrow in APointerElement cannot be null.", "value");
+                
+                if (_arrow_ != null)
+                    SetParent(_arrow_, null);
+                SetParent(value, this);
+                
+                _arrow_ = value;
+            }
         }
         
         public override void ReplaceChild(Node oldChild, Node newChild)
         {
-            if (Identifier == oldChild)
+            if (Arrow == oldChild)
+            {
+                if (newChild == null)
+                    throw new ArgumentException("Arrow in APointerElement cannot be null.", "newChild");
+                if (!(newChild is TRArrow) && newChild != null)
+                    throw new ArgumentException("Child replaced must be of same type as child being replaced with.");
+                Arrow = newChild as TRArrow;
+            }
+            else if (Identifier == oldChild)
             {
                 if (newChild == null)
                     throw new ArgumentException("Identifier in APointerElement cannot be null.", "newChild");
@@ -4786,17 +5283,18 @@ namespace DLM.Compiler.Nodes
         }
         protected override IEnumerable<Node> GetChildren()
         {
+            yield return Arrow;
             yield return Identifier;
         }
         
         public override PElement Clone()
         {
-            return new APointerElement(Identifier.Clone());
+            return new APointerElement(Arrow.Clone(), Identifier.Clone());
         }
         
         public override string ToString()
         {
-            return string.Format("{0}", Identifier);
+            return string.Format("{0} {1}", Arrow, Identifier);
         }
     }
 }
