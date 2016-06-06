@@ -156,5 +156,18 @@ namespace DLM.Wpf
             lineBlock.Text = (codeTextBox.Selection.Start.iLine + 1).ToString();
             charBlock.Text = (codeTextBox.Selection.Start.iChar + 1).ToString();
         }
+
+        private void MenuItem_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var item = sender as System.Windows.Controls.MenuItem;
+            if (item == null)
+                return;
+
+            if (Properties.Settings.Default.InlineLabels != item.IsChecked)
+            {
+                Properties.Settings.Default.InlineLabels = item.IsChecked;
+                codeTextBox.Invalidate();
+            }
+        }
     }
 }

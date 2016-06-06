@@ -72,6 +72,9 @@
                 <Separator Height="2" />
                 <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
             </MenuItem>
+            <MenuItem Header="_Settings" Padding="10,3">
+                <MenuItem Header="Display labels inline" IsCheckable="True" IsChecked="False" Checked="MenuItem_Checked" Unchecked="MenuItem_Checked"/>
+            </MenuItem>
         </Menu>
         <Grid Name="bottomBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
