@@ -27,6 +27,9 @@ namespace DLM.Wpf
 
         public override void Draw(Graphics gr, Point position, Range range)
         {
+            if (!Properties.Settings.Default.InlineLabels)
+                return;
+
             int iLine = range.Start.iLine;
             var line = range.tb.GetLine(range.Start.iLine);
 

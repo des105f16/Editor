@@ -14,5 +14,8 @@
     <Setting Name="FileDescription" Type="System.String" Scope="User">
       <Value Profile="(Default)">{0} Files</Value>
     </Setting>
+    <Setting Name="InlineLabels" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
