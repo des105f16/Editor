@@ -6,19 +6,17 @@ namespace DLM.Wpf
     public class LabelDrawer
     {
         private readonly Font font;
-        private readonly Brush defaultBrush;
         private readonly Size charSize;
 
         public LabelDrawer(Font font, Size charSize)
         {
             this.font = new Font(font, FontStyle.Regular);
-            this.defaultBrush = new SolidBrush(Color.FromArgb(120, 175, 175, 10));
             this.charSize = charSize;
         }
 
-        public void DrawLabel(Graphics graphics, Label label, PointF location)
+        public void DrawLabel(Graphics graphics, Brush brush, Label label, PointF location)
         {
-            Context ct = new Context(this, graphics, location);
+            Context ct = new Context(this, brush, graphics, location);
             ct.Draw((dynamic)label);
         }
 
@@ -82,7 +80,7 @@ namespace DLM.Wpf
         private class Context
         {
             private readonly Font font;
-            private readonly Brush defaultBrush;
+            private readonly Brush brush;
             private readonly Size charSize;
 
             private readonly Graphics g;
@@ -90,10 +88,10 @@ namespace DLM.Wpf
             private readonly float y;
             private PointF position => new PointF(x, y);
 
-            public Context(LabelDrawer drawer, Graphics graphics, PointF point)
+            public Context(LabelDrawer drawer, Brush brush, Graphics graphics, PointF point)
             {
                 font = drawer.font;
-                defaultBrush = drawer.defaultBrush;
+                this.brush = brush;
                 charSize = drawer.charSize;
 
                 g = graphics;
@@ -107,7 +105,7 @@ namespace DLM.Wpf
                 if (offset.HasValue)
                     p += offset.Value;
 
-                g.DrawString(str, font ?? this.font, brush ?? defaultBrush, p);
+                g.DrawString(str, font ?? this.font, brush ?? this.brush, p);
                 x += charSize.Width * str.Length;
             }
 
@@ -117,7 +115,7 @@ namespace DLM.Wpf
 
                 x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                using (var pen = new Pen(defaultBrush))
+                using (var pen = new Pen(brush))
                 {
                     g.DrawLines(pen, new PointF[]
                     {
@@ -145,7 +143,7 @@ namespace DLM.Wpf
 
                 x += 6;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                using (var pen = new Pen(defaultBrush))
+                using (var pen = new Pen(brush))
                 {
                     g.DrawLines(pen, new PointF[]
                     {
@@ -170,14 +168,14 @@ namespace DLM.Wpf
 
             public void Draw(VariableLabel label)
             {
-                using (Pen pen = new Pen(defaultBrush))
+                using (Pen pen = new Pen(brush))
                     g.DrawLine(pen, x, y + charSize.Height - 1, x + label.Name.Length * charSize.Width, y + charSize.Height - 1);
 
                 DrawString(label.Name);
             }
             public void Draw(ConstantLabel label)
             {
-                using (Pen pen = new Pen(defaultBrush))
+                using (Pen pen = new Pen(brush))
                     g.DrawLine(pen, x, y + 3, x + label.Name.Length * charSize.Width, y + 3);
 
                 DrawString(label.Name);
