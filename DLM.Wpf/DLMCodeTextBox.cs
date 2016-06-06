@@ -2,6 +2,7 @@
 using FastColoredTextBoxNS;
 using System.Windows.Forms;
 using SablePP.Tools.Nodes;
+using DLM.Compiler.Nodes;
 using DLMLabel = DLM.Inference.Label;
 
 namespace DLM.Wpf
@@ -73,6 +74,10 @@ namespace DLM.Wpf
 
             private Node getLabelNode(Token token)
             {
+                var expr = token.GetFirstParent<PExpression>();
+                if (expr != null)
+                    return expr;
+
                 return null;
             }
 
