@@ -145,6 +145,8 @@ namespace DLM.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             var place = PointToPlace(e.Location);
+            place.iChar += place.iChar <= 0 ? 0 : 1;
+
             var token = TokenFromPlace(place);
 
             state.Token = token;
