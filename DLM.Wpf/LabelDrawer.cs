@@ -168,16 +168,17 @@ namespace DLM.Wpf
 
             public void Draw(VariableLabel label)
             {
-                var name = label.Name;
+                using (Pen pen = new Pen(defaultBrush))
+                    g.DrawLine(pen, x, y + charSize.Height - 1, x + label.Name.Length * charSize.Width, y + charSize.Height - 1);
 
-                DrawString(name, font: underlined);
-                DrawString(" = ");
-
-                Draw((dynamic)label.NoVariables);
+                DrawString(label.Name);
             }
             public void Draw(ConstantLabel label)
             {
-                DrawString(label.Name, font: underlined);
+                using (Pen pen = new Pen(defaultBrush))
+                    g.DrawLine(pen, x, y + 3, x + label.Name.Length * charSize.Width, y + 3);
+
+                DrawString(label.Name);
             }
 
             public void Draw(PolicyLabel label)
