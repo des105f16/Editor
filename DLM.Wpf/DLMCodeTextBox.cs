@@ -184,18 +184,18 @@ namespace DLM.Wpf
             var img = Properties.Resources.labeltooltip;
 
             //TL; TR; BL; BR
-            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y - 3, 13, 14), new Rectangle(0, 0, 13, 14), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y - 3, 14, 14), new Rectangle(14, 0, 14, 14), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y + box.Height - 5, 13, 15), new Rectangle(0, 15, 13, 15), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y + box.Height - 5, 14, 15), new Rectangle(14, 15, 14, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y - 3, 14, 15), new Rectangle(0, 0, 14, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y - 3, 14, 15), new Rectangle(15, 0, 14, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y + box.Height - 5, 14, 15), new Rectangle(0, 16, 14, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y + box.Height - 5, 14, 15), new Rectangle(15, 16, 14, 15), GraphicsUnit.Pixel);
 
             //T; B; L; R
-            graphics.DrawImage(img, new Rectangle(box.X + 10, box.Y - 3, box.Width - 15, 14), new Rectangle(13, 0, 1, 14), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X + 10, box.Y + box.Height - 5, box.Width - 15, 15), new Rectangle(13, 15, 1, 15), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y + 11, 13, box.Height - 16), new Rectangle(0, 14, 13, 1), GraphicsUnit.Pixel);
-            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y + 11, 14, box.Height - 16), new Rectangle(14, 14, 14, 1), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + 11, box.Y - 3, box.Width - 16, 15), new Rectangle(14, 0, 1, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + 11, box.Y + box.Height - 5, box.Width - 16, 15), new Rectangle(14, 16, 1, 15), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X - 3, box.Y + 12, 14, box.Height - 17), new Rectangle(0, 15, 14, 1), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + box.Width - 5, box.Y + 12, 14, box.Height - 17), new Rectangle(15, 15, 14, 1), GraphicsUnit.Pixel);
 
-            graphics.DrawImage(img, new Rectangle(box.X + 10, box.Y + 11, box.Width - 15, box.Height - 16), new Rectangle(13, 14, 1, 1), GraphicsUnit.Pixel);
+            graphics.DrawImage(img, new Rectangle(box.X + 11, box.Y + 12, box.Width - 16, box.Height - 17), new Rectangle(14, 15, 1, 1), GraphicsUnit.Pixel);
         }
     }
 }
