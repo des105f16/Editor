@@ -19,6 +19,7 @@ namespace DLM.Wpf
         private readonly Font font = new Font("Consolas", 10f, FontStyle.Regular);
 
         private readonly LabelState state;
+        private readonly SelectionStyle mark;
 
         public DLMCodeTextBox()
             : base()
@@ -34,6 +35,7 @@ namespace DLM.Wpf
             DisabledColor = disabledbackcolor;
 
             state = new LabelState(this);
+            mark = new SelectionStyle(new SolidBrush(Color.FromArgb(90, 0, 142, 183)));
 
             this.Paint += DLMCodeTextBox_Paint;
         }
@@ -101,6 +103,11 @@ namespace DLM.Wpf
                 {
                     if (value == node)
                         return;
+
+                    if (node != null)
+                        o.RangeFromNode(node).ClearStyle(o.mark);
+                    if (value != null)
+                        o.RangeFromNode(value).SetStyle(o.mark);
 
                     node = value;
 
