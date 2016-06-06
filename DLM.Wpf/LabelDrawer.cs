@@ -18,6 +18,12 @@ namespace DLM.Wpf
             this.charSize = charSize;
         }
 
+        public void DrawLabel(Graphics graphics, Label label, PointF location)
+        {
+            Context ct = new Context(this, graphics, location);
+            ct.Draw((dynamic)label);
+        }
+
         public float GetWidth(Label label)
         {
             return getWidth((dynamic)label);
