@@ -9,6 +9,9 @@ namespace DLM.Wpf
 {
     public class DLMCodeTextBox : SablePP.Tools.Editor.CodeTextBox
     {
+        private readonly SolidBrush toolTipLabelBrush;
+        private readonly SolidBrush toolTipVarLabelBrush;
+
         private readonly Color forecolor = Color.FromArgb(220, 220, 220);
         private readonly Color backcolor = Color.FromArgb(30, 30, 30);
         private readonly Color disabledbackcolor = Color.FromArgb(35, 35, 35);
@@ -35,6 +38,9 @@ namespace DLM.Wpf
             SelectionColor = selectionColor;
             Font = font;
             DisabledColor = disabledbackcolor;
+
+            toolTipLabelBrush = new SolidBrush(forecolor);
+            toolTipVarLabelBrush = new SolidBrush(Color.FromArgb(180, forecolor));
 
             state = new LabelState(this);
             draw = new LabelDrawer(Font, new Size(CharWidth, CharHeight));
@@ -71,14 +77,14 @@ namespace DLM.Wpf
                 pos = pos - new Size(1, 1);
 
                 if (equal)
-                    draw.DrawLabel(e.Graphics, noVar, pos);
+                    draw.DrawLabel(e.Graphics, toolTipLabelBrush, noVar, pos);
                 else
                 {
-                    draw.DrawLabel(e.Graphics, lbl, pos);
+                    draw.DrawLabel(e.Graphics, toolTipVarLabelBrush, lbl, pos);
                     pos.X += (int)draw.GetWidth(lbl);
-                    e.Graphics.DrawString(" = ", Font, Brushes.White, pos);
+                    e.Graphics.DrawString(" = ", Font, toolTipVarLabelBrush, pos);
                     pos.X += CharWidth * 3;
-                    draw.DrawLabel(e.Graphics, noVar, pos);
+                    draw.DrawLabel(e.Graphics, toolTipLabelBrush, noVar, pos);
                 }
             }
         }
