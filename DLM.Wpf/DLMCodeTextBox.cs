@@ -20,6 +20,7 @@ namespace DLM.Wpf
         private readonly Font font = new Font("Consolas", 10f, FontStyle.Regular);
 
         private readonly LabelState state;
+        private LabelDrawer draw;
         private readonly SelectionStyle mark;
 
         public DLMCodeTextBox()
@@ -36,6 +37,7 @@ namespace DLM.Wpf
             DisabledColor = disabledbackcolor;
 
             state = new LabelState(this);
+            draw = new LabelDrawer(Font, new Size(CharWidth, CharHeight));
             mark = new SelectionStyle(new SolidBrush(Color.FromArgb(90, 0, 142, 183)));
 
             this.Paint += DLMCodeTextBox_Paint;
@@ -45,17 +47,39 @@ namespace DLM.Wpf
         {
             if (state.Label != null)
             {
-                var pos = Cursor.Position + new Size(5, -30);
+                var lbl = state.Label;
+                var noVar = lbl.NoVariables;
+
+                var equal = lbl.Equals(noVar);
+
+                float width;
+
+                if (equal)
+                    width = draw.GetWidth(noVar);
+                else
+                    width = draw.GetWidth(lbl) + CharWidth * 3 + draw.GetWidth(noVar);
+
+                var pos = Cursor.Position - new Size((int)width / 2, 35);
                 pos = PointToClient(pos);
 
-                var str = state.Label.ToString();
-
-                var size = e.Graphics.MeasureString(str, font);
-                Rectangle box = new Rectangle(pos.X, pos.Y, (int)size.Width, (int)size.Height);
-                box.Inflate(10, 3);
+                Rectangle box = new Rectangle(pos.X, pos.Y, (int)width, CharHeight);
+                var b2 = box;
+                box.Inflate(10, 5);
 
                 drawBox(e.Graphics, box);
-                e.Graphics.DrawString(str, font, Brushes.White, pos);
+
+                pos = pos - new Size(1, 1);
+
+                if (equal)
+                    draw.DrawLabel(e.Graphics, noVar, pos);
+                else
+                {
+                    draw.DrawLabel(e.Graphics, lbl, pos);
+                    pos.X += (int)draw.GetWidth(lbl);
+                    e.Graphics.DrawString(" = ", Font, Brushes.White, pos);
+                    pos.X += CharWidth * 3;
+                    draw.DrawLabel(e.Graphics, noVar, pos);
+                }
             }
         }
 
@@ -125,7 +149,7 @@ namespace DLM.Wpf
                     if (value == null)
                         Label = null;
                     else
-                        Label = value.GetFirstLabelValue().NoVariables;
+                        Label = value.GetFirstLabelValue();
 
                     o.Invalidate();
                 }
