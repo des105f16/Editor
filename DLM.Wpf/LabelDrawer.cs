@@ -6,14 +6,12 @@ namespace DLM.Wpf
     public class LabelDrawer
     {
         private readonly Font font;
-        private readonly Font underlined;
         private readonly Brush defaultBrush;
         private readonly Size charSize;
 
         public LabelDrawer(Font font, Size charSize)
         {
             this.font = new Font(font, FontStyle.Regular);
-            this.underlined = new Font(font, FontStyle.Underline);
             this.defaultBrush = new SolidBrush(Color.FromArgb(120, 175, 175, 10));
             this.charSize = charSize;
         }
@@ -84,7 +82,6 @@ namespace DLM.Wpf
         private class Context
         {
             private readonly Font font;
-            private readonly Font underlined;
             private readonly Brush defaultBrush;
             private readonly Size charSize;
 
@@ -96,7 +93,6 @@ namespace DLM.Wpf
             public Context(LabelDrawer drawer, Graphics graphics, PointF point)
             {
                 font = drawer.font;
-                underlined = drawer.underlined;
                 defaultBrush = drawer.defaultBrush;
                 charSize = drawer.charSize;
 
