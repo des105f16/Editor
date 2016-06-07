@@ -65,8 +65,15 @@ namespace DLM.Wpf
                 else
                     width = draw.GetWidth(lbl) + CharWidth * 3 + draw.GetWidth(noVar);
 
-                var pos = Cursor.Position - new Size((int)width / 2, 35);
-                pos = PointToClient(pos);
+                var pos = Cursor.Position;
+                pos = PointToClient(pos) - new Size((int)width / 2, 35);
+
+                if (pos.X < 40)
+                    pos.X = 40;
+                else if (pos.X > this.Width - (int)width - 35 && VerticalScroll.Visible)
+                    pos.X = this.Width - (int)width - 35;
+                else if (pos.X > this.Width - (int)width - 18)
+                    pos.X = this.Width - (int)width - 18;
 
                 Rectangle box = new Rectangle(pos.X, pos.Y, (int)width, CharHeight);
                 var b2 = box;
