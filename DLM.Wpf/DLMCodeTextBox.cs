@@ -125,6 +125,13 @@ namespace DLM.Wpf
                 if (token is TIf || token is TWhile)
                     return token;
 
+                if (token is TIdentifier)
+                {
+                    var func = token.GetParent() as AFunctionDeclarationStatement;
+                    if (func != null && func.Identifier == token)
+                        return token;
+                }
+
                 return null;
             }
 

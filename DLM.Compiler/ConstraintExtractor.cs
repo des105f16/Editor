@@ -65,6 +65,16 @@ namespace DLM.Compiler
             var fName = node.Identifier.Text;
             functionLabels.Add(fName, node);
 
+            if (node.Type.DeclaredLabel == null)
+                node.LabelValue = node.Type.DeclaredLabel;
+            else
+            {
+                var fcLabel = Label.LowerBound;
+                foreach (var p in node.Parameters)
+                    fcLabel += p.Type.DeclaredLabel;
+                node.LabelValue = fcLabel;
+            }
+
             types.OpenScope();
 
             foreach (var p in node.Parameters)
