@@ -43,7 +43,7 @@ namespace DLM.Wpf
             toolTipVarLabelBrush = new SolidBrush(Color.FromArgb(180, forecolor));
 
             state = new LabelState(this);
-            draw = new LabelDrawer(Font, new Size(CharWidth, CharHeight));
+            draw = new LabelDrawer(this, new Size(CharWidth, CharHeight));
             mark = new SelectionStyle(new SolidBrush(Color.FromArgb(90, 0, 142, 183)));
 
             this.Paint += DLMCodeTextBox_Paint;

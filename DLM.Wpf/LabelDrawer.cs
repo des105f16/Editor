@@ -5,12 +5,12 @@ namespace DLM.Wpf
 {
     public class LabelDrawer
     {
-        private readonly Font font;
+        private readonly FastColoredTextBoxNS.FastColoredTextBox textBox;
         private readonly Size charSize;
 
-        public LabelDrawer(Font font, Size charSize)
+        public LabelDrawer(FastColoredTextBoxNS.FastColoredTextBox textBox, Size charSize)
         {
-            this.font = new Font(font, FontStyle.Regular);
+            this.textBox = textBox;
             this.charSize = charSize;
         }
 
@@ -90,7 +90,7 @@ namespace DLM.Wpf
 
             public Context(LabelDrawer drawer, Brush brush, Graphics graphics, PointF point)
             {
-                font = drawer.font;
+                font = drawer.textBox.Font;
                 this.brush = brush;
                 charSize = drawer.charSize;
 
